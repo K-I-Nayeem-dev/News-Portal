@@ -1,14 +1,23 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use Stevebauman\Location\Facades\Location;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+
+
+    // return $position = Location::get('119.30.39.113');
+
+    return view('layouts.newsIndex.index', [
+
+        'position' => Location::get('119.30.39.113')->cityName,
+
+    ]);
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('layouts.newsDashboard.index');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -17,4 +26,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
