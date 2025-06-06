@@ -1,58 +1,240 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
+@extends('auth.authMaster')
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
-        </div>
+@section('auth')
+    <div id="main-wrapper" class="auth-customizer-none">
+        <div
+            class="position-relative overflow-hidden radial-gradient min-vh-100 w-100 d-flex align-items-center justify-content-center">
+            <div class="d-flex align-items-center justify-content-center w-100">
+                <div class="row justify-content-center w-100">
+                    <div class="col-md-8 col-lg-6 col-xxl-3 auth-card">
+                        <div class="card mb-0">
+                            <div class="card-body">
+                                <a href="index.html"
+                                    class="text-nowrap logo-img d-flex align-items-center justify-content-center gap-2 mb-4 w-100">
+                                    <b class="logo-icon">
+                                        <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
+                                        <!-- Dark Logo icon -->
+                                        <img src="{{ asset('dashboard_assets') }}/images/logos/logo-icon.svg" alt="homepage" class="dark-logo">
+                                        <!-- Light Logo icon -->
+                                        <img src="{{ asset('dashboard_assets') }}/images/logos/logo-light-icon.svg" alt="homepage"
+                                            class="light-logo">
+                                    </b>
+                                    <!--End Logo icon -->
+                                    <!-- Logo text -->
+                                    <span class="logo-text">
+                                        <!-- dark Logo text -->
+                                        <img src="{{ asset('dashboard_assets') }}/images/logos/logo-text.svg" alt="homepage"
+                                            class="dark-logo ps-2">
+                                        <!-- Light Logo text -->
+                                        <img src="{{ asset('dashboard_assets') }}/images/logos/logo-light-text.svg" class="light-logo ps-2"
+                                            alt="homepage">
+                                    </span>
+                                </a>
+                                <form>
+                                    <div class="mb-3">
+                                        <label for="exampleInputEmail1" class="form-label">Name</label>
+                                        <input type="text" class="form-control" id="exampleInputtext"
+                                            aria-describedby="textHelp">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="exampleInputEmail1" class="form-label">Email address</label>
+                                        <input type="email" class="form-control" id="exampleInputEmail1"
+                                            aria-describedby="emailHelp">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="exampleInputPassword1" class="form-label">Password</label>
+                                        <input type="password" class="form-control" id="exampleInputPassword1">
+                                    </div>
+                                    <a href="#" class="btn btn-primary w-100 py-8 mb-4">Sign Up</a>
+                                    <div class="d-flex align-items-center justify-content-center">
+                                        <p class="fs-4 mb-0 text-dark">Already have an Account?</p>
+                                        <a class="text-primary fw-medium ms-2" href="{{ route('login') }}">Sign In</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                function handleColorTheme(e) {
+                    $("html").attr("data-color-theme", e);
+                    $(e).prop("checked", !0);
+                }
+            </script>
+            <button
+                class="btn btn-primary p-3 rounded-circle d-flex align-items-center justify-content-center customizer-btn"
+                type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
+                aria-controls="offcanvasExample">
+                <i class="icon ti ti-settings fs-7 text-white"></i>
+            </button>
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+            <div class="offcanvas customizer offcanvas-end" tabindex="-1" id="offcanvasExample"
+                aria-labelledby="offcanvasExampleLabel">
+                <div class="d-flex align-items-center justify-content-between p-3 border-bottom">
+                    <h4 class="offcanvas-title fw-semibold" id="offcanvasExampleLabel">
+                        Settings
+                    </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body h-n80" data-simplebar="">
+                    <h6 class="fw-semibold fs-4 mb-2">Theme</h6>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+                    <div class="d-flex flex-row gap-3 customizer-box" role="group">
+                        <input type="radio" class="btn-check light-layout " name="theme-layout" id="light-layout"
+                            autocomplete="off">
+                        <label class="btn p-9 btn-outline-primary rounded" for="light-layout"> <iconify-icon
+                                icon="solar:sun-2-outline" class="icon fs-7 me-2"></iconify-icon>Light</label>
+                        <input type="radio" class="btn-check dark-layout" name="theme-layout" id="dark-layout"
+                            autocomplete="off">
+                        <label class="btn p-9 btn-outline-primary rounded" for="dark-layout"><iconify-icon
+                                icon="solar:moon-outline" class="icon fs-7 me-2"></iconify-icon>Dark</label>
+                    </div>
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
+                    <h6 class="mt-5 fw-semibold fs-4 mb-2">Theme Direction</h6>
+                    <div class="d-flex flex-row gap-3 customizer-box" role="group">
+                        <input type="radio" class="btn-check" name="direction-l" id="ltr-layout" autocomplete="off">
+                        <label class="btn p-9 btn-outline-primary rounded" for="ltr-layout"><iconify-icon
+                                icon="solar:align-left-linear" class="icon fs-7 me-2"></iconify-icon>LTR</label>
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+                        <input type="radio" class="btn-check" name="direction-l" id="rtl-layout" autocomplete="off">
+                        <label class="btn p-9 btn-outline-primary rounded" for="rtl-layout">
+                            <iconify-icon icon="solar:align-right-linear" class="icon fs-7 me-2"></iconify-icon>RTL
+                        </label>
+                    </div>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+                    <h6 class="mt-5 fw-semibold fs-4 mb-2">Theme Colors</h6>
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
+                    <div class="d-flex flex-row flex-wrap gap-3 customizer-box color-pallete" role="group">
+                        <input type="radio" class="btn-check" name="color-theme-layout" id="Blue_Theme"
+                            autocomplete="off">
+                        <label class="btn p-9 btn-outline-primary d-flex align-items-center justify-content-center rounded"
+                            onclick="handleColorTheme('Blue_Theme')" for="Blue_Theme" data-bs-toggle="tooltip"
+                            data-bs-placement="top" data-bs-title="BLUE_THEME">
+                            <div class="color-box rounded-circle d-flex align-items-center justify-content-center skin-1">
+                                <i class="ti ti-check text-white d-flex icon fs-5"></i>
+                            </div>
+                        </label>
 
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
+                        <input type="radio" class="btn-check" name="color-theme-layout" id="Aqua_Theme"
+                            autocomplete="off">
+                        <label class="btn p-9 btn-outline-primary d-flex align-items-center justify-content-center rounded"
+                            onclick="handleColorTheme('Aqua_Theme')" for="Aqua_Theme" data-bs-toggle="tooltip"
+                            data-bs-placement="top" data-bs-title="AQUA_THEME">
+                            <div class="color-box rounded-circle d-flex align-items-center justify-content-center skin-2">
+                                <i class="ti ti-check text-white d-flex icon fs-5"></i>
+                            </div>
+                        </label>
 
-        <div class="flex items-center justify-between mt-4">
+                        <input type="radio" class="btn-check" name="color-theme-layout" id="Purple_Theme"
+                            autocomplete="off">
+                        <label class="btn p-9 btn-outline-primary d-flex align-items-center justify-content-center rounded"
+                            onclick="handleColorTheme('Purple_Theme')" for="Purple_Theme" data-bs-toggle="tooltip"
+                            data-bs-placement="top" data-bs-title="PURPLE_THEME">
+                            <div class="color-box rounded-circle d-flex align-items-center justify-content-center skin-3">
+                                <i class="ti ti-check text-white d-flex icon fs-5"></i>
+                            </div>
+                        </label>
 
-            @if (Route::has('password.request'))
-                <a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm font-thin"
-                    href="{{ route('login') }}">Login</a>
-            @endif
+                        <input type="radio" class="btn-check" name="color-theme-layout" id="green-theme-layout"
+                            autocomplete="off">
+                        <label class="btn p-9 btn-outline-primary d-flex align-items-center justify-content-center rounded"
+                            onclick="handleColorTheme('Green_Theme')" for="green-theme-layout" data-bs-toggle="tooltip"
+                            data-bs-placement="top" data-bs-title="GREEN_THEME">
+                            <div class="color-box rounded-circle d-flex align-items-center justify-content-center skin-4">
+                                <i class="ti ti-check text-white d-flex icon fs-5"></i>
+                            </div>
+                        </label>
 
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
+                        <input type="radio" class="btn-check" name="color-theme-layout" id="cyan-theme-layout"
+                            autocomplete="off">
+                        <label class="btn p-9 btn-outline-primary d-flex align-items-center justify-content-center rounded"
+                            onclick="handleColorTheme('Cyan_Theme')" for="cyan-theme-layout" data-bs-toggle="tooltip"
+                            data-bs-placement="top" data-bs-title="CYAN_THEME">
+                            <div class="color-box rounded-circle d-flex align-items-center justify-content-center skin-5">
+                                <i class="ti ti-check text-white d-flex icon fs-5"></i>
+                            </div>
+                        </label>
 
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+                        <input type="radio" class="btn-check" name="color-theme-layout" id="orange-theme-layout"
+                            autocomplete="off">
+                        <label class="btn p-9 btn-outline-primary d-flex align-items-center justify-content-center rounded"
+                            onclick="handleColorTheme('Orange_Theme')" for="orange-theme-layout" data-bs-toggle="tooltip"
+                            data-bs-placement="top" data-bs-title="ORANGE_THEME">
+                            <div class="color-box rounded-circle d-flex align-items-center justify-content-center skin-6">
+                                <i class="ti ti-check text-white d-flex icon fs-5"></i>
+                            </div>
+                        </label>
+                    </div>
+
+                    <h6 class="mt-5 fw-semibold fs-4 mb-2">Layout Type</h6>
+                    <div class="d-flex flex-row gap-3 customizer-box" role="group">
+                        <div>
+                            <input type="radio" class="btn-check" name="page-layout" id="vertical-layout"
+                                autocomplete="off">
+                            <label class="btn p-9 btn-outline-primary rounded" for="vertical-layout">
+                                <iconify-icon icon="solar:slider-vertical-minimalistic-linear"
+                                    class="icon fs-7 me-2"></iconify-icon>Vertical
+                            </label>
+                        </div>
+                        <div>
+                            <input type="radio" class="btn-check" name="page-layout" id="horizontal-layout"
+                                autocomplete="off">
+                            <label class="btn p-9 btn-outline-primary rounded" for="horizontal-layout">
+                                <iconify-icon icon="solar:slider-minimalistic-horizontal-outline"
+                                    class="icon fs-7 me-2"></iconify-icon>
+                                Horizontal
+                            </label>
+                        </div>
+                    </div>
+
+                    <h6 class="mt-5 fw-semibold fs-4 mb-2">Container Option</h6>
+
+                    <div class="d-flex flex-row gap-3 customizer-box" role="group">
+                        <input type="radio" class="btn-check" name="layout" id="boxed-layout" autocomplete="off">
+                        <label class="btn p-9 btn-outline-primary rounded" for="boxed-layout">
+                            <iconify-icon icon="solar:cardholder-linear" class="icon fs-7 me-2"></iconify-icon>
+                            Boxed
+                        </label>
+
+                        <input type="radio" class="btn-check" name="layout" id="full-layout" autocomplete="off">
+                        <label class="btn p-9 btn-outline-primary rounded" for="full-layout">
+                            <iconify-icon icon="solar:scanner-linear" class="icon fs-7 me-2"></iconify-icon> Full
+                        </label>
+                    </div>
+
+                    <h6 class="fw-semibold fs-4 mb-2 mt-5">Sidebar Type</h6>
+                    <div class="d-flex flex-row gap-3 customizer-box" role="group">
+                        <a href="javascript:void(0)" class="fullsidebar">
+                            <input type="radio" class="btn-check" name="sidebar-type" id="full-sidebar"
+                                autocomplete="off">
+                            <label class="btn p-9 btn-outline-primary rounded" for="full-sidebar"><iconify-icon
+                                    icon="solar:sidebar-minimalistic-outline" class="icon fs-7 me-2"></iconify-icon>
+                                Full</label>
+                        </a>
+                        <div>
+                            <input type="radio" class="btn-check " name="sidebar-type" id="mini-sidebar"
+                                autocomplete="off">
+                            <label class="btn p-9 btn-outline-primary rounded" for="mini-sidebar">
+                                <iconify-icon icon="solar:siderbar-outline" class="icon fs-7 me-2"></iconify-icon>Collapse
+                            </label>
+                        </div>
+                    </div>
+
+                    <h6 class="mt-5 fw-semibold fs-4 mb-2">Card With</h6>
+
+                    <div class="d-flex flex-row gap-3 customizer-box" role="group">
+                        <input type="radio" class="btn-check" name="card-layout" id="card-with-border"
+                            autocomplete="off">
+                        <label class="btn p-9 btn-outline-primary rounded" for="card-with-border"><iconify-icon
+                                icon="solar:library-broken" class="icon fs-7 me-2"></iconify-icon>Border</label>
+
+                        <input type="radio" class="btn-check" name="card-layout" id="card-without-border"
+                            autocomplete="off">
+                        <label class="btn p-9 btn-outline-primary rounded" for="card-without-border">
+                            <iconify-icon icon="solar:box-outline " class="icon fs-7 me-2"></iconify-icon>Shadow
+                        </label>
+                    </div>
+                </div>
+            </div>
+@endsection
