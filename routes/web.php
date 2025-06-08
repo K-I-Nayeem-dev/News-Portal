@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TestController;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Stevebauman\Location\Facades\Location;
 use Illuminate\Support\Facades\Route;
 
@@ -25,11 +27,19 @@ Route::get('/newsDashboard', function () {
     return view('layouts.newsDashboard.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// Profile Routes
+Route::controller(ProfileController::class)->prefix('profile')->middleware('auth')->group(function () {
+    Route::get('/', 'edit')->name('profile.edit');
+    Route::patch('/', 'update')->name('profile.update');
+    Route::delete('/', 'destroy')->name('profile.destroy');
 });
+
+// test
+// Route::get('/test',[TestController::class, 'test']);
+
+// Route::controller(TestController::class)->group(function(){
+//     Route::get('/test', 'test')->name('test');
+// });
 
 Route::fallback(function(){
     return view('layouts.newsDashboard.dashboardErrors');

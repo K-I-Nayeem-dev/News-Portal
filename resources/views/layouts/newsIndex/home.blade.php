@@ -1,7 +1,7 @@
 @extends('layouts.newsIndex.newsMaster')
 
 @section('content')
-     <div class="container">
+    <div class="container">
                     <div class="main--content">
                     <div class="post--items post--items-1 pd--30-0">
                         <div class="row gutter--15">
