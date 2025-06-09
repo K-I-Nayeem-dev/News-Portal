@@ -7,6 +7,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <style>
+        /* Chrome, Safari, Edge, Opera */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+        }
+
+        /* Firefox */
+        input[type=number] {
+        -moz-appearance: textfield;
+        }
+    </style>
+
     <link rel="stylesheet" href="https://unpkg.com/@icon/themify-icons/themify-icons.css">
 
     <!-- Favicon icon-->
@@ -125,7 +139,7 @@
                     <nav class="navbar navbar-expand-lg px-lg-0 px-3 py-0">
                         <div class="d-none d-lg-block">
                             <div class="brand-logo d-flex align-items-center justify-content-between">
-                                <a href="index.html" class="text-nowrap logo-img d-flex align-items-center gap-2">
+                                <a href="{{ route('dashboard') }}" class="text-nowrap logo-img d-flex align-items-center gap-2">
                                     <b class="logo-icon">
                                         <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                                         <!-- Dark Logo icon -->
@@ -1990,85 +2004,6 @@
                         <a href="javascript:void(0)" data-bs-dismiss="modal" class="lh-1">
                             <i class="ti ti-x fs-5 ms-3"></i>
                         </a>
-                    </div>
-                    <div class="modal-body message-body" data-simplebar="">
-                        <h5 class="mb-0 fs-5 p-1">Quick Page Links</h5>
-                        <ul class="list mb-0 py-2">
-                            <li class="p-1 mb-1 px-2 rounded bg-hover-light-black">
-                                <a href="javascript:void(0)">
-                                    <span class="h6 mb-1">Modern</span>
-                                    <span class="fs-2 text-muted d-block">/dashboards/dashboard1</span>
-                                </a>
-                            </li>
-                            <li class="p-1 mb-1 px-2 rounded bg-hover-light-black">
-                                <a href="javascript:void(0)">
-                                    <span class="h6 mb-1">Dashboard</span>
-                                    <span class="fs-2 text-muted d-block">/dashboards/dashboard2</span>
-                                </a>
-                            </li>
-                            <li class="p-1 mb-1 px-2 rounded bg-hover-light-black">
-                                <a href="javascript:void(0)">
-                                    <span class="h6 mb-1">Contacts</span>
-                                    <span class="fs-2 text-muted d-block">/apps/contacts</span>
-                                </a>
-                            </li>
-                            <li class="p-1 mb-1 px-2 rounded bg-hover-light-black">
-                                <a href="javascript:void(0)">
-                                    <span class="h6 mb-1">Posts</span>
-                                    <span class="fs-2 text-muted d-block">/apps/blog/posts</span>
-                                </a>
-                            </li>
-                            <li class="p-1 mb-1 px-2 rounded bg-hover-light-black">
-                                <a href="javascript:void(0)">
-                                    <span class="h6 mb-1">Detail</span>
-                                    <span
-                                        class="fs-2 text-muted d-block">/apps/blog/detail/streaming-video-way-before-it-was-cool-go-dark-tomorrow</span>
-                                </a>
-                            </li>
-                            <li class="p-1 mb-1 px-2 rounded bg-hover-light-black">
-                                <a href="javascript:void(0)">
-                                    <span class="h6 mb-1">Shop</span>
-                                    <span class="fs-2 text-muted d-block">/apps/ecommerce/shop</span>
-                                </a>
-                            </li>
-                            <li class="p-1 mb-1 px-2 rounded bg-hover-light-black">
-                                <a href="javascript:void(0)">
-                                    <span class="h6 mb-1">Modern</span>
-                                    <span class="fs-2 text-muted d-block">/dashboards/dashboard1</span>
-                                </a>
-                            </li>
-                            <li class="p-1 mb-1 px-2 rounded bg-hover-light-black">
-                                <a href="javascript:void(0)">
-                                    <span class="h6 mb-1">Dashboard</span>
-                                    <span class="fs-2 text-muted d-block">/dashboards/dashboard2</span>
-                                </a>
-                            </li>
-                            <li class="p-1 mb-1 px-2 rounded bg-hover-light-black">
-                                <a href="javascript:void(0)">
-                                    <span class="h6 mb-1">Contacts</span>
-                                    <span class="fs-2 text-muted d-block">/apps/contacts</span>
-                                </a>
-                            </li>
-                            <li class="p-1 mb-1 px-2 rounded bg-hover-light-black">
-                                <a href="javascript:void(0)">
-                                    <span class="h6 mb-1">Posts</span>
-                                    <span class="fs-2 text-muted d-block">/apps/blog/posts</span>
-                                </a>
-                            </li>
-                            <li class="p-1 mb-1 px-2 rounded bg-hover-light-black">
-                                <a href="javascript:void(0)">
-                                    <span class="h6 mb-1">Detail</span>
-                                    <span
-                                        class="fs-2 text-muted d-block">/apps/blog/detail/streaming-video-way-before-it-was-cool-go-dark-tomorrow</span>
-                                </a>
-                            </li>
-                            <li class="p-1 mb-1 px-2 rounded bg-hover-light-black">
-                                <a href="javascript:void(0)">
-                                    <span class="h6 mb-1">Shop</span>
-                                    <span class="fs-2 text-muted d-block">/apps/ecommerce/shop</span>
-                                </a>
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>

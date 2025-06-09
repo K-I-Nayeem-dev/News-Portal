@@ -32,6 +32,8 @@ Route::controller(ProfileController::class)->prefix('edit/profile')->middleware(
     Route::get('/', 'edit')->name('profile.edit');
     Route::patch('/', 'update')->name('profile.update');
     Route::delete('/', 'destroy')->name('profile.destroy');
+    Route::post('/phoneNumberAdd', 'phone_add')->name('phone.add');
+    Route::post('/sendOTP', 'send_otp')->name('otp.send');
 });
 
 // user Profile Show Route

@@ -73,104 +73,126 @@
                                             <p class="card-subtitle mb-4">To change your password please confirm here</p>
                                             <form>
                                                 <div class="mb-3">
-                                                    <label for="exampleInputPassword1" class="form-label">Current
-                                                        Password</label>
-                                                    <input type="password" class="form-control" id="exampleInputPassword1"
-                                                        value="12345678910">
+                                                    <label for="exampleInputPassword1" class="form-label">Current Password</label>
+                                                    <input type="password" class="form-control" id="exampleInputPassword1">
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="exampleInputPassword2" class="form-label">New
-                                                        Password</label>
-                                                    <input type="password" class="form-control" id="exampleInputPassword2"
-                                                        value="12345678910">
+                                                    <label for="exampleInputPassword2" class="form-label">New Password</label>
+                                                    <input type="password" class="form-control" id="exampleInputPassword2">
                                                 </div>
                                                 <div>
-                                                    <label for="exampleInputPassword3" class="form-label">Confirm
-                                                        Password</label>
-                                                    <input type="password" class="form-control" id="exampleInputPassword3"
-                                                        value="12345678910">
+                                                    <label for="exampleInputPassword3" class="form-label">Confirm Password</label>
+                                                    <input type="password" class="form-control" id="exampleInputPassword3">
                                                 </div>
+
+                                                <button type="submit" class="btn btn-primary mt-4">Change Password</button>
+
                                             </form>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-12">
+                                <div class="col-6">
                                     <div class="card w-100 border position-relative overflow-hidden mb-0">
                                         <div class="card-body p-4">
                                             <h4 class="card-title">Personal Details</h4>
-                                            <p class="card-subtitle mb-4">To change your personal detail , edit and save
-                                                from here</p>
-                                            <form>
-                                                <div class="row">
-                                                    <div class="col-lg-6">
+                                            <p class="card-subtitle mb-4">To change your personal detail , edit and save from here</p>
+                                            <div class="row">
+                                                <div class="col-lg-12">
+                                                    <form action="">
                                                         <div class="mb-3">
-                                                            <label for="exampleInputtext" class="form-label">Your
-                                                                Name</label>
-                                                            <input type="text" class="form-control"
-                                                                id="exampleInputtext" placeholder="Mathew Anderson">
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Location</label>
-                                                            <select class="form-select"
-                                                                aria-label="Default select example">
-                                                                <option selected>United Kingdom</option>
-                                                                <option value="1">United States</option>
-                                                                <option value="2">United Kingdom</option>
-                                                                <option value="3">India</option>
-                                                                <option value="3">Russia</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label for="exampleInputtext1"
-                                                                class="form-label">Email</label>
-                                                            <input type="email" class="form-control"
-                                                                id="exampleInputtext1" placeholder="info@modernize.com">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-6">
-                                                        <div class="mb-3">
-                                                            <label for="exampleInputtext2" class="form-label">Store
-                                                                Name</label>
-                                                            <input type="text" class="form-control"
-                                                                id="exampleInputtext2" placeholder="Maxima Studio">
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label class="form-label">Currency</label>
-                                                            <select class="form-select"
-                                                                aria-label="Default select example">
-                                                                <option selected>India (INR)</option>
-                                                                <option value="1">US Dollar ($)</option>
-                                                                <option value="2">United Kingdom (Pound)</option>
-                                                                <option value="3">India (INR)</option>
-                                                                <option value="3">Russia (Ruble)</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <label for="exampleInputtext3"
-                                                                class="form-label">Phone</label>
-                                                            <input type="text" class="form-control"
-                                                                id="exampleInputtext3" placeholder="+91 12345 65478">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div>
-                                                            <label for="exampleInputtext4"
-                                                                class="form-label">Address</label>
-                                                            <input type="text" class="form-control"
-                                                                id="exampleInputtext4"
-                                                                placeholder="814 Howard Street, 120065, India">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-12">
-                                                        <div
-                                                            class="d-flex align-items-center justify-content-end mt-4 gap-6">
+                                                                <label for="exampleInputtext" class="form-label">Your Name</label>
+                                                                <input type="text" class="form-control" id="exampleInputtext" placeholder="Mathew Anderson">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="exampleInputtext1" class="form-label">Email</label>
+                                                                <input type="email" class="form-control" id="exampleInputtext1" placeholder="info@modernize.com">
+                                                            </div>
+
                                                             <button class="btn btn-primary">Save</button>
-                                                            <button
-                                                                class="btn bg-danger-subtle text-danger">Cancel</button>
-                                                        </div>
-                                                    </div>
+                                                            <button class="btn bg-danger-subtle text-danger ms-2">Cancel</button>
+
+                                                    </form>
                                                 </div>
-                                            </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="card w-100 border position-relative overflow-hidden mb-0">
+                                        <div class="card-body p-4">
+                                            <h4 class="card-title">Phone</h4>
+                                            @if (!Auth::user()->phone_number)
+                                                <p class="card-subtitle mb-4">Status : <span class="badge bg-danger text-sm text-white">No Number Added</span> </p>
+                                            @elseif(Auth::user()->phone_number && Auth::user()->phone_verify  == 0)
+                                                <p class="card-subtitle mb-4">Status : <span class="badge bg-danger text-sm text-white">Not Verify</span> </p>
+                                            @else
+                                                <p class="card-subtitle mb-4">Status : <span class="badge bg-success text-sm text-white">Verify</span> </p>
+                                            @endif
+                                            <div class="row">
+                                                <div class="col-12">
+
+                                                    @if (!Auth::user()->phone_number)
+                                                        <form method="POST" action="{{ route('phone.add') }}">
+
+                                                            @csrf
+
+                                                            <div class="mb-3">
+
+                                                                <label for="phone_number" class="form-label">Phone number</label>
+                                                                <input id="phone_number" type="number" class="form-control no-spinners" name="phone_number">
+
+                                                                @if (session('phone_add'))
+                                                                    <div class=" alert alert-success mt-3 ">{{ session('phone_add') }}</div>
+                                                                @endif
+
+                                                                @error('phone_number')
+                                                                    <p class="text-danger mt-2">{{ $message }}</p>
+                                                                @enderror
+
+                                                            </div>
+
+                                                            <div>
+                                                                <button class="btn btn-primary">Add Number</button>
+                                                                {{-- <button class="btn bg-danger-subtle text-danger ms-2">Cancel</button> --}}
+                                                            </div>
+
+                                                        </form>
+                                                    @elseif(Auth::user()->phone_number && Auth::user()->phone_verify  == 0)
+
+                                                        <form method="POST" action="{{ route('otp.send') }}">
+
+                                                            @csrf
+
+                                                            <div class="mb-3">
+
+                                                                <label for="phone_number" class="form-label">Verify Phone Number</label>
+                                                                <input id="phone_number" type="number" class="form-control no-spinners" value="{{ Auth::user()->phone_number }}">
+
+                                                            </div>
+
+                                                            <div>
+                                                                <button class="btn btn-primary">Send OTP</button>
+                                                                {{-- <button class="btn bg-danger-subtle text-danger ms-2">Cancel</button> --}}
+                                                            </div>
+
+                                                        </form>
+
+                                                    @else
+
+                                                        <div class="mb-3">
+                                                            <p>Number : {{ Auth::user()->phone_number }}</p>
+                                                        </div>
+
+                                                        <div>
+                                                            <button class="btn btn-primary">Update Phone Number</button>
+                                                            {{-- <button class="btn bg-danger-subtle text-danger ms-2">Cancel</button> --}}
+                                                        </div>
+
+                                                    @endif
+
+
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
