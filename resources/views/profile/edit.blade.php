@@ -141,9 +141,6 @@
                                                                 <label for="phone_number" class="form-label">Phone number</label>
                                                                 <input id="phone_number" type="number" class="form-control no-spinners" name="phone_number">
 
-                                                                @if (session('phone_add'))
-                                                                    <div class=" alert alert-success mt-3 ">{{ session('phone_add') }}</div>
-                                                                @endif
 
                                                                 @error('phone_number')
                                                                     <p class="text-danger mt-2">{{ $message }}</p>
@@ -156,37 +153,88 @@
                                                                 {{-- <button class="btn bg-danger-subtle text-danger ms-2">Cancel</button> --}}
                                                             </div>
 
+                                                            @if (session('phone_add'))
+                                                                <div class=" alert alert-success mt-3 ">{{ session('phone_add') }}</div>
+                                                            @endif
+
                                                         </form>
+
                                                     @elseif(Auth::user()->phone_number && Auth::user()->phone_verify  == 0)
 
-                                                        <form method="POST" action="{{ route('otp.send') }}">
+                                                        @if (Auth::user()->otp_send == 0)
 
-                                                            @csrf
+                                                            <form method="POST" action="{{ route('otp.send') }}">
 
-                                                            <div class="mb-3">
+                                                                @csrf
 
-                                                                <label for="phone_number" class="form-label">Verify Phone Number</label>
-                                                                <input id="phone_number" type="number" class="form-control no-spinners" value="{{ Auth::user()->phone_number }}">
+                                                                <div class="mb-3">
 
-                                                            </div>
+                                                                    {{-- <label for="phone_number" class="form-label">Verify Phone Number</label> --}}
+                                                                    {{-- <input id="phone_number" type="number" class="form-control no-spinners" value="0"> --}}
 
-                                                            <div>
-                                                                <button class="btn btn-primary">Send OTP</button>
-                                                                {{-- <button class="btn bg-danger-subtle text-danger ms-2">Cancel</button> --}}
-                                                            </div>
+                                                                    <p>Your Phone Number : {{ Auth::user()->phone_number }}</p>
 
-                                                        </form>
+                                                                </div>
+
+                                                                <div>
+                                                                    <button class="btn btn-primary">Want's To Verify</button>
+                                                                    {{-- <button class="btn bg-danger-subtle text-danger ms-2">Cancel</button> --}}
+                                                                </div>
+
+                                                                @if (session('otp_send'))
+                                                                    <div class=" alert alert-success mt-3 ">{{ session('otp_send') }}</div>
+                                                                @endif
+                                                            </form>
+
+                                                        @else
+
+                                                            <form method="POST" action="{{ route('verify.number') }}">
+
+                                                                @csrf
+
+                                                                <div class="mb-3">
+
+                                                                    <label for="otp" class="form-label">Enter OTP</label>
+                                                                    <input id="otp" type="number" class="form-control" name="otp">
+
+                                                                        @if (session('wrong_otp'))
+                                                                            <div class=" alert alert-danger mt-3 ">{{ session('wrong_otp') }}</div>
+                                                                        @endif
+
+
+                                                                    <div class="mt-3">
+                                                                        <button class="btn btn-primary">Verify Number</button>
+                                                                        {{-- <button class="btn bg-danger-subtle text-danger ms-2">Cancel</button> --}}
+                                                                    </div>
+
+                                                                        @error('otp')
+                                                                            <p class="text-danger mt-2">{{ $message }}</p>
+                                                                        @enderror
+
+                                                                </div>
+
+                                                            </form>
+
+                                                        @endif
 
                                                     @else
 
-                                                        <div class="mb-3">
-                                                            <p>Number : {{ Auth::user()->phone_number }}</p>
-                                                        </div>
+                                                        <form method="POST" action="">
 
-                                                        <div>
-                                                            <button class="btn btn-primary">Update Phone Number</button>
-                                                            {{-- <button class="btn bg-danger-subtle text-danger ms-2">Cancel</button> --}}
-                                                        </div>
+                                                            <div class="mb-3">
+                                                                <p>Number : {{ Auth::user()->phone_number }}</p>
+                                                            </div>
+
+                                                            <div>
+                                                                <button class="btn btn-primary">Update Phone Number</button>
+                                                                {{-- <button class="btn bg-danger-subtle text-danger ms-2">Cancel</button> --}}
+                                                            </div>
+
+                                                            @if (session('verify_number'))
+                                                                <div class=" alert alert-success mt-3 ">{{ session('verify_number') }}</div>
+                                                            @endif
+
+                                                        </form>
 
                                                     @endif
 
