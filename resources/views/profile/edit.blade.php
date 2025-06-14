@@ -33,15 +33,6 @@
                             <span class="d-none d-md-block">Account</span>
                         </button>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <button
-                            class="nav-link position-relative rounded-0 d-flex align-items-center justify-content-center bg-transparent fs-3 py-3"
-                            id="pills-security-tab" data-bs-toggle="pill" data-bs-target="#pills-security" type="button"
-                            role="tab" aria-controls="pills-security" aria-selected="false">
-                            <i class="ti ti-lock me-2 fs-6"></i>
-                            <span class="d-none d-md-block">Security</span>
-                        </button>
-                    </li>
                 </ul>
                 <div class="card-body">
                     <div class="tab-content" id="pills-tabContent">
@@ -54,14 +45,63 @@
                                             <h4 class="card-title">Change Profile</h4>
                                             <p class="card-subtitle mb-4">Change your profile picture from here</p>
                                             <div class="text-center">
-                                                <img src="{{ asset('dashboard_assets') }}/images/profile/user-1.jpg"
-                                                    alt="materialpro-img" class="img-fluid rounded-circle" width="120"
-                                                    height="120">
+                                                @if (!Auth::user()->profile_picture)
+                                                    <img src="{{ asset('dashboard_assets') }}/images/profile/user-1.jpg"
+                                                        alt="materialpro-img" class="img-fluid rounded-circle"
+                                                        width="120" height="120">
+                                                @else
+                                                    <img style="border-radius: 50%"
+                                                        src="{{ asset('uploads/profile_pictures/' . Auth::user()->profile_picture) }}"
+                                                        alt="{{ Auth::user()->name }}">
+                                                @endif
                                                 <div class="d-flex align-items-center justify-content-center my-4 gap-6">
-                                                    <button class="btn btn-primary">Upload</button>
-                                                    <button class="btn bg-danger-subtle text-danger">Reset</button>
+                                                    <!-- Button trigger modal -->
+                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModal"> Upload Photo </button>
+
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="exampleModal" tabindex="-1"
+                                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                                        Profile Picture Update</h1>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+
+                                                                {{-- For Profile Picture Upload --}}
+                                                                <form method="POST" action="{{ route('photo.upload') }}"
+                                                                    enctype="multipart/form-data">
+                                                                    @csrf
+                                                                    <div class="modal-body">
+
+                                                                        <input class="form-control" type="file"
+                                                                            name="photo" autocomplete="off">
+
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Close</button>
+                                                                        <button type="submit" class="btn btn-primary">Save
+                                                                            changes</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {{-- <button class="btn bg-danger-subtle text-danger">Reset</button> --}}
                                                 </div>
                                                 <p class="mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                                                @if (session('photo_upload'))
+                                                    <div class=" alert alert-success mt-3 ">{{ session('photo_upload') }}
+                                                    </div>
+                                                @endif
+
+                                                @error('photo')
+                                                    <p class="text-danger mt-2">{{ $message }}</p>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
@@ -71,23 +111,61 @@
                                         <div class="card-body p-4">
                                             <h4 class="card-title">Change Password</h4>
                                             <p class="card-subtitle mb-4">To change your password please confirm here</p>
-                                            <form>
+
+                                            <form method="POST" action="{{ route('password.update') }}">
+
+                                                @csrf
+                                                @method('put')
+
                                                 <div class="mb-3">
-                                                    <label for="exampleInputPassword1" class="form-label">Current Password</label>
-                                                    <input type="password" class="form-control" id="exampleInputPassword1">
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="exampleInputPassword2" class="form-label">New Password</label>
-                                                    <input type="password" class="form-control" id="exampleInputPassword2">
-                                                </div>
-                                                <div>
-                                                    <label for="exampleInputPassword3" class="form-label">Confirm Password</label>
-                                                    <input type="password" class="form-control" id="exampleInputPassword3">
+                                                    <label for="current_password" class="form-label">Current
+                                                        Password</label>
+                                                    <input class="form-control" id="update_password_current_password"
+                                                        name="current_password" type="password" class="mt-1 block w-full"
+                                                        autocomplete="current-password">
+
+                                                    @error('current_password')
+                                                        <p class="text-danger mt-2">{{ $message }}</p>
+                                                    @enderror
+
                                                 </div>
 
-                                                <button type="submit" class="btn btn-primary mt-4">Change Password</button>
+                                                <div class="mb-3">
+                                                    <label for="exampleInputPassword2" class="form-label">New
+                                                        Password</label>
+                                                    <input class="form-control" id="update_password_password"
+                                                        name="password" type="password" class="mt-1 block w-full"
+                                                        autocomplete="new-password">
+
+                                                    @error('password')
+                                                        <p class="text-danger mt-2">{{ $message }}</p>
+                                                    @enderror
+
+                                                </div>
+
+                                                <div>
+                                                    <label for="exampleInputPassword3" class="form-label">Confirm
+                                                        Password</label>
+                                                    <input class="form-control" id="update_password_password_confirmation"
+                                                        name="password_confirmation" type="password"
+                                                        class="mt-1 block w-full" autocomplete="new-password">
+
+                                                    @error('password_confirmation')
+                                                        <p class="text-danger mt-2">{{ $message }}</p>
+                                                    @enderror
+
+                                                </div>
+
+                                                <button type="submit" class="btn btn-primary mt-4">Change
+                                                    Password</button>
+
+
+                                                @if (session('statuss'))
+                                                    <div class=" alert alert-success mt-3 ">{{ session('statuss') }}</div>
+                                                @endif
 
                                             </form>
+
                                         </div>
                                     </div>
                                 </div>
@@ -95,21 +173,54 @@
                                     <div class="card w-100 border position-relative overflow-hidden mb-0">
                                         <div class="card-body p-4">
                                             <h4 class="card-title">Personal Details</h4>
-                                            <p class="card-subtitle mb-4">To change your personal detail , edit and save from here</p>
+                                            <p class="card-subtitle mb-4">To change your personal detail , edit and save
+                                                from here</p>
                                             <div class="row">
                                                 <div class="col-lg-12">
-                                                    <form action="">
-                                                        <div class="mb-3">
-                                                                <label for="exampleInputtext" class="form-label">Your Name</label>
-                                                                <input type="text" class="form-control" id="exampleInputtext" placeholder="Mathew Anderson">
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label for="exampleInputtext1" class="form-label">Email</label>
-                                                                <input type="email" class="form-control" id="exampleInputtext1" placeholder="info@modernize.com">
-                                                            </div>
+                                                    <form method="POST" action="{{ route('profile.update') }}">
+                                                        @csrf
+                                                        @method('patch')
 
-                                                            <button class="btn btn-primary">Save</button>
-                                                            <button class="btn bg-danger-subtle text-danger ms-2">Cancel</button>
+                                                        <div class="mb-3">
+                                                            <label for="name" class="form-label">Your Name</label>
+                                                            <input class="form-control" id="name" name="name"
+                                                                type="text" class="mt-1 block w-full"
+                                                                value="{{ old('name', $user->name) }}" required
+                                                                autocomplete="name">
+                                                            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+                                                        </div>
+                                                        <div>
+                                                            <x-input-label for="email" :value="__('Email')" />
+                                                            <input class="form-control" id="email" name="email"
+                                                                type="email" class="mt-1 block w-full"
+                                                                value="{{ old('email', $user->email) }}" required
+                                                                autocomplete="username" />
+                                                            <x-input-error class="mt-2" :messages="$errors->get('email')" />
+
+                                                            @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !$user->hasVerifiedEmail())
+                                                                <div>
+                                                                    <p
+                                                                        class="text-sm mt-2 text-gray-800 dark:text-gray-200">
+                                                                        {{ __('Your email address is unverified.') }}
+
+                                                                        <button form="send-verification"
+                                                                            class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
+                                                                            {{ __('Click here to re-send the verification email.') }}
+                                                                        </button>
+                                                                    </p>
+
+                                                                    @if (session('status') === 'verification-link-sent')
+                                                                        <p
+                                                                            class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
+                                                                            {{ __('A new verification link has been sent to your email address.') }}
+                                                                        </p>
+                                                                    @endif
+                                                                </div>
+                                                            @endif
+                                                        </div>
+
+                                                        <button class="btn btn-primary mt-3">Save</button>
+                                                        {{-- <button class="btn bg-danger-subtle text-danger ms-2">Cancel</button> --}}
 
                                                     </form>
                                                 </div>
@@ -122,11 +233,15 @@
                                         <div class="card-body p-4">
                                             <h4 class="card-title">Phone</h4>
                                             @if (!Auth::user()->phone_number)
-                                                <p class="card-subtitle mb-4">Status : <span class="badge bg-danger text-sm text-white">No Number Added</span> </p>
-                                            @elseif(Auth::user()->phone_number && Auth::user()->phone_verify  == 0)
-                                                <p class="card-subtitle mb-4">Status : <span class="badge bg-danger text-sm text-white">Not Verify</span> </p>
+                                                <p class="card-subtitle mb-4">Status : <span
+                                                        class="badge bg-danger text-sm text-white">No Number Added</span>
+                                                </p>
+                                            @elseif(Auth::user()->phone_number && Auth::user()->phone_verify == 0)
+                                                <p class="card-subtitle mb-4">Status : <span
+                                                        class="badge bg-danger text-sm text-white">Not Verify</span> </p>
                                             @else
-                                                <p class="card-subtitle mb-4">Status : <span class="badge bg-success text-sm text-white">Verify</span> </p>
+                                                <p class="card-subtitle mb-4">Status : <span
+                                                        class="badge bg-success text-sm text-white">Verify</span> </p>
                                             @endif
                                             <div class="row">
                                                 <div class="col-12">
@@ -138,8 +253,10 @@
 
                                                             <div class="mb-3">
 
-                                                                <label for="phone_number" class="form-label">Phone number</label>
-                                                                <input id="phone_number" type="number" class="form-control no-spinners" name="phone_number">
+                                                                <label for="phone_number" class="form-label">Phone
+                                                                    number</label>
+                                                                <input id="phone_number" type="number"
+                                                                    class="form-control no-spinners" name="phone_number">
 
 
                                                                 @error('phone_number')
@@ -154,15 +271,13 @@
                                                             </div>
 
                                                             @if (session('phone_add'))
-                                                                <div class=" alert alert-success mt-3 ">{{ session('phone_add') }}</div>
+                                                                <div class=" alert alert-success mt-3 ">
+                                                                    {{ session('phone_add') }}</div>
                                                             @endif
 
                                                         </form>
-
-                                                    @elseif(Auth::user()->phone_number && Auth::user()->phone_verify  == 0)
-
+                                                    @elseif(Auth::user()->phone_number && Auth::user()->phone_verify == 0)
                                                         @if (Auth::user()->otp_send == 0)
-
                                                             <form method="POST" action="{{ route('otp.send') }}">
 
                                                                 @csrf
@@ -172,66 +287,85 @@
                                                                     {{-- <label for="phone_number" class="form-label">Verify Phone Number</label> --}}
                                                                     {{-- <input id="phone_number" type="number" class="form-control no-spinners" value="0"> --}}
 
-                                                                    <p>Your Phone Number : {{ Auth::user()->phone_number }}</p>
+                                                                    <p>Your Phone Number : {{ Auth::user()->phone_number }}
+                                                                    </p>
 
                                                                 </div>
 
                                                                 <div>
-                                                                    <button class="btn btn-primary">Want's To Verify</button>
+                                                                    <button class="btn btn-primary">Want's To
+                                                                        Verify</button>
                                                                     {{-- <button class="btn bg-danger-subtle text-danger ms-2">Cancel</button> --}}
                                                                 </div>
 
                                                                 @if (session('otp_send'))
-                                                                    <div class=" alert alert-success mt-3 ">{{ session('otp_send') }}</div>
+                                                                    <div class=" alert alert-success mt-3 ">
+                                                                        {{ session('otp_send') }}</div>
                                                                 @endif
                                                             </form>
-
                                                         @else
-
                                                             <form method="POST" action="{{ route('verify.number') }}">
 
                                                                 @csrf
 
                                                                 <div class="mb-3">
 
-                                                                    <label for="otp" class="form-label">Enter OTP</label>
-                                                                    <input id="otp" type="number" class="form-control" name="otp">
+                                                                    <label for="otp" class="form-label">Enter
+                                                                        OTP</label>
+                                                                    <input id="otp" type="number"
+                                                                        class="form-control" name="otp">
 
-                                                                        @if (session('wrong_otp'))
-                                                                            <div class=" alert alert-danger mt-3 ">{{ session('wrong_otp') }}</div>
-                                                                        @endif
+                                                                    @if (session('wrong_otp'))
+                                                                        <div class=" alert alert-danger mt-3 ">
+                                                                            {{ session('wrong_otp') }}</div>
+                                                                    @endif
 
 
                                                                     <div class="mt-3">
-                                                                        <button class="btn btn-primary">Verify Number</button>
+                                                                        <button class="btn btn-primary">Verify
+                                                                            Number</button>
                                                                         {{-- <button class="btn bg-danger-subtle text-danger ms-2">Cancel</button> --}}
                                                                     </div>
 
-                                                                        @error('otp')
-                                                                            <p class="text-danger mt-2">{{ $message }}</p>
-                                                                        @enderror
+                                                                    @error('otp')
+                                                                        <p class="text-danger mt-2">{{ $message }}</p>
+                                                                    @enderror
 
                                                                 </div>
 
                                                             </form>
-
                                                         @endif
-
                                                     @else
+                                                        <form method="POST" action="{{ route('update.number') }}">
 
-                                                        <form method="POST" action="">
+                                                            @csrf
 
                                                             <div class="mb-3">
                                                                 <p>Number : {{ Auth::user()->phone_number }}</p>
                                                             </div>
 
-                                                            <div>
-                                                                <button class="btn btn-primary">Update Phone Number</button>
-                                                                {{-- <button class="btn bg-danger-subtle text-danger ms-2">Cancel</button> --}}
-                                                            </div>
+                                                            @if (Auth::user()->phone_update == 0)
+                                                                <div>
+                                                                    <button class="btn btn-primary">Update Phone
+                                                                        Number</button>
+                                                                    {{-- <button class="btn bg-danger-subtle text-danger ms-2">Cancel</button> --}}
+                                                                </div>
+                                                            @else
+                                                                <div>
+                                                                    <button class="btn btn-primary disabled">Update
+                                                                        Request Pending</button>
+                                                                    {{-- <button class="btn bg-danger-subtle text-danger ms-2">Cancel</button> --}}
+                                                                </div>
+                                                            @endif
 
                                                             @if (session('verify_number'))
-                                                                <div class=" alert alert-success mt-3 ">{{ session('verify_number') }}</div>
+                                                                <div class=" alert alert-success mt-3 ">
+                                                                    {{ session('verify_number') }}</div>
+                                                            @endif
+
+                                                            @if (session('update_request'))
+                                                                <div class=" alert alert-success mt-3 ">
+                                                                    {{ session('update_request') }}</div>
                                                             @endif
 
                                                         </form>
@@ -246,100 +380,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade" id="pills-security" role="tabpanel"
-                            aria-labelledby="pills-security-tab" tabindex="0">
-                            <div class="row">
-                                <div class="col-lg-8">
-                                    <div class="card border shadow-none">
-                                        <div class="card-body p-4">
-                                            <h4 class="card-title mb-3">Two-factor Authentication</h4>
-                                            <div class="d-flex align-items-center justify-content-between pb-7">
-                                                <p class="card-subtitle mb-0">Lorem ipsum, dolor sit amet consectetur
-                                                    adipisicing elit. Corporis sapiente
-                                                    sunt earum officiis laboriosam ut.</p>
-                                                <button class="btn btn-primary">Enable</button>
-                                            </div>
-                                            <div class="d-flex align-items-center justify-content-between py-3 border-top">
-                                                <div>
-                                                    <h5 class="fs-4 fw-semibold mb-0">Authentication App</h5>
-                                                    <p class="mb-0">Google auth app</p>
-                                                </div>
-                                                <button class="btn bg-primary-subtle text-primary">Setup</button>
-                                            </div>
-                                            <div class="d-flex align-items-center justify-content-between py-3 border-top">
-                                                <div>
-                                                    <h5 class="fs-4 fw-semibold mb-0">Another e-mail</h5>
-                                                    <p class="mb-0">E-mail to send verification link</p>
-                                                </div>
-                                                <button class="btn bg-primary-subtle text-primary">Setup</button>
-                                            </div>
-                                            <div class="d-flex align-items-center justify-content-between py-3 border-top">
-                                                <div>
-                                                    <h5 class="fs-4 fw-semibold mb-0">SMS Recovery</h5>
-                                                    <p class="mb-0">Your phone number or something</p>
-                                                </div>
-                                                <button class="btn bg-primary-subtle text-primary">Setup</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="card">
-                                        <div class="card-body p-4">
-                                            <div
-                                                class="text-bg-light rounded-1 p-6 d-inline-flex align-items-center justify-content-center mb-3">
-                                                <i class="ti ti-device-laptop text-primary d-block fs-7" width="22"
-                                                    height="22"></i>
-                                            </div>
-                                            <h4 class="card-title mb-0">Devices</h4>
-                                            <p class="mb-3">Lorem ipsum dolor sit amet consectetur adipisicing elit Rem.
-                                            </p>
-                                            <button class="btn btn-primary mb-4">Sign out from all devices</button>
-                                            <div
-                                                class="d-flex align-items-center justify-content-between py-3 border-bottom">
-                                                <div class="d-flex align-items-center gap-3">
-                                                    <i class="ti ti-device-mobile text-dark d-block fs-7" width="26"
-                                                        height="26"></i>
-                                                    <div>
-                                                        <h5 class="fs-4 fw-semibold mb-0">iPhone 14</h5>
-                                                        <p class="mb-0">London UK, Oct 23 at 1:15 AM</p>
-                                                    </div>
-                                                </div>
-                                                <a class="text-dark fs-6 d-flex align-items-center justify-content-center bg-transparent p-2 fs-4 rounded-circle"
-                                                    href="javascript:void(0)">
-                                                    <i class="ti ti-dots-vertical"></i>
-                                                </a>
-                                            </div>
-                                            <div class="d-flex align-items-center justify-content-between py-3">
-                                                <div class="d-flex align-items-center gap-3">
-                                                    <i class="ti ti-device-laptop text-dark d-block fs-7" width="26"
-                                                        height="26"></i>
-                                                    <div>
-                                                        <h5 class="fs-4 fw-semibold mb-0">Macbook Air</h5>
-                                                        <p class="mb-0">Gujarat India, Oct 24 at 3:15 AM</p>
-                                                    </div>
-                                                </div>
-                                                <a class="text-dark fs-6 d-flex align-items-center justify-content-center bg-transparent p-2 fs-4 rounded-circle"
-                                                    href="javascript:void(0)">
-                                                    <i class="ti ti-dots-vertical"></i>
-                                                </a>
-                                            </div>
-                                            <button class="btn bg-primary-subtle text-primary w-100 py-1">Need Help
-                                                ?</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="d-flex align-items-center justify-content-end gap-6">
-                                        <button class="btn btn-primary">Save</button>
-                                        <button class="btn bg-danger-subtle text-danger">Cancel</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
+
             </div>
+
         </div>
     </div>
     <script>
@@ -615,9 +660,13 @@
                 </div>
             </div>
         </div>
-    </div>
 
 
     </div>
+
+    </div>
+
     <div class="dark-transparent sidebartoggler"></div>
+
+
 @endsection

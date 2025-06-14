@@ -57,8 +57,15 @@
                                     <div class="d-flex align-items-center justify-content-center round-110">
                                         <div
                                             class="border border-4 border-white d-flex align-items-center justify-content-center rounded-circle overflow-hidden round-100">
-                                            <img src="{{ asset('dashboard_assets') }}/images/profile/user-1.jpg"
-                                                alt="materialpro-img" class="w-100 h-100">
+                                            @if (!Auth::user()->profile_picture)
+                                                <img src="{{ asset('dashboard_assets') }}/images/profile/user-1.jpg"
+                                                    alt="materialpro-img" class="img-fluid rounded-circle" width="120"
+                                                    height="120">
+                                            @else
+                                                <img style="border-radius: 50%" width="120" height="120"
+                                                    src="{{ asset('uploads/profile_pictures/' . Auth::user()->profile_picture) }}"
+                                                    alt="{{ Auth::user()->name }}">
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

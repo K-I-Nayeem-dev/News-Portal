@@ -11,11 +11,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Imagick\Driver;
+use Illuminate\Support\Str;
 
 class ProfileController extends Controller
 {
 
-    public function index(){
+    public function index()
+    {
         return view('layouts.newsDashboard.profile.index');
     }
 
@@ -25,7 +29,10 @@ class ProfileController extends Controller
     public function edit(Request $request): View
     {
 
-        $otp_send = DB::table('verifications')->where('user_id' , Auth::id())->first();
+        // dd($request->user());
+
+
+        $otp_send = DB::table('verifications')->where('user_id', Auth::id())->first();
 
         return view('profile.edit', [
             'user' => $request->user(),
@@ -70,7 +77,8 @@ class ProfileController extends Controller
         return Redirect::to('/');
     }
 
-    public function phone_add(Request $request){
+    public function phone_add(Request $request)
+    {
 
         $request->validate([
             'phone_number' => 'required|min:11',
@@ -86,7 +94,8 @@ class ProfileController extends Controller
         return back()->with('phone_add', 'Phone Number Successfully Added');
     }
 
-    public function send_otp(){
+    public function send_otp()
+    {
 
         //Random OTP Number Send TO User to Verify Phone Number
         $otp = rand(100000, 999999);
@@ -116,7 +125,8 @@ class ProfileController extends Controller
 
 
     // Verify Phone Number
-    public function verify_number(Request $request){
+    public function verify_number(Request $request)
+    {
 
         $request->validate([
             'otp' => 'required|max:6',
@@ -139,14 +149,57 @@ class ProfileController extends Controller
 
 
             return back()->with('verify_number', 'Phone Number Verify Successfully');
-
-        } else{
+        } else {
 
             return back()->with('wrong_otp', 'Entered Wrong OTP');
+        }
+    }
+
+    public function update_number()
+    {
+
+        DB::table('users')->where('id', Auth::id())->update([
+            'phone_update' => 1
+        ]);
+
+        return back()->with('update_request', 'Phone Number Update Request Send to Admin');
+    }
+
+    public function photo_upload(Request $request)
+    {
+
+        $request->validate([
+            'photo' => 'required|file|image|mimes:jpeg,png,jpg,gif|max:800',
+        ]);
+
+        if (Auth::user()->profile_picture == null) {
+
+            $Image = new ImageManager(new Driver());
+            $new_name = Str::random(5) . time() . '.' . $request->photo->getClientOriginalExtension();
+            $image = $Image->read($request->photo)->resize(120, 120);
+            $image->save('uploads/profile_pictures/' . $new_name, quality: 30);
+
+        } else {
+
+            $imagePath = DB::table('users')->select('profile_picture')->where('id', Auth::id())->first();
+            $filePath = public_path('uploads/profile_pictures/') . $imagePath->profile_picture;
+
+            if (file_exists($filePath)) {
+
+                unlink($filePath);
+                $Image = new ImageManager(new Driver());
+                $new_name = Str::random(5) . time() . '.' . $request->photo->getClientOriginalExtension();
+                $image = $Image->read($request->photo)->resize(120, 120);
+                $image->save('uploads/profile_pictures/' . $new_name, quality: 30);
+
+                DB::table('users')->where('id', Auth::id())->update([
+                    'profile_picture' => $new_name,
+                ]);
+
+            }
 
         }
 
-
+        return back()->with('photo_upload', 'Profile Picture Change');
     }
-
 }

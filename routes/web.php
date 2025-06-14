@@ -3,7 +3,6 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TestController;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Stevebauman\Location\Facades\Location;
 use Illuminate\Support\Facades\Route;
 
@@ -36,6 +35,7 @@ Route::controller(ProfileController::class)->prefix('edit/profile')->middleware(
     Route::post('/sendOTP', 'send_otp')->name('otp.send');
     Route::post('/verifyNumber', 'verify_number')->name('verify.number');
     Route::post('/updateNumber', 'update_number')->name('update.number');
+    Route::post('/photoUpload', 'photo_upload')->name('photo.upload');
 });
 
 // user Profile Show Route

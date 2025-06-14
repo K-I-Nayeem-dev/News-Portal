@@ -11,13 +11,13 @@
         /* Chrome, Safari, Edge, Opera */
         input::-webkit-outer-spin-button,
         input::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
+            -webkit-appearance: none;
+            margin: 0;
         }
 
         /* Firefox */
         input[type=number] {
-        -moz-appearance: textfield;
+            -moz-appearance: textfield;
         }
     </style>
 
@@ -62,8 +62,15 @@
                         style="background: url({{ asset('dashboard_assets') }}/images/backgrounds/user-info.jpg) no-repeat;">
                         <!-- User profile image -->
                         <div class="profile-img">
-                            <img src="{{ asset('dashboard_assets') }}/images/profile/user-1.jpg" alt="user"
-                                class="w-100 rounded-circle overflow-hidden">
+                            @if (!Auth::user()->profile_picture)
+                                <img src="{{ asset('dashboard_assets') }}/images/profile/user-1.jpg"
+                                    alt="materialpro-img" class="img-fluid rounded-circle" width="120"
+                                    height="120">
+                            @else
+                                <img style="border-radius: 50%" width="50" height="50"
+                                    src="{{ asset('uploads/profile_pictures/' . Auth::user()->profile_picture) }}"
+                                    alt="{{ Auth::user()->name }}">
+                            @endif
                         </div>
                         <!-- User profile text-->
                         <div class="profile-text hide-menu pt-1 dropdown">
@@ -139,7 +146,8 @@
                     <nav class="navbar navbar-expand-lg px-lg-0 px-3 py-0">
                         <div class="d-none d-lg-block">
                             <div class="brand-logo d-flex align-items-center justify-content-between">
-                                <a href="{{ route('dashboard') }}" class="text-nowrap logo-img d-flex align-items-center gap-2">
+                                <a href="{{ route('dashboard') }}"
+                                    class="text-nowrap logo-img d-flex align-items-center gap-2">
                                     <b class="logo-icon">
                                         <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                                         <!-- Dark Logo icon -->
@@ -461,16 +469,30 @@
                                     <li class="nav-item hover-dd dropdown">
                                         <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
                                             aria-expanded="false">
-                                            <img src="{{ asset('dashboard_assets') }}/images/profile/user-1.jpg"
-                                                alt="user" class="profile-pic rounded-circle round-30">
+                                            @if (!Auth::user()->profile_picture)
+                                                <img src="{{ asset('dashboard_assets') }}/images/profile/user-1.jpg"
+                                                    alt="materialpro-img" class="img-fluid rounded-circle"
+                                                    width="120" height="120">
+                                            @else
+                                                <img style="border-radius: 50%" width="25" height="25"
+                                                    src="{{ asset('uploads/profile_pictures/' . Auth::user()->profile_picture) }}"
+                                                    alt="{{ Auth::user()->name }}">
+                                            @endif
                                         </a>
                                         <div class="dropdown-menu pt-0 content-dd overflow-hidden pt-0 dropdown-menu-end user-dd"
                                             aria-labelledby="drop2">
                                             <div class="profile-dropdown position-relative" data-simplebar="">
                                                 <div class=" py-3 border-bottom">
                                                     <div class="d-flex align-items-center px-3">
-                                                        <img src="{{ asset('dashboard_assets') }}/images/profile/user-1.jpg"
-                                                            class="rounded-circle round-50" alt="">
+                                                        @if (!Auth::user()->profile_picture)
+                                                            <img src="{{ asset('dashboard_assets') }}/images/profile/user-1.jpg"
+                                                                alt="materialpro-img" class="img-fluid rounded-circle"
+                                                                width="120" height="120">
+                                                        @else
+                                                            <img style="border-radius: 50%" width="50" height="50"
+                                                                src="{{ asset('uploads/profile_pictures/' . Auth::user()->profile_picture) }}"
+                                                                alt="{{ Auth::user()->name }}">
+                                                        @endif
                                                         <div class="ms-3">
                                                             <h5 class="mb-1 fs-4">{{ Auth::user()->name }}</h5>
                                                             <p class="mb-0 fs-2 d-flex align-items-center text-muted">
@@ -964,8 +986,15 @@
                                     <li class="nav-item hover-dd dropdown">
                                         <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
                                             aria-expanded="false">
-                                            <img src="{{ asset('dashboard_assets') }}/images/profile/user-1.jpg"
-                                                alt="user" width="30" class="profile-pic rounded-circle">
+                                            @if (!Auth::user()->profile_picture)
+                                                <img src="{{ asset('dashboard_assets') }}/images/profile/user-1.jpg"
+                                                    alt="materialpro-img" class="img-fluid rounded-circle"
+                                                    width="120" height="120">
+                                            @else
+                                                <img style="border-radius: 50%" width="50" height="50"
+                                                    src="{{ asset('uploads/profile_pictures/' . Auth::user()->profile_picture) }}"
+                                                    alt="{{ Auth::user()->name }}">
+                                            @endif
                                         </a>
                                         <div class="dropdown-menu pt-0 content-dd overflow-hidden pt-0 dropdown-menu-end user-dd"
                                             aria-labelledby="drop2">
