@@ -57,10 +57,10 @@
                                                 <div class="d-flex align-items-center justify-content-center my-4 gap-6">
                                                     <!-- Button trigger modal -->
                                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                        data-bs-target="#exampleModal"> Upload Photo </button>
+                                                        data-bs-target="#photo"> Upload Photo </button>
 
                                                     <!-- Modal -->
-                                                    <div class="modal fade" id="exampleModal" tabindex="-1"
+                                                    <div class="modal fade" id="photo" tabindex="-1"
                                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
@@ -77,15 +77,12 @@
                                                                     @csrf
                                                                     <div class="modal-body">
 
-                                                                        <input class="form-control" type="file"
-                                                                            name="photo" autocomplete="off">
+                                                                        <input class="form-control" type="file" name="photo" autocomplete="off">
 
                                                                     </div>
                                                                     <div class="modal-footer">
-                                                                        <button type="button" class="btn btn-secondary"
-                                                                            data-bs-dismiss="modal">Close</button>
-                                                                        <button type="submit" class="btn btn-primary">Save
-                                                                            changes</button>
+                                                                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                                        <button type="submit" class="btn btn-primary">Save changes</button>
                                                                     </div>
                                                                 </form>
                                                             </div>

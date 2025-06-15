@@ -29,8 +29,12 @@
     <!-- Core Css -->
     <link rel="stylesheet" href="{{ asset('dashboard_assets') }}/css/styles.css">
 
+    {{-- font Awesome Cdn --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 
     <title>MaterialPro Template by WrapPixel</title>
+
 </head>
 
 <body>
@@ -102,22 +106,23 @@
                                 </div>
                                 <div class="dropdown-divider"></div>
 
-                                <div class="px-3 py-2">
+                                {{-- <div class="px-3 py-2">
                                     <a href="page-user-profile.html"
                                         class="btn d-block w-100 btn-info rounded-pill">View Profile</a>
-                                </div>
+                                </div> --}}
 
                             </div>
                         </div>
                     </div>
                     <!-----------Profile End------------------>
 
+
                     <ul id="sidebarnav">
                         <!-- ---------------------------------- -->
                         <!-- Home -->
                         <!-- ---------------------------------- -->
 
-                        <li class="nav-small-cap">
+                        <li class="nav-small-cap" id="get-url">
                             <iconify-icon icon="solar:menu-dots-bold" class="nav-small-cap-icon fs-4"></iconify-icon>
                             <span class="hide-menu">Personal</span>
                         </li>
@@ -125,12 +130,40 @@
                         <!-- Dashboard -->
                         <!-- ---------------------------------- -->
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="" id="get-url">
+                            <a class="sidebar-link" href="{{ route('dashboard') }}" >
                                 <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
-                                <span class="hide-menu">General</span>
+                                <span class="hide-menu">Dashboard</span>
                             </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="{{ route('categories.index') }}" >
+                                <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
+                                <span class="hide-menu">Category</span>
+                            </a>
+                        </li>
 
+                        <!-- ---------------------------------- -->
+                        <!-- Front Pages -->
+                        <!-- ---------------------------------- -->
+                        <li class="sidebar-item">
+                            <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                                <iconify-icon icon="solar:home-angle-linear" class="aside-icon"></iconify-icon>
+                                <span class="hide-menu">News</span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse first-level">
+                                <li class="sidebar-item">
+                                    <a href="../main/frontend-landingpage.html" class="sidebar-link sublink">
+                                        <div class="round-16 d-flex align-items-center justify-content-center">
+                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                        </div>
+                                        <span class="hide-menu">Create News</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
+
+
                 </nav>
 
                 <!-- End Sidebar scroll-->
@@ -184,7 +217,8 @@
                             <!-- ------------------------------- -->
                             <li class="nav-item d-none d-lg-block search-box nav-icon-hover-bg rounded-circle">
                                 <a class="nav-link nav-icon-hover d-none d-md-flex waves-effect waves-dark"
-                                    href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    href="javascript:void(0)" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
                                     <iconify-icon icon="solar:magnifer-linear"></iconify-icon>
                                 </a>
                             </li>
@@ -220,8 +254,9 @@
                             class="navbar-nav flex-row  gap-2 align-items-center justify-content-center d-flex d-lg-none">
                             <li class="nav-item dropdown nav-icon-hover-bg rounded-circle">
                                 <a class="navbar-toggler nav-link text-white nav-icon-hover border-0"
-                                    href="javascript:void(0)" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                                    href="javascript:void(0)" data-bs-toggle="collapse"
+                                    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                                    aria-label="Toggle navigation">
                                     <span class="">
                                         <i class="ti ti-dots fs-7"></i>
                                     </span>
@@ -235,8 +270,8 @@
                                     <li class="nav-item dropdown">
                                         <a href="javascript:void(0)"
                                             class="nav-link d-flex d-lg-none align-items-center justify-content-center"
-                                            type="button" data-bs-toggle="offcanvas" data-bs-target="#mobilenavbar"
-                                            aria-controls="offcanvasWithBothOptions">
+                                            type="button" data-bs-toggle="offcanvas"
+                                            data-bs-target="#mobilenavbar" aria-controls="offcanvasWithBothOptions">
                                             <iconify-icon icon="solar:menu-dots-circle-linear"></iconify-icon>
                                         </a>
                                     </li>
@@ -273,8 +308,8 @@
                                         </div>
                                     </li>
                                     <li class="nav-item hover-dd dropdown nav-icon-hover-bg rounded-circle">
-                                        <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
-                                            aria-expanded="false">
+                                        <a class="nav-link nav-icon-hover" href="javascript:void(0)"
+                                            id="drop2" aria-expanded="false">
                                             <iconify-icon icon="solar:inbox-line-line-duotone"></iconify-icon>
                                             <div class="notify">
                                                 <span class="heartbit"></span>
@@ -299,7 +334,8 @@
                                                             class="profile-status bg-success position-absolute rounded-circle"></span>
                                                     </span>
                                                     <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
+                                                        <div
+                                                            class="d-flex align-items-center justify-content-between">
                                                             <h6 class="mb-1">Mathew Anderson</h6>
                                                             <span class="fs-2 d-block text-muted">9:30 AM</span>
                                                         </div>
@@ -316,7 +352,8 @@
                                                             class="profile-status bg-success position-absolute rounded-circle"></span>
                                                     </span>
                                                     <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
+                                                        <div
+                                                            class="d-flex align-items-center justify-content-between">
                                                             <h6 class="mb-1">Bianca Anderson</h6>
                                                             <span class="fs-2 d-block text-muted">9:10 AM</span>
                                                         </div>
@@ -334,7 +371,8 @@
                                                             class="profile-status bg-success position-absolute rounded-circle"></span>
                                                     </span>
                                                     <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
+                                                        <div
+                                                            class="d-flex align-items-center justify-content-between">
                                                             <h6 class="mb-1">Andrew Johnson</h6>
                                                             <span class="fs-2 d-block text-muted">9:08 AM</span>
                                                         </div>
@@ -351,7 +389,8 @@
                                                             class="profile-status bg-success position-absolute rounded-circle"></span>
                                                     </span>
                                                     <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
+                                                        <div
+                                                            class="d-flex align-items-center justify-content-between">
                                                             <h6 class="mb-1">Miyra Strokes</h6>
                                                             <span class="fs-2 d-block text-muted">9:30 AM</span>
                                                         </div>
@@ -368,7 +407,8 @@
                                                             class="profile-status bg-success position-absolute rounded-circle"></span>
                                                     </span>
                                                     <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
+                                                        <div
+                                                            class="d-flex align-items-center justify-content-between">
                                                             <h6 class="mb-1">Mark, Stoinus & Rishvi..</h6>
                                                             <span class="fs-2 d-block text-muted">9:10 AM</span>
                                                         </div>
@@ -385,7 +425,8 @@
                                                             class="profile-status bg-success position-absolute rounded-circle"></span>
                                                     </span>
                                                     <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
+                                                        <div
+                                                            class="d-flex align-items-center justify-content-between">
                                                             <h6 class="mb-1">Eliga Rush</h6>
                                                             <span class="fs-2 d-block text-muted">9:08 AM</span>
                                                         </div>
@@ -410,11 +451,13 @@
                                     class="navbar-nav gap-2 flex-row ms-auto align-items-center justify-content-center">
 
                                     <li class="nav-item nav-icon-hover-bg rounded-circle">
-                                        <a class="nav-link nav-icon-hover moon dark-layout" href="javascript:void(0)">
+                                        <a class="nav-link nav-icon-hover moon dark-layout"
+                                            href="javascript:void(0)">
                                             <iconify-icon icon="solar:moon-line-duotone"
                                                 class="moon"></iconify-icon>
                                         </a>
-                                        <a class="nav-link nav-icon-hover sun light-layout" href="javascript:void(0)">
+                                        <a class="nav-link nav-icon-hover sun light-layout"
+                                            href="javascript:void(0)">
                                             <iconify-icon icon="solar:sun-2-line-duotone"
                                                 class="sun"></iconify-icon>
                                         </a>
@@ -467,8 +510,8 @@
                                     <!-- start profile Dropdown -->
                                     <!-- ------------------------------- -->
                                     <li class="nav-item hover-dd dropdown">
-                                        <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
-                                            aria-expanded="false">
+                                        <a class="nav-link nav-icon-hover" href="javascript:void(0)"
+                                            id="drop2" aria-expanded="false">
                                             @if (!Auth::user()->profile_picture)
                                                 <img src="{{ asset('dashboard_assets') }}/images/profile/user-1.jpg"
                                                     alt="materialpro-img" class="img-fluid rounded-circle"
@@ -486,10 +529,12 @@
                                                     <div class="d-flex align-items-center px-3">
                                                         @if (!Auth::user()->profile_picture)
                                                             <img src="{{ asset('dashboard_assets') }}/images/profile/user-1.jpg"
-                                                                alt="materialpro-img" class="img-fluid rounded-circle"
-                                                                width="120" height="120">
+                                                                alt="materialpro-img"
+                                                                class="img-fluid rounded-circle" width="120"
+                                                                height="120">
                                                         @else
-                                                            <img style="border-radius: 50%" width="50" height="50"
+                                                            <img style="border-radius: 50%" width="50"
+                                                                height="50"
                                                                 src="{{ asset('uploads/profile_pictures/' . Auth::user()->profile_picture) }}"
                                                                 alt="{{ Auth::user()->name }}">
                                                         @endif
@@ -561,8 +606,8 @@
                     <!-- apps Dropdown in Small screen -->
                     <!-- ------------------------------- -->
                     <!--  Mobilenavbar -->
-                    <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="mobilenavbar"
-                        aria-labelledby="offcanvasWithBothOptionsLabel">
+                    <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1"
+                        id="mobilenavbar" aria-labelledby="offcanvasWithBothOptionsLabel">
                         <nav class="sidebar-nav scroll-sidebar">
                             <div class="offcanvas-header justify-content-between">
                                 <a href="index.html" class="text-nowrap logo-img d-block">
@@ -600,7 +645,8 @@
                             </li>
                             <li class="nav-item d-none d-xl-block">
                                 <div class="brand-logo d-flex align-items-center justify-content-between">
-                                    <a href="index.html" class="text-nowrap logo-img d-flex align-items-center gap-2">
+                                    <a href="index.html"
+                                        class="text-nowrap logo-img d-flex align-items-center gap-2">
                                         <b class="logo-icon">
                                             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                                             <!-- Dark Logo icon -->
@@ -626,7 +672,8 @@
 
                             <li class="nav-item d-none d-lg-block search-box">
                                 <a class="nav-link nav-icon-hover d-none d-md-flex waves-effect waves-dark"
-                                    href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    href="javascript:void(0)" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
                                     <iconify-icon icon="solar:magnifer-linear"></iconify-icon>
                                 </a>
                             </li>
@@ -699,11 +746,13 @@
                                     <!-- end language Dropdown -->
                                     <!-- ------------------------------- -->
                                     <li class="nav-item nav-icon-hover-bg rounded-circle">
-                                        <a class="nav-link nav-icon-hover moon dark-layout" href="javascript:void(0)">
+                                        <a class="nav-link nav-icon-hover moon dark-layout"
+                                            href="javascript:void(0)">
                                             <iconify-icon icon="solar:moon-line-duotone"
                                                 class="moon"></iconify-icon>
                                         </a>
-                                        <a class="nav-link nav-icon-hover sun light-layout" href="javascript:void(0)">
+                                        <a class="nav-link nav-icon-hover sun light-layout"
+                                            href="javascript:void(0)">
                                             <iconify-icon icon="solar:sun-2-line-duotone"
                                                 class="sun"></iconify-icon>
                                         </a>
@@ -738,7 +787,8 @@
                                                             icon="solar:widget-3-line-duotone"></iconify-icon>
                                                     </span>
                                                     <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
+                                                        <div
+                                                            class="d-flex align-items-center justify-content-between">
                                                             <h6 class="mb-1">Launch Admin</h6>
                                                             <span class="fs-2 d-block text-muted ">9:30 AM</span>
                                                         </div>
@@ -754,7 +804,8 @@
                                                             icon="solar:calendar-mark-line-duotone"></iconify-icon>
                                                     </span>
                                                     <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
+                                                        <div
+                                                            class="d-flex align-items-center justify-content-between">
                                                             <h6 class="mb-1">Event today</h6>
                                                             <span class="fs-2 d-block text-muted ">9:10 AM</span>
                                                         </div>
@@ -771,7 +822,8 @@
                                                             icon="solar:settings-minimalistic-line-duotone"></iconify-icon>
                                                     </span>
                                                     <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
+                                                        <div
+                                                            class="d-flex align-items-center justify-content-between">
                                                             <h6 class="mb-1">Settings</h6>
                                                             <span class="fs-2 d-block text-muted ">9:08 AM</span>
                                                         </div>
@@ -787,7 +839,8 @@
                                                             icon="solar:link-circle-line-duotone"></iconify-icon>
                                                     </span>
                                                     <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
+                                                        <div
+                                                            class="d-flex align-items-center justify-content-between">
                                                             <h6 class="mb-1">Luanch Admin</h6>
                                                             <span class="fs-2 d-block text-muted ">9:30 AM</span>
                                                         </div>
@@ -803,7 +856,8 @@
                                                             class="feather-sm fill-white text-success"></i>
                                                     </span>
                                                     <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
+                                                        <div
+                                                            class="d-flex align-items-center justify-content-between">
                                                             <h6 class="mb-1">Event today</h6>
                                                             <span class="fs-2 d-block text-muted ">9:10 AM</span>
                                                         </div>
@@ -819,7 +873,8 @@
                                                             class="feather-sm fill-white text-info"></i>
                                                     </span>
                                                     <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
+                                                        <div
+                                                            class="d-flex align-items-center justify-content-between">
                                                             <h6 class="mb-1">Settings</h6>
                                                             <span class="fs-2 d-block text-muted ">9:08 AM</span>
                                                         </div>
@@ -846,8 +901,8 @@
 
                                     <li
                                         class="nav-item hover-dd dropdown nav-icon-hover-bg rounded-circle d-none d-lg-block">
-                                        <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
-                                            aria-expanded="false">
+                                        <a class="nav-link nav-icon-hover" href="javascript:void(0)"
+                                            id="drop2" aria-expanded="false">
                                             <iconify-icon icon="solar:inbox-line-line-duotone"></iconify-icon>
                                             <div class="notify">
                                                 <span class="heartbit"></span>
@@ -872,7 +927,8 @@
                                                             class="profile-status bg-success position-absolute rounded-circle"></span>
                                                     </span>
                                                     <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
+                                                        <div
+                                                            class="d-flex align-items-center justify-content-between">
                                                             <h6 class="mb-1">Mathew Anderson</h6>
                                                             <span class="fs-2 d-block text-muted">9:30 AM</span>
                                                         </div>
@@ -889,7 +945,8 @@
                                                             class="profile-status bg-success position-absolute rounded-circle"></span>
                                                     </span>
                                                     <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
+                                                        <div
+                                                            class="d-flex align-items-center justify-content-between">
                                                             <h6 class="mb-1">Bianca Anderson</h6>
                                                             <span class="fs-2 d-block text-muted">9:10 AM</span>
                                                         </div>
@@ -907,7 +964,8 @@
                                                             class="profile-status bg-success position-absolute rounded-circle"></span>
                                                     </span>
                                                     <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
+                                                        <div
+                                                            class="d-flex align-items-center justify-content-between">
                                                             <h6 class="mb-1">Andrew Johnson</h6>
                                                             <span class="fs-2 d-block text-muted">9:08 AM</span>
                                                         </div>
@@ -924,7 +982,8 @@
                                                             class="profile-status bg-success position-absolute rounded-circle"></span>
                                                     </span>
                                                     <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
+                                                        <div
+                                                            class="d-flex align-items-center justify-content-between">
                                                             <h6 class="mb-1">Miyra Strokes</h6>
                                                             <span class="fs-2 d-block text-muted">9:30 AM</span>
                                                         </div>
@@ -941,7 +1000,8 @@
                                                             class="profile-status bg-success position-absolute rounded-circle"></span>
                                                     </span>
                                                     <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
+                                                        <div
+                                                            class="d-flex align-items-center justify-content-between">
                                                             <h6 class="mb-1">Mark, Stoinus & Rishvi..</h6>
                                                             <span class="fs-2 d-block text-muted">9:10 AM</span>
                                                         </div>
@@ -958,7 +1018,8 @@
                                                             class="profile-status bg-success position-absolute rounded-circle"></span>
                                                     </span>
                                                     <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
+                                                        <div
+                                                            class="d-flex align-items-center justify-content-between">
                                                             <h6 class="mb-1">Eliga Rush</h6>
                                                             <span class="fs-2 d-block text-muted">9:08 AM</span>
                                                         </div>
@@ -984,8 +1045,8 @@
                                     <!-- start profile Dropdown -->
                                     <!-- ------------------------------- -->
                                     <li class="nav-item hover-dd dropdown">
-                                        <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
-                                            aria-expanded="false">
+                                        <a class="nav-link nav-icon-hover" href="javascript:void(0)"
+                                            id="drop2" aria-expanded="false">
                                             @if (!Auth::user()->profile_picture)
                                                 <img src="{{ asset('dashboard_assets') }}/images/profile/user-1.jpg"
                                                     alt="materialpro-img" class="img-fluid rounded-circle"
@@ -1040,11 +1101,13 @@
                                                                 Mode
                                                             </a>
                                                             <div>
-                                                                <a class="moon dark-layout" href="javascript:void(0)">
+                                                                <a class="moon dark-layout"
+                                                                    href="javascript:void(0)">
                                                                     <iconify-icon icon="solar:moon-line-duotone"
                                                                         class="moon"></iconify-icon>
                                                                 </a>
-                                                                <a class="sun light-layout" href="javascript:void(0)">
+                                                                <a class="sun light-layout"
+                                                                    href="javascript:void(0)">
                                                                     <iconify-icon icon="solar:sun-2-line-duotone"
                                                                         class="sun"></iconify-icon>
                                                                 </a>
@@ -1097,7 +1160,8 @@
                             <!-- =================== -->
                             <li class="sidebar-item">
                                 <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
-                                    <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
+                                    <iconify-icon icon="solar:screencast-2-linear"
+                                        class="aside-icon"></iconify-icon>
                                     <span class="hide-menu">Dashboard</span>
                                 </a>
                                 <ul aria-expanded="false" class="collapse first-level">

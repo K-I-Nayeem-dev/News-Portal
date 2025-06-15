@@ -361,7 +361,7 @@ document.addEventListener("DOMContentLoaded", function () {
           colors: "#a1aab2",
         },
       },
-     
+
     },
     fill: {
       opacity: 1,

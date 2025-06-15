@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TestController;
+use App\Models\News;
 use Carbon\Carbon;
 use Stevebauman\Location\Facades\Location;
 use Illuminate\Support\Facades\Route;
@@ -40,9 +43,14 @@ Route::controller(ProfileController::class)->prefix('edit/profile')->middleware(
 
 // user Profile Show Route
 
-Route::controller(ProfileController::class)->prefix('profile')->group(function(){
+Route::controller(ProfileController::class)->prefix('profile')->group(function () {
     Route::get('/', 'index')->name('profile.index');
 });
+
+Route::resources([
+    'news' => NewsController::class,
+    'categories' => CategoryController::class,
+]);
 
 
 
@@ -55,7 +63,7 @@ Route::controller(ProfileController::class)->prefix('profile')->group(function()
 //     Route::get('/test', 'test')->name('test');
 // });
 
-Route::fallback(function(){
+Route::fallback(function () {
     return view('layouts.newsDashboard.dashboardErrors');
 });
 

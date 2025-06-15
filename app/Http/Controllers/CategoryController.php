@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -12,7 +13,12 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+
+        $categories = DB::table('categories')->get();
+
+        return view('layouts.newsDashboard.category.index', [
+            'categories' => $categories
+        ]);
     }
 
     /**
@@ -28,23 +34,34 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'category_name' => 'required',
+            'status' => 'required'
+        ]);
+
+        $data = [
+            'category_name' => $request->category_name,
+            'status' => $request->status,
+            'created_at' => now(),
+            'updated_at' => null,
+        ];
+
+        DB::table('categories')->insert($data);
+
+        return back()->with('cate_create', 'Category Created');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
-    {
-        //
-    }
+    public function show(Category $category) {}
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Category $category)
     {
-        //
+        return view('layouts.newsDashboard.category.edit', ['category' => $category]);
     }
 
     /**
@@ -52,7 +69,17 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $request->validate([
+            'category_name' => 'required|unique:categories,category_name,',
+            'status' => 'required'
+        ]);
+
+        $category->category_name = $request->input('category_name');
+        $category->status = $request->input('status');
+        $category->updated_at = now();
+        $category->save();
+
+        return redirect()->route('categories.index')->with('cate_update', 'Category updated successfully.');
     }
 
     /**
@@ -60,6 +87,8 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+
+        return back()->with('cate_delete', $category->category_name . ' ' . 'Category Delete Successfully ');
     }
 }

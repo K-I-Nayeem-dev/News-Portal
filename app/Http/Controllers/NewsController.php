@@ -12,7 +12,7 @@ class NewsController extends Controller
      */
     public function index()
     {
-        //
+        return view('layouts.newsDashboard.news.index');
     }
 
     /**
@@ -20,7 +20,7 @@ class NewsController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**

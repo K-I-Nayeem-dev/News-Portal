@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  
+
     // -----------------------------------------------------------------------
     // breacrumb chart
     // -----------------------------------------------------------------------
@@ -164,6 +164,5 @@ document.addEventListener("DOMContentLoaded", function () {
       breadbar2
     );
     chart_column_breadbar2.render();
-  
+
   });
-  

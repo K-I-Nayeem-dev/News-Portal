@@ -1,4 +1,4 @@
-@extends('layouts.newsDashboard.dashboardMaster')
+@extends('layouts.newsDashboard.dashboard')
 
 @section('dashboard')
     <div class="body-wrapper">
@@ -14,10 +14,10 @@
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item">
-                                        <a class="text-muted text-decoration-none" href="">Home
+                                        <a class="text-muted text-decoration-none" href="{{ route('dashboard') }}">Home
                                         </a>
                                     </li>
-                                    <li class="breadcrumb-item text-muted" aria-current="page">dashboard</li>
+                                    <li class="breadcrumb-item text-muted" aria-current="page">News Create</li>
                                 </ol>
                             </nav>
                         </div>
@@ -30,7 +30,14 @@
             <!-- -------------------------------------------------------------- -->
             <!-- Row -->
             <div class="row">
-
+                <div class="col-6">
+                    <div class="card">
+                        <h5 class="card-header">Create News</h5>
+                        <div class="card-body">
+                            
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
