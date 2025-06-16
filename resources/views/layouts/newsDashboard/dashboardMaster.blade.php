@@ -136,6 +136,12 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
+                            <a class="sidebar-link" href="{{ route('breakingnews.index') }}" >
+                                <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
+                                <span class="hide-menu">Breaking News</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
                             <a class="sidebar-link" href="{{ route('categories.index') }}" >
                                 <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
                                 <span class="hide-menu">Category</span>

@@ -17,7 +17,7 @@
                                         <a class="text-muted text-decoration-none" href="">Home
                                         </a>
                                     </li>
-                                    <li class="breadcrumb-item text-muted" aria-current="page">Category Edit</li>
+                                    <li class="breadcrumb-item text-muted" aria-current="page">Breaking Edit</li>
                                 </ol>
                             </nav>
                         </div>
@@ -33,17 +33,17 @@
                 <div class="d-flex justify-content-center">
                     <div class="col-lg-8 px-1">
                         <div class="card">
-                            <h5 class="card-header text-white" style="background-color: #1B84FF">Edit Category</h5>
+                            <h5 class="card-header text-white" style="background-color: #1B84FF">Edit Breaking News</h5>
                             <div class="card-body">
-                                <form method="POST" action="{{ route('categories.update', $category->id) }}">
+                                <form method="POST" action="{{ route('breakingnews.update', $breaking->id) }}">
                                     @csrf
                                     @method('put')
                                     <div>
-                                        <label for="categoryName" class="form-label">Category name</label>
-                                        <input id='categoryName' type="text" class="form-control" name="category_name"
-                                            value="{{ old('category_name', $category->category_name) }}" autocomplete="off">
+                                        <label for="BN" class="form-label">Edit Headline</label>
 
-                                        @error('category_name')
+                                        <textarea name="breaking_news" id="BN" rows="5" class="form-control" autocomplete="off" >{{ old('breaking_news', $breaking->news) }}</textarea>
+
+                                        @error('breaking_news')
                                             <p class="text-danger mt-2">{{ $message }}</p>
                                         @enderror
 
@@ -52,9 +52,9 @@
                                         <label class="form-label" for="status">Status</label>
                                         <select class="form-select" name="status" id="status" autocomplete="off">
                                             <option value="">Select Status</option>
-                                            <option value="1" {{ $category->status == 1 ? 'selected' : '' }}>Active
+                                            <option value="1" {{ $breaking->status == 1 ? 'selected' : '' }}>Active
                                             </option>
-                                            <option value="0" {{ $category->status == 0 ? 'selected' : '' }}>Deactive
+                                            <option value="0" {{ $breaking->status == 0 ? 'selected' : '' }}>Deactive
                                             </option>
                                         </select>
 
@@ -64,8 +64,8 @@
 
                                     </div>
 
-                                    <button style="background-color: #1B84FF" class="btn text-white mt-3">Create</button>
-                                    <a class="btn btn-primary mt-3 ms-2" href="{{ route('categories.index') }}">Back</a>
+                                    <button style="background-color: #1B84FF" class="btn text-white mt-3">Update</button>
+                                    <a class="btn btn-primary mt-3 ms-2" href="{{ route('breakingnews.index') }}">Back</a>
 
                                 </form>
                             </div>

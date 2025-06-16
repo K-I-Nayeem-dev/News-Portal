@@ -1,11 +1,13 @@
 <?php
 
+use App\Http\Controllers\BreakingNewsController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TestController;
 use App\Models\News;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Stevebauman\Location\Facades\Location;
 use Illuminate\Support\Facades\Route;
 
@@ -13,14 +15,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
 
-    // return Location::get('119.30.39.113');
-
     $now = Carbon::now();
-    // return $now->format('l jS \\of F Y h:i:s A');
+
+    $breaking_news = DB::table('breaking_news')->where('status', 1)->latest()->get();
+    $time = DB::table('breaking_news')->latest()->get();
 
     return view('layouts.newsIndex.home', [
 
         'position' => Location::get('119.30.39.113')->cityName,
+        'breaking_news' => $breaking_news,
+        'time' => $time,
 
     ]);
 });
@@ -50,6 +54,7 @@ Route::controller(ProfileController::class)->prefix('profile')->group(function (
 Route::resources([
     'news' => NewsController::class,
     'categories' => CategoryController::class,
+    'breaking_news' => BreakingNewsController::class,
 ]);
 
 

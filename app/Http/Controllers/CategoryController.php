@@ -14,7 +14,7 @@ class CategoryController extends Controller
     public function index()
     {
 
-        $categories = DB::table('categories')->get();
+        $categories = DB::table('categories')->latest()->get();
 
         return view('layouts.newsDashboard.category.index', [
             'categories' => $categories
@@ -70,7 +70,7 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $request->validate([
-            'category_name' => 'required|unique:categories,category_name,',
+            'category_name' => 'required|unique:categories,category_name,'. $category->id,
             'status' => 'required'
         ]);
 
@@ -79,7 +79,7 @@ class CategoryController extends Controller
         $category->updated_at = now();
         $category->save();
 
-        return redirect()->route('categories.index')->with('cate_update', 'Category updated successfully.');
+        return redirect()->route('categories.index')->with('cate_update', $category->category_name . ' ' . 'Category updated successfully.');
     }
 
     /**

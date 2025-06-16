@@ -662,54 +662,27 @@
                     </div>
                 </div>
                 </header>
-                <div class="news--ticker">
-                <div class="container">
-                    <div class="title">
-                    <h2>News Updates</h2>
-                    <span>(Update 12 minutes ago)</span>
+                @if ($breaking_news->count() > 0)
+                    <div class="news--ticker">
+                    <div class="container">
+                        <div class="title">
+                        <h2>News Updates</h2>
+                        <span>(Update {{ \Carbon\Carbon::parse($time->created_at)->diffForHumans() }})</span>
+                        </div>
+                        <div class="news-updates--list" data-marquee="true">
+                        <ul class="nav">
+                            @foreach ($breaking_news as $news)
+                                <li>
+                                    <h3 class="h3">
+                                        <a href="#" > !!! {{ $news->news }} !!! </a>
+                                    </h3>
+                                </li>
+                            @endforeach
+                        </ul>
+                        </div>
                     </div>
-                    <div class="news-updates--list" data-marquee="true">
-                    <ul class="nav">
-                        <li>
-                        <h3 class="h3">
-                            <a href="#"
-                            >Contrary to popular belief Lorem Ipsum is not simply random
-                            text.</a
-                            >
-                        </h3>
-                        </li>
-                        <li>
-                        <h3 class="h3">
-                            <a href="#"
-                            >Education to popular belief Lorem Ipsum is not simply</a
-                            >
-                        </h3>
-                        </li>
-                        <li>
-                        <h3 class="h3">
-                            <a href="#"
-                            >Lorem ipsum dolor sit amet consectetur adipisicing elit.</a
-                            >
-                        </h3>
-                        </li>
-                        <li>
-                        <h3 class="h3">
-                            <a href="#"
-                            >Corporis repellendus perspiciatis reprehenderit.</a
-                            >
-                        </h3>
-                        </li>
-                        <li>
-                        <h3 class="h3">
-                            <a href="#"
-                            >Deleniti consequatur laudantium sit aspernatur?</a
-                            >
-                        </h3>
-                        </li>
-                    </ul>
                     </div>
-                </div>
-                </div>
+                @endif
                 <div class="main-content--section pbottom--30">
                     @yield('content')
                 </div>
