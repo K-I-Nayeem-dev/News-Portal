@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('news', function (Blueprint $table) {
-            $table->string('url')->nullable();
+        Schema::create('sub_categories', function (Blueprint $table) {
+            $table->id();
+            $table->integer('category_id');
+            $table->string('sub_cate_name');
+            $table->integer('status');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('news', function (Blueprint $table) {
-            $table->dropColumn('url');
-        });
+        Schema::dropIfExists('sub_categories');
     }
 };

@@ -4,8 +4,8 @@ use App\Http\Controllers\BreakingNewsController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\TestController;
-use App\Models\News;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Stevebauman\Location\Facades\Location;
@@ -55,11 +55,8 @@ Route::resources([
     'news' => NewsController::class,
     'categories' => CategoryController::class,
     'breaking_news' => BreakingNewsController::class,
+    'sub_categories' => SubCategoryController::class,
 ]);
-
-
-
-
 
 // test
 // Route::get('/test',[TestController::class, 'test']);

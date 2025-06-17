@@ -1,3 +1,4 @@
+
 @extends('layouts.newsDashboard.dashboard')
 
 @section('dashboard')
@@ -17,7 +18,7 @@
                                         <a class="text-muted text-decoration-none" href="{{ route('dashboard') }}">Home
                                         </a>
                                     </li>
-                                    <li class="breadcrumb-item text-muted" aria-current="page">Breaking News Manage</li>
+                                    <li class="breadcrumb-item text-muted" aria-current="page">Sub Category Manage</li>
                                 </ol>
                             </nav>
                         </div>
@@ -32,21 +33,35 @@
             <div class="row">
                 <div class="col-lg col-lg-5 px-1">
                     <div class="card">
-                        <h5 class="card-header text-white" style="background-color: #1B84FF">Create News</h5>
+                        <h5 class="card-header text-white" style="background-color: #1B84FF">Create Sub Category</h5>
                         <div class="card-body">
-                            <form method="POST" action="{{ route('breaking_news.store') }}">
+                            <form method="POST" action="{{ route('sub_categories.store') }}">
                                 @csrf
                                 <div>
+                                    <label for="sub_categoryName" class="form-label">Sub Category name</label>
+                                    <input id='sub_categoryName' type="text" class="form-control" name="sub_cate_name" value="{{ old('sub_cate_name') }}" autocomplete="off">
 
-                                    <label for="BN" class="form-label">Make Headline</label>
-
-                                    <textarea name="breaking_news" id="BN" rows="5" class="form-control" autocomplete="off" >{{ old('breaking_news') }}</textarea>
-
-                                    @error('breaking_news')
+                                    @error('sub_cate_name')
                                         <p class="text-danger mt-2">{{ $message }}</p>
                                     @enderror
 
                                 </div>
+
+                                <div class="mt-2">
+                                    <label class="form-label" for="category_id">Category</label>
+                                    <select class="form-select" name="category_id" id="category_id" autocomplete="off">
+                                        <option value="">Select Category</option>
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                                        @endforeach
+                                    </select>
+
+                                    @error('category_id')
+                                        <p class="text-danger mt-2">{{ $message }}</p>
+                                    @enderror
+
+                                </div>
+
                                 <div class="mt-2">
                                     <label class="form-label" for="status">Status</label>
                                     <select class="form-select" name="status" id="status" autocomplete="off">
@@ -67,45 +82,47 @@
                         </div>
                     </div>
 
-                    @if (session('Bn_added'))
-                        <div class=" alert alert-success mt-3 ">{{ session('Bn_added') }}</div>
+                    @if (session('sub_cate_create'))
+                        <div class=" alert alert-success mt-3 ">{{ session('sub_cate_create') }}</div>
                     @endif
 
                 </div>
                 <div class="col-lg col-lg-7 px-1">
                     <div class="card">
                         <h5 class="card-header text-white d-flex justify-content-between" style="background-color: #1B84FF">
-                            <span>All News</span>
-                            <span>Total News : {{ $breaking_news->count() }}</span>
+                            <span>All Sub Categories</span>
+                            <span>Total Sub Categories : {{ $sub_cates->count() }}</span>
                         </h5>
                         <div class="card-body" style="height: 400px; overflow-y: auto; overflow-x: hidden;">
                             <table class="table table-striped table-bordered">
                                 <thead class="text-center">
                                     <tr>
                                         <th scope="col">SL</th>
-                                        <th scope="col">News</th>
+                                        <th scope="col">Sub Category Name</th>
+                                        <th scope="col">Category Name</th>
                                         <th scope="col">Actions</th>
                                         <th scope="col">Created AT</th>
                                         <th scope="col">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse($breaking_news as $key => $breaking)
+                                    @forelse($sub_cates as $key => $sub_cate)
                                         <tr>
                                             <th class="text-center" scope="row">{{ ++$key }}</th>
-                                            <td>{{ Str::limit($breaking->news, 35, '...') }}</td>
+                                            <td>{{ $sub_cate->sub_cate_name }}</td>
+                                            <td>{{ $sub_cate->category->category_name }}</td>
                                             <td class="d-flex  justify-content-around">
-                                                <a class="btn btn-sm btn-primary" href="{{ route('breaking_news.edit', $breaking->id) }}"><i class="fa-solid fa-pen-to-square"></i></a>
-                                                <form method="POST" action="{{ route('breaking_news.destroy', $breaking->id) }}">
+                                                <a class="btn btn-sm btn-primary"href="{{ route('sub_categories.edit', $sub_cate->id) }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                                                <form method="POST" action="{{ route('sub_categories.destroy', $sub_cate->id) }}" onsubmit="return confirm('Are you sure you want to delete this?')">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger"><i style="color: white" class="fa-solid fa-trash"></i></button>
+                                                    <button class="btn btn-sm btn-danger"><i style="color: white" class="fa-solid fa-trash"></i></button>
                                                 </form>
                                             </td>
                                             <td class="text-center">
-                                                {{ \Carbon\Carbon::parse($breaking->created_at)->diffForHumans() }}</td>
+                                                {{ \Carbon\Carbon::parse($sub_cate->created_at)->diffForHumans() }}</td>
                                             <td class="text-center">
-                                                @if ($breaking->status == 1)
+                                                @if ($sub_cate->status == 1)
                                                     <p class="badge bg-success">Active</p>
                                                 @else
                                                     <p class="badge bg-danger">Deactive</p>
@@ -114,18 +131,18 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="5" class="text-center">No News Found</td>
+                                            <td colspan="5" class="text-center">No Category Found</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    @if (session('news_update'))
-                        <div class=" alert alert-success mt-3 ">{{ session('news_update') }}</div>
+                    @if (session('sub_cate_update'))
+                        <div class=" alert alert-success mt-3 ">{{ session('sub_cate_update') }}</div>
                     @endif
-                    @if (session('news_deleted'))
-                        <div class=" alert alert-danger mt-3 ">{{ session('news_deleted') }}</div>
+                    @if (session('sub_cate_delete'))
+                        <div class=" alert alert-danger mt-3 ">{{ session('sub_cate_delete') }}</div>
                     @endif
                 </div>
             </div>

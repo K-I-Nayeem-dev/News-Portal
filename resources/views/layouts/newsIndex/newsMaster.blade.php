@@ -667,7 +667,7 @@
                     <div class="container">
                         <div class="title">
                         <h2>News Updates</h2>
-                        <span>(Update {{ \Carbon\Carbon::parse($time->created_at)->diffForHumans() }})</span>
+                        {{-- <span>(Update {{ \Carbon\Carbon::parse($time->created_at)->diffForHumans() }})</span> --}}
                         </div>
                         <div class="news-updates--list" data-marquee="true">
                         <ul class="nav">

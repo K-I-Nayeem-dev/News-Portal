@@ -32,7 +32,6 @@
     {{-- font Awesome Cdn --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-
     <title>MaterialPro Template by WrapPixel</title>
 
 </head>
@@ -136,7 +135,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('breakingnews.index') }}" >
+                            <a class="sidebar-link" href="{{ route('breaking_news.index') }}" >
                                 <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
                                 <span class="hide-menu">Breaking News</span>
                             </a>
@@ -145,6 +144,12 @@
                             <a class="sidebar-link" href="{{ route('categories.index') }}" >
                                 <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
                                 <span class="hide-menu">Category</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="{{ route('sub_categories.index') }}" >
+                                <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
+                                <span class="hide-menu">Sub Categories</span>
                             </a>
                         </li>
 
@@ -158,11 +163,19 @@
                             </a>
                             <ul aria-expanded="false" class="collapse first-level">
                                 <li class="sidebar-item">
-                                    <a href="../main/frontend-landingpage.html" class="sidebar-link sublink">
+                                    <a href="{{ route('news.index') }}" class="sidebar-link sublink">
                                         <div class="round-16 d-flex align-items-center justify-content-center">
                                             <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
                                         </div>
                                         <span class="hide-menu">Create News</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="" class="sidebar-link sublink">
+                                        <div class="round-16 d-flex align-items-center justify-content-center">
+                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                        </div>
+                                        <span class="hide-menu">Show News</span>
                                     </a>
                                 </li>
                             </ul>
@@ -2110,9 +2123,10 @@
 
     </div>
     <div class="dark-transparent sidebartoggler"></div>
+
     <!-- Import Js Files -->
-    <script src="{{ asset('dashboard_assets') }}/js/breadcrumb/breadcrumbChart.js"></script>
-    <script src="{{ asset('dashboard_assets') }}/libs/apexcharts/dist/apexcharts.min.js"></script>
+    {{-- <script src="{{ asset('dashboard_assets') }}/js/breadcrumb/breadcrumbChart.js"></script> --}}
+    {{-- <script src="{{ asset('dashboard_assets') }}/libs/apexcharts/dist/apexcharts.min.js"></script> --}}
     <script src="{{ asset('dashboard_assets') }}/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('dashboard_assets') }}/libs/simplebar/dist/simplebar.min.js"></script>
     <script src="{{ asset('dashboard_assets') }}/js/theme/app.init.js"></script>
@@ -2134,7 +2148,8 @@
             codeBlock.textContent = codeBlock.innerHTML;
         });
     </script>
-    <script src="{{ asset('dashboard_assets') }}/js/dashboards/dashboard1.js"></script>
+    {{-- <script src="{{ asset('dashboard_assets') }}/js/dashboards/dashboard1.js"></script> --}}
+
 </body>
 
 </html>

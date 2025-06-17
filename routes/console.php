@@ -12,4 +12,4 @@ Artisan::command('inspire', function () {
 
 Schedule::call(function(){
     DB::table('breaking_news')->truncate();
-})->dailyAt('23:59');
+})->dailyAt('00:00');

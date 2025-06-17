@@ -30,11 +30,106 @@
             <!-- -------------------------------------------------------------- -->
             <!-- Row -->
             <div class="row">
-                <div class="col-6">
+                <div class="offset-lg-2 offset-md-2 offset-sm-2 col-lg-8 col-sm-8 col-md-8">
                     <div class="card">
                         <h5 class="card-header">Create News</h5>
                         <div class="card-body">
-                            
+                            <form method="POST" action="{{ route('news.store') }}" enctype="multipart/form-data">
+                                @csrf
+
+                                <div>
+                                    <label class='form-label' for="title">Title<sup><code
+                                                style="font-size: 12px">*</code></sup></label>
+                                    <input class="form-control" type="text" name="title" autocomplete="off"
+                                        value="{{ old('title') }}">
+                                    @error('title')
+                                        <p class="text-danger mt-2">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <div class="mt-3">
+
+                                    <label class='form-label' for="paragraph">paragraph<sup><code
+                                                style="font-size: 12px">*</code></sup></label>
+                                    <textarea style="line-height: 25px" name="paragraph" id="paragraph" rows="5" class="form-control"
+                                        autocomplete="off">{{ old('paragraph') }}</textarea>
+
+                                    @error('paragraph')
+                                        <p class="text-danger mt-2">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <div class="mt-3">
+
+                                    <label class="form-label" for="category_id">Category<sup><code
+                                                style="font-size: 12px">*</code></sup></label>
+                                    <select class="form-select select2" name="category_id" id="category_id"
+                                        autocomplete="off">
+                                        <option value="">Select Category</option>
+                                        @foreach ($categories as $cate)
+                                            <option value="{{ $cate->id }}"> {{ $cate->category_name }}</option>
+                                        @endforeach
+                                    </select>
+
+                                    @error('status')
+                                        <p class="text-danger mt-2">{{ $message }}</p>
+                                    @enderror
+
+                                </div>
+
+                                <div class="mt-3">
+
+                                    <label class="form-label" for="sub_cate">Sub Category<sup><code
+                                                style="font-size: 12px">*</code></sup></label>
+                                    <select class="form-select " name="sub_cate_id" id="sub_cate" autocomplete="off">
+                                        <option value="">Select Sub Category</option>
+                                        @foreach ($sub_cates as $sub_cate)
+                                            <option value="{{ $sub_cate->id }}"> {{ $sub_cate->sub_cate_name }}</option>
+                                        @endforeach
+                                    </select>
+
+                                    @error('status')
+                                        <p class="text-danger mt-2">{{ $message }}</p>
+                                    @enderror
+
+                                </div>
+
+                                <div class="mt-3">
+
+                                    <label class='form-label' for="url">Video Url <code>(Optional)</code></label>
+                                    <input name="url" id="url" class="form-control" autocomplete="off"
+                                        value="{{ old('url') }}">
+
+                                    @error('url')
+                                        <p class="text-danger mt-2">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <div class="mt-3">
+
+                                    <label class='form-label' for="thumbnail">Thumbnail<sup><code
+                                                style="font-size: 12px">*</code></sup></label>
+                                    <input type="file" name="thumbnail" id="thumbnail" class="form-control"
+                                        autocomplete="off" value="{{ old('thumbnail') }}">
+
+                                    @error('thumbnail')
+                                        <p class="text-danger mt-2">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <div class="mt-3">
+                                    <label class='form-label' for="status">Status<sup><code style="font-size: 12px">*</code></sup></label>
+
+                                    <select class="form-select " name="status" id="status" autocomplete="off">
+
+                                        <option value="">Select Status</option>
+                                        <option value="1">Active</option>
+                                        <option value="0">Deactive</option>
+
+                                    </select>
+                                </div>
+
+                            </form>
                         </div>
                     </div>
                 </div>

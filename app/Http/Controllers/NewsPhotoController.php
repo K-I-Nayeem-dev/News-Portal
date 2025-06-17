@@ -2,24 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\Models\News;
-use App\Models\SubCategory;
+use App\Models\news_photo;
 use Illuminate\Http\Request;
 
-class NewsController extends Controller
+class NewsPhotoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $categories = Category::all();
-        $sub_cates = SubCategory::all();
-        return view('layouts.newsDashboard.news.index', [
-            'categories' => $categories,
-            'sub_cates' => $sub_cates
-        ]);
+        //
     }
 
     /**
@@ -27,7 +20,7 @@ class NewsController extends Controller
      */
     public function create()
     {
-
+        //
     }
 
     /**
@@ -41,7 +34,7 @@ class NewsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(News $news)
+    public function show(news_photo $news_photo)
     {
         //
     }
@@ -49,7 +42,7 @@ class NewsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(News $news)
+    public function edit(news_photo $news_photo)
     {
         //
     }
@@ -57,7 +50,7 @@ class NewsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, News $news)
+    public function update(Request $request, news_photo $news_photo)
     {
         //
     }
@@ -65,7 +58,7 @@ class NewsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(News $news)
+    public function destroy(news_photo $news_photo)
     {
         //
     }

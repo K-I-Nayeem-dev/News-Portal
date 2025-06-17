@@ -17,7 +17,7 @@
                                         <a class="text-muted text-decoration-none" href="">Home
                                         </a>
                                     </li>
-                                    <li class="breadcrumb-item text-muted" aria-current="page">Breaking Edit</li>
+                                    <li class="breadcrumb-item text-muted" aria-current="page">Category Edit</li>
                                 </ol>
                             </nav>
                         </div>
@@ -33,17 +33,31 @@
                 <div class="d-flex justify-content-center">
                     <div class="col-lg-8 px-1">
                         <div class="card">
-                            <h5 class="card-header text-white" style="background-color: #1B84FF">Edit Breaking News</h5>
+                            <h5 class="card-header text-white" style="background-color: #1B84FF">Edit Category</h5>
                             <div class="card-body">
-                                <form method="POST" action="{{ route('breaking_news.update', $breaking->id) }}">
+                                <form method="POST" action="{{ route('sub_categories.update', $sub_cate->id) }}">
                                     @csrf
                                     @method('put')
                                     <div>
-                                        <label for="BN" class="form-label">Edit Headline</label>
+                                        <label for="SubcategoryName" class="form-label">Sub Category name</label>
+                                        <input id='SubcategoryName' type="text" class="form-control" name="sub_cate_name" value="{{ old('sub_cate_name', $sub_cate->sub_cate_name) }}" autocomplete="off">
 
-                                        <textarea name="breaking_news" id="BN" rows="5" class="form-control" autocomplete="off" >{{ old('breaking_news', $breaking->news) }}</textarea>
+                                        @error('sub_cate_name')
+                                            <p class="text-danger mt-2">{{ $message }}</p>
+                                        @enderror
 
-                                        @error('breaking_news')
+                                    </div>
+
+                                    <div class="mt-2">
+                                        <label class="form-label" for="status">Category Name</label>
+                                        <select class="form-select select2" name="category_id" id="status" autocomplete="off" size="6" style="height: 150px; overflow-y: auto;">
+                                            <option value="">Select Category</option>
+                                            @foreach ($categories as $cate)
+                                                <option value="{{ $cate->id }}" {{ $cate->id == $sub_cate->category->id ? 'selected' : ''}}>{{ $cate->category_name }}</option>
+                                            @endforeach
+                                        </select>
+
+                                        @error('status')
                                             <p class="text-danger mt-2">{{ $message }}</p>
                                         @enderror
 
@@ -52,9 +66,9 @@
                                         <label class="form-label" for="status">Status</label>
                                         <select class="form-select" name="status" id="status" autocomplete="off">
                                             <option value="">Select Status</option>
-                                            <option value="1" {{ $breaking->status == 1 ? 'selected' : '' }}>Active
+                                            <option value="1" {{ $sub_cate->status == 1 ? 'selected' : '' }}>Active
                                             </option>
-                                            <option value="0" {{ $breaking->status == 0 ? 'selected' : '' }}>Deactive
+                                            <option value="0" {{ $sub_cate->status == 0 ? 'selected' : '' }}>Deactive
                                             </option>
                                         </select>
 
@@ -65,7 +79,7 @@
                                     </div>
 
                                     <button style="background-color: #1B84FF" class="btn text-white mt-3">Update</button>
-                                    <a class="btn btn-primary mt-3 ms-2" href="{{ route('breaking_news.index') }}">Back</a>
+                                    <a class="btn btn-primary mt-3 ms-2" href="{{ route('sub_categories.index') }}">Back</a>
 
                                 </form>
                             </div>
