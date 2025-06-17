@@ -32,27 +32,31 @@
             <div class="row">
                 <div class="offset-lg-2 offset-md-2 offset-sm-2 col-lg-8 col-sm-8 col-md-8">
                     <div class="card">
-                        <h5 class="card-header">Create News</h5>
+                        <h5 class="card-header text-white" style="background-color: #1B84FF">Create News</h5>
                         <div class="card-body">
                             <form method="POST" action="{{ route('news.store') }}" enctype="multipart/form-data">
                                 @csrf
 
                                 <div>
-                                    <label class='form-label' for="title">Title<sup><code
-                                                style="font-size: 12px">*</code></sup></label>
-                                    <input class="form-control" type="text" name="title" autocomplete="off"
-                                        value="{{ old('title') }}">
+                                    <label class='form-label' for="title">Title<sup><code style="font-size: 12px">*</code></sup></label>
+                                    <input id="title" class="form-control" type="text" name="title" autocomplete="off" value="{{ old('title') }}">
                                     @error('title')
                                         <p class="text-danger mt-2">{{ $message }}</p>
                                     @enderror
                                 </div>
 
                                 <div class="mt-3">
+                                    <label class='form-label' for="news_source">News Source<sup><code style="font-size: 12px">*</code></sup></label>
+                                    <input id="news_source" class="form-control" type="text" name="news_source" autocomplete="off" value="{{ old('news_source') }}">
+                                    @error('news_source')
+                                        <p class="text-danger mt-2">{{ $message }}</p>
+                                    @enderror
+                                </div>
 
-                                    <label class='form-label' for="paragraph">paragraph<sup><code
-                                                style="font-size: 12px">*</code></sup></label>
-                                    <textarea style="line-height: 25px" name="paragraph" id="paragraph" rows="5" class="form-control"
-                                        autocomplete="off">{{ old('paragraph') }}</textarea>
+                                <div class="mt-3">
+
+                                    <label class='form-label' for="paragraph">paragraph<sup><code style="font-size: 12px">*</code></sup></label>
+                                    <textarea style="line-height: 25px" name="paragraph" id="paragraph" rows="5" class="form-control" autocomplete="off">{{ old('paragraph') }}</textarea>
 
                                     @error('paragraph')
                                         <p class="text-danger mt-2">{{ $message }}</p>
@@ -71,7 +75,7 @@
                                         @endforeach
                                     </select>
 
-                                    @error('status')
+                                    @error('category_id')
                                         <p class="text-danger mt-2">{{ $message }}</p>
                                     @enderror
 
@@ -88,7 +92,7 @@
                                         @endforeach
                                     </select>
 
-                                    @error('status')
+                                    @error('sub_cate_id')
                                         <p class="text-danger mt-2">{{ $message }}</p>
                                     @enderror
 
@@ -99,22 +103,43 @@
                                     <label class='form-label' for="url">Video Url <code>(Optional)</code></label>
                                     <input name="url" id="url" class="form-control" autocomplete="off"
                                         value="{{ old('url') }}">
+                                </div>
 
-                                    @error('url')
+                                <div class="mt-3">
+
+                                    <label class='form-label' for="thumbnail">Thumbnail<sup><code style="font-size: 12px">*</code></sup> (Max 1 MB Size)</label>
+                                    <input type="file" name="thumbnail" id="thumbnail" class="form-control" autocomplete="off" value="{{ old('thumbnail') }}">
+
+                                    @error('thumbnail')
+                                        <p class="text-danger mt-2">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <div class="mt-3">
+                                    <label class='form-label' for="image_title">Image Caption<sup><code style="font-size: 12px">*</code></sup></label>
+                                    <input id="image_title" class="form-control" type="text" name="image_title" autocomplete="off">
+                                    @error('image_title')
                                         <p class="text-danger mt-2">{{ $message }}</p>
                                     @enderror
                                 </div>
 
                                 <div class="mt-3">
 
-                                    <label class='form-label' for="thumbnail">Thumbnail<sup><code
-                                                style="font-size: 12px">*</code></sup></label>
-                                    <input type="file" name="thumbnail" id="thumbnail" class="form-control"
-                                        autocomplete="off" value="{{ old('thumbnail') }}">
 
-                                    @error('thumbnail')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
+                                    <p class="d-inline-flex gap-1">
+                                        <a class="btn btn-success" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                            Add More Photos +
+                                        </a>
+                                    </p>
+
+                                    <div class="collapse" id="collapseExample">
+                                        <div class="card card-body">
+                                            <label class='form-label' for="news_photos">More Photos</label>
+                                            <input multiple id="news_photos" class="form-control" type="file" name="news_photos[]" autocomplete="off">
+                                        </div>
+                                    </div>
+
+
                                 </div>
 
                                 <div class="mt-3">
@@ -125,11 +150,21 @@
                                         <option value="">Select Status</option>
                                         <option value="1">Active</option>
                                         <option value="0">Deactive</option>
-
                                     </select>
+
+                                    @error('status')
+                                        <p class="text-danger mt-2">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
+                                <button class="btn btn-primary mt-3">Create News</button>
+
                             </form>
+
+                                @if (session('news_created'))
+                                    <div class=" alert alert-success mt-3 ">{{ session('news_created') }}</div>
+                                @endif
+
                         </div>
                     </div>
                 </div>
