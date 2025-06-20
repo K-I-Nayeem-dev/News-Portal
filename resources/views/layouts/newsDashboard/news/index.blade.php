@@ -17,7 +17,7 @@
                                         <a class="text-muted text-decoration-none" href="{{ route('dashboard') }}">Home
                                         </a>
                                     </li>
-                                    <li class="breadcrumb-item text-muted" aria-current="page">News Create</li>
+                                    <li class="breadcrumb-item text-muted" aria-current="page">All News</li>
                                 </ol>
                             </nav>
                         </div>
@@ -30,141 +30,56 @@
             <!-- -------------------------------------------------------------- -->
             <!-- Row -->
             <div class="row">
-                <div class="offset-lg-2 offset-md-2 offset-sm-2 col-lg-8 col-sm-8 col-md-8">
+                <div class="col-lg">
                     <div class="card">
-                        <h5 class="card-header text-white" style="background-color: #1B84FF">Create News</h5>
+                        <h5 class="card-header text-white d-flex justify-content-between" style="background-color: #1B84FF">
+                            <span>News Lists</span>
+                            <span>Total News: {{ $news->count() }}</span>
+                        </h5>
                         <div class="card-body">
-                            <form method="POST" action="{{ route('news.store') }}" enctype="multipart/form-data">
-                                @csrf
-
-                                <div>
-                                    <label class='form-label' for="title">Title<sup><code style="font-size: 12px">*</code></sup></label>
-                                    <input id="title" class="form-control" type="text" name="title" autocomplete="off" value="{{ old('title') }}">
-                                    @error('title')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div class="mt-3">
-                                    <label class='form-label' for="news_source">News Source<sup><code style="font-size: 12px">*</code></sup></label>
-                                    <input id="news_source" class="form-control" type="text" name="news_source" autocomplete="off" value="{{ old('news_source') }}">
-                                    @error('news_source')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div class="mt-3">
-
-                                    <label class='form-label' for="paragraph">paragraph<sup><code style="font-size: 12px">*</code></sup></label>
-                                    <textarea style="line-height: 25px" name="paragraph" id="paragraph" rows="5" class="form-control" autocomplete="off">{{ old('paragraph') }}</textarea>
-
-                                    @error('paragraph')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div class="mt-3">
-
-                                    <label class="form-label" for="category_id">Category<sup><code
-                                                style="font-size: 12px">*</code></sup></label>
-                                    <select class="form-select select2" name="category_id" id="category_id"
-                                        autocomplete="off">
-                                        <option value="">Select Category</option>
-                                        @foreach ($categories as $cate)
-                                            <option value="{{ $cate->id }}"> {{ $cate->category_name }}</option>
-                                        @endforeach
-                                    </select>
-
-                                    @error('category_id')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
-
-                                </div>
-
-                                <div class="mt-3">
-
-                                    <label class="form-label" for="sub_cate">Sub Category<sup><code
-                                                style="font-size: 12px">*</code></sup></label>
-                                    <select class="form-select " name="sub_cate_id" id="sub_cate" autocomplete="off">
-                                        <option value="">Select Sub Category</option>
-                                        @foreach ($sub_cates as $sub_cate)
-                                            <option value="{{ $sub_cate->id }}"> {{ $sub_cate->sub_cate_name }}</option>
-                                        @endforeach
-                                    </select>
-
-                                    @error('sub_cate_id')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
-
-                                </div>
-
-                                <div class="mt-3">
-
-                                    <label class='form-label' for="url">Video Url <code>(Optional)</code></label>
-                                    <input name="url" id="url" class="form-control" autocomplete="off"
-                                        value="{{ old('url') }}">
-                                </div>
-
-                                <div class="mt-3">
-
-                                    <label class='form-label' for="thumbnail">Thumbnail<sup><code style="font-size: 12px">*</code></sup> (Max 1 MB Size)</label>
-                                    <input type="file" name="thumbnail" id="thumbnail" class="form-control" autocomplete="off" value="{{ old('thumbnail') }}">
-
-                                    @error('thumbnail')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div class="mt-3">
-                                    <label class='form-label' for="image_title">Image Caption<sup><code style="font-size: 12px">*</code></sup></label>
-                                    <input id="image_title" class="form-control" type="text" name="image_title" autocomplete="off">
-                                    @error('image_title')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div class="mt-3">
-
-
-                                    <p class="d-inline-flex gap-1">
-                                        <a class="btn btn-success" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                                            Add More Photos +
-                                        </a>
-                                    </p>
-
-                                    <div class="collapse" id="collapseExample">
-                                        <div class="card card-body">
-                                            <label class='form-label' for="news_photos">More Photos</label>
-                                            <input multiple id="news_photos" class="form-control" type="file" name="news_photos[]" autocomplete="off">
-                                        </div>
-                                    </div>
-
-
-                                </div>
-
-                                <div class="mt-3">
-                                    <label class='form-label' for="status">Status<sup><code style="font-size: 12px">*</code></sup></label>
-
-                                    <select class="form-select " name="status" id="status" autocomplete="off">
-
-                                        <option value="">Select Status</option>
-                                        <option value="1">Active</option>
-                                        <option value="0">Deactive</option>
-                                    </select>
-
-                                    @error('status')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <button class="btn btn-primary mt-3">Create News</button>
-
-                            </form>
-
-                                @if (session('news_created'))
-                                    <div class=" alert alert-success mt-3 ">{{ session('news_created') }}</div>
-                                @endif
-
+                            @if (session('news_delete'))
+                                <div class="alert alert-danger mt-3 text-center">{{ session('news_delete') }}</div>
+                            @endif
+                            <table class="table table-striped-columns table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">SL</th>
+                                        <th scope="col">Posted BY</th>
+                                        <th scope="col">Thumbnail</th>
+                                        <th scope="col">Title</th>
+                                        <th scope="col">Category</th>
+                                        <th scope="col">Action</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Created At</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($news as $key => $new)
+                                        <tr>
+                                            <a href="{{ route('news.show', $new->id) }}">
+                                                <td>{{ ++$key }}</td>
+                                                <td>{{ $new->newsUser->name }} {!! Auth::id() == $new->newsUser->id ? '<sup><code style="font-size: 12px">*</code></sup>' : '' !!}</td>
+                                                <td class="text-center"><img src="{{ $new->thumbnail }}" width="120" height="80" alt=""></td>
+                                                <td>{{ $new->title }}</td>
+                                                <td>{{ $new->newsCategory->category_name }}</td>
+                                                <td class="d-flex justify-content-between align-items-center">
+                                                    <a class="btn btn-sm btn-success rounded" href="{{ route('news.show', $new->id) }}"><i class="fa-solid fa-eye"></i></a>
+                                                    <a class="btn btn-sm btn-primary rounded" href="{{ route('news.edit', $new->id) }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                                                    <form method="POST" action="{{ route('news.destroy', $new->id) }}" onsubmit="return confirm('Are you sure you want to delete this?')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-sm btn-danger rounded"><i style="color: white" class="fa-solid fa-trash"></i></button>
+                                                    </form>
+                                                </td>
+                                            </a>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="8" class="text-center">No News found</td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

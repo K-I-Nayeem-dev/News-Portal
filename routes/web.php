@@ -6,6 +6,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\WatermarkController;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Stevebauman\Location\Facades\Location;
@@ -56,6 +57,7 @@ Route::resources([
     'categories' => CategoryController::class,
     'breaking_news' => BreakingNewsController::class,
     'sub_categories' => SubCategoryController::class,
+    'watermark' => WatermarkController::class,
 ]);
 
 // test

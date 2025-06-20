@@ -128,11 +128,40 @@
                         <!-- ---------------------------------- -->
                         <!-- Dashboard -->
                         <!-- ---------------------------------- -->
+
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="{{ route('dashboard') }}" >
                                 <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
                                 <span class="hide-menu">Dashboard</span>
                             </a>
+                        </li>
+
+                        <!-- ---------------------------------- -->
+                        <!-- Front Pages -->
+                        <!-- ---------------------------------- -->
+                        <li class="sidebar-item">
+                            <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                                <iconify-icon icon="solar:home-angle-linear" class="aside-icon"></iconify-icon>
+                                <span class="hide-menu">News</span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse first-level">
+                                <li class="sidebar-item">
+                                    <a href="{{ route('news.index') }}" class="sidebar-link sublink">
+                                        <div class="round-16 d-flex align-items-center justify-content-center">
+                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                        </div>
+                                        <span class="hide-menu">Show News</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="{{ route('news.create') }}" class="sidebar-link sublink">
+                                        <div class="round-16 d-flex align-items-center justify-content-center">
+                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                        </div>
+                                        <span class="hide-menu">Create News</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="{{ route('breaking_news.index') }}" >
@@ -153,33 +182,14 @@
                             </a>
                         </li>
 
-                        <!-- ---------------------------------- -->
-                        <!-- Front Pages -->
-                        <!-- ---------------------------------- -->
-                        <li class="sidebar-item">
-                            <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
-                                <iconify-icon icon="solar:home-angle-linear" class="aside-icon"></iconify-icon>
-                                <span class="hide-menu">News</span>
-                            </a>
-                            <ul aria-expanded="false" class="collapse first-level">
-                                <li class="sidebar-item">
-                                    <a href="{{ route('news.index') }}" class="sidebar-link sublink">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
-                                        </div>
-                                        <span class="hide-menu">Create News</span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="" class="sidebar-link sublink">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
-                                        </div>
-                                        <span class="hide-menu">Show News</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                        @if(Auth::user()->role == 'admin' || Auth::user()->role == 'editor')
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('watermark.index') }}" >
+                                    <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
+                                    <span class="hide-menu">Watermart</span>
+                                </a>
+                            </li>
+                        @endif
                     </ul>
 
 

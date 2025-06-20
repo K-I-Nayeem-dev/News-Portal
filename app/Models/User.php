@@ -41,4 +41,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // for news table one to one relation
+    public function newsUser(){
+        return $this->hasOne(News::class);
+    }
+
 }

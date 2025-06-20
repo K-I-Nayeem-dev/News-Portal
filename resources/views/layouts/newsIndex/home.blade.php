@@ -6,7 +6,7 @@
                     <div class="post--items post--items-1 pd--30-0">
                         <div class="row gutter--15">
                         <div class="col-md-6">
-                            <div class="post--item post--layout-1 post--title-larger">
+                            {{-- <div class="post--item post--layout-1 post--title-larger">
                             <div class="post--img">
                                 <a href="news-single-v1.html" class="thumb"
                                 ><img src="{{ asset('frontend_assets') }}/img/home-img/banner-01.jpg" alt=""
@@ -42,7 +42,8 @@
                                 </div>
                                 </div>
                             </div>
-                            </div>
+                            </div> --}}
+                            <iframe src="https://www.youtube.com/embed/zxVv5W-b85U" frameborder="0"></iframe>
                         </div>
                         <div class="col-md-6">
                             <div class="row gutter--15">

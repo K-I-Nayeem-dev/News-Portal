@@ -6,11 +6,12 @@ use App\Models\Category;
 use App\Models\News;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
-use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Imagick\Driver;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use App\Jobs\ProcessImageUpload;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Imagick\Driver;
 
 class NewsController extends Controller
 {
@@ -19,18 +20,25 @@ class NewsController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        $sub_cates = SubCategory::all();
+        $news = News::latest()->get();
         return view('layouts.newsDashboard.news.index', [
-            'categories' => $categories,
-            'sub_cates' => $sub_cates
+            'news' => $news
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {}
+    public function create(News $news)
+    {
+
+        $categories = Category::all();
+        $sub_cates = SubCategory::all();
+        return view('layouts.newsDashboard.news.create', [
+            'categories' => $categories,
+            'sub_cates' => $sub_cates,
+        ]);
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -53,21 +61,26 @@ class NewsController extends Controller
         $imageManager = new ImageManager(new Driver());
         $originalFile = $request->file('thumbnail');
 
-         // Load watermark image
+        // // Load watermark image
         $watermark1 = $imageManager->read(public_path('uploads/water_mark/water_mark_p.png'));
-        $watermark2 = $imageManager->read(public_path('uploads/water_mark/water_mark_t.png'));
 
         // 🔸 1. Save full-sized image
+
+        // Process new image
+        $job = new ProcessImageUpload(
+            $request->file('thumbnail'),
+            'uploads/news_thumbs/',
+            650,
+            365,
+            50,
+            'uploads/water_mark/water_mark_t.png'
+        );
+
+        // Save $path to DB or whatever you need
         $news_name = Str::random(5) . time() . '.' . $originalFile->getClientOriginalExtension();
         $fullImage = $imageManager->read($originalFile)->resize(1280, 720);
         $fullImage->place($watermark1, 'bottom'); // position: bottom-right with padding
         $fullImage->save(public_path('uploads/news_photos/' . $news_name), quality: 70);
-
-        // 🔸 2. Save thumbnail from the same uploaded file — no second input needed
-        $thumb_name = 'thumb_' . $news_name;
-        $thumbnail = $imageManager->read($originalFile)->resize(650, 365);
-        $thumbnail->place($watermark2, 'bottom');
-        $thumbnail->save(public_path('uploads/news_thumbs/' . $thumb_name), quality: 50);
 
         $data = [
             'title' => $request->title,
@@ -77,19 +90,19 @@ class NewsController extends Controller
             'category_id' => $request->category_id,
             'sub_cate_id' => $request->sub_cate_id,
             'image_title' => $request->image_title,
-            'url' => $request->url,
-            'thumbnail' => $thumb_name,
             'news_photo' => $news_name,
+            'url' => $request->url,
             'status' => $request->status,
             'created_at' => now(),
             'updated_at' => null
         ];
 
+        $data['thumbnail'] = $job->handle();
+
         DB::table('news')->insert($data);
 
 
         return back()->with('news_created', 'News Created Successfully');
-
     }
 
     /**
@@ -97,7 +110,9 @@ class NewsController extends Controller
      */
     public function show(News $news)
     {
-        //
+        return view('layouts.newsDashboard.news.show',[
+            'news' => $news
+        ]);
     }
 
     /**
@@ -121,6 +136,7 @@ class NewsController extends Controller
      */
     public function destroy(News $news)
     {
-        //
+        $news->delete();
+        return back()->with('news_delete', 'News Deleted');
     }
 }

@@ -11,9 +11,17 @@ class SubCategory extends Model
 
     protected $guarded = [];
 
+    // for category table one to one relation
     public function category(){
         return $this->belongsTo(Category::class);
     }
+
+    // for NewsSubCate table one to one relation
+    public function newsSubCate(){
+        return $this->hasOne(News::class);
+    }
+
+
 
 
 }
