@@ -30,4 +30,9 @@ class News extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function editUser()
+    {
+        return $this->belongsTo(User::class, 'update_by_user');
+    }
+
 }

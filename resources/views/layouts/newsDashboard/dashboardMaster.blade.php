@@ -189,6 +189,12 @@
                                     <span class="hide-menu">Watermart</span>
                                 </a>
                             </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('invitations.index') }}" >
+                                    <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
+                                    <span class="hide-menu">Invite Member</span>
+                                </a>
+                            </li>
                         @endif
                     </ul>
 

@@ -63,9 +63,9 @@ class BreakingNewsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(breaking_news $breakingnews)
+    public function edit(breaking_news $breakingNews)
     {
-        return view('layouts.newsDashboard.breaking_news.edit', ['breaking' => $breakingnews]);
+        return view('layouts.newsDashboard.breaking_news.edit', ['breakings' => $breakingNews]);
     }
 
     /**

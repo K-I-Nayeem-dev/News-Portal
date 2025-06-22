@@ -35,13 +35,13 @@
                         <div class="card">
                             <h5 class="card-header text-white" style="background-color: #1B84FF">Edit Breaking News</h5>
                             <div class="card-body">
-                                <form method="POST" action="{{ route('breaking_news.update', $breaking->id) }}">
+                                <form method="POST" action="{{ route('breaking_news.update', $breakings->id) }}">
                                     @csrf
-                                    @method('put')
+                                    @method('PUT')
                                     <div>
                                         <label for="BN" class="form-label">Edit Headline</label>
 
-                                        <textarea name="breaking_news" id="BN" rows="5" class="form-control" autocomplete="off" >{{ old('breaking_news', $breaking->news) }}</textarea>
+                                        <textarea name="breaking_news" id="BN" rows="5" class="form-control" autocomplete="off" >{{ old('breaking_news', $breakings->news) }}</textarea>
 
                                         @error('breaking_news')
                                             <p class="text-danger mt-2">{{ $message }}</p>
@@ -52,9 +52,9 @@
                                         <label class="form-label" for="status">Status</label>
                                         <select class="form-select" name="status" id="status" autocomplete="off">
                                             <option value="">Select Status</option>
-                                            <option value="1" {{ $breaking->status == 1 ? 'selected' : '' }}>Active
+                                            <option value="1" {{ $breakings->status == 1 ? 'selected' : '' }}>Active
                                             </option>
-                                            <option value="0" {{ $breaking->status == 0 ? 'selected' : '' }}>Deactive
+                                            <option value="0" {{ $breakings->status == 0 ? 'selected' : '' }}>Deactive
                                             </option>
                                         </select>
 

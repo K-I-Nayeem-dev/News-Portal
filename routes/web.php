@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BreakingNewsController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubCategoryController;
@@ -58,6 +59,7 @@ Route::resources([
     'breaking_news' => BreakingNewsController::class,
     'sub_categories' => SubCategoryController::class,
     'watermark' => WatermarkController::class,
+    'invitations' => InvitationController::class,
 ]);
 
 // test

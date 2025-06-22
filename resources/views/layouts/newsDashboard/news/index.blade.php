@@ -40,6 +40,9 @@
                             @if (session('news_delete'))
                                 <div class="alert alert-danger mt-3 text-center">{{ session('news_delete') }}</div>
                             @endif
+                            @if (session('status_update'))
+                                <div class=" alert alert-success mt-3 text-center">{{ session('status_update') }}</div>
+                            @endif
                             <table class="table table-striped-columns table-bordered">
                                 <thead>
                                     <tr>
@@ -48,7 +51,7 @@
                                         <th scope="col">Thumbnail</th>
                                         <th scope="col">Title</th>
                                         <th scope="col">Category</th>
-                                        <th scope="col">Action</th>
+                                        <th scope="col">Actions</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Created At</th>
                                     </tr>
@@ -59,17 +62,38 @@
                                             <a href="{{ route('news.show', $new->id) }}">
                                                 <td>{{ ++$key }}</td>
                                                 <td>{{ $new->newsUser->name }} {!! Auth::id() == $new->newsUser->id ? '<sup><code style="font-size: 12px">*</code></sup>' : '' !!}</td>
-                                                <td class="text-center"><img src="{{ $new->thumbnail }}" width="120" height="80" alt=""></td>
+                                                <td class="text-center"><img src="{{ $new->thumbnail }}" width="120"
+                                                        height="80" alt=""></td>
                                                 <td>{{ $new->title }}</td>
                                                 <td>{{ $new->newsCategory->category_name }}</td>
                                                 <td class="d-flex justify-content-between align-items-center">
-                                                    <a class="btn btn-sm btn-success rounded" href="{{ route('news.show', $new->id) }}"><i class="fa-solid fa-eye"></i></a>
-                                                    <a class="btn btn-sm btn-primary rounded" href="{{ route('news.edit', $new->id) }}"><i class="fa-solid fa-pen-to-square"></i></a>
-                                                    <form method="POST" action="{{ route('news.destroy', $new->id) }}" onsubmit="return confirm('Are you sure you want to delete this?')">
+                                                    <a class="btn btn-sm btn-success rounded"
+                                                        href="{{ route('news.show', $new->id) }}"><i
+                                                            class="fa-solid fa-eye"></i></a>
+                                                    <a class="btn btn-sm btn-primary rounded"
+                                                        href="{{ route('news.edit', $new->id) }}"><i
+                                                            class="fa-solid fa-pen-to-square"></i></a>
+                                                    <form method="POST" action="{{ route('news.destroy', $new->id) }}"
+                                                        onsubmit="return confirm('Are you sure you want to delete this?')">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button class="btn btn-sm btn-danger rounded"><i style="color: white" class="fa-solid fa-trash"></i></button>
+                                                        <button class="btn btn-sm btn-danger rounded"><i
+                                                                style="color: white" class="fa-solid fa-trash"></i></button>
                                                     </form>
+                                                </td>
+                                                <td>
+                                                    <form method="POST" action="{{ route('news.update', $new->id) }}">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <select class="form-select" name="status" id="status" autocomplete="off"  onchange="this.form.submit()">
+                                                            <option value="">Select Status</option>
+                                                            <option value="1" class="bg-success" {{ $new->status == 1 ? 'selected' : ''}}>Active</option>
+                                                            <option value="0" class="bg-danger" {{ $new->status == 0 ? 'selected' : ''}}>Deactive</option>
+                                                        </select>
+                                                    </form>
+                                                </td>
+                                                <td>
+                                                    <p>{{ $new->created_at->diffForHumans() }}</p>
                                                 </td>
                                             </a>
                                         </tr>

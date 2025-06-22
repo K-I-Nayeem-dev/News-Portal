@@ -47,4 +47,9 @@ class User extends Authenticatable
         return $this->hasOne(News::class);
     }
 
+    // for news table one to one relation
+    public function editUser(){
+        return $this->hasOne(News::class);
+    }
+
 }
