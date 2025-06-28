@@ -37,11 +37,7 @@
                         Featured
                     </div>
                     <div class="card-body">
-                        <marquee scrollamount="10" behavior="scroll" direction="left">
-                            <h5 class="card-title">WelCome</h5>
-                            <p class="card-text">Khanki Sajid  Khanki Sajid Khanki Sajid Khanki Sajid Khanki Sajid</p>
-                            <a href="#" class="btn btn-primary">Just fuck Off</a>
-                        </marquee>
+                        
                     </div>
                 </div>
 
