@@ -7,6 +7,7 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\TestController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\WatermarkController;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -53,6 +54,7 @@ Route::controller(ProfileController::class)->prefix('profile')->group(function (
     Route::get('/', 'index')->name('profile.index');
 });
 
+// Resource Urls
 Route::resources([
     'news' => NewsController::class,
     'categories' => CategoryController::class,
@@ -61,6 +63,17 @@ Route::resources([
     'watermark' => WatermarkController::class,
     'invitations' => InvitationController::class,
 ]);
+
+
+
+Route::controller(UserController::class)->prefix('user')->middleware('auth')->group(function () {
+    Route::get('/', 'index')->name('user.index');
+    Route::get('/create', 'create')->name('user.create');
+    Route::post('/store', 'store')->name('user.store');
+    Route::post('/{id}/edit', 'edit')->name('user.edit');
+    Route::put('/{id}/update', 'update')->name('user.update');
+    Route::delete('/{id}', 'destroy')->name('user.destory');
+});
 
 // test
 // Route::get('/test',[TestController::class, 'test']);

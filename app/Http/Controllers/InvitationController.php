@@ -19,7 +19,7 @@ class InvitationController extends Controller
      */
     public function index()
     {
-        $users = User::latest()->paginate(15);
+        $users = User::orderBy('name' , 'ASC')->latest()->paginate(15);
         return view('layouts.newsDashboard.invite.index', [
             'users' => $users,
         ]);

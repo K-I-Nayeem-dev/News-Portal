@@ -78,35 +78,37 @@
                     <div class="card">
                         <h5 class="card-header text-white" style="background-color: #1B84FF">All Users</h5>
                         <div class="card-body">
-                            <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">First</th>
-                                <th scope="col">Last</th>
-                                <th scope="col">Handle</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td colspan="2">Larry the Bird</td>
-                                <td>@twitter</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                            <table class="table table-striped text-left">
+                                <thead>
+                                    <tr style="font-size: 12px">
+                                        <th scope="col">SL</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Role</th>
+                                        <th scope="col">Invited By Admin</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($users as $key => $user)
+                                        <tr style="font-size: 12px">
+                                            <th>{{ ++$key }}</th>
+                                            <td>{{ $user->name }}</td>
+                                            <td>{{ $user->email }}</td>
+                                            <td>{{ $user->role ? $user->role : 'Not Define' }}</td>
+                                            <td class="text-center">
+                                                {!! $user->invited_user !== null
+                                                    ? '<i class="fa-solid fa-check text-green-500"></i>'
+                                                    : '<i class="fa-solid fa-xmark text-red-500"></i>' !!}
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('') }}" onclick="confirm('Are you sure you want to delete this user ' . $user->name)">delete</a>
+                                                <a href="#"></a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
