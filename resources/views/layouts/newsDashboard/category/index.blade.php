@@ -93,7 +93,7 @@
                                         <tr>
                                             <th class="text-center" scope="row">{{ ++$key }}</th>
                                             <td>{{ $category->category_name }}</td>
-                                            <td class="d-flex  justify-content-around">
+                                            <td class="d-flex  justify-content-around align-items-center">
                                                 <a class="btn btn-sm btn-primary"
                                                     href="{{ route('categories.edit', $category->id) }}"><i
                                                         class="fa-solid fa-pen-to-square"></i></a>

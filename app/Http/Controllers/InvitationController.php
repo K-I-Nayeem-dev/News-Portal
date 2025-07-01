@@ -19,7 +19,7 @@ class InvitationController extends Controller
      */
     public function index()
     {
-        $users = User::orderBy('name' , 'ASC')->latest()->paginate(15);
+        $users = User::orderBy('name', 'ASC')->latest()->paginate(15);
         return view('layouts.newsDashboard.invite.index', [
             'users' => $users,
         ]);
@@ -36,59 +36,7 @@ class InvitationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        $validator = Validator::make(
-            $request->all(),
-            [
-                'name' => 'required|min:3',
-                'email' => 'required|unique:users,email,',
-            ],
-            [
-                'name' => 'Name field is required.',
-            ]
-        );
-
-        // password genarated for invited User
-        $password = Str::random(5) . rand(0, 999) . Str::random(5) . rand(0, 999);
-
-
-        if ($validator->passes()) {
-
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'invited_user' => 0,
-                'password' => Hash::make($password),
-                'created_at' => now(),
-                'updated_at' => null
-            ]);
-
-            invitation::create([
-                'invited_by' => Auth::id(),
-                'name' => $request->name,
-                'email' => $request->email,
-                'status' => 0,
-                'created_at' => now(),
-                'updated_at' => null
-            ]);
-
-
-            $maildata = [
-                'id' => $user->id,
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => $password
-            ];
-
-            // dd($maildata);
-            Mail::to($request->email)->send(new InviteUser($maildata));
-
-            return back()->with('invite_send', 'Invite Request Send To ' . $request->name . ' ');
-        } else {
-            return back()->withInput()->withErrors($validator);
-        }
-    }
+    public function store(Request $request) {}
 
     /**
      * Display the specified resource.

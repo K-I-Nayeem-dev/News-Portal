@@ -34,7 +34,7 @@
                     <div class="card">
                         <h5 class="card-header text-white" style="background-color: #1B84FF">Create User</h5>
                         <div class="card-body">
-                            <form method="POST" action="{{ route('invitations.store') }}">
+                            <form method="POST" action="{{ route('user.store') }}">
 
                                 @csrf
 
@@ -86,7 +86,7 @@
                                         <th scope="col">Email</th>
                                         <th scope="col">Role</th>
                                         <th scope="col">Invited By Admin</th>
-                                        <th scope="col">Actions</th>
+                                        <th scope="col" class="text-center">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -101,9 +101,18 @@
                                                     ? '<i class="fa-solid fa-check text-green-500"></i>'
                                                     : '<i class="fa-solid fa-xmark text-red-500"></i>' !!}
                                             </td>
-                                            <td>
-                                                <a href="{{ route('') }}" onclick="confirm('Are you sure you want to delete this user ' . $user->name)">delete</a>
-                                                <a href="#"></a>
+                                            <td width='100px'>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <a href="{{ route('user.edit', $user->id) }}" class="btn btn-sm btn-primary rounded"><i class="fa fa-edit" aria-hidden="true"></i></a>
+
+                                                    <form method="POST"
+                                                        action="{{ route('user.destroy', $user->id) }}"
+                                                        onsubmit="confirm('Are you sure you want to delete {{ $user->name }}?')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-sm btn-danger"><i style="color: white" class="fa-solid fa-trash"></i></button>
+                                                    </form>
+                                                </div>
                                             </td>
                                         </tr>
                                     @endforeach

@@ -61,7 +61,7 @@ Route::resources([
     'breaking_news' => BreakingNewsController::class,
     'sub_categories' => SubCategoryController::class,
     'watermark' => WatermarkController::class,
-    'invitations' => InvitationController::class,
+    // 'invitations' => InvitationController::class,
 ]);
 
 
@@ -70,9 +70,10 @@ Route::controller(UserController::class)->prefix('user')->middleware('auth')->gr
     Route::get('/', 'index')->name('user.index');
     Route::get('/create', 'create')->name('user.create');
     Route::post('/store', 'store')->name('user.store');
-    Route::post('/{id}/edit', 'edit')->name('user.edit');
+    Route::get('/{id}/edit', 'edit')->name('user.edit');
     Route::put('/{id}/update', 'update')->name('user.update');
-    Route::delete('/{id}', 'destroy')->name('user.destory');
+    Route::delete('/{id}/destroy', 'destroy')->name('user.destroy');
+    Route::get('/{id}/resetphone', 'resetPhone')->name('user.phone.reset');
 });
 
 // test

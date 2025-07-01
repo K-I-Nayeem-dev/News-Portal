@@ -192,7 +192,7 @@
                                 </a>
                             </li>
                             <li class="sidebar-item">
-                                <a class="sidebar-link" href="{{ route('invitations.index') }}">
+                                <a class="sidebar-link" href="{{ route('user.index') }}">
                                     <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
                                     <span class="hide-menu">Invite Member</span>
                                 </a>
