@@ -8,8 +8,9 @@
 </head>
 <body>
     <h1>Hi {{ $maildata['name'] }}</h1>
-    <h3>Your Email: {{ $maildata['email'] }}</h3>
-    <h3>Your Password: {{ $maildata['password'] }}</h3>
-    <a href="{{ route('invitations.edit' , $maildata['id']) }}">Request Pending</a>
+    <h2>Your Login Information</h2>
+    <h3>Email: {{ $maildata['email'] }}</h3>
+    <h3>Password: {{ $maildata['password'] }}</h3>
+    <a href="{{ route('login') }}">Login</a>
 </body>
 </html>

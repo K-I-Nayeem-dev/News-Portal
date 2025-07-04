@@ -121,7 +121,7 @@ class UserController extends Controller
             'phone_number' => 'required',
 
         ]);
-        
+
         $user = User::findOrFail($id);
 
         if ($request->has('reset_phone')) {
@@ -152,10 +152,8 @@ class UserController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->delete();
+        return back()->with('user_delete', 'User Deleted');
     }
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function resetPhone(string $id) {}
 }
