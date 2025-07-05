@@ -60,7 +60,7 @@
                                     @forelse ($news as $key => $new)
                                         <tr>
                                             <a href="{{ route('news.show', $new->id) }}">
-                                                <td>{{ ++$key }}</td>
+                                                <td>{{ $new->id }}</td>
                                                 <td>{{ $new->newsUser->name }} {!! Auth::id() == $new->newsUser->id ? '<sup><code style="font-size: 12px">*</code></sup>' : '' !!}</td>
                                                 <td class="text-center"><img src="{{ $new->thumbnail }}" width="120"
                                                         height="80" alt=""></td>

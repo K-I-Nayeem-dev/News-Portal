@@ -17,7 +17,12 @@
                                         <a class="text-muted text-decoration-none" href="{{ route('dashboard') }}">Home
                                         </a>
                                     </li>
-                                    <li class="breadcrumb-item text-muted" aria-current="page">All News</li>
+                                    <li class="breadcrumb-item">
+                                        <a class="text-muted text-decoration-none" href="{{ route('news.index') }}">All News
+                                        </a>
+                                    </li>
+                                    <li class="breadcrumb-item text-muted" aria-current="page">News : {{ $news->id }}
+                                    </li>
                                 </ol>
                             </nav>
                         </div>
@@ -38,7 +43,8 @@
                                 News : {{ $news->id }}
 
                                 @if ($news->updated_at && Auth::user()->role == 'admin')
-                                    <span class="ms-3">Edited By : {{ $news->editUser->name . ' AT ' . $news->updated_at->timezone('Asia/Dhaka')->format('l, d F Y' . ' ' . 'g:i A') }}</span>
+                                    <span class="ms-3">Edited By :
+                                        {{ $news->editUser->name . ' AT ' . $news->updated_at->timezone('Asia/Dhaka')->format('l, d F Y' . ' ' . 'g:i A') }}</span>
                                 @elseif($news->updated_at)
                                     <span class="ms-3">Edited</span>
                                 @endif
@@ -51,7 +57,9 @@
                         </h5>
                         <div class="card-body">
                             <div>
-                                <p style="font-size: 24px; border-bottom: 2px #768B9E solid;  display: inline-block; margin-bottom: 5px">{{ $news->newsCategory->category_name }}</p>
+                                <p
+                                    style="font-size: 24px; border-bottom: 2px #768B9E solid;  display: inline-block; margin-bottom: 5px">
+                                    {{ $news->newsCategory->category_name }}</p>
                                 <h1 class="m-0 p-0">{{ $news->title }}</h1>
                                 <p style="font-size: 14px;">{{ $news->news_source }}</p>
 
@@ -70,37 +78,47 @@
                             </div>
                             <hr>
                             <div>
-                                <img src="{{ asset('uploads/news_photos/'. $news->news_photo ) }}" class="w-100 h-100" alt="">
+                                <img src="{{ asset('uploads/news_photos/' . $news->news_photo) }}" class="w-100 h-100"
+                                    alt="">
                                 <p style="font-size: 14px" class="text-center">{{ $news->image_title }}</p>
                             </div>
 
                             @php
 
-                            $minLength = 300;
-                            $maxLength = 500;
-                            $currentLength = 0;
-                            $output = '';
-                            $adHtml = '<div class="ad-block">[AD]</div>';
+                                $minLength = 300;
+                                $maxLength = 500;
+                                $currentLength = 0;
+                                $output = '';
+                                $adHtml = '<div class="ad-block">[AD]</div>';
 
-                            // Split paragraph into sentences
-                            $sentences = preg_split('/(?<=[.?!])\s+/', $news->paragraph, -1, PREG_SPLIT_NO_EMPTY);
+                                // Split paragraph into sentences
+                                $sentences = preg_split('/(?<=[.?!])\s+/', $news->paragraph, -1, PREG_SPLIT_NO_EMPTY);
 
-                            foreach ($sentences as $sentence) {
-                                $output .= $sentence . ' ';
-                                $currentLength += strlen($sentence);
+                                foreach ($sentences as $sentence) {
+                                    $output .= $sentence . ' ';
+                                    $currentLength += strlen($sentence);
 
-                                if ($currentLength >= $minLength && $currentLength <= $maxLength) {
-                                    $output .= $adHtml . "\n";
-                                    $currentLength = 0; // Reset counter after inserting ad
+                                    if ($currentLength >= $minLength && $currentLength <= $maxLength) {
+                                        $output .= $adHtml . "\n";
+                                        $currentLength = 0; // Reset counter after inserting ad
+                                    }
                                 }
-                            }
 
-                            echo nl2br(trim($output)); // Add <br> for newlines in browser
+                                echo nl2br(trim($output)); // Add <br> for newlines in browser
                             @endphp
 
+                            @if ($news_photos->isNotEmpty())
+                                @foreach ($news_photos as $photo)
+                                    <div class="my-4">
+                                        <img src="{{ asset('uploads/news_related_photos/' . $photo->photo) }}"
+                                            class="w-100 h-100" alt="{{ $news->title }}">
+                                    </div>
+                                @endforeach
+                            @endif
                             @if ($news->url)
                                 <div class="ratio ratio-16x9 my-4">
-                                    <iframe src="https://www.youtube.com/embed/{{ $news->url }}" title="Responsive iframe" allowfullscreen></iframe>
+                                    <iframe src="https://www.youtube.com/embed/{{ $news->url }}"
+                                        title="Responsive iframe" allowfullscreen></iframe>
                                 </div>
                             @endif
                             <div class="d-flex justify-content-center">

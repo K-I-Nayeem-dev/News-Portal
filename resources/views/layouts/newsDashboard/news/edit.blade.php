@@ -17,7 +17,14 @@
                                         <a class="text-muted text-decoration-none" href="{{ route('dashboard') }}">Home
                                         </a>
                                     </li>
-                                    <li class="breadcrumb-item text-muted" aria-current="page">News Create</li>
+                                    <li class="breadcrumb-item">
+                                        <a class="text-muted text-decoration-none" href="{{ route('news.index') }}">All News
+                                        </a>
+                                    </li>
+                                    <li class="breadcrumb-item " aria-current="page">
+                                        <a class="text-muted" href="{{ route('news.show', $news->id) }}">News : {{ $news->id }}</a>
+                                    </li>
+                                    <li class="breadcrumb-item text-muted" aria-current="page">Edit News</li>
                                 </ol>
                             </nav>
                         </div>

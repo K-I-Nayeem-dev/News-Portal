@@ -13,6 +13,8 @@ use App\Jobs\ProcessImageUpload;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Imagick\Driver;
 use App\Jobs\ConvertDateToBangla;
+use App\Models\news_photo;
+use App\Models\watermark;
 
 class NewsController extends Controller
 {
@@ -58,12 +60,20 @@ class NewsController extends Controller
             'status' => 'required'
         ]);
 
-        // Image Upload process
+
+        // // This is dynamic watermark
+        $watermark = watermark::where('status', 1)->first();
+        // check that watermark found or missing
+        if (!$watermark || !file_exists(public_path($watermark->watermark))) {
+            return back()->withErrors(['Thumbnail Watermark not found or file missing.']);
+        }
+
+        // // Image Upload process
         $imageManager = new ImageManager(new Driver());
         $originalFile = $request->file('thumbnail');
 
-        // // Load watermark image
-        $watermark1 = $imageManager->read(public_path('uploads/water_mark/water_mark_p.png'));
+        // // // Load watermark image
+        $watermark1 = $imageManager->read(public_path($watermark->watermark));
 
         // 🔸 1. Save full-sized image
 
@@ -78,7 +88,7 @@ class NewsController extends Controller
         );
 
         // Save $path to DB or whatever you need
-        $news_name = Str::random(5) . time() . '.' . $originalFile->getClientOriginalExtension();
+        $news_name =  uniqid() . '_'. time() . '.' . $originalFile->getClientOriginalExtension();
         $fullImage = $imageManager->read($originalFile)->resize(1280, 720);
         $fullImage->place($watermark1, 'bottom'); // position: bottom-right with padding
         $fullImage->save(public_path('uploads/news_photos/' . $news_name), quality: 70);
@@ -98,12 +108,40 @@ class NewsController extends Controller
             'updated_at' => null
         ];
 
+        // upload image thumbnail
         $data['thumbnail'] = $job->handle();
 
-        DB::table('news')->insert($data);
+        // Store data and get news_id for upload multiple image in database
+        $news_id = DB::table('news')->insertGetId($data);
 
 
+        if ($request->has('news_photos')) {
+
+            // upload multiple image if multiple photos choosen
+            foreach ($request->file('news_photos') as $photo) {
+                $news_photo_name =  uniqid() . '_'  . time() . '.' . $photo->getClientOriginalExtension();
+
+                // ✅ Fix: Use getPathname() to read file safely
+                $fullImage1 = $imageManager->read($photo)->resize(650, 365);
+                $fullImage1->place($watermark1, 'bottom');
+                $fullImage1->save(public_path('uploads/news_related_photos/' . $news_photo_name), quality: 50);
+
+                news_photo::create([
+                    'user_id' => Auth::id(),
+                    'news_id' => $news_id,
+                    'photo' => $news_photo_name,
+                    'created_at' => now(),
+                    'updated_at' => null,
+                ]);
+            }
+
+        }
+
+
+        // return back to news created page
         return back()->with('news_created', 'News Created Successfully');
+
+
     }
 
     /**
@@ -116,10 +154,14 @@ class NewsController extends Controller
         $job = new ConvertDateToBangla($datetime);
         $job->handle();  // run immediately, so we get result
 
+        $news_photos = news_photo::where('news_id', $news->id)->get();
+
+
         $banglaDateTime = $job->result;
         return view('layouts.newsDashboard.news.show', [
             'news' => $news,
-            'banglaTime' => $banglaDateTime
+            'banglaTime' => $banglaDateTime,
+            'news_photos' => $news_photos
         ]);
     }
 

@@ -117,8 +117,6 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|unique:users,email,' . $id . ',id',
-            'role' => 'required',
-            'phone_number' => 'required',
 
         ]);
 
@@ -143,7 +141,7 @@ class UserController extends Controller
             $user->role = $request->role;
             $user->save();
 
-            return back()->with('success', 'User Update Successfully');
+            return back()->with('user_update', 'User Update Successfully');
         }
     }
 

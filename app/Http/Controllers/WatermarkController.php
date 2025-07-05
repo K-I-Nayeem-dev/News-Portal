@@ -14,7 +14,7 @@ class WatermarkController extends Controller
      */
     public function index()
     {
-        $watermarks = watermark::all();
+        $watermarks = watermark::orderBy('watermark', 'ASC')->get();
         return view('layouts.newsDashboard.watermark.index', [
             'watermarks' => $watermarks,
         ]);
@@ -51,35 +51,37 @@ class WatermarkController extends Controller
 
         if ($request->hasFile('watermark')) {
 
-            // If old watermark exists, delete old file
-            if ($existing && $existing->watermark && file_exists(public_path($existing->watermark))) {
-                unlink(public_path($existing->watermark));
-            }
+            // // If old watermark exists, delete old file
+            // if ($existing && $existing->watermark && file_exists(public_path($existing->watermark))) {
+            //     unlink(public_path($existing->watermark));
+            // }
 
             // Process new image
             $job = new ProcessImageUpload(
                 $request->file('watermark'),
                 'uploads/water_mark/',
-                120,
-                120,
-                70,
+                1280,
+                40,
+                90,
             );
 
-            $data['watermark'] = $job->handle();
 
-            if ($existing) {
-                // Update existing watermark record
-                $data['updated_at'] = now();
-                DB::table('watermarks')->where('id', $existing->id)->update($data);
-            } else {
-                // Insert new watermark record
-                DB::table('watermarks')->insert($data);
-            }
+            $data['watermark'] = $job->handle();
+            DB::table('watermarks')->insert($data);
+
+            // if ($existing) {
+            //     // Update existing watermark record
+            //     $data['updated_at'] = now();
+            //     DB::table('watermarks')->where('id', $existing->id)->update($data);
+            // } else {
+            //     // Insert new watermark record
+            // DB::table('watermarks')->insert($data);
+            // }
 
         }
-        
 
-        return 'ok';
+
+        return back()->with('add_watermart', 'Watermart Added Successfully');
     }
 
     /**
@@ -93,17 +95,25 @@ class WatermarkController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(watermark $watermark)
-    {
-        //
-    }
+    public function edit(watermark $watermark) {}
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, watermark $watermark)
     {
-        //
+        $id = watermark::where('id', $watermark->id)->first();
+
+        if ($request->status == 1) {
+            watermark::query()->update(['status' => 0]);
+            watermark::where('id', $id->id)->update(['status' => 1]);
+            return back();
+        } else {
+            return back();
+        }
+
+
+        // watermark::where('id');
     }
 
     /**
@@ -111,6 +121,15 @@ class WatermarkController extends Controller
      */
     public function destroy(watermark $watermark)
     {
-        //
+
+        $existing = watermark::where('id', $watermark->id)->first();
+
+        // If old watermark exists, delete old file
+        if ($existing && $existing->watermark && file_exists(public_path($existing->watermark))) {
+            unlink(public_path($existing->watermark));
+        }
+        $watermark->delete();
+
+        return back()->with('watermarkdelete', 'Watermart Delete');
     }
 }

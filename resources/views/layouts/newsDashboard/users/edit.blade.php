@@ -17,7 +17,7 @@
                                         <a href="{{ route('user.index') }}" class="text-muted text-decoration-none"
                                             href="">Users</a>
                                     </li>
-                                    <li class="breadcrumb-item text-muted" aria-current="page">User Edit</li>
+                                    <li class="breadcrumb-item text-muted" aria-current="page">Edit</li>
                                     <li class="breadcrumb-item text-muted" aria-current="page">{{ $user->name }}</li>
                                 </ol>
                             </nav>
@@ -77,10 +77,6 @@
                                         <input id='role' type="role" class="form-control" name="role"
                                             value="{{ old('role', $user->role) }}" autocomplete="off">
 
-                                        @error('role')
-                                            <p class="text-danger mt-2">{{ $message }}</p>
-                                        @enderror
-
                                     </div>
                                     @if ($user->phone_number)
                                         <div class="mt-3 d-flex justify-content-start">
@@ -118,11 +114,23 @@
                                         class="btn text-white mt-3">Update</button>
                                     <a class="btn btn-primary mt-3 ms-2" href="{{ route('user.index') }}">Back</a>
 
+                                    @if (session('user_update'))
+                                        <div x-data="{
+                                            show: true,
+                                            init() {
+                                                setTimeout(() => {
+                                                    this.show = false;
+                                                }, 3000);
+                                            }
+                                        }" x-init="init">
+                                            <div x-show="show" x-transition
+                                                class="p-4 bg-green-200 alert alert-success mt-3">
+                                                {{ session('user_update') }}
+                                            </div>
+                                        </div>
+                                    @endif
                                 </form>
                             </div>
-                            @if (session('success'))
-                                <div class=" alert alert-success mt-3 ">{{ session('success') }}</div>
-                            @endif
                         </div>
                     </div>
                 </div>

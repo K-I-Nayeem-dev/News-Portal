@@ -2115,6 +2115,7 @@
     <!-- Import Js Files -->
     {{-- <script src="{{ asset('dashboard_assets') }}/js/breadcrumb/breadcrumbChart.js"></script> --}}
     {{-- <script src="{{ asset('dashboard_assets') }}/libs/apexcharts/dist/apexcharts.min.js"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script src="{{ asset('dashboard_assets') }}/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('dashboard_assets') }}/libs/simplebar/dist/simplebar.min.js"></script>
     <script src="{{ asset('dashboard_assets') }}/js/theme/app.init.js"></script>

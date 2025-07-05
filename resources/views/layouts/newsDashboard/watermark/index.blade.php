@@ -17,7 +17,7 @@
                                         <a class="text-muted text-decoration-none" href="{{ route('dashboard') }}">Home
                                         </a>
                                     </li>
-                                    <li class="breadcrumb-item text-muted" aria-current="page">News Create</li>
+                                    <li class="breadcrumb-item text-muted" aria-current="page">Watermark</li>
                                 </ol>
                             </nav>
                         </div>
@@ -30,7 +30,7 @@
             <!-- -------------------------------------------------------------- -->
             <!-- Row -->
             <div class="row">
-                <div class="offset-lg-2 offset-md-2 offset-sm-2 col-lg-8 col-sm-8 col-md-8">
+                <div class="col-lg-6 col-sm-6 col-md-6">
                     <div class="card">
                         <h5 class="card-header text-white" style="background-color: #1B84FF">Create Water Mark</h5>
                         <div class="card-body">
@@ -60,6 +60,7 @@
                                         <option value="">Select Status</option>
                                         <option value="1">Active</option>
                                         <option value="0">Deactive</option>
+
                                     </select>
 
                                     @error('status')
@@ -72,13 +73,91 @@
 
                             </form>
 
-                            @if (session('news_created'))
-                                <div class=" alert alert-success mt-3 ">{{ session('news_created') }}</div>
+                            @if (session('add_watermart'))
+                                <div x-data="{
+                                    show: true,
+                                    init() {
+                                        setTimeout(() => {
+                                            this.show = false;
+                                        }, 3000);
+                                    }
+                                }" x-init="init">
+                                    <div x-show="show" x-transition class="p-4 bg-green-200 alert alert-success mt-3">
+                                        {{ session('add_watermart') }}
+                                    </div>
+                                </div>
                             @endif
-                            @if ($watermarks->count() > 0)
-                            @else
+                            @if (session('watermarkdelete'))
+                                <div x-data="{
+                                    show: true,
+                                    init() {
+                                        setTimeout(() => {
+                                            this.show = false;
+                                        }, 3000);
+                                    }
+                                }" x-init="init">
+                                    <div x-show="show" x-transition class="p-4 bg-green-200 alert alert-danger mt-3">
+                                        {{ session('watermarkdelete') }}
+                                    </div>
+                                </div>
                             @endif
 
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-sm-6 col-md-6">
+                    <div class="card">
+                        <h5 class="card-header text-white" style="background-color: #1B84FF">All Watermarks</h5>
+
+                        <div class="card-body">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">SL</th>
+                                        <th scope="col">Watermark Image</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse ($watermarks as $key => $watermark)
+                                        <tr>
+                                            <th scope="row">{{ ++$key }}</th>
+                                            <td><img width="300" height="20" src="{{ asset($watermark->watermark) }} "
+                                                    alt="{{ $watermark->watermark }}"></td>
+                                            <td>
+                                                <form method="POST" action="{{ route('watermark.update', $watermark->id) }}">
+                                                    @csrf
+                                                    @method("PUT")
+                                                    <select name="status" class="form-select" id="watermark" onchange="this.form.submit()">
+                                                        <option value="">Select Status</option>
+                                                        <option {{ $watermark->status == 1 ? 'selected' : '' }}
+                                                            value="1">
+                                                            Active</option>
+                                                        <option {{ $watermark->status == 0 ? 'selected' : '' }}
+                                                            value="0">
+                                                            Deactive</option>
+                                                    </select>
+                                                </form>
+                                            </td>
+                                            <td class="text-center">
+                                                <form method="POST"
+                                                    action="{{ route('watermark.destroy', $watermark->id) }}"
+                                                    onsubmit="confirm('Are you sure you want to delete?')">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="btn btn-sm btn-danger"><i style="color: white"
+                                                            class="fa-solid fa-trash"></i></button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center"><code>No Watermark Found</code></td>
+                                        </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

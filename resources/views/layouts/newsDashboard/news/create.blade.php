@@ -106,7 +106,8 @@
 
                                 <div class="mt-3">
 
-                                    <label class='form-label' for="url">Only Youtube Video Url ID <code>(Optional)</code></label>
+                                    <label class='form-label' for="url">Only Youtube Video Url ID
+                                        <code>(Optional)</code></label>
                                     <input name="url" id="url" class="form-control" autocomplete="off"
                                         value="{{ old('url') }}">
                                 </div>
@@ -117,6 +118,16 @@
                                                 style="font-size: 12px">*</code></sup> (Max 1 MB Size)</label>
                                     <input type="file" name="thumbnail" id="thumbnail" class="form-control"
                                         autocomplete="off" value="{{ old('thumbnail') }}">
+
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger mt-3 text-sm">
+                                            <ul class="mb-0">
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
 
                                     @error('thumbnail')
                                         <p class="text-danger mt-2">{{ $message }}</p>
