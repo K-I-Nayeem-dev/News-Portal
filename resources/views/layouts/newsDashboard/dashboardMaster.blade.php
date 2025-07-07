@@ -74,14 +74,15 @@
                             @else
                                 <img style="border-radius: 50%" width="50" height="50"
                                     src="{{ asset('uploads/profile_pictures/' . Auth::user()->profile_picture) }}"
-                                    alt="{{ Auth::user()->name  }}">
+                                    alt="{{ Auth::user()->name }}">
                             @endif
                         </div>
                         <!-- User profile text-->
                         <div class="profile-text hide-menu pt-1 dropdown">
                             <a href="javascript:void(0)"
                                 class="dropdown-toggle u-dropdown w-100 text-white d-block position-relative id="dropdownMenuLink"
-                                data-bs-toggle="dropdown" aria-expanded="false">{{ auth()->user()->name }} {{ Auth::user()->role ?  ' ('. Auth::user()->role .') ': ' ' }}</a>
+                                data-bs-toggle="dropdown" aria-expanded="false">{{ auth()->user()->name }}
+                                {{ Auth::user()->role ? ' (' . Auth::user()->role . ') ' : ' ' }}</a>
                             <div class="dropdown-menu animated flipInY" aria-labelledby="dropdownMenuLink">
 
                                 <a class="dropdown-item d-flex gap-2" href="{{ route('profile.index') }}"> <i
@@ -148,6 +149,14 @@
                             </a>
                             <ul aria-expanded="false" class="collapse first-level">
                                 <li class="sidebar-item">
+                                    <a href="{{ route('breaking_news.index') }}" class="sidebar-link sublink">
+                                        <div class="round-16 d-flex align-items-center justify-content-center">
+                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                        </div>
+                                        <span class="hide-menu">Breaking News</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
                                     <a href="{{ route('news.index') }}" class="sidebar-link sublink">
                                         <div class="round-16 d-flex align-items-center justify-content-center">
                                             <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
@@ -165,23 +174,58 @@
                                 </li>
                             </ul>
                         </li>
+
+                        <!-- ---------------------------------- -->
+                            {{-- Categoris LInks --}}
+                        <!-- ---------------------------------- -->
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('breaking_news.index') }}">
-                                <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
-                                <span class="hide-menu">Breaking News</span>
+                            <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                                <iconify-icon icon="solar:home-angle-linear" class="aside-icon"></iconify-icon>
+                                <span class="hide-menu">Categories</span>
                             </a>
+                            <ul aria-expanded="false" class="collapse first-level">
+                                <li class="sidebar-item">
+                                    <a href="{{ route('categories.index') }}" class="sidebar-link sublink">
+                                        <div class="round-16 d-flex align-items-center justify-content-center">
+                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                        </div>
+                                        <span class="hide-menu">Category</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="{{ route('sub_categories.index') }}" class="sidebar-link sublink">
+                                        <div class="round-16 d-flex align-items-center justify-content-center">
+                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                        </div>
+                                        <span class="hide-menu">Sub Category</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
+
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('categories.index') }}">
-                                <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
-                                <span class="hide-menu">Category</span>
+                            <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                                <iconify-icon icon="solar:home-angle-linear" class="aside-icon"></iconify-icon>
+                                <span class="hide-menu">Districts</span>
                             </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('sub_categories.index') }}">
-                                <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
-                                <span class="hide-menu">Sub Categories</span>
-                            </a>
+                            <ul aria-expanded="false" class="collapse first-level">
+                                <li class="sidebar-item">
+                                    <a href="{{ route('district.index') }}" class="sidebar-link sublink">
+                                        <div class="round-16 d-flex align-items-center justify-content-center">
+                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                        </div>
+                                        <span class="hide-menu">District</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="{{ route('subdistrict.index') }}" class="sidebar-link sublink">
+                                        <div class="round-16 d-flex align-items-center justify-content-center">
+                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                        </div>
+                                        <span class="hide-menu">Sub District</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
 
                         @if (Auth::user()->role == 'admin' || Auth::user()->role == 'editor')

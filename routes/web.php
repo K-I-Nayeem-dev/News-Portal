@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\BreakingNewsController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubCategoryController;
+use App\Http\Controllers\SubDistrictController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WatermarkController;
@@ -62,6 +64,8 @@ Route::resources([
     'sub_categories' => SubCategoryController::class,
     'watermark' => WatermarkController::class,
     'invitations' => InvitationController::class,
+    'district' => DistrictController::class,
+    'subdistrict' => SubDistrictController::class,
 ]);
 
 

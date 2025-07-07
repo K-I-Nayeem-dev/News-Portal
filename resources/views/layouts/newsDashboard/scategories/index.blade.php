@@ -52,7 +52,7 @@
                                     <select class="form-select" name="category_id" id="category_id" autocomplete="off">
                                         <option value="">Select Category</option>
                                         @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                                            <option value="{{ $category->id }}">{{ $category->category_en }}</option>
                                         @endforeach
                                     </select>
 
@@ -109,8 +109,8 @@
                                     @forelse($sub_cates as $key => $sub_cate)
                                         <tr>
                                             <th class="text-center" scope="row">{{ ++$key }}</th>
-                                            <td>{{ $sub_cate->sub_cate_name }}</td>
-                                            <td>{{ $sub_cate->category->category_name }}</td>
+                                            <td>{{ $sub_cate->sub_cate_en }}</td>
+                                            <td>{{ $sub_cate->category->category_en }}</td>
                                             <td class="d-flex  justify-content-around">
                                                 <a class="btn btn-sm btn-primary"href="{{ route('sub_categories.edit', $sub_cate->id) }}"><i class="fa-solid fa-pen-to-square"></i></a>
                                                 <form method="POST" action="{{ route('sub_categories.destroy', $sub_cate->id) }}" onsubmit="return confirm('Are you sure you want to delete this?')">

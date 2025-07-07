@@ -46,7 +46,7 @@
                             <table class="table table-striped-columns table-bordered">
                                 <thead>
                                     <tr>
-                                        <th scope="col">SL</th>
+                                        <th scope="col">ID</th>
                                         <th scope="col">Posted BY</th>
                                         <th scope="col">Thumbnail</th>
                                         <th scope="col">Title</th>
