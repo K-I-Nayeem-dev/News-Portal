@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\District;
+use App\Models\SubDistrict;
 use Illuminate\Http\Request;
 
 class SubDistrictController extends Controller
@@ -11,7 +13,12 @@ class SubDistrictController extends Controller
      */
     public function index()
     {
-        //
+        $districts = District::orderBy('district_en', 'ASC')->get();
+        $subdistricts = SubDistrict::orderBy('sub_district_en', 'ASC')->get();
+        return view('layouts.newsDashboard.subdistrict.index', [
+            'subdistricts' => $subdistricts,
+            'districts' => $districts
+        ]);
     }
 
     /**
@@ -27,7 +34,26 @@ class SubDistrictController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'subdistrict_en' => 'required|min:3',
+            'subdistrict_bn' => 'required|min:3',
+            'district' => 'required',
+            'status' => 'required',
+        ], [
+            'subdistrict_en' => 'The Sub district english field is required.',
+            'subdistrict_bn' => 'The Sub district bangla field is required.',
+        ]);
+
+        $data = [
+            'sub_district_en' => $request->subdistrict_en,
+            'sub_district_bn' => $request->subdistrict_bn,
+            'district_id' => $request->district,
+            'status' => $request->status,
+        ];
+
+        SubDistrict::insert($data);
+
+        return back()->with('subdistrict_create', 'Sub District Created Successfully');
     }
 
     /**

@@ -31,7 +31,24 @@ class DistrictController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'district_en' => 'required|min:3',
+            'district_bn' => 'required|min:3',
+            'status' => 'required',
+        ], [
+            'district_en' => 'The district english field is required.',
+            'district_bn' => 'The district bangla field is required.',
+        ]);
+
+        $data = [
+            'district_en' => $request->district_en,
+            'district_bn' => $request->district_bn,
+            'status' => $request->status,
+        ];
+
+        District::insert($data);
+
+        return back()->with('district_create', 'District Created Successfully');
     }
 
     /**
@@ -45,24 +62,42 @@ class DistrictController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(District $district)
     {
-        //
+        return view('layouts.newsDashboard.district.edit', [
+            'district' => $district
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, District $district)
     {
-        //
+
+        $request->validate([
+            'district_en' => 'required|min:3',
+            'district_bn' => 'required|min:3',
+            'status' => 'required',
+        ], [
+            'district_en' => 'The district english field is required.',
+            'district_bn' => 'The district bangla field is required.',
+        ]);
+
+        $district->district_en = $request->district_en;
+        $district->district_bn = $request->district_bn;
+        $district->status = $request->status;
+        $district->save();
+
+        return redirect()->route('district.index')->with('district_update', 'District Update Successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(District $district)
     {
-        //
+        $district->delete();
+        return redirect()->route('district.index')->with('district_delete', 'District Deleted');
     }
 }

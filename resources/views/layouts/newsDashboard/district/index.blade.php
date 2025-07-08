@@ -106,10 +106,10 @@
                                             <td>{{ $district->district_bn }}</td>
                                             <td class="d-flex  justify-content-around align-items-center">
                                                 <a class="btn btn-sm btn-primary"
-                                                    href="{{ route('categories.edit', $district->id) }}"><i
+                                                    href="{{ route('district.edit', $district->id) }}"><i
                                                         class="fa-solid fa-pen-to-square"></i></a>
                                                 <form method="POST"
-                                                    action="{{ route('categories.destroy', $district->id) }}"
+                                                    action="{{ route('district.destroy', $district->id) }}"
                                                     onsubmit="return confirm('Are you sure you want to delete this?')">
                                                     @csrf
                                                     @method('DELETE')
@@ -134,11 +134,11 @@
                             </table>
                         </div>
                     </div>
-                    @if (session('cate_update'))
-                        <div class=" alert alert-success mt-3 ">{{ session('cate_update') }}</div>
+                    @if (session('district_update'))
+                        <div class=" alert alert-success mt-3 ">{{ session('district_update') }}</div>
                     @endif
-                    @if (session('cate_delete'))
-                        <div class=" alert alert-danger mt-3 ">{{ session('cate_delete') }}</div>
+                    @if (session('district_delete'))
+                        <div class=" alert alert-danger mt-3 ">{{ session('district_delete') }}</div>
                     @endif
                 </div>
             </div>
