@@ -11,4 +11,10 @@ class District extends Model
 
     protected $guarded = [];
 
+
+ // for SubDistrict table one to one relation
+    public function subDist(){
+        return $this->hasOne(SubDistrict::class);
+    }
+
 }

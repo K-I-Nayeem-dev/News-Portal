@@ -17,7 +17,7 @@
                                         <a class="text-muted text-decoration-none" href="{{ route('dashboard') }}">Home
                                         </a>
                                     </li>
-                                    <li class="breadcrumb-item text-muted" aria-current="page">Districts</li>
+                                    <li class="breadcrumb-item text-muted" aria-current="page">Sub Districts</li>
                                 </ol>
                             </nav>
                         </div>
@@ -30,7 +30,7 @@
             <!-- -------------------------------------------------------------- -->
             <!-- Row -->
             <div class="row">
-                <div class="col-lg col-lg-5 px-1">
+                <div class="col-lg col-lg-4 px-1">
                     <div class="card">
                         <h5 class="card-header text-white" style="background-color: #1B84FF">Create District</h5>
                         <div class="card-body">
@@ -62,7 +62,8 @@
                                     <select class="form-select" name="district" id="district" autocomplete="off">
                                         <option value="">Select District</option>
                                         @foreach ($districts as $district)
-                                            <option value="{{ $district->id }}">{{ $district->district_en}} | {{ $district->district_bn }} </option>
+                                            <option value="{{ $district->id }}">{{ $district->district_en }} |
+                                                {{ $district->district_bn }} </option>
                                         @endforeach
                                     </select>
 
@@ -97,7 +98,7 @@
                     @endif
 
                 </div>
-                <div class="col-lg col-lg-7 px-1">
+                <div class="col-lg col-lg-8 px-1">
                     <div class="card">
                         <h5 class="card-header text-white d-flex justify-content-between" style="background-color: #1B84FF">
                             <span>All Sub Districts</span>
@@ -110,41 +111,44 @@
                                         <th scope="col">SL</th>
                                         <th scope="col">Sub District EN</th>
                                         <th scope="col">Sub District BN</th>
+                                        <th scope="col">District</th>
                                         <th scope="col">Actions</th>
                                         <th scope="col">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse($subdistricts as $key => $subdistrict)
-                                        <tr>
-                                            <th class="text-center" scope="row">{{ ++$key }}</th>
-                                            <td>{{ $subdistrict->sub_district_en }}</td>
-                                            <td>{{ $subdistrict->sub_district_bn }}</td>
-                                            <td class="d-flex  justify-content-around align-items-center">
-                                                <a class="btn btn-sm btn-primary"
-                                                    href="{{ route('district.edit', $subdistrict->id) }}"><i
-                                                        class="fa-solid fa-pen-to-square"></i></a>
-                                                <form method="POST"
-                                                    action="{{ route('district.destroy', $subdistrict->id) }}"
-                                                    onsubmit="return confirm('Are you sure you want to delete this?')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button class="btn btn-sm btn-danger"><i style="color: white"
-                                                            class="fa-solid fa-trash"></i></button>
-                                                </form>
-                                            </td>
-                                            <td class="text-center">
-                                                @if ($subdistrict->status == 1)
-                                                    <p class="badge bg-success">Active</p>
-                                                @else
-                                                    <p class="badge bg-danger">Deactive</p>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="5" class="text-center">No SubDistrict Found</td>
-                                        </tr>
+                                            <tr onclick="window.location='{{ route('subdistrict.edit', $subdistrict->id) }}'" style="cursor: pointer;">
+                                                <th class="text-center" scope="row">{{ ++$key }}</th>
+                                                <td>{{ $subdistrict->sub_district_en }}</td>
+                                                <td>{{ $subdistrict->sub_district_bn }}</td>
+                                                <td>{{ $subdistrict->district->district_en . ' | ' . $subdistrict->district->district_bn }}
+                                                </td>
+                                                <td class="d-flex  justify-content-around align-items-center">
+                                                    <a class="btn btn-sm btn-primary"
+                                                        href="{{ route('subdistrict.edit', $subdistrict->id) }}"><i
+                                                            class="fa-solid fa-pen-to-square"></i></a>
+                                                    <form method="POST"
+                                                        action="{{ route('subdistrict.destroy', $subdistrict->id) }}"
+                                                        onsubmit="return confirm('Are you sure you want to delete this?')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-sm btn-danger"><i style="color: white"
+                                                                class="fa-solid fa-trash"></i></button>
+                                                    </form>
+                                                </td>
+                                                <td class="text-center">
+                                                    @if ($subdistrict->status == 1)
+                                                        <p class="badge bg-success">Active</p>
+                                                    @else
+                                                        <p class="badge bg-danger">Deactive</p>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="5" class="text-center">No SubDistrict Found</td>
+                                            </tr>
                                     @endforelse
                                 </tbody>
                             </table>
@@ -153,8 +157,8 @@
                     @if (session('district_update'))
                         <div class=" alert alert-success mt-3 ">{{ session('district_update') }}</div>
                     @endif
-                    @if (session('district_delete'))
-                        <div class=" alert alert-danger mt-3 ">{{ session('district_delete') }}</div>
+                    @if (session('subdistrict_delete'))
+                        <div class=" alert alert-danger mt-3 ">{{ session('subdistrict_delete') }}</div>
                     @endif
                 </div>
             </div>

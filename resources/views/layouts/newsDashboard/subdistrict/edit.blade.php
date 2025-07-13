@@ -14,11 +14,15 @@
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item">
-                                        <a class="text-muted text-decoration-none"
-                                            href="{{ route('district.index') }}">District
+                                        <a class="text-muted text-decoration-none" href="{{ route('dashboard') }}">Home
                                         </a>
                                     </li>
-                                    <li class="breadcrumb-item text-muted" aria-current="page">Edit District</li>
+                                    <li class="breadcrumb-item">
+                                        <a class="text-muted text-decoration-none"
+                                            href="{{ route('subdistrict.index') }}">Sub District
+                                        </a>
+                                    </li>
+                                    <li class="breadcrumb-item text-muted" aria-current="page">Edit Sub District</li>
                                 </ol>
                             </nav>
                         </div>
@@ -36,35 +40,57 @@
                         <div class="card">
                             <h5 class="card-header text-white" style="background-color: #1B84FF">Edit District</h5>
                             <div class="card-body">
-                                <form method="POST" action="{{ route('district.update', $district->id) }}">
+                                <form method="POST" action="{{ route('subdistrict.update', $subdistrict->id) }}">
                                     @csrf
-                                    @method('PUT')
+                                    @method('put')
                                     <div>
-                                        <label for="district_en" class="form-label">District English</label>
-                                        <input id='district_en' type="text" class="form-control" name="district_en"
-                                            value="{{ old('district_en', $district->district_en) }}" autocomplete="off">
+                                        <label for="subdistrict_en" class="form-label">Sub District English</label>
+                                        <input id='subdistrict_en' type="text" class="form-control" name="subdistrict_en"
+                                            value="{{ old('subdistrict_en', $subdistrict->sub_district_en) }}"
+                                            autocomplete="off">
 
-                                        @error('district_en')
+                                        @error('subdistrict_en')
                                             <p class="text-danger mt-2">{{ $message }}</p>
                                         @enderror
 
                                     </div>
                                     <div>
-                                        <label for="district_bn" class="form-label">District Bangla</label>
-                                        <input id='district_bn' type="text" class="form-control" name="district_bn"
-                                            value="{{ old('district_bn', $district->district_bn) }}" autocomplete="off">
+                                        <label for="subdistrict_bn" class="form-label">Sub District Bangla</label>
+                                        <input id='subdistrict_bn' type="text" class="form-control" name="subdistrict_bn"
+                                            value="{{ old('subdistrict_bn', $subdistrict->sub_district_bn) }}"
+                                            autocomplete="off">
 
-                                        @error('district_bn')
+                                        @error('subdistrict_bn')
                                             <p class="text-danger mt-2">{{ $message }}</p>
                                         @enderror
 
                                     </div>
+
+                                    <div class="mt-2">
+                                        <label class="form-label" for="district">District</label>
+                                        <select class="form-select" name="district" id="district" autocomplete="off">
+                                            <option value="">Select District</option>
+                                            @foreach ($districts as $district)
+                                                <option {{ $district->id == $subdistrict->district_id ? 'selected' : ' ' }}
+                                                    value="{{ $district->id }}">{{ $district->district_en }} |
+                                                    {{ $district->district_bn }} </option>
+                                            @endforeach
+                                        </select>
+
+                                        @error('district')
+                                            <p class="text-danger mt-2">{{ $message }}</p>
+                                        @enderror
+
+                                    </div>
+
                                     <div class="mt-2">
                                         <label class="form-label" for="status">Status</label>
                                         <select class="form-select" name="status" id="status" autocomplete="off">
                                             <option value="">Select Status</option>
-                                            <option {{ $district->status == 1 ? 'selected' : '' }} value="1">Active</option>
-                                            <option {{ $district->status == 0 ? 'selected' : '' }} value="0">Deactive</option>
+                                            <option {{ $subdistrict->status == '1' ? 'selected' : '' }} value="1">
+                                                Active</option>
+                                            <option {{ $subdistrict->status == '0' ? 'selected' : '' }} value="0">
+                                                Deactive</option>
                                         </select>
 
                                         @error('status')
@@ -74,12 +100,20 @@
                                     </div>
 
                                     <button style="background-color: #1B84FF" class="btn text-white mt-3">Update</button>
+                                    <a href="{{ route('subdistrict.index') }}" style="background-color: #1B84FF"
+                                        class="btn  text-white mt-3">back</a>
 
                                 </form>
                             </div>
                         </div>
+
+                        @if (session('subdistrict_update'))
+                            <div class=" alert alert-success mt-3 ">{{ session('subdistrict_update') }}</div>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
-    @endsection
+    </div>
+    </div>
+@endsection

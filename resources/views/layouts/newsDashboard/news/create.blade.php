@@ -61,8 +61,11 @@
 
                                     <label class='form-label' for="paragraph">paragraph<sup><code
                                                 style="font-size: 12px">*</code></sup></label>
-                                    <textarea style="line-height: 25px" name="paragraph" id="paragraph" rows="5" class="form-control"
-                                        autocomplete="off">{{ old('paragraph') }}</textarea>
+                                    {{-- <textarea style="line-height: 25px" name="paragraph" id="paragraph" rows="5" class="form-control"
+                                        autocomplete="off">{{ old('paragraph') }}</textarea> --}}
+
+                                    <textarea name="content" id="summernote" cols="30" rows="10"></textarea>
+
 
                                     @error('paragraph')
                                         <p class="text-danger mt-2">{{ $message }}</p>

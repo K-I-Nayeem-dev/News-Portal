@@ -43,6 +43,7 @@ class BreakingNewsController extends Controller
         $data = [
             'news' => $request->breaking_news,
             'status' => $request->status,
+            'url' => $request->url,
             'created_at' => now(),
             'updated_at' => null,
         ];
@@ -71,28 +72,41 @@ class BreakingNewsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, breaking_news $breakingnews)
+    public function update(Request $request, string $id)
     {
+
+        $breaking = breaking_news::findOrfail($id);
+
+        // ✅ If only 'status' is sent (via dropdown onchange form)
+        if ($request->has('status') && count($request->all()) === 3) {
+            // 3 fields come from the form: _token, _method, and status
+            if ($request->status == '1' || $request->status == '0') {
+                $breaking->status = $request->status;
+                $breaking->save();
+
+                return back()->with('status_update', 'Status updated successfully.');
+            } else {
+                return back()->with('error', 'Invalid status value.');
+            }
+        }
+
         $request->validate([
             'breaking_news' => 'required',
-            'status' => 'required'
         ]);
 
-        $breakingnews->news = $request->input('breaking_news');
-        $breakingnews->status = $request->input('status');
-        $breakingnews->updated_at = now();
-        $breakingnews->save();
+        $breaking->news = $request->breaking_news;
+        $breaking->url = $request->url;
+        $breaking->save();
 
-        return redirect()->route('breakingnews.index')->with('news_update','Breaking News updated successfully.');
+        return redirect()->route('breaking_news.index')->with('news_update', 'Breaking News updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(breaking_news $breakingnews)
+    public function destroy(string $id)
     {
-        $breakingnews->delete();
-
+        breaking_news::findOrfail($id)->delete();
         return back()->with('news_deleted', 'Breaking News Delete Successfully ');
     }
 }

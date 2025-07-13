@@ -14,6 +14,11 @@
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item">
+                                        <a class="text-muted text-decoration-none" href="{{ route('dashboard') }}">Home
+                                        </a>
+                                    </li>
+                                    </li>
+                                    <li class="breadcrumb-item">
                                         <a class="text-muted text-decoration-none"
                                             href="{{ route('district.index') }}">District
                                         </a>

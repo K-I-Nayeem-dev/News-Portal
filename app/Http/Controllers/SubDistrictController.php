@@ -67,24 +67,46 @@ class SubDistrictController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(SubDistrict $subdistrict)
     {
-        //
+
+        $districts = District::all();
+        return view('layouts.newsDashboard.subdistrict.edit', [
+            'subdistrict' => $subdistrict,
+            'districts' => $districts
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, SubDistrict $subdistrict)
     {
-        //
+        $request->validate([
+            'subdistrict_en' => 'required|min:3',
+            'subdistrict_bn' => 'required|min:3',
+            'district' => 'required',
+            'status' => 'required',
+        ], [
+            'subdistrict_en' => 'The Sub district english field is required.',
+            'subdistrict_bn' => 'The Sub district bangla field is required.',
+        ]);
+
+        $subdistrict->sub_district_en = $request->subdistrict_en;
+        $subdistrict->sub_district_bn = $request->subdistrict_bn;
+        $subdistrict->district_id = $request->district;
+        $subdistrict->status = $request->status;
+        $subdistrict->save();
+
+        return back()->with('subdistrict_update', 'Sub District Updated Successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(SubDistrict $subdistrict)
     {
-        //
+        $subdistrict->delete();
+        return back()->with('subdistrict_delete', 'Sub District Deleted');
     }
 }

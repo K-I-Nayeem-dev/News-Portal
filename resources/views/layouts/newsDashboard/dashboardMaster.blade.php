@@ -36,6 +36,15 @@
 
     <title>MaterialPro Template by WrapPixel</title>
 
+
+    <!-- ✅ Summernote CSS CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.css" rel="stylesheet">
+
+    <!-- ✅ jQuery (required by Summernote) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- ✅ Summernote JS CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.js"></script>
 </head>
 
 <body>
@@ -176,7 +185,7 @@
                         </li>
 
                         <!-- ---------------------------------- -->
-                            {{-- Categoris LInks --}}
+                        {{-- Categoris LInks --}}
                         <!-- ---------------------------------- -->
                         <li class="sidebar-item">
                             <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
@@ -2182,6 +2191,15 @@
         });
     </script>
     {{-- <script src="{{ asset('dashboard_assets') }}/js/dashboards/dashboard1.js"></script> --}}
+    <!-- ✅ Summernote Initialization Script -->
+    <script>
+        $(document).ready(function() {
+            $('#summernote').summernote({
+                height: 300, // Set editor height
+                placeholder: 'Write something here...'
+            });
+        });
+    </script>
 
 </body>
 

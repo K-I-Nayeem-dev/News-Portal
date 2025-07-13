@@ -100,7 +100,7 @@
                                 </thead>
                                 <tbody>
                                     @forelse($districts as $key => $district)
-                                        <tr>
+                                        <tr onclick="window.location='{{ route('district.edit', $district->id) }}'" style="cursor: pointer;">
                                             <th class="text-center" scope="row">{{ ++$key }}</th>
                                             <td>{{ $district->district_en }}</td>
                                             <td>{{ $district->district_bn }}</td>

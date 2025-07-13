@@ -674,7 +674,7 @@
                             @foreach ($breaking_news as $news)
                                 <li>
                                     <h3 class="h3">
-                                        <a href="#" > !!! {{ $news->news }} !!! </a>
+                                        <a target="_blank" {{ $news->url ?  'href='.$news->url.' ' : ''}} > !!! {{ $news->news }} !!! </a>
                                     </h3>
                                 </li>
                             @endforeach

@@ -47,6 +47,19 @@
                                     @enderror
 
                                 </div>
+
+                                <div class="mt-2">
+
+                                    <label for="url" class="form-label">News Url</label>
+
+                                    <input name="url" value="{{ old('url') }}" id="url" type="text" class="form-control" autocomplete="off" />
+
+                                    @error('url')
+                                        <p class="text-danger mt-2">{{ $message }}</p>
+                                    @enderror
+
+                                </div>
+
                                 <div class="mt-2">
                                     <label class="form-label" for="status">Status</label>
                                     <select class="form-select" name="status" id="status" autocomplete="off">
@@ -85,8 +98,8 @@
                                         <th scope="col">SL</th>
                                         <th scope="col">News</th>
                                         <th scope="col">Actions</th>
-                                        <th scope="col">Created AT</th>
-                                        <th scope="col">Status</th>
+                                        <th scope="col">URL</th>
+                                        <th width='120px'  scope="col">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -96,20 +109,23 @@
                                             <td>{{ Str::limit($breaking->news, 35, '...') }}</td>
                                             <td class="d-flex  justify-content-around">
                                                 <a class="btn btn-sm btn-primary" href="{{ route('breaking_news.edit', $breaking->id) }}"><i class="fa-solid fa-pen-to-square"></i></a>
-                                                <form method="POST" action="{{ route('breaking_news.destroy', $breaking->id) }}">
+                                                <form method="POST" action="{{ route('breaking_news.destroy', $breaking->id) }}" onsubmit="return confirm('Are you sure you want to delete?')">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-danger"><i style="color: white" class="fa-solid fa-trash"></i></button>
                                                 </form>
                                             </td>
-                                            <td class="text-center">
-                                                {{ \Carbon\Carbon::parse($breaking->created_at)->diffForHumans() }}</td>
-                                            <td class="text-center">
-                                                @if ($breaking->status == 1)
-                                                    <p class="badge bg-success">Active</p>
-                                                @else
-                                                    <p class="badge bg-danger">Deactive</p>
-                                                @endif
+                                            <td class="text-center">{{ $breaking->url ? '✅' : '❌' }}</td>
+                                            <td width='120px'>
+                                                <form method="POST" action="{{ route('breaking_news.update', $breaking->id) }}">
+                                                        @csrf
+                                                        @method('PUT')
+                                                        <select style="font-size: 12px" class="form-select" name="status" id="status" autocomplete="off"  onchange="this.form.submit()">
+                                                            <option value="">Select Status</option>
+                                                            <option value="1"  {{ $breaking->status == 1 ? 'selected' : ''}}>Active</option>
+                                                            <option value="0"  {{ $breaking->status == 0 ? 'selected' : ''}}>Deactive</option>
+                                                        </select>
+                                                    </form>
                                             </td>
                                         </tr>
                                     @empty

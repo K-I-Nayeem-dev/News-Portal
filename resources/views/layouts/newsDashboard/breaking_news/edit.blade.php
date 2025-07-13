@@ -38,6 +38,7 @@
                                 <form method="POST" action="{{ route('breaking_news.update', $breakings->id) }}">
                                     @csrf
                                     @method('PUT')
+
                                     <div>
                                         <label for="BN" class="form-label">Edit Headline</label>
 
@@ -48,17 +49,14 @@
                                         @enderror
 
                                     </div>
-                                    <div class="mt-2">
-                                        <label class="form-label" for="status">Status</label>
-                                        <select class="form-select" name="status" id="status" autocomplete="off">
-                                            <option value="">Select Status</option>
-                                            <option value="1" {{ $breakings->status == 1 ? 'selected' : '' }}>Active
-                                            </option>
-                                            <option value="0" {{ $breakings->status == 0 ? 'selected' : '' }}>Deactive
-                                            </option>
-                                        </select>
 
-                                        @error('status')
+                                    <div class="mt-2">
+
+                                        <label for="url" class="form-label">News Url</label>
+
+                                        <input name="url" id="url" type="text" value="{{ old('url', $breakings->url) }}" class="form-control" autocomplete="off" />
+
+                                        @error('url')
                                             <p class="text-danger mt-2">{{ $message }}</p>
                                         @enderror
 
