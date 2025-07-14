@@ -166,19 +166,19 @@
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
+                                    <a href="{{ route('news.create') }}" class="sidebar-link sublink">
+                                        <div class="round-16 d-flex align-items-center justify-content-center">
+                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                        </div>
+                                        <span class="hide-menu">Post News</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
                                     <a href="{{ route('news.index') }}" class="sidebar-link sublink">
                                         <div class="round-16 d-flex align-items-center justify-content-center">
                                             <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
                                         </div>
                                         <span class="hide-menu">Show News</span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="{{ route('news.create') }}" class="sidebar-link sublink">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
-                                        </div>
-                                        <span class="hide-menu">Create News</span>
                                     </a>
                                 </li>
                             </ul>
@@ -2194,7 +2194,13 @@
     <!-- ✅ Summernote Initialization Script -->
     <script>
         $(document).ready(function() {
-            $('#summernote').summernote({
+            $('#summernoteBangla').summernote({
+                height: 300, // Set editor height
+                placeholder: 'Write something here...'
+            });
+        });
+        $(document).ready(function() {
+            $('#summernoteEnglish').summernote({
                 height: 300, // Set editor height
                 placeholder: 'Write something here...'
             });

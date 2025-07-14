@@ -13,6 +13,7 @@ use App\Jobs\ProcessImageUpload;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Imagick\Driver;
 use App\Jobs\ConvertDateToBangla;
+use App\Models\District;
 use App\Models\news_photo;
 use App\Models\watermark;
 
@@ -36,10 +37,10 @@ class NewsController extends Controller
     {
 
         $categories = Category::all();
-        $sub_cates = SubCategory::all();
+        $districts = District::orderBy('district_en', 'ASC')->get();
         return view('layouts.newsDashboard.news.create', [
             'categories' => $categories,
-            'sub_cates' => $sub_cates,
+            'districts' => $districts,
         ]);
     }
 
@@ -48,6 +49,8 @@ class NewsController extends Controller
      */
     public function store(Request $request)
     {
+
+        dd($request->all());
 
         $request->validate([
             'title' => 'required',
