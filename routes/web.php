@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\NewsController;
+use App\Http\Controllers\NewsFetchController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\SubDistrictController;
@@ -69,7 +70,7 @@ Route::resources([
 ]);
 
 
-
+// Users  Urls
 Route::controller(UserController::class)->prefix('user')->middleware('auth')->group(function () {
     Route::get('/', 'index')->name('user.index');
     Route::get('/create', 'create')->name('user.create');
@@ -79,6 +80,9 @@ Route::controller(UserController::class)->prefix('user')->middleware('auth')->gr
     Route::delete('/{id}/destroy', 'destroy')->name('user.destroy');
     Route::get('/{id}/resetphone', 'resetPhone')->name('user.phone.reset');
 });
+
+// Users  Urls
+Route::get('/api/news',[NewsFetchController::class, 'fetch'])->name('apiNews');
 
 // test
 // Route::get('/test',[TestController::class, 'test']);
