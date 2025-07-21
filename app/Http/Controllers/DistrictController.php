@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\District;
+use App\Models\SubDistrict;
 use Illuminate\Http\Request;
 
 class DistrictController extends Controller
@@ -100,4 +101,13 @@ class DistrictController extends Controller
         $district->delete();
         return redirect()->route('district.index')->with('district_delete', 'District Deleted');
     }
+
+    public function getSubdist($id){
+
+        $getSubdist = SubDistrict::where('district_id', $id)->get();
+
+        return response()->json($getSubdist);
+
+    }
+
 }

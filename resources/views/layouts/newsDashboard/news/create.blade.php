@@ -32,7 +32,10 @@
             <div class="row">
                 <div class="col-lg">
                     <div class="card">
-                        <h5 class="card-header text-white" style="background-color: #1B84FF">Post News</h5>
+                        <h5 class="card-header text-white d-flex justify-content-between align-items-center" style="background-color: #1B84FF">
+                            <span>Post News</span>
+                            <span><a href="{{ route('news.index') }}" class="btn rounded ms-2 bg-success text-white hover-btn">All News</a></span>
+                        </h5>
                         <div class="card-body">
                             <form method="POST" action="{{ route('news.store') }}" enctype="multipart/form-data">
                                 @csrf
@@ -238,6 +241,17 @@
 
                                 </div>
 
+                                {{-- Image Caption for thumbnail --}}
+                                <div class="mt-3">
+                                    <label class='form-label' for="news_source">News Source<sup><code
+                                                style="font-size: 12px">*</code></sup></label>
+                                    <input id="news_source" class="form-control" type="text" name="news_source"
+                                        autocomplete="off">
+                                    @error('news_source')
+                                        <p class="text-danger mt-2">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
                                 {{-- paste youtube video id for news --}}
                                 <div class="mt-3">
 
@@ -278,4 +292,56 @@
             </div>
         </div>
     </div>
+
+    {{-- Select Subcategories while dropdown to categories --}}
+    <script>
+        $('#category_id').on('change', function() {
+            var categoryID = $(this).val();
+
+            if (categoryID) {
+                $.ajax({
+                    url: '/get/subcategories/' + categoryID,
+                    type: 'GET',
+                    success: function(data) {
+                        $('#sub_cate_id').empty();
+                        $('#sub_cate_id').append(
+                            '<option selected disabled>== Select Sub Category ==</option>');
+                        $.each(data, function(key, value) {
+                            $('#sub_cate_id').append('<option value="' + value.id + '">' + value
+                                .sub_cate_en + ' | ' + value.sub_cate_bn + '</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#sub_cate_id').empty();
+            }
+        });
+    </script>
+
+    {{-- Select Subdistricts while dropdown to Districts --}}
+    <script>
+        $('#dist_id').on('change', function() {
+            var distID = $(this).val();
+
+            if (distID) {
+                $.ajax({
+                    url: '/get/subdist/' + distID,
+                    type: 'GET',
+                    success: function(data) {
+                        $('#sub_dist_id').empty();
+                        $('#sub_dist_id').append(
+                            '<option selected disabled>== Select Sub Category ==</option>');
+                        $.each(data, function(key, value) {
+                            $('#sub_dist_id').append('<option value="' + value.id + '">' + value
+                                .sub_district_en + ' | ' + value.sub_district_en +
+                                '</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#sub_dist_id').empty();
+            }
+        });
+    </script>
+
 @endsection

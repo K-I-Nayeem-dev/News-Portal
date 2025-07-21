@@ -37,124 +37,139 @@
             <!-- -------------------------------------------------------------- -->
             <!-- Row -->
             <div class="row">
-                <div class="offset-lg-2 offset-md-2 offset-sm-2 col-lg-8 col-sm-8 col-md-8">
+                <div class="col-lg">
                     <div class="card">
-                        <h5 class="card-header d-flex justify-content-between text-white" style="background-color: #1B84FF">
+                        <h5 class="card-header text-white d-flex justify-content-between align-items-center" style="background-color: #1B84FF">
                             <span>Edit News</span>
-                            <span>
-                                News : {{ $news->id }}
-                                <a class="text-white ms-3" href="{{ route('news.index') }}">Back</a>
-                            </span>
+                            <span><a href="{{ route('news.index') }}" class="btn rounded ms-2 bg-success text-white hover-btn">Back</a></span>
                         </h5>
                         <div class="card-body">
                             <form method="POST" action="{{ route('news.update', $news->id) }}" enctype="multipart/form-data">
                                 @csrf
-                                @method("PUT")
-                                <div>
-                                    <label class='form-label' for="title">Title<sup><code style="font-size: 12px">*</code></sup></label>
-                                    <input id="title" class="form-control" type="text" name="title"
-                                        autocomplete="off" value="{{ old('title', $news->title) }}">
-                                    @error('title')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
+                                @method('PUT')
+                                {{-- Title Bangla and English Row --}}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class='form-label' for="title_en">Title English<sup><code
+                                                    style="font-size: 12px">*</code></sup></label>
+                                        <input id="title_en" class="form-control" type="text" name="title_en"
+                                            autocomplete="off" value="{{ old('title_en', $news->title_en) }}">
+                                        @error('title_en')
+                                            <p class="text-danger mt-2">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class='form-label' for="title_bn">Title Bangla<sup><code
+                                                    style="font-size: 12px">*</code></sup></label>
+                                        <input id="title_bn" class="form-control" type="text" name="title_bn"
+                                            autocomplete="off" value="{{ old('title_bn', $news->title_bn) }}">
+                                        @error('title_bn')
+                                            <p class="text-danger mt-2">{{ $message }}</p>
+                                        @enderror
+                                    </div>
                                 </div>
 
-                                <div class="mt-3">
-                                    <label class='form-label' for="news_source">News Source<sup><code
-                                                style="font-size: 12px">*</code></sup></label>
-                                    <input id="news_source" class="form-control" type="text" name="news_source"
-                                        autocomplete="off" value="{{ old('news_source' , $news->news_source) }}">
-                                    @error('news_source')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
+                                {{-- Category And Subcategory Row --}}
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label" for="category_id">Category<sup><code
+                                                    style="font-size: 12px">*</code></sup></label>
+                                        <select class="form-select select2" name="category_id" id="category_id"
+                                            autocomplete="off">
+                                            <option value="">== Select Category ==</option>
+                                            @foreach ($categories as $cate)
+                                                <option value="{{ $cate->id }}" {{ $cate->id == $news->category_id ? 'selected' : '' }}>{{ $cate->category_en }}</option>
+                                            @endforeach
+                                        </select>
+
+                                        @error('category_id')
+                                            <p class="text-danger mt-2">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        <label class='form-label' for="sub_cate_id">Sub Category<sup><code
+                                                    style="font-size: 12px">*</code></sup></label>
+
+                                        <select class="form-select select2" name="sub_cate_id" id="sub_cate_id"
+                                            autocomplete="off">
+                                            <option value="">== Sub Category ==</option>
+                                        </select>
+
+                                    </div>
                                 </div>
 
-                                <div class="mt-3">
+                                {{-- Category And Subcategory Row --}}
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label" for="dist_id">District<sup><code
+                                                    style="font-size: 12px">*</code></sup></label>
+                                        <select class="form-select select2" name="dist_id" id="dist_id"
+                                            autocomplete="off">
+                                            <option value="">== Select District ==</option>
+                                            @foreach ($districts as $dist)
+                                                <option value="{{ $dist->id }}">
+                                                    {{ $dist->district_en . ' | ' . $dist->district_bn }}</option>
+                                            @endforeach
+                                        </select>
 
-                                    <label class='form-label' for="paragraph">paragraph<sup><code
-                                                style="font-size: 12px">*</code></sup></label>
-                                    <textarea style="line-height: 25px" name="paragraph" id="paragraph" rows="5" class="form-control"
-                                        autocomplete="off">{{ old('paragraph', $news->paragraph) }}</textarea>
+                                        @error('dist_id')
+                                            <p class="text-danger mt-2">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    <div class="col-md-6">
 
-                                    @error('paragraph')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
+                                        <label class='form-label' for="sub_dist_id">Sub District<sup><code
+                                                    style="font-size: 12px">*</code></sup></label>
+
+                                        <select class="form-select select2" name="sub_dist_id" id="sub_dist_id"
+                                            autocomplete="off">
+                                            <option value="">== Sub District ==</option>
+                                        </select>
+
+                                        @error('sub_dist_id')
+                                            <p class="text-danger mt-2">{{ $message }}</p>
+                                        @enderror
+
+                                    </div>
                                 </div>
 
+                                {{-- Thumbnail for news --}}
                                 <div class="mt-3">
 
-                                    <label class="form-label" for="category_id">Category<sup><code
-                                                style="font-size: 12px">*</code></sup></label>
-                                    <select class="form-select select2" name="category_id" id="category_id"
-                                        autocomplete="off">
-                                        <option value="">Select Category</option>
-                                        @foreach ($categories as $cate)
-                                            <option value="{{ $cate->id }}" {{ $cate->id == $news->category_id ? 'selected' : '' }}> {{ $cate->category_name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <label class='form-label' for="thumbnail">Thumbnail<sup><code
+                                                style="font-size: 12px">*</code></sup> (Max 1 MB Size)</label>
+                                    <input type="file" name="thumbnail" id="thumbnail" class="form-control"
+                                        autocomplete="off" value="{{ old('thumbnail') }}">
 
-                                    @error('category_id')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
-
-                                </div>
-
-                                <div class="mt-3">
-
-                                    <label class="form-label" for="sub_cate">Sub Category<sup><code
-                                                style="font-size: 12px">*</code></sup></label>
-                                    <select class="form-select " name="sub_cate_id" id="sub_cate" autocomplete="off">
-                                        <option value="">Select Sub Category</option>
-                                        @foreach ($sub_cates as $sub_cate)
-                                            <option value="{{ $sub_cate->id }}" {{ $sub_cate->id == $news->sub_cate_id ? 'selected' : '' }}> {{ $sub_cate->sub_cate_name }}</option>
-                                        @endforeach
-                                    </select>
-
-                                    @error('sub_cate_id')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
-
-                                </div>
-
-                                <div class="mt-3">
-
-                                    <label class='form-label' for="url">Only Youtube Video Url ID <code>(Optional)</code></label>
-                                    <input name="url" id="url" class="form-control" autocomplete="off"
-                                        value="{{ old('url', $news->url) }}">
-                                </div>
-
-                                <div class="mt-3">
-
-                                    <label class='form-label' for="thumbnail">Thumbnail<sup><code style="font-size: 12px">*</code></sup> (Max 1 MB Size)</label>
-                                    <input type="file" name="thumbnail" id="thumbnail" class="form-control" autocomplete="off" value="{{ old('thumbnail', $news->thumbnail) }}">
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger mt-3 text-sm">
+                                            <ul class="mb-0">
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
 
                                     @error('thumbnail')
                                         <p class="text-danger mt-2">{{ $message }}</p>
                                     @enderror
-
-                                    {{-- <div class="my-3">
-                                        <img class="w-100 h-100"  src="{{ asset('uploads/news_photos/'. $news->news_photo) }}"  alt="{{ $news->title }}">
-                                    </div> --}}
-
-                                    <div class="my-3">
-                                        <img class="w-100 h-100"  src="{{ asset('uploads/news_photos/'. $news->news_photo) }}"  alt="{{ $news->title }}">
-                                        {{-- <img class="w-100 h-100"  src="{{ asset('../'. $news->thumbnail) }}"  alt="{{ $news->title }}"> --}}
-                                    </div>
-
                                 </div>
 
+                                {{-- Image Caption for thumbnail --}}
                                 <div class="mt-3">
                                     <label class='form-label' for="image_title">Image Caption<sup><code
                                                 style="font-size: 12px">*</code></sup></label>
                                     <input id="image_title" class="form-control" type="text" name="image_title"
-                                        autocomplete="off" value="{{ old('image_title', $news->image_title) }}">
+                                        autocomplete="off">
                                     @error('image_title')
                                         <p class="text-danger mt-2">{{ $message }}</p>
                                     @enderror
                                 </div>
 
+                                {{-- Add More Photos For News --}}
                                 <div class="mt-3">
-
 
                                     <p class="d-inline-flex gap-1">
                                         <a class="btn btn-success" data-bs-toggle="collapse" href="#collapseExample"
@@ -174,6 +189,86 @@
 
                                 </div>
 
+                                {{-- Tags Row --}}
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+
+                                        <label class="form-label" for="tags_en">Tags English<sup><code
+                                                    style="font-size: 12px">*</code></sup></label>
+                                        <input name="tags_en" id="tags_en" class="form-control" autocomplete="off"
+                                            value="{{ old('tags_en') }}">
+
+                                        @error('tags_en')
+                                            <p class="text-danger mt-2">{{ $message }}</p>
+                                        @enderror
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label" for="tags_bn">Tags Bangla<sup><code
+                                                    style="font-size: 12px">*</code></sup></label>
+                                        <input name="tags_bn" id="tags_bn" class="form-control" autocomplete="off"
+                                            value="{{ old('tags_bn') }}">
+
+                                        @error('tags_bn')
+                                            <p class="text-danger mt-2">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                {{-- News Details In Bangla --}}
+                                <div class="mt-3">
+
+                                    <label class='form-label' for="paragraph">Details Bangla<sup><code
+                                                style="font-size: 12px">*</code></sup></label>
+                                    {{-- <textarea style="line-height: 25px" name="paragraph" id="paragraph" rows="5" class="form-control"
+                                        autocomplete="off">{{ old('paragraph') }}</textarea> --}}
+
+                                    <textarea name="details_bn" id="summernoteBangla" cols="30" rows="10"></textarea>
+
+
+                                    @error('details_bn')
+                                        <p class="text-danger mt-2">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                {{-- News Details In English --}}
+                                <div class="mt-3">
+
+                                    <label class='form-label' for="paragraph">Details English<sup><code
+                                                style="font-size: 12px">*</code></sup></label>
+                                    {{-- <textarea style="line-height: 25px" name="paragraph" id="paragraph" rows="5" class="form-control"
+                                        autocomplete="off">{{ old('paragraph') }}</textarea> --}}
+
+                                    <textarea name="details_en" id="summernoteEnglish" cols="30" rows="10"></textarea>
+
+
+                                    @error('details_bn')
+                                        <p class="text-danger mt-2">{{ $message }}</p>
+                                    @enderror
+
+                                </div>
+
+                                {{-- Image Caption for thumbnail --}}
+                                <div class="mt-3">
+                                    <label class='form-label' for="news_source">News Source<sup><code
+                                                style="font-size: 12px">*</code></sup></label>
+                                    <input id="news_source" class="form-control" type="text" name="news_source"
+                                        autocomplete="off">
+                                    @error('news_source')
+                                        <p class="text-danger mt-2">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                {{-- paste youtube video id for news --}}
+                                <div class="mt-3">
+
+                                    <label class='form-label' for="url">Only Youtube Video Url ID
+                                        <code>(Optional)</code></label>
+                                    <input name="url" id="url" class="form-control" autocomplete="off"
+                                        value="{{ old('url') }}">
+                                </div>
+
+                                {{-- News Status Set --}}
                                 <div class="mt-3">
                                     <label class='form-label' for="status">Status<sup><code
                                                 style="font-size: 12px">*</code></sup></label>
@@ -181,8 +276,8 @@
                                     <select class="form-select " name="status" id="status" autocomplete="off">
 
                                         <option value="">Select Status</option>
-                                        <option value="1" {{ $news->status == 1 ? 'selected' : '' }}>Active</option>
-                                        <option value="0" {{ $news->status == 0 ? 'selected' : '' }}>Deactive</option>
+                                        <option value="1">Active</option>
+                                        <option value="0">Deactive</option>
                                     </select>
 
                                     @error('status')
@@ -191,15 +286,11 @@
                                 </div>
 
                                 <button class="btn btn-primary mt-3">Update News</button>
-                                <a href="{{ route('news.index') }}" class="btn btn-primary mt-3">Back</a>
 
                             </form>
 
                             @if (session('news_created'))
                                 <div class=" alert alert-success mt-3 ">{{ session('news_created') }}</div>
-                            @endif
-                            @if (session('news_update'))
-                                <div class=" alert alert-success mt-3 ">{{ session('news_update') }}</div>
                             @endif
 
                         </div>

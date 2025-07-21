@@ -1,6 +1,12 @@
 @extends('layouts.newsDashboard.dashboard')
 
 @section('dashboard')
+    <style>
+        .hover-btn {
+            color: black;
+            transition: color 0.3s ease;
+        }
+    </style>
     <div class="body-wrapper">
         <div class="container-fluid">
             <!-- -------------------------------------------------------------- -->
@@ -32,9 +38,11 @@
             <div class="row">
                 <div class="col-lg">
                     <div class="card">
-                        <h5 class="card-header text-white d-flex justify-content-between" style="background-color: #1B84FF">
+                        <h5 class="card-header text-white d-flex justify-content-between align-items-center"
+                            style="background-color: #1B84FF">
                             <span>News Lists</span>
-                            <span>Total News: {{ $news->count() }}</span>
+                            <span>Total News: {{ $news->count() }}<a href="{{ route('news.create') }}"
+                                    class="btn rounded ms-2 bg-success text-white hover-btn">Create News</a></span>
                         </h5>
                         <div class="card-body">
                             @if (session('news_delete'))
@@ -49,8 +57,6 @@
                                         <th scope="col">ID</th>
                                         <th scope="col">Posted BY</th>
                                         <th scope="col">Thumbnail</th>
-                                        <th scope="col">Title</th>
-                                        <th scope="col">Category</th>
                                         <th scope="col">Actions</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Created At</th>
@@ -64,8 +70,6 @@
                                                 <td>{{ $new->newsUser->name }} {!! Auth::id() == $new->newsUser->id ? '<sup><code style="font-size: 12px">*</code></sup>' : '' !!}</td>
                                                 <td class="text-center"><img src="{{ $new->thumbnail }}" width="120"
                                                         height="80" alt=""></td>
-                                                <td>{{ $new->title }}</td>
-                                                <td>{{ $new->newsCategory->category_name }}</td>
                                                 <td class="d-flex justify-content-between align-items-center">
                                                     <a class="btn btn-sm btn-success rounded"
                                                         href="{{ route('news.show', $new->id) }}"><i
@@ -85,10 +89,13 @@
                                                     <form method="POST" action="{{ route('news.update', $new->id) }}">
                                                         @csrf
                                                         @method('PUT')
-                                                        <select class="form-select" name="status" id="status" autocomplete="off"  onchange="this.form.submit()">
+                                                        <select class="form-select" name="status" id="status"
+                                                            autocomplete="off" onchange="this.form.submit()">
                                                             <option value="">Select Status</option>
-                                                            <option value="1" class="bg-success" {{ $new->status == 1 ? 'selected' : ''}}>Active</option>
-                                                            <option value="0" class="bg-danger" {{ $new->status == 0 ? 'selected' : ''}}>Deactive</option>
+                                                            <option value="1" class="bg-success"
+                                                                {{ $new->status == 1 ? 'selected' : '' }}>Active</option>
+                                                            <option value="0" class="bg-danger"
+                                                                {{ $new->status == 0 ? 'selected' : '' }}>Deactive</option>
                                                         </select>
                                                     </form>
                                                 </td>

@@ -51,7 +51,7 @@
                 <div class="col-lg">
                     <div class="card">
                         <div class="card-header bg-primary text-white">
-                            English Version
+                            Bangla Version
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">{{ $news->newsCategory->category_en }}</h5>
@@ -60,9 +60,6 @@
                             <a href="{{ route('news_en', $news->id) }}" class="btn btn-primary">Show</a>
                         </div>
                     </div>
-                </div>
-                <div class="d-flex justify-content-center">
-                    <a href="{{ route('news.index') }}" class="btn btn-primary rounded">Back</a>
                 </div>
             </div>
         </div>

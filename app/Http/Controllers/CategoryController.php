@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -91,4 +92,14 @@ class CategoryController extends Controller
 
         return back()->with('cate_delete', $category->category_name . ' ' . 'Category Delete Successfully ');
     }
+
+    public function getSubcate($id){
+
+        $getSubCate = SubCategory::where('category_id', $id)->get();
+
+        return response()->json($getSubCate);
+
+    }
+
+
 }

@@ -12,10 +12,10 @@ use App\Http\Controllers\SubDistrictController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WatermarkController;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Stevebauman\Location\Facades\Location;
 use Illuminate\Support\Facades\Route;
+use Carbon\Carbon;
 
 // News Home page Route
 
@@ -69,6 +69,12 @@ Route::resources([
     'subdistrict' => SubDistrictController::class,
 ]);
 
+// Specific Version (Bangla/English) News Show Routes
+Route::prefix('news')->controller(NewsController::class)->group(function(){
+    Route::get('/{id}/news_en', 'show_en')->name('news_en');
+    Route::get('/{id}/news_bn', 'show_bn')->name('news_bn');
+});
+
 
 // Users  Urls
 Route::controller(UserController::class)->prefix('user')->middleware('auth')->group(function () {
@@ -81,8 +87,13 @@ Route::controller(UserController::class)->prefix('user')->middleware('auth')->gr
     Route::get('/{id}/resetphone', 'resetPhone')->name('user.phone.reset');
 });
 
+
+//SubCategories and SubDistricts via dropdown with the help of ajax
+Route::get('/get/subcategories/{id}', [CategoryController::class, 'getSubcate']);
+Route::get('/get/subdist/{id}', [DistrictController::class, 'getSubdist']);
+
 // Users  Urls
-Route::get('/api/news',[NewsFetchController::class, 'fetch'])->name('apiNews');
+// Route::get('/api/news',[NewsFetchController::class, 'fetch'])->name('apiNews');
 
 // test
 // Route::get('/test',[TestController::class, 'test']);
@@ -91,6 +102,7 @@ Route::get('/api/news',[NewsFetchController::class, 'fetch'])->name('apiNews');
 //     Route::get('/test', 'test')->name('test');
 // });
 
+// 404 page not found error
 Route::fallback(function () {
     return view('layouts.newsDashboard.dashboardErrors');
 });

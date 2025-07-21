@@ -15,6 +15,7 @@ use Intervention\Image\Drivers\Imagick\Driver;
 use App\Jobs\ConvertDateToBangla;
 use App\Models\District;
 use App\Models\news_photo;
+use App\Models\SubDistrict;
 use App\Models\watermark;
 
 class NewsController extends Controller
@@ -50,14 +51,18 @@ class NewsController extends Controller
     public function store(Request $request)
     {
 
-        dd($request->all());
-
         $request->validate([
-            'title' => 'required',
+            'title_en' => 'required',
+            'title_bn' => 'required',
             'news_source' => 'required',
-            'paragraph' => 'required',
+            'details_en' => 'required',
+            'details_bn' => 'required',
             'category_id' => 'required',
             'sub_cate_id' => 'required',
+            'dist_id' => 'required',
+            'sub_dist_id' => 'required',
+            'tags_en' => 'required',
+            'tags_bn' => 'required',
             'thumbnail' => 'required|image|mimes:jpg,jpeg,png,gif|max:1024',
             'image_title' => 'required',
             'status' => 'required'
@@ -91,18 +96,24 @@ class NewsController extends Controller
         );
 
         // Save $path to DB or whatever you need
-        $news_name =  uniqid() . '_'. time() . '.' . $originalFile->getClientOriginalExtension();
+        $news_name =  uniqid() . '_' . time() . '.' . $originalFile->getClientOriginalExtension();
         $fullImage = $imageManager->read($originalFile)->resize(1280, 720);
         $fullImage->place($watermark1, 'bottom'); // position: bottom-right with padding
         $fullImage->save(public_path('uploads/news_photos/' . $news_name), quality: 70);
 
         $data = [
-            'title' => $request->title,
+            'title_en' => $request->title_en,
+            'title_bn' => $request->title_bn,
             'user_id' => Auth::id(),
             'news_source' => $request->news_source,
-            'paragraph' => $request->paragraph,
+            'details_en' => $request->details_en,
+            'details_bn' => $request->details_bn,
             'category_id' => $request->category_id,
             'sub_cate_id' => $request->sub_cate_id,
+            'dist_id' => $request->dist_id,
+            'sub_dist_id' => $request->sub_dist_id,
+            'tags_en' => $request->tags_en,
+            'tags_bn' => $request->tags_bn,
             'image_title' => $request->image_title,
             'news_photo' => $news_name,
             'url' => $request->url,
@@ -137,14 +148,11 @@ class NewsController extends Controller
                     'updated_at' => null,
                 ]);
             }
-
         }
 
 
         // return back to news created page
         return back()->with('news_created', 'News Created Successfully');
-
-
     }
 
     /**
@@ -152,6 +160,20 @@ class NewsController extends Controller
      */
     public function show(News $news)
     {
+        return view('layouts.newsDashboard.news.show', [
+            'news' => $news,
+        ]);
+    }
+
+
+
+    /**
+     * Display the Bangla version.
+     */
+    public function show_bn($id)
+    {
+
+        $news = News::findOrFail($id);
         $datetime = $news->created_at;
 
         $job = new ConvertDateToBangla($datetime);
@@ -161,9 +183,24 @@ class NewsController extends Controller
 
 
         $banglaDateTime = $job->result;
-        return view('layouts.newsDashboard.news.show', [
+        return view('layouts.newsDashboard.news.show_news_bn', [
             'news' => $news,
             'banglaTime' => $banglaDateTime,
+            'news_photos' => $news_photos
+        ]);
+    }
+
+    /**
+     * Display the English version.
+     */
+    public function show_en($id)
+    {
+
+        $news = News::findOrFail($id);
+        $news_photos = news_photo::where('news_id', $news->id)->get();
+
+        return view('layouts.newsDashboard.news.show_news_en', [
+            'news' => $news,
             'news_photos' => $news_photos
         ]);
     }
@@ -174,11 +211,16 @@ class NewsController extends Controller
     public function edit(News $news)
     {
         $categories = Category::all();
-        $sub_cates = SubCategory::all();
+        $sub_cates = SubCategory::where('category_id', $news->category_id)->get();
+        $districts = District::all();
+        $sub_dist = SubDistrict::where('district_id', $news->dist_id)->get();
+        dd($sub_cates . $sub_dist);
         return view('layouts.newsDashboard.news.edit', [
             'news' => $news,
             'categories' => $categories,
             'sub_cates' => $sub_cates,
+            'districts' => $districts,
+            'sub_dist' => $sub_dist,
         ]);
     }
 
@@ -418,6 +460,7 @@ class NewsController extends Controller
     // This Code fully Work Perfecly update News
     public function update(Request $request, $id)
     {
+
         $news = News::findOrFail($id);
 
         // ✅ If only 'status' is sent (via dropdown onchange form)
