@@ -22,7 +22,8 @@
                                         </a>
                                     </li>
                                     <li class="breadcrumb-item " aria-current="page">
-                                        <a class="text-muted" href="{{ route('news.show', $news->id) }}">News : {{ $news->id }}</a>
+                                        <a class="text-muted" href="{{ route('news.show', $news->id) }}">News :
+                                            {{ $news->id }}</a>
                                     </li>
                                     <li class="breadcrumb-item text-muted" aria-current="page">Edit News</li>
                                 </ol>
@@ -39,12 +40,15 @@
             <div class="row">
                 <div class="col-lg">
                     <div class="card">
-                        <h5 class="card-header text-white d-flex justify-content-between align-items-center" style="background-color: #1B84FF">
+                        <h5 class="card-header text-white d-flex justify-content-between align-items-center"
+                            style="background-color: #1B84FF">
                             <span>Edit News</span>
-                            <span><a href="{{ route('news.index') }}" class="btn rounded ms-2 bg-success text-white hover-btn">Back</a></span>
+                            <span><a href="{{ route('news.index') }}"
+                                    class="btn rounded ms-2 bg-success text-white hover-btn">Back</a></span>
                         </h5>
                         <div class="card-body">
-                            <form method="POST" action="{{ route('news.update', $news->id) }}" enctype="multipart/form-data">
+                            <form method="POST" action="{{ route('news.update', $news->id) }}"
+                                enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
                                 {{-- Title Bangla and English Row --}}
@@ -78,7 +82,9 @@
                                             autocomplete="off">
                                             <option value="">== Select Category ==</option>
                                             @foreach ($categories as $cate)
-                                                <option value="{{ $cate->id }}" {{ $cate->id == $news->category_id ? 'selected' : '' }}>{{ $cate->category_en }}</option>
+                                                <option value="{{ $cate->id }}"
+                                                    {{ $cate->id == $news->category_id ? 'selected' : '' }}>
+                                                    {{ $cate->category_en . ' | ' . $cate->category_bn }}</option>
                                             @endforeach
                                         </select>
 
@@ -94,6 +100,11 @@
                                         <select class="form-select select2" name="sub_cate_id" id="sub_cate_id"
                                             autocomplete="off">
                                             <option value="">== Sub Category ==</option>
+                                            @foreach ($sub_cates as $subcate)
+                                                <option value="{{ $subcate->id }}"
+                                                    {{ $subcate->id == $news->sub_cate_id ? 'selected' : '' }}>
+                                                    {{ $subcate->sub_cate_en . ' | ' . $subcate->sub_cate_bn }}</option>
+                                            @endforeach
                                         </select>
 
                                     </div>
@@ -108,7 +119,8 @@
                                             autocomplete="off">
                                             <option value="">== Select District ==</option>
                                             @foreach ($districts as $dist)
-                                                <option value="{{ $dist->id }}">
+                                                <option value="{{ $dist->id }}"
+                                                    {{ $dist->id == $news->dist_id ? 'selected' : '' }}>
                                                     {{ $dist->district_en . ' | ' . $dist->district_bn }}</option>
                                             @endforeach
                                         </select>
@@ -125,6 +137,12 @@
                                         <select class="form-select select2" name="sub_dist_id" id="sub_dist_id"
                                             autocomplete="off">
                                             <option value="">== Sub District ==</option>
+                                            @foreach ($sub_dist as $subdist)
+                                                <option value="{{ $subdist->id }}"
+                                                    {{ $subdist->id == $news->sub_dist_id ? 'selected' : '' }}>
+                                                    {{ $subdist->sub_district_en . ' | ' . $subdist->sub_district_bn }}
+                                                </option>
+                                            @endforeach
                                         </select>
 
                                         @error('sub_dist_id')
@@ -135,26 +153,31 @@
                                 </div>
 
                                 {{-- Thumbnail for news --}}
-                                <div class="mt-3">
+                                <div class="row my-3 align-items-center">
+                                    <div class="col-lg">
+                                        <label class='form-label' for="thumbnail">Thumbnail<sup><code
+                                                    style="font-size: 12px">*</code></sup> (Max 1 MB Size)</label>
+                                        <input type="file" name="thumbnail" id="thumbnail" class="form-control"
+                                            autocomplete="off" value="{{ old('thumbnail') }}">
 
-                                    <label class='form-label' for="thumbnail">Thumbnail<sup><code
-                                                style="font-size: 12px">*</code></sup> (Max 1 MB Size)</label>
-                                    <input type="file" name="thumbnail" id="thumbnail" class="form-control"
-                                        autocomplete="off" value="{{ old('thumbnail') }}">
+                                        @if ($errors->any())
+                                            <div class="alert alert-danger mt-3 text-sm">
+                                                <ul class="mb-0">
+                                                    @foreach ($errors->all() as $error)
+                                                        <li>{{ $error }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        @endif
 
-                                    @if ($errors->any())
-                                        <div class="alert alert-danger mt-3 text-sm">
-                                            <ul class="mb-0">
-                                                @foreach ($errors->all() as $error)
-                                                    <li>{{ $error }}</li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                    @endif
-
-                                    @error('thumbnail')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
+                                        @error('thumbnail')
+                                            <p class="text-danger mt-2">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    <div class="col-lg text-center mt-3">
+                                        <img class="w-50" src="{{ asset($news->thumbnail) }}"
+                                            alt="{{ $news->title_bn . ' | ' . $news->title_en }}">
+                                    </div>
                                 </div>
 
                                 {{-- Image Caption for thumbnail --}}
@@ -162,7 +185,7 @@
                                     <label class='form-label' for="image_title">Image Caption<sup><code
                                                 style="font-size: 12px">*</code></sup></label>
                                     <input id="image_title" class="form-control" type="text" name="image_title"
-                                        autocomplete="off">
+                                        autocomplete="off" value="{{ old('image_title', $news->image_title) }}">
                                     @error('image_title')
                                         <p class="text-danger mt-2">{{ $message }}</p>
                                     @enderror
@@ -196,7 +219,7 @@
                                         <label class="form-label" for="tags_en">Tags English<sup><code
                                                     style="font-size: 12px">*</code></sup></label>
                                         <input name="tags_en" id="tags_en" class="form-control" autocomplete="off"
-                                            value="{{ old('tags_en') }}">
+                                            value="{{ old('tags_en', $news->tags_en) }}">
 
                                         @error('tags_en')
                                             <p class="text-danger mt-2">{{ $message }}</p>
@@ -207,7 +230,7 @@
                                         <label class="form-label" for="tags_bn">Tags Bangla<sup><code
                                                     style="font-size: 12px">*</code></sup></label>
                                         <input name="tags_bn" id="tags_bn" class="form-control" autocomplete="off"
-                                            value="{{ old('tags_bn') }}">
+                                            value="{{ old('tags_bn', $news->tags_bn) }}">
 
                                         @error('tags_bn')
                                             <p class="text-danger mt-2">{{ $message }}</p>
@@ -223,7 +246,7 @@
                                     {{-- <textarea style="line-height: 25px" name="paragraph" id="paragraph" rows="5" class="form-control"
                                         autocomplete="off">{{ old('paragraph') }}</textarea> --}}
 
-                                    <textarea name="details_bn" id="summernoteBangla" cols="30" rows="10"></textarea>
+                                    <textarea name="details_bn" id="summernoteBangla" cols="30" rows="10">{{ $news->details_bn }}</textarea>
 
 
                                     @error('details_bn')
@@ -239,7 +262,7 @@
                                     {{-- <textarea style="line-height: 25px" name="paragraph" id="paragraph" rows="5" class="form-control"
                                         autocomplete="off">{{ old('paragraph') }}</textarea> --}}
 
-                                    <textarea name="details_en" id="summernoteEnglish" cols="30" rows="10"></textarea>
+                                    <textarea name="details_en" id="summernoteEnglish" cols="30" rows="10">{{ $news->details_en }}</textarea>
 
 
                                     @error('details_bn')
@@ -253,7 +276,7 @@
                                     <label class='form-label' for="news_source">News Source<sup><code
                                                 style="font-size: 12px">*</code></sup></label>
                                     <input id="news_source" class="form-control" type="text" name="news_source"
-                                        autocomplete="off">
+                                        autocomplete="off" value="{{ old('news_source', $news->news_source) }}">
                                     @error('news_source')
                                         <p class="text-danger mt-2">{{ $message }}</p>
                                     @enderror
@@ -265,7 +288,7 @@
                                     <label class='form-label' for="url">Only Youtube Video Url ID
                                         <code>(Optional)</code></label>
                                     <input name="url" id="url" class="form-control" autocomplete="off"
-                                        value="{{ old('url') }}">
+                                        value="{{ old('url', $news->url) }}">
                                 </div>
 
                                 {{-- News Status Set --}}
@@ -276,8 +299,8 @@
                                     <select class="form-select " name="status" id="status" autocomplete="off">
 
                                         <option value="">Select Status</option>
-                                        <option value="1">Active</option>
-                                        <option value="0">Deactive</option>
+                                        <option {{ $news->status == 1 ? 'selected' : '' }} value="1">Active</option>
+                                        <option {{ $news->status == 0 ? 'selected' : '' }} value="0">Deactive</option>
                                     </select>
 
                                     @error('status')
@@ -289,8 +312,8 @@
 
                             </form>
 
-                            @if (session('news_created'))
-                                <div class=" alert alert-success mt-3 ">{{ session('news_created') }}</div>
+                            @if (session('news_update'))
+                                <div class=" alert alert-success mt-3 ">{{ session('news_update') }}</div>
                             @endif
 
                         </div>
@@ -299,4 +322,56 @@
             </div>
         </div>
     </div>
+
+    {{-- Select Subcategories while dropdown to categories --}}
+    <script>
+        $('#category_id').on('change', function() {
+            var categoryID = $(this).val();
+
+            if (categoryID) {
+                $.ajax({
+                    url: '/get/subcategories/' + categoryID,
+                    type: 'GET',
+                    success: function(data) {
+                        $('#sub_cate_id').empty();
+                        $('#sub_cate_id').append(
+                            '<option selected disabled>== Sub Category ==</option>');
+                        $.each(data, function(key, value) {
+                            $('#sub_cate_id').append('<option value="' + value.id + '">' + value
+                                .sub_cate_en + ' | ' + value.sub_cate_bn + '</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#sub_cate_id').empty();
+            }
+        });
+    </script>
+
+    {{-- Select Subdistricts while dropdown to Districts --}}
+    <script>
+        $('#dist_id').on('change', function() {
+            var distID = $(this).val();
+
+            if (distID) {
+                $.ajax({
+                    url: '/get/subdist/' + distID,
+                    type: 'GET',
+                    success: function(data) {
+                        $('#sub_dist_id').empty();
+                        $('#sub_dist_id').append(
+                            '<option selected disabled>== Sub District ==</option>');
+                        $.each(data, function(key, value) {
+                            $('#sub_dist_id').append('<option value="' + value.id + '">' + value
+                                .sub_district_en + ' | ' + value.sub_district_en +
+                                '</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#sub_dist_id').empty();
+            }
+        });
+    </script>
+
 @endsection

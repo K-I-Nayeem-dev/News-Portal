@@ -24,6 +24,18 @@ class News extends Model
         return $this->belongsTo(SubCategory::class, 'sub_cate_id');
     }
 
+     // Category relationship (One-to-One)
+    public function newsDistrict()
+    {
+        return $this->belongsTo(District::class, 'dist_id');
+    }
+
+    // SubCategory relationship (One-to-One)
+    public function newsSubDist()
+    {
+        return $this->belongsTo(SubDistrict::class, 'sub_dist_id');
+    }
+
     // User relationship (One-to-One)
     public function newsUser()
     {

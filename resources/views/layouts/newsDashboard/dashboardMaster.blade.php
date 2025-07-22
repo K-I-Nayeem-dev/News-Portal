@@ -160,11 +160,11 @@
                             </a>
                             <ul aria-expanded="false" class="collapse first-level">
                                 <li class="sidebar-item">
-                                    <a href="{{ route('breaking_news.index') }}" class="sidebar-link sublink">
+                                    <a href="{{ route('news.index') }}" class="sidebar-link sublink">
                                         <div class="round-16 d-flex align-items-center justify-content-center">
                                             <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
                                         </div>
-                                        <span class="hide-menu">Breaking News</span>
+                                        <span class="hide-menu">All News</span>
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
@@ -172,15 +172,15 @@
                                         <div class="round-16 d-flex align-items-center justify-content-center">
                                             <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
                                         </div>
-                                        <span class="hide-menu">Post News</span>
+                                        <span class="hide-menu">Create News</span>
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
-                                    <a href="{{ route('news.index') }}" class="sidebar-link sublink">
+                                    <a href="{{ route('breaking_news.index') }}" class="sidebar-link sublink">
                                         <div class="round-16 d-flex align-items-center justify-content-center">
                                             <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
                                         </div>
-                                        <span class="hide-menu">Show News</span>
+                                        <span class="hide-menu">Breaking News</span>
                                     </a>
                                 </li>
                             </ul>

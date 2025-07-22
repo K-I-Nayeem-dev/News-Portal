@@ -16,4 +16,10 @@ class SubDistrict extends Model
         return $this->belongsTo(District::class);
     }
 
+      // for NewsSubCate table one to one relation
+    public function newsSubDist(){
+        return $this->hasOne(News::class);
+    }
+
+
 }

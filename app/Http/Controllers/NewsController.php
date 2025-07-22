@@ -92,7 +92,7 @@ class NewsController extends Controller
             650,
             365,
             50,
-            'uploads/water_mark/water_mark_t.png'
+            $watermark->watermarks
         );
 
         // Save $path to DB or whatever you need
@@ -214,7 +214,6 @@ class NewsController extends Controller
         $sub_cates = SubCategory::where('category_id', $news->category_id)->get();
         $districts = District::all();
         $sub_dist = SubDistrict::where('district_id', $news->dist_id)->get();
-        dd($sub_cates . $sub_dist);
         return view('layouts.newsDashboard.news.edit', [
             'news' => $news,
             'categories' => $categories,
@@ -477,30 +476,42 @@ class NewsController extends Controller
             }
         }
 
+
+
         // ✅ Full form update (title, paragraph, thumbnail, etc.)
         $request->validate([
-            'title' => 'required',
-            'paragraph' => 'required',
+            'title_en' => 'required',
+            'title_bn' => 'required',
+            'news_source' => 'required',
+            'details_en' => 'required',
+            'details_bn' => 'required',
             'category_id' => 'required',
             'sub_cate_id' => 'required',
-            'url' => 'required',
-            'news_source' => 'required',
+            'dist_id' => 'required',
+            'sub_dist_id' => 'required',
+            'tags_en' => 'required',
+            'tags_bn' => 'required',
             'image_title' => 'required',
-            'status' => 'required',
-            'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:1024',
+            'status' => 'required'
         ]);
 
         // Fill and update
         $news->fill($request->only([
-            'title',
-            'paragraph',
+            'title_en',
+            'title_bn',
+            'news_source',
+            'details_en',
+            'details_bn',
             'category_id',
             'sub_cate_id',
-            'url',
-            'news_source',
+            'dist_id',
+            'sub_dist_id',
+            'tags_en',
+            'tags_bn',
             'image_title',
-            'status',
+            'status'
         ]));
+
 
         if ($request->hasFile('thumbnail')) {
             // Delete old images
@@ -511,32 +522,85 @@ class NewsController extends Controller
                 unlink(public_path($news->thumbnail));
             }
 
-            // Process new image
+            // Load dynamic watermark
+            $watermark = watermark::where('status', 1)->first();
+            if (!$watermark || !file_exists(public_path($watermark->watermark))) {
+                return back()->withErrors(['Thumbnail Watermark not found or file missing.']);
+            }
+
             $imageManager = new ImageManager(new Driver());
             $originalFile = $request->file('thumbnail');
-            $new_name = Str::random(5) . time() . '.' . $originalFile->getClientOriginalExtension();
+            $watermarkImage = $imageManager->read(public_path($watermark->watermark));
 
-            $watermark1 = $imageManager->read(public_path('uploads/water_mark/water_mark_p.png'));
+            // ✅ Full-size image with watermark
+            $new_name = uniqid() . '_' . time() . '.' . $originalFile->getClientOriginalExtension();
             $fullImage = $imageManager->read($originalFile)->resize(1280, 720);
-            $fullImage->place($watermark1, 'bottom');
+            $fullImage->place($watermarkImage, 'bottom-right'); // with padding
             $fullImage->save(public_path('uploads/news_photos/' . $new_name), quality: 70);
+            $news->news_photo = $new_name;
 
-            // Create thumbnail using job
+            // ✅ Create thumbnail
             $job = new ProcessImageUpload(
                 $originalFile,
                 'uploads/news_thumbs/',
                 650,
                 365,
                 50,
-                'uploads/water_mark/water_mark_t.png'
+                $watermark->watermark // ✅ fixed typo
             );
-
-            $news->news_photo = $new_name;
-            $news->thumbnail = $job->handle(); // This must return file name
+            $news->thumbnail = $job->handle(); // must return filename
         }
 
         $news->update_by_user = Auth::id();
         $news->save();
+
+        // if ($request->hasFile('thumbnail')) {
+        //     // Delete old images
+        //     if ($news->news_photo && file_exists(public_path('uploads/news_photos/' . $news->news_photo))) {
+        //         unlink(public_path('uploads/news_photos/' . $news->news_photo));
+        //     }
+        //     if ($news->thumbnail && file_exists(public_path($news->thumbnail))) {
+        //         unlink(public_path($news->thumbnail));
+        //     }
+
+        //     // // This is dynamic watermark
+        //     $watermark = watermark::where('status', 1)->first();
+        //     // check that watermark found or missing
+        //     if (!$watermark || !file_exists(public_path($watermark->watermark))) {
+        //         return back()->withErrors(['Thumbnail Watermark not found or file missing.']);
+        //     }
+
+        //     // // Image Upload process
+        //     $imageManager = new ImageManager(new Driver());
+        //     $originalFile = $request->file('thumbnail');
+
+        //     // // // Load watermark image
+        //     $watermark1 = $imageManager->read(public_path($watermark->watermark));
+
+        //     // 🔸 1. Save full-sized image
+
+        //     // Process new image
+        //     $job = new ProcessImageUpload(
+        //         $request->file('thumbnail'),
+        //         'uploads/news_thumbs/',
+        //         650,
+        //         365,
+        //         50,
+        //         $watermark->watermarks
+        //     );
+
+        //     // Save $path to DB or whatever you need
+        //     $new_name =  uniqid() . '_' . time() . '.' . $originalFile->getClientOriginalExtension();
+        //     $fullImage = $imageManager->read($originalFile)->resize(1280, 720);
+        //     $fullImage->place($watermark1, 'bottom'); // position: bottom-right with padding
+        //     $fullImage->save(public_path('uploads/news_photos/' . $new_name), quality: 70);
+
+        //     $news->news_photo = $new_name;
+        //     $news->thumbnail = $job->handle(); // This must return file name
+        // }
+
+        // $news->update_by_user = Auth::id();
+        // $news->save();
 
         return back()->with('news_update', 'News updated successfully.');
     }
