@@ -7,7 +7,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <style>
         /* Chrome, Safari, Edge, Opera */
@@ -240,6 +242,30 @@
                         </li>
 
                         @if (Auth::user()->role == 'admin' || Auth::user()->role == 'editor')
+                            <li class="sidebar-item">
+                                <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                                    <iconify-icon icon="solar:home-angle-linear" class="aside-icon"></iconify-icon>
+                                    <span class="hide-menu">Settings</span>
+                                </a>
+                                <ul aria-expanded="false" class="collapse first-level">
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('social.index') }}" class="sidebar-link sublink">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                            </div>
+                                            <span class="hide-menu">Social</span>
+                                        </a>
+                                    </li>
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('seo.index') }}" class="sidebar-link sublink">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                            </div>
+                                            <span class="hide-menu">Seo</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="{{ route('watermark.index') }}">
                                     <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
@@ -594,6 +620,7 @@
                                     <li class="nav-item hover-dd dropdown">
                                         <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
                                             aria-expanded="false">
+
                                             @if (!Auth::user()->profile_picture)
                                                 <img src="{{ asset('dashboard_assets') }}/images/profile/user-1.jpg"
                                                     alt="materialpro-img" class="img-fluid rounded-circle"

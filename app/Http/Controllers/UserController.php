@@ -19,6 +19,7 @@ class UserController extends Controller
      */
     public function index()
     {
+
         $users = User::orderBy('name', 'ASC')->latest()->paginate(15);
         return view('layouts.newsDashboard.users.index', [
             'users' => $users,

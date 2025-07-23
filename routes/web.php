@@ -7,6 +7,8 @@ use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NewsFetchController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SeoController;
+use App\Http\Controllers\SocailController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\SubDistrictController;
 use App\Http\Controllers\TestController;
@@ -16,9 +18,9 @@ use Illuminate\Support\Facades\DB;
 use Stevebauman\Location\Facades\Location;
 use Illuminate\Support\Facades\Route;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
-// News Home page Route
-
+// News Home page Route for Visitor Or Users
 Route::get('/', function () {
 
     $now = Carbon::now();
@@ -35,72 +37,86 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/newsDashboard', function () {
-    return view('layouts.newsDashboard.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
-// Profile Routes
-Route::controller(ProfileController::class)->prefix('edit/profile')->middleware('auth')->group(function () {
-    Route::get('/', 'edit')->name('profile.edit');
-    Route::patch('/', 'update')->name('profile.update');
-    Route::delete('/', 'destroy')->name('profile.destroy');
-    Route::post('/phoneNumberAdd', 'phone_add')->name('phone.add');
-    Route::post('/sendOTP', 'send_otp')->name('otp.send');
-    Route::post('/verifyNumber', 'verify_number')->name('verify.number');
-    Route::post('/updateNumber', 'update_number')->name('update.number');
-    Route::post('/photoUpload', 'photo_upload')->name('photo.upload');
+// Only Authoraization User can Access Backend Dashboard
+Route::middleware(['web', 'auth', 'verified'])->group(function () {
+
+
+    Route::get('/newsDashboard', function () {
+        return view('layouts.newsDashboard.dashboard');
+    })->name('dashboard');
+
+    // Profile Routes
+    Route::controller(ProfileController::class)->prefix('edit/profile')->middleware('auth')->group(function () {
+        Route::get('/', 'edit')->name('profile.edit');
+        Route::patch('/', 'update')->name('profile.update');
+        Route::delete('/', 'destroy')->name('profile.destroy');
+        Route::post('/phoneNumberAdd', 'phone_add')->name('phone.add');
+        Route::post('/sendOTP', 'send_otp')->name('otp.send');
+        Route::post('/verifyNumber', 'verify_number')->name('verify.number');
+        Route::post('/updateNumber', 'update_number')->name('update.number');
+        Route::post('/photoUpload', 'photo_upload')->name('photo.upload');
+    });
+
+    // user Profile Show Route
+
+    Route::controller(ProfileController::class)->prefix('profile')->group(function () {
+        Route::get('/', 'index')->name('profile.index');
+    });
+
+    // Resource Urls
+    Route::resources([
+        'news' => NewsController::class,
+        'categories' => CategoryController::class,
+        'breaking_news' => BreakingNewsController::class,
+        'sub_categories' => SubCategoryController::class,
+        'watermark' => WatermarkController::class,
+        'invitations' => InvitationController::class,
+        'district' => DistrictController::class,
+        'subdistrict' => SubDistrictController::class,
+    ]);
+
+    // Specific Version (Bangla/English) News Show Routes
+    Route::prefix('news')->controller(NewsController::class)->group(function () {
+        Route::get('/{id}/news_en', 'show_en')->name('news_en');
+        Route::get('/{id}/news_bn', 'show_bn')->name('news_bn');
+    });
+
+
+    // Users  Urls
+    Route::controller(UserController::class)->prefix('user')->middleware('auth')->group(function () {
+        Route::get('/', 'index')->name('user.index');
+        Route::get('/create', 'create')->name('user.create');
+        Route::post('/store', 'store')->name('user.store');
+        Route::get('/{id}/edit', 'edit')->name('user.edit');
+        Route::put('/{id}/update', 'update')->name('user.update');
+        Route::delete('/{id}/destroy', 'destroy')->name('user.destroy');
+        Route::get('/{id}/resetphone', 'resetPhone')->name('user.phone.reset');
+    });
+
+
+    //SubCategories and SubDistricts via dropdown with the help of ajax
+    Route::get('/get/subcategories/{id}', [CategoryController::class, 'getSubcate']);
+    Route::get('/get/subdist/{id}', [DistrictController::class, 'getSubdist']);
+
+    // Route For Setting Socials and Seos
+    Route::prefix('settings')->group(function(){
+        Route::get('/socials', [SocailController::class,'index'])->name('social.index');
+        Route::put('/socials/update/{id}', [SocailController::class,'update'])->name('social.udpate');
+        Route::get('/seos', [SeoController::class,'index'])->name('seo.index');
+        Route::put('/seos/update/{id}', [SeoController::class,'update'])->name('seo.udpate');
+    });
+
+    // Users  Urls
+    // Route::get('/api/news',[NewsFetchController::class, 'fetch'])->name('apiNews');
+
+    // test
+    // Route::get('/test',[TestController::class, 'test']);
+
+    // Route::controller(TestController::class)->group(function(){
+    //     Route::get('/test', 'test')->name('test');
+    // });
 });
-
-// user Profile Show Route
-
-Route::controller(ProfileController::class)->prefix('profile')->group(function () {
-    Route::get('/', 'index')->name('profile.index');
-});
-
-// Resource Urls
-Route::resources([
-    'news' => NewsController::class,
-    'categories' => CategoryController::class,
-    'breaking_news' => BreakingNewsController::class,
-    'sub_categories' => SubCategoryController::class,
-    'watermark' => WatermarkController::class,
-    'invitations' => InvitationController::class,
-    'district' => DistrictController::class,
-    'subdistrict' => SubDistrictController::class,
-]);
-
-// Specific Version (Bangla/English) News Show Routes
-Route::prefix('news')->controller(NewsController::class)->group(function(){
-    Route::get('/{id}/news_en', 'show_en')->name('news_en');
-    Route::get('/{id}/news_bn', 'show_bn')->name('news_bn');
-});
-
-
-// Users  Urls
-Route::controller(UserController::class)->prefix('user')->middleware('auth')->group(function () {
-    Route::get('/', 'index')->name('user.index');
-    Route::get('/create', 'create')->name('user.create');
-    Route::post('/store', 'store')->name('user.store');
-    Route::get('/{id}/edit', 'edit')->name('user.edit');
-    Route::put('/{id}/update', 'update')->name('user.update');
-    Route::delete('/{id}/destroy', 'destroy')->name('user.destroy');
-    Route::get('/{id}/resetphone', 'resetPhone')->name('user.phone.reset');
-});
-
-
-//SubCategories and SubDistricts via dropdown with the help of ajax
-Route::get('/get/subcategories/{id}', [CategoryController::class, 'getSubcate']);
-Route::get('/get/subdist/{id}', [DistrictController::class, 'getSubdist']);
-
-// Users  Urls
-// Route::get('/api/news',[NewsFetchController::class, 'fetch'])->name('apiNews');
-
-// test
-// Route::get('/test',[TestController::class, 'test']);
-
-// Route::controller(TestController::class)->group(function(){
-//     Route::get('/test', 'test')->name('test');
-// });
 
 // 404 page not found error
 Route::fallback(function () {

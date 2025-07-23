@@ -20,6 +20,7 @@ class ProfileController extends Controller
 
     public function index()
     {
+
         return view('layouts.newsDashboard.profile.index');
     }
 
@@ -178,7 +179,6 @@ class ProfileController extends Controller
             $new_name = Str::random(5) . time() . '.' . $request->photo->getClientOriginalExtension();
             $image = $Image->read($request->photo)->resize(120, 120);
             $image->save('uploads/profile_pictures/' . $new_name, quality: 30);
-
         } else {
 
             $imagePath = DB::table('users')->select('profile_picture')->where('id', Auth::id())->first();
@@ -195,9 +195,7 @@ class ProfileController extends Controller
                 DB::table('users')->where('id', Auth::id())->update([
                     'profile_picture' => $new_name,
                 ]);
-
             }
-
         }
 
         return back()->with('photo_upload', 'Profile Picture Change');
