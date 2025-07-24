@@ -1,4 +1,3 @@
-
 @extends('layouts.newsDashboard.dashboard')
 
 @section('dashboard')
@@ -39,7 +38,8 @@
                                 @csrf
                                 <div>
                                     <label for="sub_categoryName" class="form-label">Sub Category name</label>
-                                    <input id='sub_categoryName' type="text" class="form-control" name="sub_cate_name" value="{{ old('sub_cate_name') }}" autocomplete="off">
+                                    <input id='sub_categoryName' type="text" class="form-control" name="sub_cate_name"
+                                        value="{{ old('sub_cate_name') }}" autocomplete="off">
 
                                     @error('sub_cate_name')
                                         <p class="text-danger mt-2">{{ $message }}</p>
@@ -111,13 +111,20 @@
                                             <th class="text-center" scope="row">{{ ++$key }}</th>
                                             <td>{{ $sub_cate->sub_cate_en }}</td>
                                             <td>{{ $sub_cate->category->category_en }}</td>
-                                            <td class="d-flex  justify-content-around">
-                                                <a class="btn btn-sm btn-primary"href="{{ route('sub_categories.edit', $sub_cate->id) }}"><i class="fa-solid fa-pen-to-square"></i></a>
-                                                <form method="POST" action="{{ route('sub_categories.destroy', $sub_cate->id) }}" onsubmit="return confirm('Are you sure you want to delete this?')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button class="btn btn-sm btn-danger"><i style="color: white" class="fa-solid fa-trash"></i></button>
-                                                </form>
+                                            <td>
+                                                <div class="d-flex  justify-content-between align-items-center">
+                                                    <a
+                                                        class="btn btn-sm btn-primary me-1"href="{{ route('sub_categories.edit', $sub_cate->id) }}"><i
+                                                            class="fa-solid fa-pen-to-square"></i></a>
+                                                    <form method="POST"
+                                                        action="{{ route('sub_categories.destroy', $sub_cate->id) }}"
+                                                        onsubmit="return confirm('Are you sure you want to delete this?')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-sm btn-danger"><i style="color: white"
+                                                                class="fa-solid fa-trash"></i></button>
+                                                    </form>
+                                                </div>
                                             </td>
                                             <td class="text-center">
                                                 {{ \Carbon\Carbon::parse($sub_cate->created_at)->diffForHumans() }}</td>

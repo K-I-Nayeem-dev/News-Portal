@@ -118,14 +118,16 @@
                                 </thead>
                                 <tbody>
                                     @forelse($subdistricts as $key => $subdistrict)
-                                            <tr onclick="window.location='{{ route('subdistrict.edit', $subdistrict->id) }}'" style="cursor: pointer;">
-                                                <th class="text-center" scope="row">{{ ++$key }}</th>
-                                                <td>{{ $subdistrict->sub_district_en }}</td>
-                                                <td>{{ $subdistrict->sub_district_bn }}</td>
-                                                <td>{{ $subdistrict->district->district_en . ' | ' . $subdistrict->district->district_bn }}
-                                                </td>
-                                                <td class="d-flex  justify-content-around align-items-center">
-                                                    <a class="btn btn-sm btn-primary"
+                                        <tr onclick="window.location='{{ route('subdistrict.edit', $subdistrict->id) }}'"
+                                            style="cursor: pointer;">
+                                            <th class="text-center" scope="row">{{ ++$key }}</th>
+                                            <td>{{ $subdistrict->sub_district_en }}</td>
+                                            <td>{{ $subdistrict->sub_district_bn }}</td>
+                                            <td>{{ $subdistrict->district->district_en . ' | ' . $subdistrict->district->district_bn }}
+                                            </td>
+                                            <td >
+                                                <div class="d-flex  justify-content-between align-items-center">
+                                                    <a class="btn btn-sm btn-primary me-1"
                                                         href="{{ route('subdistrict.edit', $subdistrict->id) }}"><i
                                                             class="fa-solid fa-pen-to-square"></i></a>
                                                     <form method="POST"
@@ -136,19 +138,20 @@
                                                         <button class="btn btn-sm btn-danger"><i style="color: white"
                                                                 class="fa-solid fa-trash"></i></button>
                                                     </form>
-                                                </td>
-                                                <td class="text-center">
-                                                    @if ($subdistrict->status == 1)
-                                                        <p class="badge bg-success">Active</p>
-                                                    @else
-                                                        <p class="badge bg-danger">Deactive</p>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="5" class="text-center">No SubDistrict Found</td>
-                                            </tr>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                @if ($subdistrict->status == 1)
+                                                    <p class="badge bg-success">Active</p>
+                                                @else
+                                                    <p class="badge bg-danger">Deactive</p>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="5" class="text-center">No SubDistrict Found</td>
+                                        </tr>
                                     @endforelse
                                 </tbody>
                             </table>

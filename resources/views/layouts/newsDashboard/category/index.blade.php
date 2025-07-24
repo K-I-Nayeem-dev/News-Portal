@@ -93,15 +93,20 @@
                                         <tr>
                                             <th class="text-center" scope="row">{{ ++$key }}</th>
                                             <td>{{ $category->category_en }}</td>
-                                            <td class="d-flex  justify-content-around align-items-center">
-                                                <a class="btn btn-sm btn-primary"
-                                                    href="{{ route('categories.edit', $category->id) }}"><i
-                                                        class="fa-solid fa-pen-to-square"></i></a>
-                                                <form method="POST" action="{{ route('categories.destroy', $category->id) }}" onsubmit="return confirm('Are you sure you want to delete this?')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button class="btn btn-sm btn-danger"><i style="color: white" class="fa-solid fa-trash"></i></button>
-                                                </form>
+                                            <td >
+                                                <div class="d-flex  justify-content-around align-items-center">
+                                                    <a class="btn btn-sm btn-primary"
+                                                        href="{{ route('categories.edit', $category->id) }}"><i
+                                                            class="fa-solid fa-pen-to-square"></i></a>
+                                                    <form method="POST"
+                                                        action="{{ route('categories.destroy', $category->id) }}"
+                                                        onsubmit="return confirm('Are you sure you want to delete this?')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-sm btn-danger"><i style="color: white"
+                                                                class="fa-solid fa-trash"></i></button>
+                                                    </form>
+                                                </div>
                                             </td>
                                             <td class="text-center">
                                                 {{ \Carbon\Carbon::parse($category->created_at)->diffForHumans() }}</td>

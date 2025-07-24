@@ -70,20 +70,23 @@
                                                 <td>{{ $new->newsUser->name }} {!! Auth::id() == $new->newsUser->id ? '<sup><code style="font-size: 12px">*</code></sup>' : '' !!}</td>
                                                 <td class="text-center"><img src="{{ $new->thumbnail }}" width="120"
                                                         height="80" alt=""></td>
-                                                <td class="d-flex justify-content-between align-items-center">
-                                                    <a class="btn btn-sm btn-success rounded"
-                                                        href="{{ route('news.show', $new->id) }}"><i
-                                                            class="fa-solid fa-eye"></i></a>
-                                                    <a class="btn btn-sm btn-primary rounded"
-                                                        href="{{ route('news.edit', $new->id) }}"><i
-                                                            class="fa-solid fa-pen-to-square"></i></a>
-                                                    <form method="POST" action="{{ route('news.destroy', $new->id) }}"
-                                                        onsubmit="return confirm('Are you sure you want to delete this?')">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button class="btn btn-sm btn-danger rounded"><i
-                                                                style="color: white" class="fa-solid fa-trash"></i></button>
-                                                    </form>
+                                                <td>
+                                                    <div  class="d-flex justify-content-around align-items-center">
+                                                        <a class="btn btn-sm btn-success rounded"
+                                                            href="{{ route('news.show', $new->id) }}"><i
+                                                                class="fa-solid fa-eye"></i></a>
+                                                        <a class="btn btn-sm btn-primary rounded"
+                                                            href="{{ route('news.edit', $new->id) }}"><i
+                                                                class="fa-solid fa-pen-to-square"></i></a>
+                                                        <form method="POST" action="{{ route('news.destroy', $new->id) }}"
+                                                            onsubmit="return confirm('Are you sure you want to delete this?')">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button class="btn btn-sm btn-danger rounded"><i
+                                                                    style="color: white"
+                                                                    class="fa-solid fa-trash"></i></button>
+                                                        </form>
+                                                    </div>
                                                 </td>
                                                 <td>
                                                     <form method="POST" action="{{ route('news.update', $new->id) }}">

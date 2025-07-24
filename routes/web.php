@@ -4,8 +4,10 @@ use App\Http\Controllers\BreakingNewsController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\InvitationController;
+use App\Http\Controllers\LiveTvController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NewsFetchController;
+use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SeoController;
 use App\Http\Controllers\SocailController;
@@ -14,6 +16,7 @@ use App\Http\Controllers\SubDistrictController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WatermarkController;
+use App\Http\Controllers\WebsiteListController;
 use Illuminate\Support\Facades\DB;
 use Stevebauman\Location\Facades\Location;
 use Illuminate\Support\Facades\Route;
@@ -74,6 +77,7 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
         'invitations' => InvitationController::class,
         'district' => DistrictController::class,
         'subdistrict' => SubDistrictController::class,
+        'websiteLIst' => WebsiteListController::class,
     ]);
 
     // Specific Version (Bangla/English) News Show Routes
@@ -100,11 +104,28 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
     Route::get('/get/subdist/{id}', [DistrictController::class, 'getSubdist']);
 
     // Route For Setting Socials and Seos
-    Route::prefix('settings')->group(function(){
-        Route::get('/socials', [SocailController::class,'index'])->name('social.index');
-        Route::put('/socials/update/{id}', [SocailController::class,'update'])->name('social.udpate');
-        Route::get('/seos', [SeoController::class,'index'])->name('seo.index');
-        Route::put('/seos/update/{id}', [SeoController::class,'update'])->name('seo.udpate');
+    Route::prefix('settings')->group(function () {
+
+        // social links setting routes
+        Route::get('/socials', [SocailController::class, 'index'])->name('social.index');
+        Route::put('/socials/update/{id}', [SocailController::class, 'update'])->name('social.udpate');
+
+        // SEO's Settings Routes
+        Route::get('/seos', [SeoController::class, 'index'])->name('seo.index');
+        Route::put('/seos/update/{id}', [SeoController::class, 'update'])->name('seo.udpate');
+
+        // Live TV Settings Routes
+        Route::get('/livetv', [LiveTvController::class, 'index'])->name('liveTV.index');
+        Route::put('/livetv/update/{id}', [LiveTvController::class, 'update'])->name('liveTv.udpate');
+        Route::get('/livetv/active/{id}', [LiveTvController::class, 'activeLiveTV'])->name('liveTV.active');
+        Route::get('/livetv/deactive/{id}', [LiveTvController::class, 'deactiveLiveTv'])->name('liveTv.deactive');
+
+        // Notices Setting Routes
+        Route::get('/notice', [NoticeController::class, 'index'])->name('notice.index');
+        Route::put('/notice/update/{id}', [NoticeController::class, 'update'])->name('notice.udpate');
+        Route::get('/notice/active/{id}', [NoticeController::class, 'activeNotice'])->name('notice.active');
+        Route::get('/notice/deactive/{id}', [NoticeController::class, 'deactiveNotice'])->name('notice.deactive');
+
     });
 
     // Users  Urls

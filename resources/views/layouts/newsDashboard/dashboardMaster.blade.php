@@ -253,7 +253,7 @@
                                             <div class="round-16 d-flex align-items-center justify-content-center">
                                                 <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
                                             </div>
-                                            <span class="hide-menu">Social</span>
+                                            <span class="hide-menu">Social links</span>
                                         </a>
                                     </li>
                                     <li class="sidebar-item">
@@ -262,6 +262,30 @@
                                                 <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
                                             </div>
                                             <span class="hide-menu">Seo</span>
+                                        </a>
+                                    </li>
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('liveTV.index') }}" class="sidebar-link sublink">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                            </div>
+                                            <span class="hide-menu">Live TV</span>
+                                        </a>
+                                    </li>
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('notice.index') }}" class="sidebar-link sublink">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                            </div>
+                                            <span class="hide-menu">Notice</span>
+                                        </a>
+                                    </li>
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('websiteLIst.index') }}" class="sidebar-link sublink">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                            </div>
+                                            <span class="hide-menu">Important Websites URL's (Links)</span>
                                         </a>
                                     </li>
                                 </ul>

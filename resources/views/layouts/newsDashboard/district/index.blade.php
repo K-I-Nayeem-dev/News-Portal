@@ -100,22 +100,25 @@
                                 </thead>
                                 <tbody>
                                     @forelse($districts as $key => $district)
-                                        <tr onclick="window.location='{{ route('district.edit', $district->id) }}'" style="cursor: pointer;">
+                                        <tr onclick="window.location='{{ route('district.edit', $district->id) }}'"
+                                            style="cursor: pointer;">
                                             <th class="text-center" scope="row">{{ ++$key }}</th>
                                             <td>{{ $district->district_en }}</td>
                                             <td>{{ $district->district_bn }}</td>
-                                            <td class="d-flex  justify-content-around align-items-center">
-                                                <a class="btn btn-sm btn-primary"
-                                                    href="{{ route('district.edit', $district->id) }}"><i
-                                                        class="fa-solid fa-pen-to-square"></i></a>
-                                                <form method="POST"
-                                                    action="{{ route('district.destroy', $district->id) }}"
-                                                    onsubmit="return confirm('Are you sure you want to delete this?')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button class="btn btn-sm btn-danger"><i style="color: white"
-                                                            class="fa-solid fa-trash"></i></button>
-                                                </form>
+                                            <td >
+                                                <div class="d-flex  justify-content-around align-items-center">
+                                                    <a class="btn btn-sm btn-primary me-1"
+                                                        href="{{ route('district.edit', $district->id) }}"><i
+                                                            class="fa-solid fa-pen-to-square"></i></a>
+                                                    <form method="POST"
+                                                        action="{{ route('district.destroy', $district->id) }}"
+                                                        onsubmit="return confirm('Are you sure you want to delete this?')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-sm btn-danger"><i style="color: white"
+                                                                class="fa-solid fa-trash"></i></button>
+                                                    </form>
+                                                </div>
                                             </td>
                                             <td class="text-center">
                                                 @if ($district->status == 1)

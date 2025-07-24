@@ -40,7 +40,7 @@
 
                                     <label for="BN" class="form-label">Make Headline</label>
 
-                                    <textarea name="breaking_news" id="BN" rows="5" class="form-control" autocomplete="off" >{{ old('breaking_news') }}</textarea>
+                                    <textarea name="breaking_news" id="BN" rows="5" class="form-control" autocomplete="off">{{ old('breaking_news') }}</textarea>
 
                                     @error('breaking_news')
                                         <p class="text-danger mt-2">{{ $message }}</p>
@@ -52,7 +52,8 @@
 
                                     <label for="url" class="form-label">News Url</label>
 
-                                    <input name="url" value="{{ old('url') }}" id="url" type="text" class="form-control" autocomplete="off" />
+                                    <input name="url" value="{{ old('url') }}" id="url" type="text"
+                                        class="form-control" autocomplete="off" />
 
                                     @error('url')
                                         <p class="text-danger mt-2">{{ $message }}</p>
@@ -99,7 +100,7 @@
                                         <th scope="col">News</th>
                                         <th scope="col">Actions</th>
                                         <th scope="col">URL</th>
-                                        <th width='120px'  scope="col">Status</th>
+                                        <th width='120px' scope="col">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -107,25 +108,37 @@
                                         <tr>
                                             <th class="text-center" scope="row">{{ ++$key }}</th>
                                             <td>{{ Str::limit($breaking->news, 35, '...') }}</td>
-                                            <td class="d-flex  justify-content-around">
-                                                <a class="btn btn-sm btn-primary" href="{{ route('breaking_news.edit', $breaking->id) }}"><i class="fa-solid fa-pen-to-square"></i></a>
-                                                <form method="POST" action="{{ route('breaking_news.destroy', $breaking->id) }}" onsubmit="return confirm('Are you sure you want to delete?')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-sm btn-danger"><i style="color: white" class="fa-solid fa-trash"></i></button>
-                                                </form>
+                                            <td >
+                                                <div class="d-flex justify-content-around align-items-center">
+                                                    <a class="btn btn-sm btn-primary"
+                                                        href="{{ route('breaking_news.edit', $breaking->id) }}"><i
+                                                            class="fa-solid fa-pen-to-square"></i></a>
+                                                    <form method="POST"
+                                                        action="{{ route('breaking_news.destroy', $breaking->id) }}"
+                                                        onsubmit="return confirm('Are you sure you want to delete?')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-danger"><i
+                                                                style="color: white" class="fa-solid fa-trash"></i></button>
+                                                    </form>
+                                                </div>
                                             </td>
                                             <td class="text-center">{{ $breaking->url ? '✅' : '❌' }}</td>
                                             <td width='120px'>
-                                                <form method="POST" action="{{ route('breaking_news.update', $breaking->id) }}">
-                                                        @csrf
-                                                        @method('PUT')
-                                                        <select style="font-size: 12px" class="form-select" name="status" id="status" autocomplete="off"  onchange="this.form.submit()">
-                                                            <option value="">Select Status</option>
-                                                            <option value="1"  {{ $breaking->status == 1 ? 'selected' : ''}}>Active</option>
-                                                            <option value="0"  {{ $breaking->status == 0 ? 'selected' : ''}}>Deactive</option>
-                                                        </select>
-                                                    </form>
+                                                <form method="POST"
+                                                    action="{{ route('breaking_news.update', $breaking->id) }}">
+                                                    @csrf
+                                                    @method('PUT')
+                                                    <select style="font-size: 12px" class="form-select" name="status"
+                                                        id="status" autocomplete="off" onchange="this.form.submit()">
+                                                        <option value="">Select Status</option>
+                                                        <option value="1"
+                                                            {{ $breaking->status == 1 ? 'selected' : '' }}>Active</option>
+                                                        <option value="0"
+                                                            {{ $breaking->status == 0 ? 'selected' : '' }}>Deactive
+                                                        </option>
+                                                    </select>
+                                                </form>
                                             </td>
                                         </tr>
                                     @empty
