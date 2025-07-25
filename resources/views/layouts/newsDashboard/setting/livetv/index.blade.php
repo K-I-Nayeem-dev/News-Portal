@@ -64,8 +64,7 @@
                                         </div>
                                     </div>
 
-                                    <button style="background-color: #1B84FF"
-                                        class="btn text-white mt-3 w-100">Update</button>
+                                    <button style="background-color: #1B84FF" class="btn text-white mt-3 w-100">Update</button>
 
                                 </form>
                             </div>

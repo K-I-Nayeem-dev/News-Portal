@@ -44,6 +44,9 @@
     <!-- ✅ Summernote CSS CDN -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.css" rel="stylesheet">
 
+    <!-- Fancybox CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
+
     <!-- ✅ jQuery (required by Summernote) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -240,6 +243,30 @@
                                 </li>
                             </ul>
                         </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                                <iconify-icon icon="solar:home-angle-linear" class="aside-icon"></iconify-icon>
+                                <span class="hide-menu">Gallery</span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse first-level">
+                                <li class="sidebar-item">
+                                    <a href="{{ route('photogallery.index') }}" class="sidebar-link sublink">
+                                        <div class="round-16 d-flex align-items-center justify-content-center">
+                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                        </div>
+                                        <span class="hide-menu">Photo Gallery</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="{{ route('videogallery.index') }}" class="sidebar-link sublink">
+                                        <div class="round-16 d-flex align-items-center justify-content-center">
+                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                        </div>
+                                        <span class="hide-menu">Video Gallery</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
 
                         @if (Auth::user()->role == 'admin' || Auth::user()->role == 'editor')
                             <li class="sidebar-item">
@@ -398,7 +425,7 @@
                                     href="javascript:void(0)" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                                     <span class="">
-                                        <i class="ti ti-dots fs-7"></i>
+                                        <i class="fa fa-ellipsis-h fs-7"></i>
                                     </span>
                                 </a>
                             </li>
@@ -407,14 +434,6 @@
                             <div class="d-flex align-items-center justify-content-between py-2 py-lg-0">
                                 <ul
                                     class="navbar-nav flex-row  align-items-center justify-content-center d-flex d-lg-none">
-                                    <li class="nav-item dropdown">
-                                        <a href="javascript:void(0)"
-                                            class="nav-link d-flex d-lg-none align-items-center justify-content-center"
-                                            type="button" data-bs-toggle="offcanvas" data-bs-target="#mobilenavbar"
-                                            aria-controls="offcanvasWithBothOptions">
-                                            <iconify-icon icon="solar:menu-dots-circle-linear"></iconify-icon>
-                                        </a>
-                                    </li>
                                     <li class="nav-item hover-dd dropdown nav-icon-hover-bg rounded-circle">
                                         <a class="nav-link nav-icon-hover waves-effect waves-dark"
                                             href="javascript:void(0)" id="drop2" aria-expanded="false">
@@ -1256,740 +1275,6 @@
                 </div>
             </header>
             <!--  Header End -->
-            <aside class="left-sidebar with-horizontal">
-                <!-- Sidebar scroll-->
-                <div>
-                    <!-- Sidebar navigation-->
-                    <nav id="sidebarnavh" class="sidebar-nav scroll-sidebar container-fluid">
-                        <ul id="sidebarnav">
-                            <!-- ============================= -->
-                            <!-- Home -->
-                            <!-- ============================= -->
-                            <li class="nav-small-cap">
-                                <iconify-icon icon="solar:menu-dots-bold" class="nav-small-cap-icon"></iconify-icon>
-                                <span class="hide-menu">Home</span>
-                            </li>
-                            <!-- =================== -->
-                            <!-- Dashboard -->
-                            <!-- =================== -->
-                            <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
-                                    <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
-                                    <span class="hide-menu">Dashboard</span>
-                                </a>
-                                <ul aria-expanded="false" class="collapse first-level">
-                                    <li class="sidebar-item">
-                                        <a href="index.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Modern Dashboard</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="index2.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Awesome Dashboard</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="index3.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Classy Dashboard</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="index4.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Analytical Dashboard</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="index5.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Minimal Dashboard</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="index6.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">General Dashboard</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <!-- ============================= -->
-                            <!-- Front Pages -->
-                            <!-- ============================= -->
-                            <li class="nav-small-cap">
-                                <iconify-icon icon="solar:document-text-line-duotone"
-                                    class="nav-small-cap-icon"></iconify-icon>
-                                <span class="hide-menu">Front Pages</span>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
-                                    <iconify-icon icon="solar:programming-linear" class="aside-icon"></iconify-icon>
-                                    <span class="hide-menu">Front Pages</span>
-                                </a>
-                                <ul aria-expanded="false" class="collapse first-level">
-                                    <li class="sidebar-item">
-                                        <a href="frontend-landingpage.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Homepage</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="frontend-aboutpage.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">About Us</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="frontend-blogpage.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Blog</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="frontend-blogdetailpage.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Blog Details</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="frontend-contactpage.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Contact Us</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="frontend-portfoliopage.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Portfolio</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="frontend-pricingpage.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Pricing</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <!-- ============================= -->
-                            <!-- Apps -->
-                            <!-- ============================= -->
-                            <li class="nav-small-cap">
-                                <iconify-icon icon="solar:menu-dots-bold" class="nav-small-cap-icon"></iconify-icon>
-                                <span class="hide-menu">Apps</span>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link two-column has-arrow" href="javascript:void(0)"
-                                    aria-expanded="false">
-                                    <iconify-icon icon="solar:archive-linear" class="aside-icon"></iconify-icon>
-                                    <span class="hide-menu">Apps</span>
-                                </a>
-                                <ul aria-expanded="false" class="collapse first-level">
-                                    <li class="sidebar-item">
-                                        <a href="app-calendar.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Calendar</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="app-kanban.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Kanban</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="app-chat.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Chat</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a class="sidebar-link" href="app-email.html" aria-expanded="false">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Email</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="app-contact.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Contact Table</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="app-contact2.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Contact List</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="app-notes.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Notes</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="app-invoice.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Invoice</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="page-user-profile.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">User Profile</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="blog-posts.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Posts</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="blog-detail.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Detail</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="eco-shop.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Shop</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="eco-shop-detail.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Shop Detail</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="eco-product-list.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">List</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="eco-checkout.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Checkout</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="eco-add-product.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Add Product</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="eco-edit-product.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Edit Product</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <!-- ============================= -->
-                            <!-- PAGES -->
-                            <!-- ============================= -->
-                            <li class="nav-small-cap">
-                                <iconify-icon icon="solar:menu-dots-bold" class="nav-small-cap-icon"></iconify-icon>
-                                <span class="hide-menu">PAGES</span>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
-                                    <iconify-icon icon="solar:programming-linear" class="aside-icon"></iconify-icon>
-                                    <span class="hide-menu">Pages</span>
-                                </a>
-                                <ul aria-expanded="false" class="collapse first-level">
-                                    <li class="sidebar-item">
-                                        <a href="page-faq.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">FAQ</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="{{ route('profile.edit') }}" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Account Setting</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="page-pricing.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Pricing</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="widgets-cards.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Card</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="widgets-banners.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Banner</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="widgets-charts.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Charts</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="../landingpage/index.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Landing Page</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="icon-tabler.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Tabler Icon</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="icon-solar.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Solar Icon</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <!-- ============================= -->
-                            <!-- UI -->
-                            <!-- ============================= -->
-                            <li class="nav-small-cap">
-                                <iconify-icon icon="solar:menu-dots-bold" class="nav-small-cap-icon"></iconify-icon>
-                                <span class="hide-menu">UI</span>
-                            </li>
-                            <!-- =================== -->
-                            <!-- UI Elements -->
-                            <!-- =================== -->
-                            <li class="sidebar-item mega-dropdown">
-                                <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
-                                    <iconify-icon icon="solar:text-underline-cross-linear"
-                                        class="aside-icon"></iconify-icon>
-                                    <span class="hide-menu">UI</span>
-                                </a>
-                                <ul aria-expanded="false" class="collapse first-level">
-                                    <li class="sidebar-item">
-                                        <a href="ui-accordian.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Accordian</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="ui-badge.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Badge</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="ui-buttons.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Buttons</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="ui-dropdowns.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Dropdowns</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="ui-modals.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Modals</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="ui-tab.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Tab</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="ui-tooltip-popover.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Tooltip & Popover</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="ui-notification.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Alerts</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="ui-progressbar.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Progressbar</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="ui-pagination.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Pagination</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="ui-typography.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Typography</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="ui-bootstrap-ui.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Bootstrap UI</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="ui-breadcrumb.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Breadcrumb</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="ui-offcanvas.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Offcanvas</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="ui-lists.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Lists</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="ui-grid.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Grid</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="ui-carousel.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Carousel</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="ui-scrollspy.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Scrollspy</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="ui-spinner.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Spinner</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="ui-link.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Link</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <!-- ============================= -->
-                            <!-- Forms -->
-                            <!-- ============================= -->
-                            <li class="nav-small-cap">
-                                <iconify-icon icon="solar:menu-dots-bold" class="nav-small-cap-icon"></iconify-icon>
-                                <span class="hide-menu">Forms</span>
-                            </li>
-                            <!-- =================== -->
-                            <!-- Forms -->
-                            <!-- =================== -->
-                            <li class="sidebar-item">
-                                <a class="sidebar-link two-column has-arrow" href="javascript:void(0)"
-                                    aria-expanded="false">
-                                    <iconify-icon icon="solar:book-2-linear" class="aside-icon"></iconify-icon>
-                                    <span class="hide-menu">Forms</span>
-                                </a>
-                                <ul aria-expanded="false" class="collapse first-level">
-                                    <!-- form elements -->
-                                    <li class="sidebar-item">
-                                        <a href="form-inputs.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Forms Input</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="form-input-groups.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Input Groups</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="form-input-grid.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Input Grid</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="form-checkbox-radio.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Checkbox & Radios</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="form-bootstrap-switch.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Bootstrap Switch</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="form-select2.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Select2</span>
-                                        </a>
-                                    </li>
-                                    <!-- form inputs -->
-                                    <li class="sidebar-item">
-                                        <a href="form-basic.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Basic Form</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="form-vertical.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Form Vertical</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="form-horizontal.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Form Horizontal</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="form-actions.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Form Actions</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="form-row-separator.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Row Separator</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="form-bordered.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Form Bordered</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="form-detail.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Form Detail</span>
-                                        </a>
-                                    </li>
-                                    <!-- form wizard -->
-                                    <li class="sidebar-item">
-                                        <a href="form-wizard.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Form Wizard</span>
-                                        </a>
-                                    </li>
-                                    <!-- Quill Editor -->
-                                    <li class="sidebar-item">
-                                        <a href="form-editor-quill.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Quill Editor</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <!-- ============================= -->
-                            <!-- Tables -->
-                            <!-- ============================= -->
-                            <li class="nav-small-cap">
-                                <iconify-icon icon="solar:menu-dots-bold" class="nav-small-cap-icon"></iconify-icon>
-                                <span class="hide-menu">Tables</span>
-                            </li>
-                            <!-- =================== -->
-                            <!-- Bootstrap Table -->
-                            <!-- =================== -->
-                            <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
-                                    <iconify-icon icon="solar:sidebar-minimalistic-linear"
-                                        class="aside-icon"></iconify-icon>
-                                    <span class="hide-menu">Tables</span>
-                                </a>
-                                <ul aria-expanded="false" class="collapse first-level">
-                                    <li class="sidebar-item">
-                                        <a href="table-basic.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Basic Table</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="table-dark-basic.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Dark Basic Table</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="table-sizing.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Sizing Table</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="table-layout-coloured.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Coloured Table</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="table-datatable-basic.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Basic Initialisation</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="table-datatable-api.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">API</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="table-datatable-advanced.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Advanced Initialisation</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <!-- ============================= -->
-                            <!-- Charts -->
-                            <!-- ============================= -->
-                            <li class="nav-small-cap">
-                                <iconify-icon icon="solar:menu-dots-bold" class="nav-small-cap-icon"></iconify-icon>
-                                <span class="hide-menu">Charts</span>
-                            </li>
-                            <!-- =================== -->
-                            <!-- Apex Chart -->
-                            <!-- =================== -->
-                            <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
-                                    <iconify-icon icon="solar:pie-chart-3-linear" class="aside-icon"></iconify-icon>
-                                    <span class="hide-menu">Charts</span>
-                                </a>
-                                <ul aria-expanded="false" class="collapse first-level">
-                                    <li class="sidebar-item">
-                                        <a href="chart-apex-line.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Line Chart</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="chart-apex-area.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Area Chart</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="chart-apex-bar.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Bar Chart</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="chart-apex-pie.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Pie Chart</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="chart-apex-radial.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Radial Chart</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="chart-apex-radar.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Radar Chart</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <!-- multi level -->
-                            <li class="sidebar-item">
-                                <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
-                                    <iconify-icon icon="solar:layers-minimalistic-linear"
-                                        class="aside-icon"></iconify-icon>
-                                    <span class="hide-menu">Multi DD</span>
-                                </a>
-                                <ul aria-expanded="false" class="collapse first-level">
-                                    <li class="sidebar-item">
-                                        <a href="../docs/index.html" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Documentation</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="javascript:void(0)" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Page 1</span>
-                                        </a>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="javascript:void(0)" class="sidebar-link has-arrow">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Page 2</span>
-                                        </a>
-                                        <ul aria-expanded="false" class="collapse second-level">
-                                            <li class="sidebar-item">
-                                                <a href="javascript:void(0)" class="sidebar-link">
-                                                    <i class="ti ti-circle"></i>
-                                                    <span class="hide-menu">Page 2.1</span>
-                                                </a>
-                                            </li>
-                                            <li class="sidebar-item">
-                                                <a href="javascript:void(0)" class="sidebar-link">
-                                                    <i class="ti ti-circle"></i>
-                                                    <span class="hide-menu">Page 2.2</span>
-                                                </a>
-                                            </li>
-                                            <li class="sidebar-item">
-                                                <a href="javascript:void(0)" class="sidebar-link">
-                                                    <i class="ti ti-circle"></i>
-                                                    <span class="hide-menu">Page 2.3</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="sidebar-item">
-                                        <a href="javascript:void(0)" class="sidebar-link">
-                                            <i class="ti ti-circle"></i>
-                                            <span class="hide-menu">Page 3</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </nav>
-                    <!-- End Sidebar navigation -->
-                </div>
-                <!-- End Sidebar scroll-->
-            </aside>
 
             @yield('dashboard')
 
@@ -2003,7 +1288,7 @@
                 class="btn btn-primary p-3 rounded-circle d-flex align-items-center justify-content-center customizer-btn"
                 type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
                 aria-controls="offcanvasExample">
-                <i class="icon ti ti-settings fs-7 text-white"></i>
+                <i class="fa fa-gear fs-7 text-white"></i>
             </button>
 
             <div class="offcanvas customizer offcanvas-end" tabindex="-1" id="offcanvasExample"
@@ -2019,8 +1304,8 @@
                     <h6 class="fw-semibold fs-4 mb-2">Theme</h6>
 
                     <div class="d-flex flex-row gap-3 customizer-box" role="group">
-                        <input type="radio" class="btn-check light-layout " name="theme-layout"
-                            id="light-layout" autocomplete="off">
+                        <input type="radio" class="btn-check light-layout " name="theme-layout" id="light-layout"
+                            autocomplete="off">
                         <label class="btn p-9 btn-outline-primary rounded" for="light-layout"> <iconify-icon
                                 icon="solar:sun-2-outline" class="icon fs-7 me-2"></iconify-icon>Light</label>
                         <input type="radio" class="btn-check dark-layout" name="theme-layout" id="dark-layout"
@@ -2054,7 +1339,7 @@
                             data-bs-placement="top" data-bs-title="BLUE_THEME">
                             <div
                                 class="color-box rounded-circle d-flex align-items-center justify-content-center skin-1">
-                                <i class="ti ti-check text-white d-flex icon fs-5"></i>
+                                <i class="fa fa-check text-white d-flex icon fs-5"></i>
                             </div>
                         </label>
 
@@ -2066,7 +1351,7 @@
                             data-bs-placement="top" data-bs-title="AQUA_THEME">
                             <div
                                 class="color-box rounded-circle d-flex align-items-center justify-content-center skin-2">
-                                <i class="ti ti-check text-white d-flex icon fs-5"></i>
+                                <i class="fa fa-check text-white d-flex icon fs-5"></i>
                             </div>
                         </label>
 
@@ -2078,19 +1363,19 @@
                             data-bs-placement="top" data-bs-title="PURPLE_THEME">
                             <div
                                 class="color-box rounded-circle d-flex align-items-center justify-content-center skin-3">
-                                <i class="ti ti-check text-white d-flex icon fs-5"></i>
+                                <i class="fa fa-check text-white d-flex icon fs-5"></i>
                             </div>
                         </label>
 
-                        <input type="radio" class="btn-check" name="color-theme-layout"
-                            id="green-theme-layout" autocomplete="off">
+                        <input type="radio" class="btn-check" name="color-theme-layout" id="green-theme-layout"
+                            autocomplete="off">
                         <label
                             class="btn p-9 btn-outline-primary d-flex align-items-center justify-content-center rounded"
                             onclick="handleColorTheme('Green_Theme')" for="green-theme-layout"
                             data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="GREEN_THEME">
                             <div
                                 class="color-box rounded-circle d-flex align-items-center justify-content-center skin-4">
-                                <i class="ti ti-check text-white d-flex icon fs-5"></i>
+                                <i class="fa fa-check text-white d-flex icon fs-5"></i>
                             </div>
                         </label>
 
@@ -2098,46 +1383,25 @@
                             autocomplete="off">
                         <label
                             class="btn p-9 btn-outline-primary d-flex align-items-center justify-content-center rounded"
-                            onclick="handleColorTheme('Cyan_Theme')" for="cyan-theme-layout"
-                            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="CYAN_THEME">
+                            onclick="handleColorTheme('Cyan_Theme')" for="cyan-theme-layout" data-bs-toggle="tooltip"
+                            data-bs-placement="top" data-bs-title="CYAN_THEME">
                             <div
                                 class="color-box rounded-circle d-flex align-items-center justify-content-center skin-5">
-                                <i class="ti ti-check text-white d-flex icon fs-5"></i>
+                                <i class="fa fa-check text-white d-flex icon fs-5"></i>
                             </div>
                         </label>
 
-                        <input type="radio" class="btn-check" name="color-theme-layout"
-                            id="orange-theme-layout" autocomplete="off">
+                        <input type="radio" class="btn-check" name="color-theme-layout" id="orange-theme-layout"
+                            autocomplete="off">
                         <label
                             class="btn p-9 btn-outline-primary d-flex align-items-center justify-content-center rounded"
                             onclick="handleColorTheme('Orange_Theme')" for="orange-theme-layout"
                             data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="ORANGE_THEME">
                             <div
                                 class="color-box rounded-circle d-flex align-items-center justify-content-center skin-6">
-                                <i class="ti ti-check text-white d-flex icon fs-5"></i>
+                                <i class="fa fa-check text-white d-flex icon fs-5"></i>
                             </div>
                         </label>
-                    </div>
-
-                    <h6 class="mt-5 fw-semibold fs-4 mb-2">Layout Type</h6>
-                    <div class="d-flex flex-row gap-3 customizer-box" role="group">
-                        <div>
-                            <input type="radio" class="btn-check" name="page-layout" id="vertical-layout"
-                                autocomplete="off">
-                            <label class="btn p-9 btn-outline-primary rounded" for="vertical-layout">
-                                <iconify-icon icon="solar:slider-vertical-minimalistic-linear"
-                                    class="icon fs-7 me-2"></iconify-icon>Vertical
-                            </label>
-                        </div>
-                        <div>
-                            <input type="radio" class="btn-check" name="page-layout" id="horizontal-layout"
-                                autocomplete="off">
-                            <label class="btn p-9 btn-outline-primary rounded" for="horizontal-layout">
-                                <iconify-icon icon="solar:slider-minimalistic-horizontal-outline"
-                                    class="icon fs-7 me-2"></iconify-icon>
-                                Horizontal
-                            </label>
-                        </div>
                     </div>
 
                     <h6 class="mt-5 fw-semibold fs-4 mb-2">Container Option</h6>
@@ -2229,6 +1493,9 @@
     <script src="{{ asset('dashboard_assets') }}/js/theme/app.min.js"></script>
     <script src="{{ asset('dashboard_assets') }}/js/theme/sidebarmenu.js"></script>
     <script src="{{ asset('dashboard_assets') }}/js/theme/feather.min.js"></script>
+
+    <!-- Fancybox JS -->
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
 
     <!-- solar icons -->
     <script src="{{ asset('dashboard_assets') }}/npm/iconify-icon%401.0.8/dist/iconify-icon.min.js"></script>

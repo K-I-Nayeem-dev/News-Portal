@@ -8,6 +8,7 @@ use App\Http\Controllers\LiveTvController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NewsFetchController;
 use App\Http\Controllers\NoticeController;
+use App\Http\Controllers\PhotoGalleryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SeoController;
 use App\Http\Controllers\SocailController;
@@ -15,6 +16,7 @@ use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\SubDistrictController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VideoGalleryController;
 use App\Http\Controllers\WatermarkController;
 use App\Http\Controllers\WebsiteListController;
 use Illuminate\Support\Facades\DB;
@@ -78,6 +80,8 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
         'district' => DistrictController::class,
         'subdistrict' => SubDistrictController::class,
         'websiteLIst' => WebsiteListController::class,
+        'photogallery' => PhotoGalleryController::class,
+        'videogallery' => VideoGalleryController::class,
     ]);
 
     // Specific Version (Bangla/English) News Show Routes
