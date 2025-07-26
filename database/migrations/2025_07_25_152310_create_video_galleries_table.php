@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('video_galleries', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('embed_code');
+            $table->text('embed_code');
             $table->string('type');
             $table->timestamps();
         });

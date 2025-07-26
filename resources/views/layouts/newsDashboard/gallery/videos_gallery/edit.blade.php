@@ -19,11 +19,11 @@
                                     </li>
                                     <li class="breadcrumb-item">
                                         <a class="text-muted text-decoration-none"
-                                            href="{{ route('photogallery.index') }}">Photos Gallery
+                                            href="{{ route('videogallery.index') }}">videos Gallery
                                         </a>
                                     </li>
                                     <li class="breadcrumb-item text-muted" aria-current="page">Edit</li>
-                                    <li class="breadcrumb-item text-muted" aria-current="page">{{ $photo->id }}</li>
+                                    <li class="breadcrumb-item text-muted" aria-current="page">{{ $video->id }}</li>
                                 </ol>
                             </nav>
                         </div>
@@ -39,19 +39,36 @@
 
                 <div class="col-lg-6 offset-lg-3">
                     <div class="card mb-3">
-                        <img src="{{ asset($photo->image) }}" class="card-img-top" alt="{{ $photo->title }}">
-                        <div class="card-body">
-                            <form method="POST" action="{{ route('photogallery.update', $photo->id) }}" enctype="multipart/form-data">
-                                @csrf
-                                @method("PUT")
+                        @php
+                            // Extract iframe src
+                            preg_match('/src="([^"]+)"/', $video->embed_code, $matches);
+                            $iframeSrc = $matches[1] ?? null;
 
-                                {{-- Image Upload for photos Gallery --}}
+                            // Try to extract the YouTube video ID
+                            $videoId = null;
+                            if ($iframeSrc && Str::contains($iframeSrc, 'youtube.com')) {
+                                preg_match('/embed\/([^\?&"]+)/', $iframeSrc, $idMatch);
+                                $videoId = $idMatch[1] ?? null;
+                            }
+                        @endphp
+                        @if ($videoId)
+                            <img width="100%" height="200px" src="https://img.youtube.com/vi/{{ $videoId }}/hqdefault.jpg"
+                                style="cursor: pointer; border-radius: 10px 10px 0 0;" />
+                        @else
+                            <img src="{{ asset('default-thumb.jpg') }}" class="img-fluid rounded" />
+                        @endif
+                        <div class="card-body">
+                            <form method="POST" action="{{ route('videogallery.update', $video->id) }}">
+                                @csrf
+                                @method('PUT')
+
+                                {{-- Image Upload for videos Gallery --}}
                                 <div class="mt-3">
 
                                     <div>
                                         <label class='form-label' for="title">Title</label>
                                         <input id="title" class="form-control" type="text" name="title"
-                                            autocomplete="off" value="{{ old('title', $photo->title) }}">
+                                            autocomplete="off" value="{{ old('title', $video->title) }}">
 
                                         @error('title_en')
                                             <p class="text-danger mt-2">{{ $message }}</p>
@@ -59,11 +76,10 @@
                                     </div>
 
                                     <div class="mt-3">
-                                        <label class='form-label' for="image">Image</label>
-                                        <input type="file" name="image" id="image" class="form-control"
-                                            autocomplete="off" value="{{ old('image') }}">
+                                        <label class='form-label' for="image">Embed Code</label>
+                                        <textarea class="form-control" name="embed_code" id="image" cols="30" rows="10" autocomplete="off"">{{ old('embed_code',$video->embed_code) }}</textarea>
 
-                                        @error('image')
+                                        @error('embed_code')
                                             <p class="text-danger mt-2">{{ $message }}</p>
                                         @enderror
                                     </div>
@@ -74,9 +90,9 @@
                                         <select class="form-select select2" name="type" id="type"
                                             autocomplete="off">
                                             <option value="">Select Type</option>
-                                            <option {{ $photo->type == 1 ? 'selected' : '' }} value="1">Big Photo
+                                            <option {{ $video->type == 1 ? 'selected' : '' }} value="1">Big video
                                             </option>
-                                            <option {{ $photo->type == 0 ? 'selected' : '' }} value="0">Small Photo
+                                            <option {{ $video->type == 0 ? 'selected' : '' }} value="0">Small video
                                             </option>
                                         </select>
 
@@ -86,14 +102,14 @@
                                     </div>
                                 </div>
                                 <div class="mt-3 d-flex align-items-center justify-content-end">
-                                    <a class="btn btn-primary" href="{{ route('photogallery.index') }}">Back</a>
+                                    <a class="btn btn-primary" href="{{ route('videogallery.index') }}">Back</a>
                                     <button type="submit" class="btn btn-primary ms-2">Update</button>
                                 </div>
                             </form>
                         </div>
                     </div>
-                    @if (session('photo_updated'))
-                        <div class=" alert alert-success mt-3 ">{{ session('photo_updated') }}</div>
+                    @if (session('video_update'))
+                        <div class=" alert alert-success mt-3 ">{{ session('video_update') }}</div>
                     @endif
                 </div>
 

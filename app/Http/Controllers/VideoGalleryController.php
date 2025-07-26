@@ -62,24 +62,41 @@ class VideoGalleryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(VideoGallery $videoGallery)
+    public function edit($id)
     {
-        //
+        $video = VideoGallery::findOrFail($id);
+        return view('layouts.newsDashboard.gallery.videos_gallery.edit', [
+            'video' => $video
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, VideoGallery $videoGallery)
+    public function update(Request $request, $id)
     {
-        //
+
+        $data = [
+            'title' => $request->title,
+            'type' => $request->type,
+            'embed_code' => $request->embed_code,
+            'updated_at' => now()
+        ];
+
+
+        VideoGallery::findOrFail($id)->update($data);
+
+        return back()->with('video_update', 'Video Updated Successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(VideoGallery $videoGallery)
+    public function destroy($id)
     {
-        //
+        VideoGallery::findOrFail($id)->delete();
+
+        return back()->with('video_delete', 'Video Delete');
+
     }
 }

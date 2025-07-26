@@ -54,14 +54,15 @@
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form method="POST" action="{{ route('photogallery.store') }}">
+                                    <form method="POST" action="{{ route('videogallery.store') }}">
                                         @csrf
 
                                         {{-- Image Upload for photos Gallery --}}
                                         <div class="mt-3">
 
                                             <div>
-                                                <label class='form-label' for="title">Title<sup><code style="font-size: 12px">*</code></sup></label>
+                                                <label class='form-label' for="title">Title<sup><code
+                                                            style="font-size: 12px">*</code></sup></label>
                                                 <input id="title" class="form-control" type="text" name="title"
                                                     autocomplete="off" value="{{ old('title') }}">
 
@@ -72,21 +73,23 @@
 
                                             <div class="mt-3">
                                                 <label class='form-label' for="image">Embed Code</label>
-                                                <textarea class="form-control" name="embed_code" id="image" cols="30" rows="10">{{ old('embed_code') }}</textarea>
+                                                <textarea class="form-control" name="embed_code" id="image" cols="30" rows="10" autocomplete="off"">{{ old('embed_code') }}</textarea>
 
                                                 @error('embed_code')
                                                     <p class="text-danger mt-2">{{ $message }}</p>
                                                 @enderror
                                             </div>
 
-                                            <div>
-                                                <label class='form-label' for="title">Title<sup><code style="font-size: 12px">*</code></sup></label>
-                                                <input id="title" class="form-control" type="text" name="title"
-                                                    autocomplete="off" value="{{ old('title') }}">
+                                            <div class="mt-3">
+                                                <label class='form-label' for="type">Type<sup><code
+                                                            style="font-size: 12px">*</code></sup></label>
 
-                                                @error('title_en')
-                                                    <p class="text-danger mt-2">{{ $message }}</p>
-                                                @enderror
+                                                <select class="form-select select2" name="type" id="type"
+                                                    autocomplete="off">
+                                                    <option value="">Select Type</option>
+                                                    <option value="1">Big Video</option>
+                                                    <option value="0">Small Video</option>
+                                                </select>
                                             </div>
 
 
@@ -107,16 +110,65 @@
                 <div class="row g-3 justify-content-start">
                     @forelse ($videos as $video)
                         <div class="col-6 col-sm-4 col-md-3"">
+
+                            {{-- this iframe youtube video with fancybox and with thumbnail --}}
                             <div class="card" style="width: 18rem;">
-                                {!! $video->embed_code !!}
+                                @php
+                                    // Extract iframe src
+                                    preg_match('/src="([^"]+)"/', $video->embed_code, $matches);
+                                    $iframeSrc = $matches[1] ?? null;
+
+                                    // Try to extract the YouTube video ID
+                                    $videoId = null;
+                                    if ($iframeSrc && Str::contains($iframeSrc, 'youtube.com')) {
+                                        preg_match('/embed\/([^\?&"]+)/', $iframeSrc, $idMatch);
+                                        $videoId = $idMatch[1] ?? null;
+                                    }
+                                @endphp
+
+                                @if ($iframeSrc)
+                                    <a data-fancybox href="{{ $iframeSrc }}" class="position-relative d-inline-block"
+                                        style="display: inline-block;">
+                                        @if ($videoId)
+                                            <img src="https://img.youtube.com/vi/{{ $videoId }}/hqdefault.jpg"
+                                                class="img-fluid" style="cursor: pointer; border-radius: 10px 10px 0 0;" />
+                                        @else
+                                            <img src="{{ asset('default-thumb.jpg') }}" class="img-fluid rounded" />
+                                        @endif
+
+                                        <!-- Play button overlay -->
+                                        <div
+                                            style="
+                                                position: absolute;
+                                                top: 50%;
+                                                left: 50%;
+                                                transform: translate(-50%, -50%);
+                                                background: rgba(0, 0, 0, 0.6);
+                                                border-radius: 50%;
+                                                width: 60px;
+                                                height: 60px;
+                                                display: flex;
+                                                align-items: center;
+                                                justify-content: center;
+                                            ">
+                                            <i class="fa fa-play text-white" style="font-size: 24px;"></i>
+                                        </div>
+                                    </a>
+                                @endif
+
                                 <div class="card-body">
                                     <p class="card-text">{{ $video->title }}</p>
+                                    @if ($video->type == 1)
+                                        <p class="badge bg-info">Big Video</p>
+                                    @else
+                                        <p class="badge bg-primary">Small Video</p>
+                                    @endif
                                     <div class="row">
                                         <div class="d-flex">
                                             <!-- Edit Button -->
                                             <div class="w-50 pe-1">
                                                 <a class="btn btn-primary btn-sm w-100"
-                                                    href="{{ route('photogallery.edit', $video->id) }}">
+                                                    href="{{ route('videogallery.edit', $video->id) }}">
                                                     <i class="fa fa-edit" aria-hidden="true"></i>
                                                 </a>
                                             </div>
@@ -124,7 +176,7 @@
                                             <!-- Delete Button Form -->
                                             <div class="w-50 ps-1">
                                                 <form method="POST"
-                                                    action="{{ route('photogallery.destroy', $video->id) }}"
+                                                    action="{{ route('videogallery.destroy', $video->id) }}"
                                                     onsubmit="return confirm('Are you sure you want to delete: {{ addslashes($video->title) }}?');">
                                                     @csrf
                                                     @method('DELETE')
@@ -152,6 +204,9 @@
                 </div>
                 @if (session('video_uploaded'))
                     <div class=" alert alert-success mt-3 ">{{ session('video_uploaded') }}</div>
+                @endif
+                @if (session('video_delete'))
+                    <div class=" alert alert-success mt-3 ">{{ session('video_delete') }}</div>
                 @endif
             </div>
         </div>
