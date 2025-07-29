@@ -17,7 +17,7 @@
                                         <a class="text-muted text-decoration-none" href="{{ route('dashboard') }}">Home
                                         </a>
                                     </li>
-                                    <li class="breadcrumb-item text-muted" aria-current="page">Districts</li>
+                                    <li class="breadcrumb-item text-muted" aria-current="page">divisions</li>
                                 </ol>
                             </nav>
                         </div>
@@ -32,47 +32,30 @@
             <div class="row">
                 <div class="col-lg col-lg-4 px-1">
                     <div class="card">
-                        <h5 class="card-header text-white" style="background-color: #1B84FF">Create District</h5>
+                        <h5 class="card-header text-white" style="background-color: #1B84FF">Create division</h5>
                         <div class="card-body">
-                            <form method="POST" action="{{ route('district.store') }}">
+                            <form method="POST" action="{{ route('division.store') }}">
                                 @csrf
                                 <div>
-                                    <label for="district_en" class="form-label">District English</label>
-                                    <input id='district_en' type="text" class="form-control" name="district_en"
-                                        value="{{ old('district_en') }}" autocomplete="off">
+                                    <label for="division_en" class="form-label">Division English</label>
+                                    <input id='division_en' type="text" class="form-control" name="division_en"
+                                        value="{{ old('division_en') }}" autocomplete="off">
 
-                                    @error('district_en')
+                                    @error('division_en')
                                         <p class="text-danger mt-2">{{ $message }}</p>
                                     @enderror
 
                                 </div>
                                 <div class="mt-3">
-                                    <label for="district_bn" class="form-label">District Bangla</label>
-                                    <input id='district_bn' type="text" class="form-control" name="district_bn"
-                                        value="{{ old('district_bn') }}" autocomplete="off">
+                                    <label for="division_bn" class="form-label">Division Bangla</label>
+                                    <input id='division_bn' type="text" class="form-control" name="division_bn"
+                                        value="{{ old('division_bn') }}" autocomplete="off">
 
-                                    @error('district_bn')
+                                    @error('division_bn')
                                         <p class="text-danger mt-2">{{ $message }}</p>
                                     @enderror
 
                                 </div>
-
-                                <div class="mt-3">
-                                    <label class="form-label" for="division_id">Division</label>
-                                    <select class="form-select" name="division_id" id="division_id" autocomplete="off">
-                                        <option value="">Select Division</option>
-                                        @foreach ($divisions as $division)
-                                            <option value="{{ $division->id }}">
-                                                {{ $division->division_en . ' | ' . $division->division_bn }}</option>
-                                        @endforeach
-                                    </select>
-
-                                    @error('division_id')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
-
-                                </div>
-
                                 <div class="mt-2">
                                     <label class="form-label" for="status">Status</label>
                                     <select class="form-select" name="status" id="status" autocomplete="off">
@@ -93,55 +76,52 @@
                         </div>
                     </div>
 
-                    @if (session('district_create'))
-                        <div class=" alert alert-success mt-3 ">{{ session('district_create') }}</div>
+                    @if (session('division_create'))
+                        <div class=" alert alert-success mt-3 ">{{ session('division_create') }}</div>
                     @endif
 
                 </div>
                 <div class="col-lg col-lg-8 px-1">
                     <div class="card">
                         <h5 class="card-header text-white d-flex justify-content-between" style="background-color: #1B84FF">
-                            <span>All Districts</span>
-                            <span>Total District : {{ $districts->count() }}</span>
+                            <span>All divisions</span>
+                            <span>Total division : {{ $divisions->count() }}</span>
                         </h5>
                         <div class="card-body" style="height: 400px; overflow-y: auto; overflow-x: hidden;">
                             <table class="table table-striped table-bordered">
                                 <thead class="text-center">
                                     <tr>
                                         <th scope="col">SL</th>
-                                        <th scope="col">District EN</th>
-                                        <th scope="col">District BN</th>
-                                        <th scope="col">Division</th>
+                                        <th scope="col">Division EN</th>
+                                        <th scope="col">Division BN</th>
                                         <th scope="col">Actions</th>
                                         <th scope="col">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse($districts as $key => $district)
-                                        <tr onclick="window.location='{{ route('district.edit', $district->id) }}'"
+                                    @forelse($divisions as $key => $division)
+                                        <tr onclick="window.location='{{ route('division.edit', $division->id) }}'"
                                             style="cursor: pointer;">
                                             <th class="text-center" scope="row">{{ ++$key }}</th>
-                                            <td>{{ $district->district_en }}</td>
-                                            <td>{{ $district->district_bn }}</td>
-                                            <td>{{ $district->division->division_en . ' | ' . $district->division->division_bn }}
-                                            </td>
-                                            <td>
+                                            <td>{{ $division->division_en }}</td>
+                                            <td>{{ $division->division_bn }}</td>
+                                            <td >
                                                 <div class="d-flex  justify-content-around align-items-center">
-                                                    <a class="btn btn-sm btn-primary me-1"
-                                                        href="{{ route('district.edit', $district->id) }}"><i
+                                                    <a class="btn btn-primary"
+                                                        href="{{ route('division.edit', $division->id) }}"><i
                                                             class="fa-solid fa-pen-to-square"></i></a>
                                                     <form method="POST"
-                                                        action="{{ route('district.destroy', $district->id) }}"
+                                                        action="{{ route('division.destroy', $division->id) }}"
                                                         onsubmit="return confirm('Are you sure you want to delete this?')">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button class="btn btn-sm btn-danger"><i style="color: white"
+                                                        <button class="btn btn-danger"><i style="color: white"
                                                                 class="fa-solid fa-trash"></i></button>
                                                     </form>
                                                 </div>
                                             </td>
                                             <td class="text-center">
-                                                @if ($district->status == 1)
+                                                @if ($division->status == 1)
                                                     <p class="badge bg-success">Active</p>
                                                 @else
                                                     <p class="badge bg-danger">Deactive</p>
@@ -150,15 +130,18 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="5" class="text-center">No District Found</td>
+                                            <td colspan="5" class="text-center">No division Found</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    @if (session('district_delete'))
-                        <div class=" alert alert-danger mt-3 ">{{ session('district_delete') }}</div>
+                    @if (session('division_create'))
+                        <div class=" alert alert-success mt-3 ">{{ session('division_create') }}</div>
+                    @endif
+                    @if (session('division_delete'))
+                        <div class=" alert alert-danger mt-3 ">{{ session('division_delete') }}</div>
                     @endif
                 </div>
             </div>

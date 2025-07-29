@@ -30,18 +30,28 @@
             <!-- -------------------------------------------------------------- -->
             <!-- Row -->
             <div class="row">
-                <div class="col-lg col-lg-5 px-1">
+                <div class="col-lg col-lg-4 px-1">
                     <div class="card">
                         <h5 class="card-header text-white" style="background-color: #1B84FF">Create Sub Category</h5>
                         <div class="card-body">
                             <form method="POST" action="{{ route('sub_categories.store') }}">
                                 @csrf
                                 <div>
-                                    <label for="sub_categoryName" class="form-label">Sub Category name</label>
-                                    <input id='sub_categoryName' type="text" class="form-control" name="sub_cate_name"
-                                        value="{{ old('sub_cate_name') }}" autocomplete="off">
+                                    <label for="sub_cate_en" class="form-label">Sub Category English</label>
+                                    <input id='sub_cate_en' type="text" class="form-control" name="sub_cate_en"
+                                        value="{{ old('sub_cate_en') }}" autocomplete="off">
 
-                                    @error('sub_cate_name')
+                                    @error('sub_cate_en')
+                                        <p class="text-danger mt-2">{{ $message }}</p>
+                                    @enderror
+
+                                </div>
+                                <div class="mt-3">
+                                    <label for="sub_cate_bn" class="form-label">Sub Category Bangla</label>
+                                    <input id='sub_cate_bn' type="text" class="form-control" name="sub_cate_bn"
+                                        value="{{ old('sub_cate_bn') }}" autocomplete="off">
+
+                                    @error('sub_cate_bn')
                                         <p class="text-danger mt-2">{{ $message }}</p>
                                     @enderror
 
@@ -52,7 +62,7 @@
                                     <select class="form-select" name="category_id" id="category_id" autocomplete="off">
                                         <option value="">Select Category</option>
                                         @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->category_en }}</option>
+                                            <option value="{{ $category->id }}">{{ $category->category_en . ' | ' . $category->category_bn }}</option>
                                         @endforeach
                                     </select>
 
@@ -87,7 +97,7 @@
                     @endif
 
                 </div>
-                <div class="col-lg col-lg-7 px-1">
+                <div class="col-lg col-lg-8 px-1">
                     <div class="card">
                         <h5 class="card-header text-white d-flex justify-content-between" style="background-color: #1B84FF">
                             <span>All Sub Categories</span>
@@ -98,10 +108,10 @@
                                 <thead class="text-center">
                                     <tr>
                                         <th scope="col">SL</th>
-                                        <th scope="col">Sub Category Name</th>
-                                        <th scope="col">Category Name</th>
+                                        <th scope="col">Sub Category English</th>
+                                        <th scope="col">Sub Category Bangla</th>
+                                        <th scope="col">Category</th>
                                         <th scope="col">Actions</th>
-                                        <th scope="col">Created AT</th>
                                         <th scope="col">Status</th>
                                     </tr>
                                 </thead>
@@ -110,7 +120,8 @@
                                         <tr>
                                             <th class="text-center" scope="row">{{ ++$key }}</th>
                                             <td>{{ $sub_cate->sub_cate_en }}</td>
-                                            <td>{{ $sub_cate->category->category_en }}</td>
+                                            <td>{{ $sub_cate->sub_cate_bn }}</td>
+                                            <td>{{ $sub_cate->category->category_en . ' | ' . $sub_cate->category->category_bn }}</td>
                                             <td>
                                                 <div class="d-flex  justify-content-between align-items-center">
                                                     <a
@@ -127,8 +138,6 @@
                                                 </div>
                                             </td>
                                             <td class="text-center">
-                                                {{ \Carbon\Carbon::parse($sub_cate->created_at)->diffForHumans() }}</td>
-                                            <td class="text-center">
                                                 @if ($sub_cate->status == 1)
                                                     <p class="badge bg-success">Active</p>
                                                 @else
@@ -138,7 +147,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="5" class="text-center">No Category Found</td>
+                                            <td colspan="6" class="text-center">No Sub Category Found</td>
                                         </tr>
                                     @endforelse
                                 </tbody>

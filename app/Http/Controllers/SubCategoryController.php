@@ -37,13 +37,15 @@ class SubCategoryController extends Controller
     {
         $request->validate([
             'category_id' => 'required',
-            'sub_cate_name' => 'required|unique:sub_categories,sub_cate_name,',
+            'sub_cate_en' => 'required|unique:sub_categories,sub_cate_en,',
+            'sub_cate_bn' => 'required|unique:sub_categories,sub_cate_bn,',
             'status' => 'required'
         ]);
 
         $data = [
             'category_id' => $request->category_id,
-            'sub_cate_name' => $request->sub_cate_name,
+            'sub_cate_en' => $request->sub_cate_en,
+            'sub_cate_bn' => $request->sub_cate_bn,
             'status' => $request->status,
             'created_at' => now(),
             'updated_at' => null,
@@ -82,18 +84,20 @@ class SubCategoryController extends Controller
     public function update(Request $request, SubCategory $subCategory)
     {
         $request->validate([
-            'sub_cate_name' => 'required',
+            'sub_cate_en' => 'required',
+            'sub_cate_bn' => 'required',
             'category_id' => 'required',
             'status' => 'required'
         ]);
 
-        $subCategory->sub_cate_name = $request->input('sub_cate_name');
+        $subCategory->sub_cate_en = $request->input('sub_cate_en');
+        $subCategory->sub_cate_bn = $request->input('sub_cate_bn');
         $subCategory->category_id = $request->input('category_id');
         $subCategory->status = $request->input('status');
         $subCategory->updated_at = now();
         $subCategory->save();
 
-        return redirect()->route('sub_categories.index')->with('sub_cate_update', $subCategory->sub_cate_name . ' ' . 'Sub Category updated successfully.');
+        return back()->with('sub_cate_update', $subCategory->sub_cate_name . ' ' . 'Sub Category updated successfully.');
     }
 
     /**

@@ -36,12 +36,14 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'category_name' => 'required',
+            'category_en' => 'required',
+            'category_bn' => 'required',
             'status' => 'required'
         ]);
 
         $data = [
-            'category_name' => $request->category_name,
+            'category_en' => $request->category_en,
+            'category_bn' => $request->category_bn,
             'status' => $request->status,
             'created_at' => now(),
             'updated_at' => null,
@@ -71,11 +73,13 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $request->validate([
-            'category_name' => 'required|unique:categories,category_name,'. $category->id,
+            'category_en' => 'required|unique:categories,category_en,'. $category->id,
+            'category_bn' => 'required|unique:categories,category_bn,'. $category->id,
             'status' => 'required'
         ]);
 
-        $category->category_name = $request->input('category_name');
+        $category->category_en = $request->input('category_en');
+        $category->category_bn = $request->input('category_bn');
         $category->status = $request->input('status');
         $category->updated_at = now();
         $category->save();
@@ -93,6 +97,7 @@ class CategoryController extends Controller
         return back()->with('cate_delete', $category->category_name . ' ' . 'Category Delete Successfully ');
     }
 
+    // For Dynamic live Drop down
     public function getSubcate($id){
 
         $getSubCate = SubCategory::where('category_id', $id)->get();

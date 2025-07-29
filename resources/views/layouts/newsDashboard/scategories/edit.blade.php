@@ -39,10 +39,21 @@
                                     @csrf
                                     @method('put')
                                     <div>
-                                        <label for="SubcategoryName" class="form-label">Sub Category name</label>
-                                        <input id='SubcategoryName' type="text" class="form-control" name="sub_cate_name" value="{{ old('sub_cate_name', $sub_cate->sub_cate_name) }}" autocomplete="off">
+                                        <label for="sub_cate_en" class="form-label">Sub Category English</label>
+                                        <input id='sub_cate_en' type="text" class="form-control" name="sub_cate_en"
+                                            value="{{ old('sub_cate_en', $sub_cate->sub_cate_en) }}" autocomplete="off">
 
-                                        @error('sub_cate_name')
+                                        @error('sub_cate_en')
+                                            <p class="text-danger mt-2">{{ $message }}</p>
+                                        @enderror
+
+                                    </div>
+                                    <div class="mt-3">
+                                        <label for="sub_cate_bn" class="form-label">Sub Category Bangla</label>
+                                        <input id='sub_cate_bn' type="text" class="form-control" name="sub_cate_bn"
+                                            value="{{ old('sub_cate_bn', $sub_cate->sub_cate_bn) }}" autocomplete="off">
+
+                                        @error('sub_cate_bn')
                                             <p class="text-danger mt-2">{{ $message }}</p>
                                         @enderror
 
@@ -50,10 +61,13 @@
 
                                     <div class="mt-2">
                                         <label class="form-label" for="status">Category Name</label>
-                                        <select class="form-select select2" name="category_id" id="status" autocomplete="off" size="6" style="height: 150px; overflow-y: auto;">
+                                        <select class="form-select select2" name="category_id" id="status"
+                                            autocomplete="off">
                                             <option value="">Select Category</option>
                                             @foreach ($categories as $cate)
-                                                <option value="{{ $cate->id }}" {{ $cate->id == $sub_cate->category->id ? 'selected' : ''}}>{{ $cate->category_name }}</option>
+                                                <option value="{{ $cate->id }}"
+                                                    {{ $cate->id == $sub_cate->category->id ? 'selected' : '' }}>
+                                                    {{ $cate->category_en . ' | ' . $cate->category_bn }}</option>
                                             @endforeach
                                         </select>
 
@@ -79,11 +93,16 @@
                                     </div>
 
                                     <button style="background-color: #1B84FF" class="btn text-white mt-3">Update</button>
-                                    <a class="btn btn-primary mt-3 ms-2" href="{{ route('sub_categories.index') }}">Back</a>
+                                    <a class="btn btn-primary mt-3 ms-2"
+                                        href="{{ route('sub_categories.index') }}">Back</a>
 
                                 </form>
                             </div>
+
                         </div>
+                        @if (session('sub_cate_update'))
+                            <div class=" alert alert-success mt-3 ">{{ session('sub_cate_update') }}</div>
+                        @endif
                     </div>
                 </div>
             </div>

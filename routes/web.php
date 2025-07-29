@@ -3,6 +3,7 @@
 use App\Http\Controllers\BreakingNewsController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DistrictController;
+use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\LiveTvController;
 use App\Http\Controllers\NewsController;
@@ -79,6 +80,7 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
         'invitations' => InvitationController::class,
         'district' => DistrictController::class,
         'subdistrict' => SubDistrictController::class,
+        'division' => DivisionController::class,
         'websiteLIst' => WebsiteListController::class,
         'photogallery' => PhotoGalleryController::class,
         'videogallery' => VideoGalleryController::class,

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\District;
+use App\Models\Division;
 use App\Models\SubDistrict;
 use Illuminate\Http\Request;
 
@@ -14,8 +15,10 @@ class DistrictController extends Controller
     public function index()
     {
         $districts = District::orderBy('district_en', 'ASC')->get();
+        $divisions = Division::orderBy('division_en', 'ASC')->get();
         return view('layouts.newsDashboard.district.index', [
-            'districts' => $districts
+            'districts' => $districts,
+            'divisions' => $divisions
         ]);
     }
 
@@ -35,6 +38,7 @@ class DistrictController extends Controller
         $request->validate([
             'district_en' => 'required|min:3',
             'district_bn' => 'required|min:3',
+            'division_id' => 'required',
             'status' => 'required',
         ], [
             'district_en' => 'The district english field is required.',
@@ -44,6 +48,7 @@ class DistrictController extends Controller
         $data = [
             'district_en' => $request->district_en,
             'district_bn' => $request->district_bn,
+            'division_id' => $request->division_id,
             'status' => $request->status,
         ];
 
@@ -65,8 +70,11 @@ class DistrictController extends Controller
      */
     public function edit(District $district)
     {
+
+        $divisions = Division::orderBy('division_en', 'ASC')->get();
         return view('layouts.newsDashboard.district.edit', [
-            'district' => $district
+            'district' => $district,
+            'divisions' => $divisions
         ]);
     }
 
@@ -79,6 +87,7 @@ class DistrictController extends Controller
         $request->validate([
             'district_en' => 'required|min:3',
             'district_bn' => 'required|min:3',
+            'division_id' => 'required',
             'status' => 'required',
         ], [
             'district_en' => 'The district english field is required.',
@@ -87,10 +96,11 @@ class DistrictController extends Controller
 
         $district->district_en = $request->district_en;
         $district->district_bn = $request->district_bn;
+        $district->division_id = $request->division_id;
         $district->status = $request->status;
         $district->save();
 
-        return redirect()->route('district.index')->with('district_update', 'District Update Successfully');
+        return back()->with('district_update', 'District Update Successfully');
     }
 
     /**

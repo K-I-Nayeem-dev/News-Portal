@@ -14,10 +14,16 @@
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item">
-                                        <a class="text-muted text-decoration-none" href="">Home
+                                        <a class="text-muted text-decoration-none" href="{{ route('dashboard') }}">Home
                                         </a>
                                     </li>
-                                    <li class="breadcrumb-item text-muted" aria-current="page">Category Edit</li>
+                                    </li>
+                                    <li class="breadcrumb-item">
+                                        <a class="text-muted text-decoration-none"
+                                            href="{{ route('division.index') }}">Division
+                                        </a>
+                                    </li>
+                                    <li class="breadcrumb-item text-muted" aria-current="page">Edit Division</li>
                                 </ol>
                             </nav>
                         </div>
@@ -33,38 +39,38 @@
                 <div class="d-flex justify-content-center">
                     <div class="col-lg-8 px-1">
                         <div class="card">
-                            <h5 class="card-header text-white" style="background-color: #1B84FF">Edit Category</h5>
+                            <h5 class="card-header text-white" style="background-color: #1B84FF">Edit Division</h5>
                             <div class="card-body">
-                                <form method="POST" action="{{ route('categories.update', $category->id) }}">
+                                <form method="POST" action="{{ route('division.update', $division->id) }}">
                                     @csrf
-                                    @method('put')
+                                    @method('PUT')
                                     <div>
-                                        <label for="category_en" class="form-label">Category English</label>
-                                        <input id='category_en' type="text" class="form-control" name="category_en"
-                                            value="{{ old('category_en',$category->category_en) }}" autocomplete="off">
+                                        <label for="division_en" class="form-label">Division English</label>
+                                        <input id='division_en' type="text" class="form-control" name="division_en"
+                                            value="{{ old('division_en', $division->division_en) }}" autocomplete="off">
 
-                                        @error('category_en')
+                                        @error('division_en')
                                             <p class="text-danger mt-2">{{ $message }}</p>
                                         @enderror
 
                                     </div>
                                     <div class="mt-3">
-                                        <label for="category_bn" class="form-label">Category Bangla</label>
-                                        <input id='category_bn' type="text" class="form-control" name="category_bn"
-                                            value="{{ old('category_bn',$category->category_bn) }}" autocomplete="off">
+                                        <label for="division_bn" class="form-label">Division Bangla</label>
+                                        <input id='division_bn' type="text" class="form-control" name="division_bn"
+                                            value="{{ old('division_bn', $division->division_bn) }}" autocomplete="off">
 
-                                        @error('category_bn')
+                                        @error('division_bn')
                                             <p class="text-danger mt-2">{{ $message }}</p>
                                         @enderror
-
                                     </div>
+
                                     <div class="mt-2">
                                         <label class="form-label" for="status">Status</label>
                                         <select class="form-select" name="status" id="status" autocomplete="off">
                                             <option value="">Select Status</option>
-                                            <option value="1" {{ $category->status == 1 ? 'selected' : '' }}>Active
+                                            <option {{ $division->status == 1 ? 'selected' : '' }} value="1">Active
                                             </option>
-                                            <option value="0" {{ $category->status == 0 ? 'selected' : '' }}>Deactive
+                                            <option {{ $division->status == 0 ? 'selected' : '' }} value="0">Deactive
                                             </option>
                                         </select>
 
@@ -74,12 +80,15 @@
 
                                     </div>
 
-                                    <button style="background-color: #1B84FF" class="btn text-white mt-3">Create</button>
-                                    <a class="btn btn-primary mt-3 ms-2" href="{{ route('categories.index') }}">Back</a>
+                                    <button style="background-color: #1B84FF" class="btn text-white mt-3">Update</button>
+                                    <a href="{{ route('division.index') }}" class="btn btn-primary mt-3 ms-2 text-white">Back</a>
 
                                 </form>
                             </div>
                         </div>
+                        @if (session('division_update'))
+                            <div class=" alert alert-success mt-3 ">{{ session('division_update') }}</div>
+                        @endif
                     </div>
                 </div>
             </div>

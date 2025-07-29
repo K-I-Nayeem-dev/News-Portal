@@ -17,6 +17,13 @@ class District extends Model
         return $this->hasOne(SubDistrict::class);
     }
 
+    // for get Divisoin table one to one relation
+    public function division(){
+        return $this->belongsTo(Division::class);
+    }
+
+
+
      // for news table one to one relation
     public function newsDist(){
         return $this->hasOne(News::class);

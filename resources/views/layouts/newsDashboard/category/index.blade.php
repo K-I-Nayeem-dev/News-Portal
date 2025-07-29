@@ -37,11 +37,21 @@
                             <form method="POST" action="{{ route('categories.store') }}">
                                 @csrf
                                 <div>
-                                    <label for="categoryName" class="form-label">Category name</label>
-                                    <input id='categoryName' type="text" class="form-control" name="category_name"
-                                        value="{{ old('category_name') }}" autocomplete="off">
+                                    <label for="category_en" class="form-label">Category English</label>
+                                    <input id='category_en' type="text" class="form-control" name="category_en"
+                                        value="{{ old('category_en') }}" autocomplete="off">
 
-                                    @error('category_name')
+                                    @error('category_en')
+                                        <p class="text-danger mt-2">{{ $message }}</p>
+                                    @enderror
+
+                                </div>
+                                <div class="mt-3">
+                                    <label for="category_bn" class="form-label">Category Bangla</label>
+                                    <input id='category_bn' type="text" class="form-control" name="category_bn"
+                                        value="{{ old('category_bn') }}" autocomplete="off">
+
+                                    @error('category_bn')
                                         <p class="text-danger mt-2">{{ $message }}</p>
                                     @enderror
 
@@ -82,9 +92,9 @@
                                 <thead class="text-center">
                                     <tr>
                                         <th scope="col">SL</th>
-                                        <th scope="col">Category Name</th>
+                                        <th scope="col">Category English</th>
+                                        <th scope="col">Category Bangla</th>
                                         <th scope="col">Actions</th>
-                                        <th scope="col">Created AT</th>
                                         <th scope="col">Status</th>
                                     </tr>
                                 </thead>
@@ -93,9 +103,10 @@
                                         <tr>
                                             <th class="text-center" scope="row">{{ ++$key }}</th>
                                             <td>{{ $category->category_en }}</td>
+                                            <td>{{ $category->category_bn }}</td>
                                             <td >
                                                 <div class="d-flex  justify-content-around align-items-center">
-                                                    <a class="btn btn-sm btn-primary"
+                                                    <a class="btn btn-sm btn-primary me-2"
                                                         href="{{ route('categories.edit', $category->id) }}"><i
                                                             class="fa-solid fa-pen-to-square"></i></a>
                                                     <form method="POST"
@@ -108,8 +119,6 @@
                                                     </form>
                                                 </div>
                                             </td>
-                                            <td class="text-center">
-                                                {{ \Carbon\Carbon::parse($category->created_at)->diffForHumans() }}</td>
                                             <td class="text-center">
                                                 @if ($category->status == 1)
                                                     <p class="badge bg-success">Active</p>

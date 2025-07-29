@@ -54,12 +54,28 @@
                                         @enderror
 
                                     </div>
-                                    <div>
+                                    <div class="mt-3">
                                         <label for="district_bn" class="form-label">District Bangla</label>
                                         <input id='district_bn' type="text" class="form-control" name="district_bn"
                                             value="{{ old('district_bn', $district->district_bn) }}" autocomplete="off">
 
                                         @error('district_bn')
+                                            <p class="text-danger mt-2">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <div class="mt-3">
+                                        <label class="form-label" for="division_id">Division</label>
+                                        <select class="form-select" name="division_id" id="division_id" autocomplete="off">
+                                            <option value="">Select Division</option>
+                                            @foreach ($divisions as $division)
+                                                <option {{ $district->division_id == $division->id ? 'selected' : '' }}
+                                                    value="{{ $division->id }}">
+                                                    {{ $division->division_en . ' | ' . $division->division_bn }}</option>
+                                            @endforeach
+                                        </select>
+
+                                        @error('division_id')
                                             <p class="text-danger mt-2">{{ $message }}</p>
                                         @enderror
 
@@ -68,8 +84,10 @@
                                         <label class="form-label" for="status">Status</label>
                                         <select class="form-select" name="status" id="status" autocomplete="off">
                                             <option value="">Select Status</option>
-                                            <option {{ $district->status == 1 ? 'selected' : '' }} value="1">Active</option>
-                                            <option {{ $district->status == 0 ? 'selected' : '' }} value="0">Deactive</option>
+                                            <option {{ $district->status == 1 ? 'selected' : '' }} value="1">Active
+                                            </option>
+                                            <option {{ $district->status == 0 ? 'selected' : '' }} value="0">Deactive
+                                            </option>
                                         </select>
 
                                         @error('status')
@@ -79,10 +97,14 @@
                                     </div>
 
                                     <button style="background-color: #1B84FF" class="btn text-white mt-3">Update</button>
+                                    <a href="{{ route('district.index') }}" class="btn btn-primary mt-3 ms-2 text-white">Back</a>
 
                                 </form>
                             </div>
                         </div>
+                        @if (session('district_update'))
+                            <div class=" alert alert-success mt-3 ">{{ session('district_update') }}</div>
+                        @endif
                     </div>
                 </div>
             </div>
