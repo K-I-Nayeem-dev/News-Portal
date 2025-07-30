@@ -87,7 +87,8 @@
 
                                 </div>
 
-                                <button style="background-color: #1B84FF" class="btn text-white mt-3">Create</button>
+                                <button style="background-color: #1B84FF"
+                                    class="btn text-white mt-3 disabled">Create</button>
 
                             </form>
                         </div>
@@ -104,57 +105,59 @@
                             <span>All Sub Districts</span>
                             <span>Total Sub District : {{ $subdistricts->count() }}</span>
                         </h5>
-                        <div class="card-body" style="height: 400px; overflow-y: auto; overflow-x: hidden;">
-                            <table class="table table-striped table-bordered">
-                                <thead class="text-center">
-                                    <tr>
-                                        <th scope="col">SL</th>
-                                        <th scope="col">Sub District EN</th>
-                                        <th scope="col">Sub District BN</th>
-                                        <th scope="col">District</th>
-                                        <th scope="col">Actions</th>
-                                        <th scope="col">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @forelse($subdistricts as $key => $subdistrict)
-                                        <tr onclick="window.location='{{ route('subdistrict.edit', $subdistrict->id) }}'"
-                                            style="cursor: pointer;">
-                                            <th class="text-center" scope="row">{{ ++$key }}</th>
-                                            <td>{{ $subdistrict->sub_district_en }}</td>
-                                            <td>{{ $subdistrict->sub_district_bn }}</td>
-                                            <td>{{ $subdistrict->district->district_en . ' | ' . $subdistrict->district->district_bn }}
-                                            </td>
-                                            <td >
-                                                <div class="d-flex  justify-content-between align-items-center">
-                                                    <a class="btn btn-sm btn-primary me-1"
-                                                        href="{{ route('subdistrict.edit', $subdistrict->id) }}"><i
-                                                            class="fa-solid fa-pen-to-square"></i></a>
-                                                    <form method="POST"
+                        <div class="card-body" style="height: 450px; overflow-y: auto; overflow-x: hidden;">
+                            <div>
+                                <table class="table table-striped table-bordered">
+                                    <thead class="text-center">
+                                        <tr>
+                                            <th scope="col">SL</th>
+                                            <th scope="col">Sub District EN</th>
+                                            <th scope="col">Sub District BN</th>
+                                            <th scope="col">District</th>
+                                            <th scope="col">Actions</th>
+                                            <th scope="col">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @forelse($subdistricts as $key => $subdistrict)
+                                            <tr onclick="window.location='{{ route('subdistrict.edit', $subdistrict->id) }}'"
+                                                style="cursor: pointer;">
+                                                <th class="text-center" scope="row">{{ ++$key }}</th>
+                                                <td>{{ $subdistrict->sub_district_en }}</td>
+                                                <td>{{ $subdistrict->sub_district_bn }}</td>
+                                                <td>{{ $subdistrict->district->district_en . ' | ' . $subdistrict->district->district_bn }}
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex  justify-content-between align-items-center">
+                                                        <a class="btn btn-sm btn-primary me-1 w-100"
+                                                            href="{{ route('subdistrict.edit', $subdistrict->id) }}"><i
+                                                                class="fa-solid fa-pen-to-square"></i></a>
+                                                        {{-- <form method="POST"
                                                         action="{{ route('subdistrict.destroy', $subdistrict->id) }}"
                                                         onsubmit="return confirm('Are you sure you want to delete this?')">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button class="btn btn-sm btn-danger"><i style="color: white"
                                                                 class="fa-solid fa-trash"></i></button>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                            <td class="text-center">
-                                                @if ($subdistrict->status == 1)
-                                                    <p class="badge bg-success">Active</p>
-                                                @else
-                                                    <p class="badge bg-danger">Deactive</p>
-                                                @endif
-                                            </td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="5" class="text-center">No SubDistrict Found</td>
-                                        </tr>
-                                    @endforelse
-                                </tbody>
-                            </table>
+                                                    </form> --}}
+                                                    </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    @if ($subdistrict->status == 1)
+                                                        <p class="badge bg-success">Active</p>
+                                                    @else
+                                                        <p class="badge bg-danger">Deactive</p>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                        @empty
+                                            <tr>
+                                                <td colspan="5" class="text-center">No SubDistrict Found</td>
+                                            </tr>
+                                        @endforelse
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                     @if (session('district_update'))

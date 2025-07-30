@@ -74,7 +74,7 @@
 
                                     </div>
 
-                                    <button style="background-color: #1B84FF" class="btn text-white mt-3">Create</button>
+                                    <button style="background-color: #1B84FF" class="btn text-white mt-3">Update</button>
                                     <a class="btn btn-primary mt-3 ms-2" href="{{ route('categories.index') }}">Back</a>
 
                                 </form>

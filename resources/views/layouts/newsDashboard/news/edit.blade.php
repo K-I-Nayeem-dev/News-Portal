@@ -112,36 +112,54 @@
 
                                 {{-- Category And Subcategory Row --}}
                                 <div class="row mt-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label" for="dist_id">District<sup><code
+                                    <div class="col-md-4">
+                                        <label class="form-label" for="division_id">Division<sup><code
                                                     style="font-size: 12px">*</code></sup></label>
+                                        <select class="form-select select2" name="division_id" id="division_id"
+                                            autocomplete="off">
+                                            <option value="">== Select Division ==</option>
+                                            @foreach ($divisions as $division)
+                                                <option value="{{ $division->id }}" {{ $news->division_id == $division->id ? 'selected' : ''}} >
+                                                    {{ $division->division_en . ' | ' . $division->division_bn }}</option>
+                                            @endforeach
+                                        </select>
+
+                                        @error('division_id')
+                                            <p class="text-danger mt-2">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-4">
+
+                                        <label class='form-label' for="dist_id">District<sup><code
+                                                    style="font-size: 12px">*</code></sup></label>
+
                                         <select class="form-select select2" name="dist_id" id="dist_id"
                                             autocomplete="off">
                                             <option value="">== Select District ==</option>
-                                            @foreach ($districts as $dist)
-                                                <option value="{{ $dist->id }}"
-                                                    {{ $dist->id == $news->dist_id ? 'selected' : '' }}>
-                                                    {{ $dist->district_en . ' | ' . $dist->district_bn }}</option>
+                                            @foreach ($districts as $district)
+                                                <option value="{{ $district->id }}"  {{ $news->dist_id == $district->id ? 'selected' : ''}}>
+                                                    {{ $district->district_en . ' | ' . $district->district_bn }}</option>
                                             @endforeach
                                         </select>
 
                                         @error('dist_id')
                                             <p class="text-danger mt-2">{{ $message }}</p>
                                         @enderror
+
                                     </div>
-                                    <div class="col-md-6">
+
+                                    <div class="col-md-4">
 
                                         <label class='form-label' for="sub_dist_id">Sub District<sup><code
                                                     style="font-size: 12px">*</code></sup></label>
 
                                         <select class="form-select select2" name="sub_dist_id" id="sub_dist_id"
                                             autocomplete="off">
-                                            <option value="">== Sub District ==</option>
-                                            @foreach ($sub_dist as $subdist)
-                                                <option value="{{ $subdist->id }}"
-                                                    {{ $subdist->id == $news->sub_dist_id ? 'selected' : '' }}>
-                                                    {{ $subdist->sub_district_en . ' | ' . $subdist->sub_district_bn }}
-                                                </option>
+                                            <option value="">== Select Sub District ==</option>
+                                            @foreach ($sub_dists as $sub_dist)
+                                                <option value="{{ $sub_dist->id }}"  {{ $news->sub_dist_id == $sub_dist->id ? 'selected' : ''}}>
+                                                    {{ $sub_dist->sub_district_en . ' | ' . $sub_dist->sub_district_bn }}</option>
                                             @endforeach
                                         </select>
 
@@ -150,6 +168,7 @@
                                         @enderror
 
                                     </div>
+
                                 </div>
 
                                 {{-- Thumbnail for news --}}
@@ -300,7 +319,8 @@
 
                                         <option value="">Select Status</option>
                                         <option {{ $news->status == 1 ? 'selected' : '' }} value="1">Active</option>
-                                        <option {{ $news->status == 0 ? 'selected' : '' }} value="0">Deactive</option>
+                                        <option {{ $news->status == 0 ? 'selected' : '' }} value="0">Deactive
+                                        </option>
                                     </select>
 
                                     @error('status')
@@ -348,7 +368,34 @@
         });
     </script>
 
+    {{-- Select Districts while dropdown to Division --}}
+    <script>
+        $('#division_id').on('change', function() {
+            var division_id = $(this).val();
+
+            if (division_id) {
+                $.ajax({
+                    url: '/get/dist/' + division_id,
+                    type: 'GET',
+                    success: function(data) {
+                        $('#dist_id').empty();
+                        $('#dist_id').append(
+                            '<option selected disabled>== Select District ==</option>');
+                        $.each(data, function(key, value) {
+                            $('#dist_id').append('<option value="' + value.id + '">' + value
+                                .district_en + ' | ' + value.district_bn +
+                                '</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#dist_id').empty();
+            }
+        });
+    </script>
+
     {{-- Select Subdistricts while dropdown to Districts --}}
+
     <script>
         $('#dist_id').on('change', function() {
             var distID = $(this).val();
@@ -360,10 +407,10 @@
                     success: function(data) {
                         $('#sub_dist_id').empty();
                         $('#sub_dist_id').append(
-                            '<option selected disabled>== Sub District ==</option>');
+                            '<option selected disabled>== Select Sub Category ==</option>');
                         $.each(data, function(key, value) {
                             $('#sub_dist_id').append('<option value="' + value.id + '">' + value
-                                .sub_district_en + ' | ' + value.sub_district_en +
+                                .sub_district_en + ' | ' + value.sub_district_bn +
                                 '</option>');
                         });
                     }
@@ -373,5 +420,6 @@
             }
         });
     </script>
+
 
 @endsection

@@ -14,6 +14,7 @@ use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Imagick\Driver;
 use App\Jobs\ConvertDateToBangla;
 use App\Models\District;
+use App\Models\Division;
 use App\Models\news_photo;
 use App\Models\SubDistrict;
 use App\Models\watermark;
@@ -38,9 +39,11 @@ class NewsController extends Controller
     {
 
         $categories = Category::all();
+        $divisions = Division::orderBy('division_en', 'ASC')->get();
         $districts = District::orderBy('district_en', 'ASC')->get();
         return view('layouts.newsDashboard.news.create', [
             'categories' => $categories,
+            'divisions' => $divisions,
             'districts' => $districts,
         ]);
     }
@@ -59,8 +62,8 @@ class NewsController extends Controller
             'details_bn' => 'required',
             'category_id' => 'required',
             'sub_cate_id' => 'required',
+            'division_id' => 'required',
             'dist_id' => 'required',
-            'sub_dist_id' => 'required',
             'tags_en' => 'required',
             'tags_bn' => 'required',
             'thumbnail' => 'required|image|mimes:jpg,jpeg,png,gif|max:1024',
@@ -92,7 +95,7 @@ class NewsController extends Controller
             650,
             365,
             50,
-            $watermark->watermarks
+            $watermark->watermark
         );
 
         // Save $path to DB or whatever you need
@@ -110,6 +113,7 @@ class NewsController extends Controller
             'details_bn' => $request->details_bn,
             'category_id' => $request->category_id,
             'sub_cate_id' => $request->sub_cate_id,
+            'division_id' => $request->division_id,
             'dist_id' => $request->dist_id,
             'sub_dist_id' => $request->sub_dist_id,
             'tags_en' => $request->tags_en,
@@ -210,16 +214,21 @@ class NewsController extends Controller
      */
     public function edit(News $news)
     {
+        // Get Categories and Sub Categories get
         $categories = Category::all();
         $sub_cates = SubCategory::where('category_id', $news->category_id)->get();
-        $districts = District::all();
-        $sub_dist = SubDistrict::where('district_id', $news->dist_id)->get();
+
+        // Get Division ?? District and Sub Districts get
+        $divisions = Division::all();
+        $districts = District::where('division_id', $news->division_id)->get();
+        $sub_dists = SubDistrict::where('district_id', $news->dist_id)->get();
         return view('layouts.newsDashboard.news.edit', [
             'news' => $news,
             'categories' => $categories,
             'sub_cates' => $sub_cates,
+            'divisions' => $divisions,
             'districts' => $districts,
-            'sub_dist' => $sub_dist,
+            'sub_dists' => $sub_dists,
         ]);
     }
 
@@ -487,6 +496,7 @@ class NewsController extends Controller
             'details_bn' => 'required',
             'category_id' => 'required',
             'sub_cate_id' => 'required',
+            'division_id' => 'required',
             'dist_id' => 'required',
             'sub_dist_id' => 'required',
             'tags_en' => 'required',
@@ -504,6 +514,7 @@ class NewsController extends Controller
             'details_bn',
             'category_id',
             'sub_cate_id',
+            'division_id',
             'dist_id',
             'sub_dist_id',
             'tags_en',

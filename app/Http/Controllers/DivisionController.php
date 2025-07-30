@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\District;
 use App\Models\Division;
 use Illuminate\Http\Request;
 
@@ -98,6 +99,15 @@ class DivisionController extends Controller
      */
     public function destroy(Division $division)
     {
-        //
+        // $division->delete();
+        return back()->with('division_delete', 'Delete Division');
+    }
+
+    // for  dynamic dropDown to get divisions district
+    public function getDist($id)
+    {
+
+        $getdist = District::where('division_id', $id)->get();
+        return response()->json($getdist);
     }
 }

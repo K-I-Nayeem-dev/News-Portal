@@ -222,7 +222,7 @@
                         <li class="sidebar-item">
                             <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
                                 <iconify-icon icon="solar:home-angle-linear" class="aside-icon"></iconify-icon>
-                                <span class="hide-menu">Districts</span>
+                                <span class="hide-menu">Divisions & Districts</span>
                             </a>
                             <ul aria-expanded="false" class="collapse first-level">
                                 <li class="sidebar-item">

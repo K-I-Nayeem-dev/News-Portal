@@ -87,7 +87,7 @@
 
                                 </div>
 
-                                <button style="background-color: #1B84FF" class="btn text-white mt-3">Create</button>
+                                <button style="background-color: #1B84FF" class="btn text-white mt-3 disabled">Create</button>
 
                             </form>
                         </div>
@@ -127,17 +127,17 @@
                                             </td>
                                             <td>
                                                 <div class="d-flex  justify-content-around align-items-center">
-                                                    <a class="btn btn-sm btn-primary me-1"
+                                                    <a class="btn btn-sm btn-primary me-1 w-100"
                                                         href="{{ route('district.edit', $district->id) }}"><i
                                                             class="fa-solid fa-pen-to-square"></i></a>
-                                                    <form method="POST"
+                                                    {{-- <form method="POST"
                                                         action="{{ route('district.destroy', $district->id) }}"
                                                         onsubmit="return confirm('Are you sure you want to delete this?')">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button class="btn btn-sm btn-danger"><i style="color: white"
                                                                 class="fa-solid fa-trash"></i></button>
-                                                    </form>
+                                                    </form> --}}
                                                 </div>
                                             </td>
                                             <td class="text-center">

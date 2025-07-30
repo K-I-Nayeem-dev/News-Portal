@@ -4,6 +4,7 @@ use App\Http\Controllers\BreakingNewsController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\DivisionController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\LiveTvController;
 use App\Http\Controllers\NewsController;
@@ -15,32 +16,15 @@ use App\Http\Controllers\SeoController;
 use App\Http\Controllers\SocailController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\SubDistrictController;
-use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoGalleryController;
 use App\Http\Controllers\WatermarkController;
 use App\Http\Controllers\WebsiteListController;
-use Illuminate\Support\Facades\DB;
-use Stevebauman\Location\Facades\Location;
 use Illuminate\Support\Facades\Route;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 
 // News Home page Route for Visitor Or Users
-Route::get('/', function () {
-
-    $now = Carbon::now();
-
-    $breaking_news = DB::table('breaking_news')->where('status', 1)->latest()->get();
-    $time = DB::table('breaking_news')->latest()->get();
-
-    return view('layouts.newsIndex.home', [
-
-        'position' => Location::get('119.30.39.113')->cityName,
-        'breaking_news' => $breaking_news,
-        'time' => $time,
-
-    ]);
+Route::controller(HomeController::class)->group(function(){
+    Route::get('/', 'index')->name('home');
 });
 
 
@@ -107,6 +91,7 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
 
     //SubCategories and SubDistricts via dropdown with the help of ajax
     Route::get('/get/subcategories/{id}', [CategoryController::class, 'getSubcate']);
+    Route::get('/get/dist/{id}', [DivisionController::class, 'getDist']);
     Route::get('/get/subdist/{id}', [DistrictController::class, 'getSubdist']);
 
     // Route For Setting Socials and Seos

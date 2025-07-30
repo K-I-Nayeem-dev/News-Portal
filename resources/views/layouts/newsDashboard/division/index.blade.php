@@ -70,7 +70,7 @@
 
                                 </div>
 
-                                <button style="background-color: #1B84FF" class="btn text-white mt-3">Create</button>
+                                <button style="background-color: #1B84FF" class="btn text-white mt-3 disabled">Create</button>
 
                             </form>
                         </div>
@@ -100,24 +100,15 @@
                                 </thead>
                                 <tbody>
                                     @forelse($divisions as $key => $division)
-                                        <tr onclick="window.location='{{ route('division.edit', $division->id) }}'"
-                                            style="cursor: pointer;">
+                                        <tr>
                                             <th class="text-center" scope="row">{{ ++$key }}</th>
                                             <td>{{ $division->division_en }}</td>
                                             <td>{{ $division->division_bn }}</td>
                                             <td >
                                                 <div class="d-flex  justify-content-around align-items-center">
-                                                    <a class="btn btn-primary"
+                                                    <a class="btn btn-primary w-100"
                                                         href="{{ route('division.edit', $division->id) }}"><i
                                                             class="fa-solid fa-pen-to-square"></i></a>
-                                                    <form method="POST"
-                                                        action="{{ route('division.destroy', $division->id) }}"
-                                                        onsubmit="return confirm('Are you sure you want to delete this?')">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button class="btn btn-danger"><i style="color: white"
-                                                                class="fa-solid fa-trash"></i></button>
-                                                    </form>
                                                 </div>
                                             </td>
                                             <td class="text-center">

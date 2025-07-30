@@ -1,5 +1,5 @@
-import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
+import defaultTheme from 'tailwindcss/defaultTheme';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -7,7 +7,11 @@ export default {
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
+        './resources/js/**/*.js',
+        './resources/css/**/*.css',
+
     ],
+
 
     theme: {
         extend: {
@@ -18,4 +22,6 @@ export default {
     },
 
     plugins: [forms],
+
+    darkMode: 'class', // Moved this to the main config object
 };

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->integer('category_id');
             $table->string('image');
             $table->bigInteger('user_id');
+            $table->bigInteger('division_id');
             $table->text('title');
             $table->longText('paragraph');
             $table->timestamps();

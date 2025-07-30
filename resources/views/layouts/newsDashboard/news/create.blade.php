@@ -32,9 +32,11 @@
             <div class="row">
                 <div class="col-lg">
                     <div class="card">
-                        <h5 class="card-header text-white d-flex justify-content-between align-items-center" style="background-color: #1B84FF">
+                        <h5 class="card-header text-white d-flex justify-content-between align-items-center"
+                            style="background-color: #1B84FF">
                             <span>Post News</span>
-                            <span><a href="{{ route('news.index') }}" class="btn rounded ms-2 bg-success text-white hover-btn">All News</a></span>
+                            <span><a href="{{ route('news.index') }}"
+                                    class="btn rounded ms-2 bg-success text-white hover-btn">All News</a></span>
                         </h5>
                         <div class="card-body">
                             <form method="POST" action="{{ route('news.store') }}" enctype="multipart/form-data">
@@ -94,30 +96,46 @@
 
                                 {{-- Category And Subcategory Row --}}
                                 <div class="row mt-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label" for="dist_id">District<sup><code
+                                    <div class="col-md-4">
+                                        <label class="form-label" for="division_id">Division<sup><code
                                                     style="font-size: 12px">*</code></sup></label>
+                                        <select class="form-select select2" name="division_id" id="division_id"
+                                            autocomplete="off">
+                                            <option value="">== Select Division ==</option>
+                                            @foreach ($divisions as $division)
+                                                <option value="{{ $division->id }}">
+                                                    {{ $division->division_en . ' | ' . $division->division_bn }}</option>
+                                            @endforeach
+                                        </select>
+
+                                        @error('division_id')
+                                            <p class="text-danger mt-2">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-4">
+
+                                        <label class='form-label' for="dist_id">District<sup><code
+                                                    style="font-size: 12px">*</code></sup></label>
+
                                         <select class="form-select select2" name="dist_id" id="dist_id"
                                             autocomplete="off">
                                             <option value="">== Select District ==</option>
-                                            @foreach ($districts as $dist)
-                                                <option value="{{ $dist->id }}">
-                                                    {{ $dist->district_en . ' | ' . $dist->district_bn }}</option>
-                                            @endforeach
                                         </select>
 
                                         @error('dist_id')
                                             <p class="text-danger mt-2">{{ $message }}</p>
                                         @enderror
+
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
 
                                         <label class='form-label' for="sub_dist_id">Sub District<sup><code
                                                     style="font-size: 12px">*</code></sup></label>
 
                                         <select class="form-select select2" name="sub_dist_id" id="sub_dist_id"
                                             autocomplete="off">
-                                            <option value="">== Sub District ==</option>
+                                            <option value="">== Select Sub District ==</option>
                                         </select>
 
                                         @error('sub_dist_id')
@@ -318,7 +336,35 @@
         });
     </script>
 
+
+    {{-- Select Districts while dropdown to Division --}}
+    <script>
+        $('#division_id').on('change', function() {
+            var division_id = $(this).val();
+
+            if (division_id) {
+                $.ajax({
+                    url: '/get/dist/' + division_id,
+                    type: 'GET',
+                    success: function(data) {
+                        $('#dist_id').empty();
+                        $('#dist_id').append(
+                            '<option selected disabled>== Select District ==</option>');
+                        $.each(data, function(key, value) {
+                            $('#dist_id').append('<option value="' + value.id + '">' + value
+                                .district_en + ' | ' + value.district_bn +
+                                '</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#dist_id').empty();
+            }
+        });
+    </script>
+
     {{-- Select Subdistricts while dropdown to Districts --}}
+
     <script>
         $('#dist_id').on('change', function() {
             var distID = $(this).val();
@@ -333,7 +379,7 @@
                             '<option selected disabled>== Select Sub Category ==</option>');
                         $.each(data, function(key, value) {
                             $('#sub_dist_id').append('<option value="' + value.id + '">' + value
-                                .sub_district_en + ' | ' + value.sub_district_en +
+                                .sub_district_en + ' | ' + value.sub_district_bn +
                                 '</option>');
                         });
                     }

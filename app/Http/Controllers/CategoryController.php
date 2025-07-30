@@ -36,8 +36,8 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'category_en' => 'required',
-            'category_bn' => 'required',
+            'category_en' => 'required|unique:categories,category_en',
+            'category_bn' => 'required|unique:categories,category_bn',
             'status' => 'required'
         ]);
 
