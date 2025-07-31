@@ -23,8 +23,21 @@ use App\Http\Controllers\WebsiteListController;
 use Illuminate\Support\Facades\Route;
 
 // News Home page Route for Visitor Or Users
-Route::controller(HomeController::class)->group(function(){
+Route::controller(HomeController::class)->group(function () {
+    // Route for Home Page
     Route::get('/', 'index')->name('home');
+
+    // Route For Category And SubCategories News
+    Route::get('/news/subcategories/{name}', 'sub_cate_news')->name('news.sub_cates');
+    Route::get('/news/category/{name}', 'cate_news')->name('news.cates');
+
+    // Route For Dynamic Localizaiton or Multilangual (English & Bangla)
+    Route::get('/lang/english', 'english')->name('news.english');
+    Route::get('/lang/bangla', 'bangla')->name('news.bangla');
+
+    // Route For  Live TV watch
+    Route::get('/livetv', 'livetv')->name('live.tv');
+
 });
 
 
@@ -116,7 +129,6 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
         Route::put('/notice/update/{id}', [NoticeController::class, 'update'])->name('notice.udpate');
         Route::get('/notice/active/{id}', [NoticeController::class, 'activeNotice'])->name('notice.active');
         Route::get('/notice/deactive/{id}', [NoticeController::class, 'deactiveNotice'])->name('notice.deactive');
-
     });
 
     // Users  Urls

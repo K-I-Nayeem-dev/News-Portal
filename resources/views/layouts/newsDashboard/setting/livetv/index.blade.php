@@ -1,6 +1,28 @@
 @extends('layouts.newsDashboard.dashboard')
 
 @section('dashboard')
+
+    {{-- Code for Responsive iframe livetv --}}
+    <style>
+        .responsive-iframe-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 78.95%;
+            /* (600 / 760) * 100 */
+            height: 0;
+            overflow: hidden;
+        }
+
+        .responsive-iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+    </style>
+
     <div class="body-wrapper">
         <div class="container-fluid">
             <!-- -------------------------------------------------------------- -->
@@ -44,13 +66,17 @@
                                             class="form-label d-flex justify-content-between align-items-center">
                                             <span>Embed Code</span>
                                             @if ($liveTv->status == 1)
-                                            <span>
-                                                <code class="text-danger">Want to </code><a href="{{ route('liveTv.deactive', $liveTv->id) }}" class="btn btn-danger">Deactive</a>
-                                            </span>
+                                                <span>
+                                                    <code class="text-danger">Want to </code><a
+                                                        href="{{ route('liveTv.deactive', $liveTv->id) }}"
+                                                        class="btn btn-danger">Deactive</a>
+                                                </span>
                                             @else
-                                            <span>
-                                                <code class="text-success">Want to </code><a href="{{ route('liveTV.active', $liveTv->id) }}" class="btn btn-success">Active</a>
-                                            </span>
+                                                <span>
+                                                    <code class="text-success">Want to </code><a
+                                                        href="{{ route('liveTV.active', $liveTv->id) }}"
+                                                        class="btn btn-success">Active</a>
+                                                </span>
                                             @endif
                                         </label>
                                         <div>
@@ -64,7 +90,8 @@
                                         </div>
                                     </div>
 
-                                    <button style="background-color: #1B84FF" class="btn text-white mt-3 w-100">Update</button>
+                                    <button style="background-color: #1B84FF"
+                                        class="btn text-white mt-3 w-100">Update</button>
 
                                 </form>
                             </div>
@@ -80,7 +107,9 @@
                             <h5 class="card-header text-white" style="background-color: #1B84FF">Live TV Watch</h5>
                             <div class="card-body">
                                 @if ($liveTv->embed_code && $liveTv->status == 1)
-                                    {!! $liveTv->embed_code !!}
+                                    <div class="responsive-iframe-container">
+                                        {!! $liveTv->embed_code !!}
+                                    </div>
                                 @else
                                     <p class="text-center alert alert-danger">Live Tv Deactive</p>
                                 @endif

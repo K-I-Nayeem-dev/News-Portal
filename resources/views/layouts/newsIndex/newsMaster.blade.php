@@ -5,7 +5,22 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    {{-- For Seo with dynamic name Start  --}}
+
+    <meta name="meta_author" content="{{ $meta->meta_author }}" />
+    <meta name="meta_title" content="{{ $meta->meta_title }}" />
+    <meta name="meta_keyword" content="{{ $meta->meta_keyword }}" />
+    <meta name="meta_description" content="{{ $meta->meta_description }}" />
+    <meta name="google_analytics" content="{{ $meta->google_analytics }}" />
+    <meta name="goolge_verificatoins" content="{{ $meta->goolge_verificatoins }}" />
+    <meta name="alexa_analytics" content="{{ $meta->alexa_analytics }}" />
+
+    {{-- For Seo with dynamic name End  --}}
+
+
     <title>USNews - Multipurpose News, Magazine and Blog HTML5 Template</title>
+
     <meta name="author" content="ThemeLooks" />
     <meta name="description" content="USNews - Multipurpose News and Magazine Template" />
     <meta name="keywords"
@@ -24,6 +39,55 @@
     <link rel="stylesheet" href="{{ asset('frontend_assets') }}/css/custom.css" />
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'open-sans'
+        }
+
+        #banglaToEnglish:hover {
+            color: white !important;
+            transition: 0.5 ease-in-out;
+        }
+
+        .pulse {
+            display: inline-flex;
+            align-items: center;
+            /* space between dot and text */
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+            border: 1px solid black;
+            padding: 2px 8px;
+            border-radius: 5px;
+        }
+
+        .pulse::before {
+            content: "";
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+            background-color: red;
+            display: inline-block;
+            animation: pulse-animation 1.5s infinite;
+        }
+
+        @keyframes pulse-animation {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 8px rgba(255, 0, 0, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+            }
+        }
+    </style>
+
 </head>
 
 <body>
@@ -41,36 +105,31 @@
                         </ul>
                     </div>
                     <div class="float--right float--xs-none text-xs-center">
-                        <ul class="header--topbar-action nav">
-                            <li>
-                                <a href="login.html"><i class="fa fm fa-user-o"></i>Login/Register</a>
-                            </li>
-                        </ul>
                         <ul class="header--topbar-social nav hidden-sm hidden-xxs">
                             <li>
-                                <a href="#">
+                                <a href="{{ $social->facebook }}">
                                     <i class="fa fa-facebook"></i>
                                 </a>
                             </li>
                             <li>
-                                <a href="#">
+                                <a href="{{ $social->twitter }}">
                                     <i class="fa-brands fa-x-twitter"></i>
                                 </a>
                             </li>
                             <li>
-                                <a href="#">
+                                <a href="{{ $social->instagram }}">
                                     <i class="fa fa-instagram"></i>
 
                                 </a>
                             </li>
                             <li>
-                                <a href="#">
+                                <a href="{{ $social->youtube }}">
                                     <i class="fa fa-youtube-play"></i>
 
                                 </a>
                             </li>
                             <li>
-                                <a href="#">
+                                <a href="{{ $social->linkedin }}">
                                     <i class="fa fa-linkedin"></i>
                                 </a>
                             </li>
@@ -80,37 +139,59 @@
             </div>
             <div style="margin-top: 10px !important;">
                 <div class="container">
-                    <div class="row" style="margin-bottom: 10px !important; display: flex !important; align-items: center !important;">
+                    <div class="row"
+                        style="margin-bottom: 10px !important; display: flex !important; align-items: center !important;">
                         <!-- Added align-items-center here -->
-                        <div class="col-lg-3">
-                            <h1 class="h1">
-                                <a href="home-1.html" class="btn-link">
-                                    <img src="{{ asset('frontend_assets') }}/img/logo.png" alt="USNews Logo" />
-                                    <span class="hidden">USNews Logo</span>
+                        <div class="col-lg-9 col-9 ">
+                            <div class="col-lg-4 col-md-6">
+                                <h1 class="h1">
+                                    <a href="{{ route('home') }}" class="btn-link">
+                                        <img src="{{ asset('frontend_assets') }}/img/logo.png" alt="USNews Logo" />
+                                        <span class="hidden">USNews Logo</span>
+                                    </a>
+                                </h1>
+                            </div>
+                            <div class="col-lg-8 col-md-6 col-sm-12">
+                                <a href="#">
+                                    <img src="{{ asset('frontend_assets') }}/img/ads-img/ad-728x90-01.jpg"
+                                        alt="Advertisement" class="img-fluid" />
+                                    <!-- Added img-fluid for better responsiveness -->
                                 </a>
-                            </h1>
+                            </div>
                         </div>
-                        <div class="col-lg-7">
-                            <a href="#">
-                                <img src="{{ asset('frontend_assets') }}/img/ads-img/ad-728x90-01.jpg"
-                                    alt="Advertisement" class="img-fluid" />
-                                <!-- Added img-fluid for better responsiveness -->
-                            </a>
-                        </div>
-                        <div class="col-lg-2 m-0 p-0">
-                            <!-- Added d-flex align-items-center for the button container -->
-                            <div style="display: flex !important; justify-content: space-between !important; align-items: center !important;">
-                                <a href="#">Live Tv</a>
-                                <a href="#"><i class="fa fa-video-camera text-primary"  aria-hidden="true"></i></a>
-                                <a href="#" style="padding: 3px 6px !important; border-radius: 2px; font-size: 14px; " class="bg-primary">English</a>
-                                <button id="theme-toggle" class="text-gray-500 dark:text-yellow-300">
-                                    <span id="icon-moon" class="hidden">🌙</span>
-                                    <span id="icon-sun" class="hidden">☀️</span>
-                                </button>
+                        <div class="col-lg-3 col-3">
+                            <div class="col-12 col-md-12 col-sm-12 m-0 p-0">
+                                <!-- Added d-flex align-items-center for the button container -->
+                                <div
+                                    style="display: flex !important; justify-content: space-around !important; align-items: center !important;">
+                                    
+                                    @if (DB::table('live_tvs')->where('status', 1)->first())
+                                        @if (session()->get('lang') == 'bangla')
+                                            <a href="{{ route('live.tv') }}" class="pulse" style="font-size: 12px">লাইভ টিভি</a>
+                                        @else
+                                            <a href="{{ route('live.tv') }}" class="pulse">Live Tv</a>
+                                        @endif
+                                    @endif
+                                    <a href="#"><abbr style="border: none; cursor: pointer; font-size: 20px;"
+                                            title="Video Gallery"><i class="fa fa-video-camera text-primary"
+                                                aria-hidden="true"></abbr></i></a>
+                                    @if (session()->get('lang') == 'bangla')
+                                        <a href="{{ route('news.english') }}"style="padding: 2px 6px !important; border-radius: 2px; font-size: 14px; "
+                                            id="banglaToEnglish" class="bg-primary">English</a>
+                                    @else
+                                        <a href="{{ route('news.bangla') }}"style="padding: 2px 6px !important; border-radius: 2px; font-size: 14px; "
+                                            id="banglaToEnglish" class="bg-primary">বাংলা</a>
+                                    @endif
+                                    <button id="theme-toggle" class="text-gray-500 dark:text-yellow-300">
+                                        <span id="icon-moon" class="hidden">🌙</span>
+                                        <span id="icon-sun" class="hidden">☀️</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="header--navbar style--1 navbar bd--color-1 bg--color-1" data-trigger="sticky">
                     <div class="container">
                         <div class="navbar-header">
@@ -124,9 +205,16 @@
                         <div id="headerNav" class="navbar-collapse collapse float--left">
                             <ul class="header--menu-links nav navbar-nav" data-trigger="hoverIntent">
                                 @foreach ($categories as $category)
-                                    <li class="dropdown @if (request()->is('category/' . $category->slug)) active @endif">
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                            {{ $category->category_en }}
+                                    @php
+                                        $sub_cates = DB::table('sub_categories')
+                                            ->where('category_id', $category->id)
+                                            ->where('status', 1)
+                                            ->get();
+                                    @endphp
+                                    <li class="dropdown @if (request()->is('category/' . $category->category_en)) active @endif">
+                                        <a href="{{ route('news.cates', session()->get('lang') == 'bangla' ? $category->category_bn : $category->category_en) }}"
+                                            class="dropdown-toggle" data-toggle="dropdown">
+                                            {{ session()->get('lang') == 'bangla' ? $category->category_bn : $category->category_en }}
                                             @if ($sub_cates->count())
                                                 <i class="fa flm fa-angle-down"></i>
                                             @endif
@@ -134,11 +222,13 @@
 
                                         @if ($sub_cates->count())
                                             <ul class="dropdown-menu">
-                                                @foreach (sub_cates as $sub_cate)
-                                                    <li class="@if (request()->is('subcategory/' . $sub_cate->slug)) active @endif">
-                                                        <a href="{{ route('subcategory', $sub_cate->slug) }}">
-                                                            {{ $sub_cate->name_en }}
+                                                @foreach ($sub_cates as $sub_cate)
+                                                    <li class="@if (request()->is('news/subcategories/' .  session()->get('lang') == 'bangla' ? $sub_cate->sub_cate_bn : $sub_cate->sub_cate_en)) active @endif">
+                                                        <a
+                                                            href="{{ route('news.sub_cates', session()->get('lang') == 'bangla' ? $sub_cate->sub_cate_bn : $sub_cate->sub_cate_en) }}">
+                                                            {{ session()->get('lang') == 'bangla' ? $sub_cate->sub_cate_bn  : $sub_cate->sub_cate_en }}
                                                         </a>
+
                                                     </li>
                                                 @endforeach
                                             </ul>
@@ -355,30 +445,30 @@
     <div id="stickySocial" class="sticky--right">
         <ul class="nav">
             <li>
-                <a href="#">
+                <a href="{{ $social->facebook }}">
                     <i class="fa fa-facebook"></i> <span>Follow Us On Facebook</span>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{ $social->twitter }}">
                     <i class="fa-brands fa-x-twitter"></i> <span style="color: white; background-color: black"">Follow
                         Us On Twitter</span>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{ $social->instagram }}">
                     <i class="fa fa-instagram"></i>
                     <span>Follow Us On Instagram</span>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{ $social->youtube }}">
                     <i class="fa fa-youtube-play"></i>
                     <span>Follow Us On Youtube Play</span>
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="{{ $social->linkedin }}">
                     <i class="fa fa-linkedin"></i> <span>Follow Us On LinkedIn</span>
                 </a>
             </li>

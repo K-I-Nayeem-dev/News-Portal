@@ -105,6 +105,10 @@ return [
         ),
     ],
 
+    // 'providers' => [
+    //     App\Providers\ViewServiceProvider::class,
+    // ],
+
     /*
     |--------------------------------------------------------------------------
     | Maintenance Mode Driver
