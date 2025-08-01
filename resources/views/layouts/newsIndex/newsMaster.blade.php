@@ -37,6 +37,12 @@
     <link rel="stylesheet" href="{{ asset('frontend_assets') }}/css/responsive-style.css" />
     <link rel="stylesheet" href="{{ asset('frontend_assets') }}/css/colors/theme-color-1.css" id="changeColorScheme" />
     <link rel="stylesheet" href="{{ asset('frontend_assets') }}/css/custom.css" />
+
+    <!-- Fancybox CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
+
+
+
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 
@@ -164,7 +170,7 @@
                                 <!-- Added d-flex align-items-center for the button container -->
                                 <div
                                     style="display: flex !important; justify-content: space-around !important; align-items: center !important;">
-                                    
+
                                     @if (DB::table('live_tvs')->where('status', 1)->first())
                                         @if (session()->get('lang') == 'bangla')
                                             <a href="{{ route('live.tv') }}" class="pulse" style="font-size: 12px">লাইভ টিভি</a>
@@ -172,7 +178,7 @@
                                             <a href="{{ route('live.tv') }}" class="pulse">Live Tv</a>
                                         @endif
                                     @endif
-                                    <a href="#"><abbr style="border: none; cursor: pointer; font-size: 20px;"
+                                    <a href="{{ route('video.gallery') }}"><abbr style="border: none; cursor: pointer; font-size: 20px;"
                                             title="Video Gallery"><i class="fa fa-video-camera text-primary"
                                                 aria-hidden="true"></abbr></i></a>
                                     @if (session()->get('lang') == 'bangla')
@@ -248,28 +254,6 @@
                 </div>
             </div>
         </header>
-        @if ($breaking_news->count() > 0)
-            <div class="news--ticker">
-                <div class="container">
-                    <div class="title">
-                        <h2>News Updates</h2>
-                        {{-- <span>(Update {{ \Carbon\Carbon::parse($time->created_at)->diffForHumans() }})</span> --}}
-                    </div>
-                    <div class="news-updates--list" data-marquee="true">
-                        <ul class="nav">
-                            @foreach ($breaking_news as $news)
-                                <li>
-                                    <h3 class="h3">
-                                        <a target="_blank" {{ $news->url ? 'href=' . $news->url . ' ' : '' }}> !!!
-                                            {{ $news->news }} !!! </a>
-                                    </h3>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        @endif
         <div class="main-content--section pbottom--30">
             @yield('content')
         </div>
@@ -556,6 +540,9 @@
         });
     </script>
 
+    <!-- Fancybox JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
 </body>

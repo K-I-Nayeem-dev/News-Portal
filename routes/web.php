@@ -38,6 +38,9 @@ Route::controller(HomeController::class)->group(function () {
     // Route For  Live TV watch
     Route::get('/livetv', 'livetv')->name('live.tv');
 
+    // Route For  Video Gallery
+    Route::get('/video-gallery', 'videogallery')->name('video.gallery');
+
 });
 
 

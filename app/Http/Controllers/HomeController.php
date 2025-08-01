@@ -8,6 +8,7 @@ use App\Models\News;
 use App\Models\Seo;
 use App\Models\Social;
 use App\Models\SubCategory;
+use App\Models\VideoGallery;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,7 +21,10 @@ class HomeController extends Controller
     // Method for Home
     public function index()
     {
-        return view('layouts.newsIndex.home.home');
+        $breaking_news = DB::table('breaking_news')->where('status', 1)->latest()->get();
+        return view('layouts.newsIndex.home.home', [
+            'breaking_news' => $breaking_news
+        ]);
     }
 
     // Method For get sub_cates news
@@ -74,9 +78,29 @@ class HomeController extends Controller
     {
 
         $liveTv = LiveTv::where('status', 1)->first();
-        
+
         return view('layouts.newsIndex.livetv.index', [
             'liveTv' => $liveTv,
+        ]);
+    }
+
+    // Method For Watching Live TV
+    public function videogallery(Request $request)
+    {
+
+        // Video Gallery show in index page with 12 video data
+        $videos = VideoGallery::latest()->paginate(5);
+
+        // For Load More (Lazy Load Button)
+        // if ($request->ajax()) {
+        //     return view('layouts.newsIndex.video_gallery.data', [
+        //         'videos' => $videos
+        //     ]); // a separate view for loop
+        // }
+
+        // Return view
+        return view('layouts.newsIndex.video_gallery.index', [
+            'videos' => $videos
         ]);
     }
 }

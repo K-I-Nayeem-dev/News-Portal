@@ -53,7 +53,7 @@
                 box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
             }
         }
-    </style>\
+    </style>
 
     <div class="container">
         <div class="main--content">

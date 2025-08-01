@@ -1,6 +1,35 @@
 @extends('layouts.newsIndex.newsMaster')
 
 @section('content')
+    <div>
+        @if ($breaking_news->count() > 0)
+            <div class="news--ticker">
+                <div class="container">
+                    <div class="title">
+                        @if (session()->get('lang') == 'bangla')
+                            <h2>শিরোনাম</h2>
+                        @else
+
+                            <h2>Headline</h2>
+                        @endif
+                        {{-- <span>(Update {{ \Carbon\Carbon::parse($time->created_at)->diffForHumans() }})</span> --}}
+                    </div>
+                    <div class="news-updates--list" data-marquee="true">
+                        <ul class="nav">
+                            @foreach ($breaking_news as $news)
+                                <li>
+                                    <h3 class="h3">
+                                        <a target="_blank" {{ $news->url ? 'href=' . $news->url . ' ' : '' }}> !!!
+                                            {{ $news->news }} !!! </a>
+                                    </h3>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        @endif
+    </div>
     <div class="container">
         <div class="main--content">
             <div class="post--items post--items-1 pd--30-0">
@@ -146,7 +175,8 @@
                                         <i class="fa fa-long-arrow-left"></i>
                                     </a>
                                     <span class="divider">/</span>
-                                    <a href="#" class="next btn-link" data-ajax-action="load_next_world_news_posts">
+                                    <a href="#" class="next btn-link"
+                                        data-ajax-action="load_next_world_news_posts">
                                         <i class="fa fa-long-arrow-right"></i>
                                     </a>
                                 </div>

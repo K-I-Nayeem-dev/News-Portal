@@ -30,7 +30,6 @@ class AppServiceProvider extends ServiceProvider
                 'meta' => Seo::first(),
                 'social' => Social::first(),
                 'categories' => Category::where('status', 1)->orderBy('category_bn')->get(),
-                'breaking_news' => DB::table('breaking_news')->where('status', 1)->latest()->get(),
                 'time' => DB::table('breaking_news')->latest()->get(),
                 'position' => Location::get('119.30.39.113')->cityName
             ]);

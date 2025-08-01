@@ -12,7 +12,7 @@ class VideoGalleryController extends Controller
      */
     public function index()
     {
-        $videos = VideoGallery::orderBy('title', "ASC")->paginate(20);
+        $videos = VideoGallery::latest()->paginate(20);
         return view('layouts.newsDashboard.gallery.videos_gallery.index', [
             'videos' => $videos
         ]);
