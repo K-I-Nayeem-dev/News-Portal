@@ -61,7 +61,7 @@ class WatermarkController extends Controller
                 $request->file('watermark'),
                 'uploads/water_mark/',
                 1280,
-                40,
+                15,
                 90,
             );
 

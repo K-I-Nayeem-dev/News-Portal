@@ -71,7 +71,7 @@
                                                 <td class="text-center"><img src="{{ $new->thumbnail }}" width="120"
                                                         height="80" alt=""></td>
                                                 <td>
-                                                    <div  class="d-flex justify-content-around align-items-center">
+                                                    <div class="d-flex justify-content-around align-items-center">
                                                         <a class="btn btn-sm btn-success rounded"
                                                             href="{{ route('news.show', $new->id) }}"><i
                                                                 class="fa-solid fa-eye"></i></a>
@@ -116,6 +116,10 @@
                             </table>
                         </div>
                     </div>
+                </div>
+                <!-- Pagination links -->
+                <div class="d-flex justify-content-start">
+                    {{ $news->links('pagination::bootstrap-5') }}
                 </div>
             </div>
         </div>

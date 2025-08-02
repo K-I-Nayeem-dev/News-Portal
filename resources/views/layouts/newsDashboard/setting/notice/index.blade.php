@@ -42,23 +42,33 @@
                                     <div>
                                         <label for="notice"
                                             class="form-label d-flex justify-content-between align-items-center">
-                                            <span>Notice</span>
+                                            <span>Notice English</span>
                                             @if ($notice->status == 1)
-                                            <span>
-                                                <code class="text-danger">Want to </code><a href="{{ route('notice.deactive', $notice->id) }}" class="btn btn-danger">Deactive</a>
-                                            </span>
+                                                <span>
+                                                    <code class="text-danger">Want to </code><a
+                                                        href="{{ route('notice.deactive', $notice->id) }}"
+                                                        class="btn btn-danger">Deactive</a>
+                                                </span>
                                             @else
-                                            <span>
-                                                <code class="text-success">Want to </code><a href="{{ route('notice.active', $notice->id) }}" class="btn btn-success">Active</a>
-                                            </span>
+                                                <span>
+                                                    <code class="text-success">Want to </code><a
+                                                        href="{{ route('notice.active', $notice->id) }}"
+                                                        class="btn btn-success">Active</a>
+                                                </span>
                                             @endif
                                         </label>
                                         <div>
-                                            <textarea class="form-control mb-2" name="notice" id="notice" cols="30" rows="10">{{ old('notice', $notice->notice) }}</textarea>
+                                            <textarea class="form-control mb-2" name="notice_en" id="notice" cols="30" rows="10">{{ old('notice', $notice->notice_en) }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <label for="notice_bn" class="form-label"><span>Notice Bangla</span></label>
+                                        <div>
+                                            <textarea class="form-control mb-2" name="notice_bn" id="notice" cols="30" rows="10">{{ old('notice', $notice->notice_bn) }}</textarea>
                                             @if ($notice->status == 1)
                                                 <code class="text-success fs-3">Notice Available.</code>
                                             @else
-                                                <code class="text-danger fs-3">Notice  unavailable</code>
+                                                <code class="text-danger fs-3">Notice unavailable</code>
                                             @endif
                                         </div>
                                     </div>
@@ -71,7 +81,15 @@
                         </div>
 
                         @if (session('notice_update'))
-                            <div class=" alert alert-success mt-3 ">{{ session('notice_update') }}</div>
+                            <div class=" alert alert-success mt-3 text-center">{{ session('notice_update') }}</div>
+                        @endif
+
+                        @if (session('notice_active'))
+                            <div class=" alert alert-success mt-3 text-center">{{ session('notice_active') }}</div>
+                        @endif
+
+                        @if (session('notice_deactive'))
+                            <div class=" alert alert-danger mt-3 text-center">{{ session('notice_deactive') }}</div>
                         @endif
 
                     </div>

@@ -25,11 +25,8 @@
     <meta name="description" content="USNews - Multipurpose News and Magazine Template" />
     <meta name="keywords"
         content="news, newspaper, magazine, blog, post, article, editorial, publishing, modern, responsive, html5, template" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="icon" href="favicon.png" type="image/png" />
-    <link rel="stylesheet" href="{{ asset('frontend_assets') }}/css?family=Source+Sans+Pro:400,600,700" />
+    {{-- <link rel="stylesheet" href="{{ asset('frontend_assets') }}/css?family=Source+Sans+Pro:400,600,700" /> --}}
     <link rel="stylesheet" href="{{ asset('frontend_assets') }}/css/font-awesome.min.css" />
     <link rel="stylesheet" href="{{ asset('frontend_assets') }}/css/bootstrap.min.css" />
     <link rel="stylesheet" href="{{ asset('frontend_assets') }}/css/fontawesome-stars-o.min.css" />
@@ -173,12 +170,14 @@
 
                                     @if (DB::table('live_tvs')->where('status', 1)->first())
                                         @if (session()->get('lang') == 'bangla')
-                                            <a href="{{ route('live.tv') }}" class="pulse" style="font-size: 12px">লাইভ টিভি</a>
+                                            <a href="{{ route('live.tv') }}" class="pulse"
+                                                style="font-size: 12px">লাইভ টিভি</a>
                                         @else
                                             <a href="{{ route('live.tv') }}" class="pulse">Live Tv</a>
                                         @endif
                                     @endif
-                                    <a href="{{ route('video.gallery') }}"><abbr style="border: none; cursor: pointer; font-size: 20px;"
+                                    <a href="{{ route('video.gallery') }}"><abbr
+                                            style="border: none; cursor: pointer; font-size: 20px;"
                                             title="Video Gallery"><i class="fa fa-video-camera text-primary"
                                                 aria-hidden="true"></abbr></i></a>
                                     @if (session()->get('lang') == 'bangla')
@@ -229,10 +228,11 @@
                                         @if ($sub_cates->count())
                                             <ul class="dropdown-menu">
                                                 @foreach ($sub_cates as $sub_cate)
-                                                    <li class="@if (request()->is('news/subcategories/' .  session()->get('lang') == 'bangla' ? $sub_cate->sub_cate_bn : $sub_cate->sub_cate_en)) active @endif">
+                                                    <li class="@if (request()->is(
+                                                            'news/subcategories/' . session()->get('lang') == 'bangla' ? $sub_cate->sub_cate_bn : $sub_cate->sub_cate_en)) active @endif">
                                                         <a
                                                             href="{{ route('news.sub_cates', session()->get('lang') == 'bangla' ? $sub_cate->sub_cate_bn : $sub_cate->sub_cate_en) }}">
-                                                            {{ session()->get('lang') == 'bangla' ? $sub_cate->sub_cate_bn  : $sub_cate->sub_cate_en }}
+                                                            {{ session()->get('lang') == 'bangla' ? $sub_cate->sub_cate_bn : $sub_cate->sub_cate_en }}
                                                         </a>
 
                                                     </li>
@@ -465,20 +465,22 @@
     <script>
         dateToday('date-today', 'bangla');
     </script>
-    <script src="{{ asset('frontend_assets') }}/js/jquery-3.2.1.min.js"></script>
+    {{-- <script src="{{ asset('frontend_assets') }}/js/jquery-3.2.1.min.js"></script> --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> --}}
     <script src="{{ asset('frontend_assets') }}/js/bootstrap.min.js"></script>
     <script src="{{ asset('frontend_assets') }}/js/jquery.sticky.min.js"></script>
     <script src="{{ asset('frontend_assets') }}/js/jquery.hoverIntent.min.js"></script>
     <script src="{{ asset('frontend_assets') }}/js/jquery.marquee.min.js"></script>
     <script src="{{ asset('frontend_assets') }}/js/jquery.validate.min.js"></script>
     <script src="{{ asset('frontend_assets') }}/js/isotope.min.js"></script>
-    <script src="{{ asset('frontend_assets') }}/js/resizesensor.min.js"></script>
+    {{-- <script src="{{ asset('frontend_assets') }}/js/resizesensor.min.js"></script> --}}
     <script src="{{ asset('frontend_assets') }}/js/theia-sticky-sidebar.min.js"></script>
     <script src="{{ asset('frontend_assets') }}/js/jquery.zoom.min.js"></script>
     <script src="{{ asset('frontend_assets') }}/js/jquery.barrating.min.js"></script>
     <script src="{{ asset('frontend_assets') }}/js/jquery.countdown.min.js"></script>
     <script src="{{ asset('frontend_assets') }}/js/retina.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBK9f7sXWmqQ1E-ufRXV3VpXOn_ifKsDuc"></script>
+    {{-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBK9f7sXWmqQ1E-ufRXV3VpXOn_ifKsDuc"></script> --}}
     {{-- <script src="{{ asset('frontend_assets') }}/js/color-switcher.min.js"></script> --}}
     <script src="{{ asset('frontend_assets') }}/js/main.js"></script>
 
@@ -542,9 +544,6 @@
 
     <!-- Fancybox JS -->
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-
 </body>
 
 </html>

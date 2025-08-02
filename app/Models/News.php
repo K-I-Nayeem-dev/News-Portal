@@ -25,6 +25,12 @@ class News extends Model
     }
 
      // Category relationship (One-to-One)
+    public function newsDivision()
+    {
+        return $this->belongsTo(Division::class, 'division_id');
+    }
+
+     // Category relationship (One-to-One)
     public function newsDistrict()
     {
         return $this->belongsTo(District::class, 'dist_id');

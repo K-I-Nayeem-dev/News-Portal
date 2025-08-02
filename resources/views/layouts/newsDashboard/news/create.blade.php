@@ -153,16 +153,6 @@
                                     <input type="file" name="thumbnail" id="thumbnail" class="form-control"
                                         autocomplete="off" value="{{ old('thumbnail') }}">
 
-                                    @if ($errors->any())
-                                        <div class="alert alert-danger mt-3 text-sm">
-                                            <ul class="mb-0">
-                                                @foreach ($errors->all() as $error)
-                                                    <li>{{ $error }}</li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
-                                    @endif
-
                                     @error('thumbnail')
                                         <p class="text-danger mt-2">{{ $message }}</p>
                                     @enderror
@@ -294,6 +284,30 @@
                                     @error('status')
                                         <p class="text-danger mt-2">{{ $message }}</p>
                                     @enderror
+                                </div>
+
+                                {{-- News Field set for first Section --}}
+                                <div class="mt-3">
+
+                                    <div>
+                                        <label class='form-label' for="status">--Extra Options For Headline News Section--</label>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-3">
+                                            <input class="form-input me-2" type="checkbox" name="firstSection_bigThumbnail" id="firstSection_bigThumbnail">
+                                            <label class='form-label mt-2' for="firstSection_bigThumbnail" style="font-size: 14px;">First Section Big Thumbnail</label>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <input class="form-input me-2" type="checkbox" name="firstSection" id="firstSection">
+                                            <label class='form-label mt-2' for="firstSection" style="font-size: 14px;">First Section</label>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <input class="form-input me-2" type="checkbox" name="genarelBigThumbnail" id="genarelBigThumbnail">
+                                            <label class='form-label mt-2' for="genarelBigThumbnail" style="font-size: 14px;">Genarel Big Thumbnail</label>
+                                        </div>
+                                    </div>
+
                                 </div>
 
                                 <button class="btn btn-primary mt-3">Create News</button>

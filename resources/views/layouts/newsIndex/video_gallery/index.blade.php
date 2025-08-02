@@ -59,8 +59,8 @@
 
     <div class="container">
         <div class="main--content">
-            <div class="row">
 
+            <div class="row">
                 <div class="card-title" style="font-size: 1.5rem; color: black; margin-top: 20px; margin-left: 15px">
                     @if (session()->get('lang') == 'bangla')
                         <h3>ভিডিও গ্যালারি</h3>
@@ -69,16 +69,17 @@
                     @endif
                 </div>
 
+                {{-- Horizontal line  --}}
+                <div style="border-bottom: 2px solid #1B84FF; margin-bottom: 15px"></div>
+            </div>
+
+            <div class="row" id="postList">
                 @foreach ($videos as $video)
                     <div class="col-lg-3">
-                        {{-- this iframe youtube video with fancybox and with thumbnail --}}
                         <div class="card" style="margin-top: 35px !important">
                             @php
-                                // Extract iframe src
                                 preg_match('/src="([^"]+)"/', $video->embed_code, $matches);
                                 $iframeSrc = $matches[1] ?? null;
-
-                                // Try to extract the YouTube video ID
                                 $videoId = null;
                                 if ($iframeSrc && Str::contains($iframeSrc, 'youtube.com')) {
                                     preg_match('/embed\/([^\?&"]+)/', $iframeSrc, $idMatch);
@@ -94,7 +95,6 @@
                                     @else
                                         <img src="{{ asset('default-thumb.jpg') }}" alt="Default Thumbnail">
                                     @endif
-
                                     <div class="play-overlay">
                                         <i class="fa fa-play" style="font-size: 24px; color: white !important"></i>
                                     </div>
@@ -110,6 +110,46 @@
                 @endforeach
 
             </div>
+            {{-- For Ajax Lazy Load Button  --}}
+            <div class="text-center">
+                <button id="load_more_data" class="btn btn-primary"
+                    style="border-radius: 5px; background-color: #1B84FF; color: white; border: none">Load More</button>
+            </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (typeof $ !== 'undefined') {
+                // Now safe to use jQuery
+                var page = 1;
+                $('#load_more_data').on('click', function() {
+
+                    $(this).prop("disabled", true);
+                    $(this).text('Loading...');
+
+                    $.ajax({
+                        type: "GET",
+                        url: "{{ route('video.gallery') }}",
+                        data: {
+                            page: ++page
+                        },
+                        dataType: "html",
+                        success: function(response) {
+                            if ($.trim(response) === '') {
+                                $('#load_more_data').hide(); // ← Only change: hide when no more data
+                            } else {
+                                $('#postList').append(response);
+                                $("#load_more_data").prop("disabled", false);
+                                $("#load_more_data").text('Load More');
+                            }
+                        }
+                    })
+                });
+
+            } else {
+                console.error('jQuery is still undefined');
+            }
+        });
+    </script>
 @endsection

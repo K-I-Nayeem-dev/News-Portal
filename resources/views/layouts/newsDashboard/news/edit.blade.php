@@ -119,7 +119,8 @@
                                             autocomplete="off">
                                             <option value="">== Select Division ==</option>
                                             @foreach ($divisions as $division)
-                                                <option value="{{ $division->id }}" {{ $news->division_id == $division->id ? 'selected' : ''}} >
+                                                <option value="{{ $division->id }}"
+                                                    {{ $news->division_id == $division->id ? 'selected' : '' }}>
                                                     {{ $division->division_en . ' | ' . $division->division_bn }}</option>
                                             @endforeach
                                         </select>
@@ -138,7 +139,8 @@
                                             autocomplete="off">
                                             <option value="">== Select District ==</option>
                                             @foreach ($districts as $district)
-                                                <option value="{{ $district->id }}"  {{ $news->dist_id == $district->id ? 'selected' : ''}}>
+                                                <option value="{{ $district->id }}"
+                                                    {{ $news->dist_id == $district->id ? 'selected' : '' }}>
                                                     {{ $district->district_en . ' | ' . $district->district_bn }}</option>
                                             @endforeach
                                         </select>
@@ -158,8 +160,10 @@
                                             autocomplete="off">
                                             <option value="">== Select Sub District ==</option>
                                             @foreach ($sub_dists as $sub_dist)
-                                                <option value="{{ $sub_dist->id }}"  {{ $news->sub_dist_id == $sub_dist->id ? 'selected' : ''}}>
-                                                    {{ $sub_dist->sub_district_en . ' | ' . $sub_dist->sub_district_bn }}</option>
+                                                <option value="{{ $sub_dist->id }}"
+                                                    {{ $news->sub_dist_id == $sub_dist->id ? 'selected' : '' }}>
+                                                    {{ $sub_dist->sub_district_en . ' | ' . $sub_dist->sub_district_bn }}
+                                                </option>
                                             @endforeach
                                         </select>
 
@@ -328,7 +332,50 @@
                                     @enderror
                                 </div>
 
-                                <button class="btn btn-primary mt-3">Update News</button>
+                                {{-- News Field set for first Section --}}
+                                <div class="mt-3">
+
+                                    <div>
+                                        <label class='form-label' for="status">--Extra Options For Headline News
+                                            Section--</label>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-3">
+                                            <input type="hidden" name="firstSection_bigThumbnail" value="off">
+                                            <input class="form-input me-2" type="checkbox"
+                                                {{ $news->firstSection_bigThumbnail == 'on' ? 'checked' : '' }}
+                                                name="firstSection_bigThumbnail" id="firstSection_bigThumbnail"
+                                                value="on">
+                                            <label class='form-label mt-2' for="firstSection_bigThumbnail"
+                                                style="font-size: 14px;">First Section Big Thumbnail</label>
+                                        </div>
+
+                                        <div class="col-lg-3">
+                                            <input type="hidden" name="firstSection" value="off">
+                                            <input class="form-input me-2" type="checkbox"
+                                                {{ $news->firstSection == 'on' ? 'checked' : '' }} name="firstSection"
+                                                id="firstSection" value="on">
+                                            <label class='form-label mt-2' for="firstSection"
+                                                style="font-size: 14px;">First Section</label>
+                                        </div>
+
+                                        <div class="col-lg-3">
+                                            <input type="hidden" name="genaralBigThumbnail" value="off">
+                                            <input class="form-input me-2" type="checkbox"
+                                                {{ $news->genaralBigThumbnail == 'on' ? 'checked' : '' }}
+                                                name="genaralBigThumbnail" id="genaralBigThumbnail" value="on">
+                                            <label class='form-label mt-2' for="genaralBigThumbnail"
+                                                style="font-size: 14px;">Genarel Big Thumbnail</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div>
+                                    <button class="btn btn-primary mt-3">Update News</button>
+                                    <a class="btn btn-primary mt-3 ms-2" href="{{ route('news.index') }}">Back</a>
+                                </div>
 
                             </form>
 

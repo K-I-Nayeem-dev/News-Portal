@@ -21,9 +21,21 @@ class HomeController extends Controller
     // Method for Home
     public function index()
     {
+
+        // Time English To Bangla
+        
+
+        // For breaking news and Notice
         $breaking_news = DB::table('breaking_news')->where('status', 1)->latest()->get();
+        $notice = DB::table('notices')->where('status', 1)->first();
+
+        // for First section News fsbt = firstSection_bigThumbnail
+        $fsbt = News::where('firstSection_bigThumbnail', 'on')->where('status', 1)->latest()->first();
+
         return view('layouts.newsIndex.home.home', [
-            'breaking_news' => $breaking_news
+            'breaking_news' => $breaking_news,
+            'notice' => $notice,
+            'fsbt' => $fsbt
         ]);
     }
 
@@ -89,14 +101,14 @@ class HomeController extends Controller
     {
 
         // Video Gallery show in index page with 12 video data
-        $videos = VideoGallery::latest()->paginate(5);
+        $videos = VideoGallery::latest()->paginate(3);
 
         // For Load More (Lazy Load Button)
-        // if ($request->ajax()) {
-        //     return view('layouts.newsIndex.video_gallery.data', [
-        //         'videos' => $videos
-        //     ]); // a separate view for loop
-        // }
+        if ($request->ajax()) {
+            return view('layouts.newsIndex.video_gallery.data', [
+                'videos' => $videos
+            ]); // a separate view for loop
+        }
 
         // Return view
         return view('layouts.newsIndex.video_gallery.index', [

@@ -1,6 +1,15 @@
 @extends('layouts.newsIndex.newsMaster')
 
 @section('content')
+
+    <style>
+        .post--img img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            display: block;
+        }
+    </style>
     <div>
         @if ($breaking_news->count() > 0)
             <div class="news--ticker">
@@ -9,7 +18,6 @@
                         @if (session()->get('lang') == 'bangla')
                             <h2>শিরোনাম</h2>
                         @else
-
                             <h2>Headline</h2>
                         @endif
                         {{-- <span>(Update {{ \Carbon\Carbon::parse($time->created_at)->diffForHumans() }})</span> --}}
@@ -19,8 +27,8 @@
                             @foreach ($breaking_news as $news)
                                 <li>
                                     <h3 class="h3">
-                                        <a target="_blank" {{ $news->url ? 'href=' . $news->url . ' ' : '' }}> !!!
-                                            {{ $news->news }} !!! </a>
+                                        <a target="_blank" {{ $news->url ? 'href=' . $news->url . ' ' : '' }}> **
+                                            {{ $news->news }} ** </a>
                                     </h3>
                                 </li>
                             @endforeach
@@ -30,50 +38,97 @@
             </div>
         @endif
     </div>
+    <div>
+        @if ($notice)
+            <div class="news--ticker">
+                <div class="container">
+                    <div class="title">
+                        @if (session()->get('lang') == 'bangla')
+                            <h2>নোটিশ</h2>
+                        @else
+                            <h2>Notice</h2>
+                        @endif
+                        {{-- <span>(Update {{ \Carbon\Carbon::parse($time->created_at)->diffForHumans() }})</span> --}}
+                    </div>
+                    <div class="news-updates--list" data-marquee="true">
+                        <ul class="nav">
+                            @if (session()->get('lang') == 'bangla')
+                                <li>
+                                    <h3 class="h3">
+                                        <a> !!! {{ $notice->notice_bn }} !!! </a>
+                                    </h3>
+                                </li>
+                            @else
+                                <li>
+                                    <h3 class="h3">
+                                        <a> !!! {{ $notice->notice_en }} !!! </a>
+                                    </h3>
+                                </li>
+                            @endif
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        @endif
+    </div>
+
     <div class="container">
         <div class="main--content">
             <div class="post--items post--items-1 pd--30-0">
                 <div class="row gutter--15">
+
+                    {{-- This Section will Show Main news --}}
                     <div class="col-md-6">
-                        {{-- <div class="post--item post--layout-1 post--title-larger">
+                        <div class="post--item post--layout-1 post--title-larger">
                             <div class="post--img">
-                                <a href="news-single-v1.html" class="thumb"
-                                ><img src="{{ asset('frontend_assets') }}/img/home-img/banner-01.jpg" alt=""
-                                /></a>
-                                <a href="#" class="cat">Politics</a>
-                                <a href="#" class="icon"><i class="fa fa-flash"></i></a>
+                                <a href="news-single-v1.html" class="thumb"><img src="{{ $fsbt->thumbnail }}"
+                                        alt="{{ $fsbt->title }}" /></a>
+                                <a href="#" class="cat">
+                                    @if (session()->get('lang') == 'bangla')
+                                        {{ $fsbt->newsCategory->category_bn }}
+                                    @else
+                                        {{ $fsbt->newsCategory->category_en }}
+                                    @endif
+                                </a>
                                 <div class="post--map">
-                                <p class="btn-link">
-                                    <i class="fa fa-map-o"></i>Location in Google Map
-                                </p>
-                                <div class="map--wrapper">
-                                    <div
-                                    data-map-latitude="23.790546"
-                                    data-map-longitude="90.375583"
-                                    data-map-zoom="6"
-                                    data-map-marker="[[23.790546, 90.375583]]"
-                                    ></div>
-                                </div>
+                                    <p class="btn-link">
+                                        <i class="fa fa-map-o"></i>
+                                        @if (session()->get('lang') == 'bangla')
+                                            {{ $fsbt->newsDivision->division_bn }}
+                                        @else
+                                            {{ $fsbt->newsDivision->division_en }}
+                                        @endif
+                                    </p>
                                 </div>
                                 <div class="post--info">
-                                <ul class="nav meta">
-                                    <li><a href="#">Norma R. Hogan</a></li>
-                                    <li><a href="#">20 April 2017</a></li>
-                                </ul>
-                                <div class="title">
-                                    <h2 class="h4">
-                                    <a href="news-single-v1.html" class="btn-link"
-                                        >Siriyan civil war getting righteous indignation
-                                        and dislike men who are so beguiled and
-                                        demoralized by the sure.</a
-                                    >
-                                    </h2>
-                                </div>
+                                    <ul class="nav meta">
+                                        <li><a href="#"><i class="fa fa-pencil" style="margin-right: 5px"
+                                                    aria-hidden="true"></i>{{ $fsbt->newsUser->name }}</a></li>
+                                        <li>
+                                            @if (session()->get('lang') == 'bangla')
+                                            @else
+                                            @endif
+                                            <a href="#"></a>
+                                        </li>
+                                    </ul>
+                                    <div class="title">
+                                        <h2 class="h4">
+                                            <a href="news-single-v1.html" class="btn-link">
+                                            @if (session()->get('lang') == 'bangla')
+                                                {{ $fsbt->title_bn }}
+                                            @else
+                                                {{ $fsbt->title_en }}
+                                            @endif
+
+                                            </a>
+                                        </h2>
+                                    </div>
                                 </div>
                             </div>
-                            </div> --}}
-                        <iframe src="https://www.youtube.com/embed/zxVv5W-b85U" frameborder="0"></iframe>
+                        </div>
                     </div>
+
                     <div class="col-md-6">
                         <div class="row gutter--15">
                             <div class="col-xs-6 col-xss-12">
@@ -171,7 +226,8 @@
                             <div class="post--items-title" data-ajax="tab">
                                 <h2 class="h4">Worlds News</h2>
                                 <div class="nav">
-                                    <a href="#" class="prev btn-link" data-ajax-action="load_prev_world_news_posts">
+                                    <a href="#" class="prev btn-link"
+                                        data-ajax-action="load_prev_world_news_posts">
                                         <i class="fa fa-long-arrow-left"></i>
                                     </a>
                                     <span class="divider">/</span>
@@ -1453,7 +1509,8 @@
                                                     </ul>
                                                     <div class="title">
                                                         <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">Siriya attaced
+                                                            <a href="news-single-v1.html" class="btn-link">Siriya
+                                                                attaced
                                                                 by a long established fact
                                                                 that a reader will be distracted by</a>
                                                         </h3>

@@ -20,12 +20,13 @@ class NoticeController extends Controller
     {
 
         $data = [
-            'notice' => $request->notice,
+            'notice_en' => $request->notice_en,
+            'notice_bn' => $request->notice_bn,
         ];
 
         Notice::find($id)->update($data);
 
-        return back()->with('notice_update', 'Live TV Updated Successfully');
+        return back()->with('notice_update', 'Notice Updated Successfully');
     }
 
     // Active live tv
@@ -34,7 +35,7 @@ class NoticeController extends Controller
         Notice::find($id)->update([
             'status' => 1
         ]);
-        return back()->with('notice_active', 'Live TV Streaming Successfully');
+        return back()->with('notice_active', 'Notice Activated');
     }
 
     // Deactive Live tv
@@ -43,6 +44,6 @@ class NoticeController extends Controller
         Notice::find($id)->update([
             'status' => 0
         ]);
-        return back()->with('notice_deactive', 'Live TV Streaming Off');
+        return back()->with('notice_deactive', 'Notice Deactived');
     }
 }
