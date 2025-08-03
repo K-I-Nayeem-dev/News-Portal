@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('news', function (Blueprint $table) {
             $table->string('firstSection_bigThumbnail')->nullable()->default(0);
             $table->string('firstSection')->nullable()->default(0);
-            $table->string('genaralBigThumbnail')->nullable()->default(0);
+            $table->string('trendyNews')->nullable()->default(0);
         });
     }
 
@@ -24,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('news', function (Blueprint $table) {
-            $table->dropColumn(['firstSection_bigThumbnail','firstSection','genaralBigThumbnail']);
+            $table->dropColumn(['firstSection_bigThumbnail','firstSection','trendyNews']);
         });
     }
 };

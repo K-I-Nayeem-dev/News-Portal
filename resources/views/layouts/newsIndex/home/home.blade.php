@@ -3,11 +3,9 @@
 @section('content')
 
     <style>
-        .post--img img {
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-            display: block;
+        .gbt {
+            width: 800px !important;
+            height: 185px !important;
         }
     </style>
     <div>
@@ -77,13 +75,48 @@
         <div class="main--content">
             <div class="post--items post--items-1 pd--30-0">
                 <div class="row gutter--15">
-
+                    <div class="col-md-3">
+                        <div class="row gutter--15">
+                            {{-- First Section News --}}
+                            @foreach ($fs1 as $row)
+                                <div class="col-md-12 col-xs-6 col-xxs-12">
+                                    <div>
+                                        <div class="post--img">
+                                            <a href="news-single-v1.html" class="thumb"><img src="{{ $row->thumbnail }}"
+                                                    alt="{{ $row->title }}" /></a>
+                                            <a href="#" class="cat">
+                                                @if (session()->get('lang') == 'bangla')
+                                                    {{ $row->newsCategory->category_bn }}
+                                                @else
+                                                    {{ $row->newsCategory->category_en }}
+                                                @endif
+                                            </a>
+                                            <div class="post--info">
+                                                <div class="title">
+                                                    <h2 class="h4">
+                                                        <a href="news-single-v1.html" class="btn-link">
+                                                            @if (session()->get('lang') == 'bangla')
+                                                                {{ $row->title_bn }}
+                                                            @else
+                                                                {{ $row->title_en }}
+                                                            @endif
+                                                        </a>
+                                                    </h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
                     {{-- This Section will Show Main news --}}
                     <div class="col-md-6">
-                        <div class="post--item post--layout-1 post--title-larger">
+                        <div>
                             <div class="post--img">
-                                <a href="news-single-v1.html" class="thumb"><img src="{{ $fsbt->thumbnail }}"
-                                        alt="{{ $fsbt->title }}" /></a>
+                                {{-- <a href="news-single-v1.html" class="thumb"><img src="{{ asset('uploads/news_photos/'. $fsbt->news_photo) }}"alt="{{ $fsbt->title }}" /></a> --}}
+                                <a href="news-single-v1.html" class="thumb"><img
+                                        src="{{ $fsbt->thumbnail }}"alt="{{ $fsbt->title }}" /></a>
                                 <a href="#" class="cat">
                                     @if (session()->get('lang') == 'bangla')
                                         {{ $fsbt->newsCategory->category_bn }}
@@ -91,35 +124,15 @@
                                         {{ $fsbt->newsCategory->category_en }}
                                     @endif
                                 </a>
-                                <div class="post--map">
-                                    <p class="btn-link">
-                                        <i class="fa fa-map-o"></i>
-                                        @if (session()->get('lang') == 'bangla')
-                                            {{ $fsbt->newsDivision->division_bn }}
-                                        @else
-                                            {{ $fsbt->newsDivision->division_en }}
-                                        @endif
-                                    </p>
-                                </div>
                                 <div class="post--info">
-                                    <ul class="nav meta">
-                                        <li><a href="#"><i class="fa fa-pencil" style="margin-right: 5px"
-                                                    aria-hidden="true"></i>{{ $fsbt->newsUser->name }}</a></li>
-                                        <li>
-                                            @if (session()->get('lang') == 'bangla')
-                                            @else
-                                            @endif
-                                            <a href="#"></a>
-                                        </li>
-                                    </ul>
                                     <div class="title">
                                         <h2 class="h4">
                                             <a href="news-single-v1.html" class="btn-link">
-                                            @if (session()->get('lang') == 'bangla')
-                                                {{ $fsbt->title_bn }}
-                                            @else
-                                                {{ $fsbt->title_en }}
-                                            @endif
+                                                @if (session()->get('lang') == 'bangla')
+                                                    <h2>{{ $fsbt->title_bn }}</h2>
+                                                @else
+                                                    <h2>{{ $fsbt->title_en }}</h2>
+                                                @endif
 
                                             </a>
                                         </h2>
@@ -128,91 +141,54 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="row gutter--15">
-                            <div class="col-xs-6 col-xss-12">
-                                <div class="post--item post--layout-1 post--title-large">
-                                    <div class="post--img">
-                                        <a href="news-single-v1.html" class="thumb"><img
-                                                src="{{ asset('frontend_assets') }}/img/home-img/banner-02.jpg"
-                                                alt="" /></a>
-                                        <a href="#" class="cat">Travel</a>
-                                        <a href="#" class="icon"><i class="fa fa-flash"></i></a>
-                                        <div class="post--info">
-                                            <ul class="nav meta">
-                                                <li><a href="#">Corey I. Dean</a></li>
-                                                <li><a href="#">20 April 2017</a></li>
-                                            </ul>
-                                            <div class="title">
-                                                <h2 class="h4">
-                                                    <a href="news-single-v1.html" class="btn-link">Lorem Ipsum is simply
-                                                        dummy text of the
-                                                        printing</a>
-                                                </h2>
+                            @foreach ($fs2 as $row)
+                                <div class="col-md-12 col-xs-6 col-xxs-12">
+                                    <div>
+                                        <div class="post--img">
+                                            <a href="news-single-v1.html" class="thumb">
+                                                <a href="news-single-v1.html" class="thumb">
+                                                    @php
+                                                        $isPlaceholder = Str::contains(
+                                                            $row->thumbnail,
+                                                            'via.placeholder.com',
+                                                        );
+                                                        $imageToShow =
+                                                            !$isPlaceholder && !empty($row->thumbnail)
+                                                                ? $row->thumbnail
+                                                                : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                                    @endphp
+
+                                                    <img src="{{ $imageToShow }}"
+                                                        alt="{{ $row->title_en }}"class="img-fluid">
+
+                                                </a>
+                                            </a>
+                                            <a href="#" class="cat">
+                                                @if (session()->get('lang') == 'bangla')
+                                                    {{ $row->newsCategory->category_bn }}
+                                                @else
+                                                    {{ $row->newsCategory->category_en }}
+                                                @endif
+                                            </a>
+                                            <div class="post--info">
+                                                <div class="title">
+                                                    <h2 class="h4">
+                                                        <a href="news-single-v1.html" class="btn-link">
+                                                            @if (session()->get('lang') == 'bangla')
+                                                                {{ $row->title_bn }}
+                                                            @else
+                                                                {{ $row->title_en }}
+                                                            @endif
+                                                        </a>
+                                                    </h2>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-xs-6 hidden-xss">
-                                <div class="post--item post--layout-1 post--title-large">
-                                    <div class="post--img">
-                                        <a href="news-single-v1.html" class="thumb"><img
-                                                src="{{ asset('frontend_assets') }}/img/home-img/banner-03.jpg"
-                                                alt="" /></a>
-                                        <a href="#" class="cat">Education</a>
-                                        <a href="#" class="icon"><i class="fa fa-flash"></i></a>
-                                        <div class="post--map">
-                                            <p class="btn-link">
-                                                <i class="fa fa-map-o"></i>Location in Google Map
-                                            </p>
-                                            <div class="map--wrapper">
-                                                <div data-map-latitude="23.790546" data-map-longitude="90.375583"
-                                                    data-map-zoom="6" data-map-marker="[[23.790546, 90.375583]]"></div>
-                                            </div>
-                                        </div>
-                                        <div class="post--info">
-                                            <ul class="nav meta">
-                                                <li><a href="#">Leraje</a></li>
-                                                <li><a href="#">20 April 2017</a></li>
-                                            </ul>
-                                            <div class="title">
-                                                <h2 class="h4">
-                                                    <a href="news-single-v1.html" class="btn-link">Lorem Ipsum is simply
-                                                        dummy text of the
-                                                        printing</a>
-                                                </h2>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 hidden-sm hidden-xs">
-                                <div class="post--item post--layout-1 post--title-larger">
-                                    <div class="post--img">
-                                        <a href="news-single-v1.html" class="thumb"><img
-                                                src="{{ asset('frontend_assets') }}/img/home-img/banner-04.jpg"
-                                                alt="" /></a>
-                                        <a href="#" class="cat">Politics</a>
-                                        <a href="#" class="icon"><i class="fa fa-fire"></i></a>
-                                        <div class="post--info">
-                                            <ul class="nav meta">
-                                                <li><a href="#">Balam</a></li>
-                                                <li><a href="#">20 April 2017</a></li>
-                                            </ul>
-                                            <div class="title">
-                                                <h2 class="h4">
-                                                    <a href="news-single-v1.html" class="btn-link">On the other hand, we
-                                                        denounce with righteous
-                                                        indignation and dislike men who are so
-                                                        beguiled and demoralized by the sure.</a>
-                                                </h2>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -222,282 +198,48 @@
             <div class="main--content col-md-8 col-sm-7" data-sticky-content="true">
                 <div class="sticky-content-inner">
                     <div class="row">
-                        <div class="col-md-6 ptop--30 pbottom--30">
-                            <div class="post--items-title" data-ajax="tab">
-                                <h2 class="h4">Worlds News</h2>
-                                <div class="nav">
-                                    <a href="#" class="prev btn-link"
-                                        data-ajax-action="load_prev_world_news_posts">
-                                        <i class="fa fa-long-arrow-left"></i>
-                                    </a>
-                                    <span class="divider">/</span>
-                                    <a href="#" class="next btn-link"
-                                        data-ajax-action="load_next_world_news_posts">
-                                        <i class="fa fa-long-arrow-right"></i>
-                                    </a>
+                        @foreach ($fs9 as $row)
+                            <div class="col-6 col-sm-6 col-md-4 mt-3" style="margin-top: 20px">
+                                <div>
+                                    <div class="post--img">
+                                        <a href="news-single-v1.html" class="thumb">
+                                            @php
+                                                $isPlaceholder = Str::contains($row->thumbnail, 'via.placeholder.com');
+                                                $imageToShow =
+                                                    !$isPlaceholder && !empty($row->thumbnail)
+                                                        ? $row->thumbnail
+                                                        : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                            @endphp
+
+                                            <img src="{{ $imageToShow }}" alt="{{ $row->title_en }}" class="img-fluid">
+
+                                        </a>
+                                        <a href="#" class="cat">
+                                            @if (session()->get('lang') == 'bangla')
+                                                {{ $row->newsCategory->category_bn }}
+                                            @else
+                                                {{ $row->newsCategory->category_en }}
+                                            @endif
+                                        </a>
+                                        <div class="post--info">
+
+                                            <div class="title">
+                                                <h2 class="h4">
+                                                    <a href="news-single-v1.html" class="btn-link">
+                                                        @if (session()->get('lang') == 'bangla')
+                                                            {{ $row->title_bn }}
+                                                        @else
+                                                            {{ $row->title_en }}
+                                                        @endif
+                                                    </a>
+                                                </h2>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="post--items post--items-2" data-ajax-content="outer">
-                                <ul class="nav row gutter--15" data-ajax-content="inner">
-                                    <li class="col-xs-12">
-                                        <div class="post--item post--layout-1">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/world-news-01.jpg"
-                                                        alt="" /></a>
-                                                <a href="#" class="cat">War</a>
-                                                <a href="#" class="icon"><i class="fa fa-flash"></i></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Astaroth</a></li>
-                                                        <li><a href="#">Yeasterday 03:52 pm</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">Siriya attaced
-                                                                by a long established fact
-                                                                that a reader will be distracted by</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="col-xs-12">
-                                        <hr class="divider" />
-                                    </li>
-                                    <li class="col-xs-6">
-                                        <div class="post--item post--layout-2">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/world-news-02.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Hantu Raya</a></li>
-                                                        <li><a href="#">17 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">It is a long
-                                                                established fact that a
-                                                                reader will done</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="col-xs-6">
-                                        <div class="post--item post--layout-2">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/world-news-03.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Astaroth</a></li>
-                                                        <li><a href="#">17 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">It is a long
-                                                                established fact that a
-                                                                reader will done</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="col-xs-12">
-                                        <hr class="divider" />
-                                    </li>
-                                    <li class="col-xs-6">
-                                        <div class="post--item post--layout-2">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/world-news-04.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Astaroth</a></li>
-                                                        <li><a href="#">17 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">It is a long
-                                                                established fact that a
-                                                                reader will done</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="col-xs-6">
-                                        <div class="post--item post--layout-2">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/world-news-05.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Hantu Raya</a></li>
-                                                        <li><a href="#">17 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">It is a long
-                                                                established fact that a
-                                                                reader will done</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="preloader bg--color-0--b" data-preloader="1">
-                                    <div class="preloader--inner"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 ptop--30 pbottom--30">
-                            <div class="post--items-title" data-ajax="tab">
-                                <h2 class="h4">Technology</h2>
-                                <div class="nav">
-                                    <a href="#" class="prev btn-link"
-                                        data-ajax-action="load_prev_technology_posts">
-                                        <i class="fa fa-long-arrow-left"></i>
-                                    </a>
-                                    <span class="divider">/</span>
-                                    <a href="#" class="next btn-link"
-                                        data-ajax-action="load_next_technology_posts">
-                                        <i class="fa fa-long-arrow-right"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="post--items post--items-3" data-ajax-content="outer">
-                                <ul class="nav" data-ajax-content="inner">
-                                    <li>
-                                        <div class="post--item post--layout-1">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/technology-01.jpg"
-                                                        alt="" /></a>
-                                                <a href="#" class="cat">Computer</a>
-                                                <a href="#" class="icon"><i class="fa fa-heart-o"></i></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Bathin</a></li>
-                                                        <li><a href="#">Yeasterday 03:52 pm</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">It is a long
-                                                                established fact that a
-                                                                reader will be distracted by</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="post--item post--layout-3">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/technology-02.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Bune</a></li>
-                                                        <li><a href="#">16 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">Long
-                                                                established fact that a reader will
-                                                                be distracted by the readable</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="post--item post--layout-3">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/technology-03.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Bune</a></li>
-                                                        <li><a href="#">16 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">Long
-                                                                established fact that a reader will
-                                                                be distracted by the readable</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="post--item post--layout-3">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/technology-04.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Bune</a></li>
-                                                        <li><a href="#">16 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">Long
-                                                                established fact that a reader will
-                                                                be distracted by the readable</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="post--item post--layout-3">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/technology-05.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Bune</a></li>
-                                                        <li><a href="#">16 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">Long
-                                                                established fact that a reader will
-                                                                be distracted by the readable</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="preloader bg--color-0--b" data-preloader="1">
-                                    <div class="preloader--inner"></div>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
+
                         <div class="col-md-12 ptop--30 pbottom--30">
                             <div class="ad--space">
                                 <a href="#">
@@ -929,72 +671,100 @@
             <div class="main--sidebar col-md-4 col-sm-5 ptop--30 pbottom--30" data-sticky-content="true">
                 <div class="sticky-content-inner">
                     <div class="widget">
+                        <div class="widget--title">
+                            <h2 class="h4">
+                                @if (session()->get('lang') == 'bangla')
+                                    আলোচিত খবর
+                                @else
+                                    Featured News
+                                @endif
+                            </h2>
+                            <i class="icon fa fa-newspaper-o"></i>
+                        </div>
+                        <div class="list--widget list--widget-1">
+                            <div class="list--widget-nav" data-ajax="tab">
+                                <ul class="nav nav-justified">
+                                    <li class="active">
+                                        <a href="#" data-ajax-action="load_widget_trendy_news">
+                                            @if (session()->get('lang') == 'bangla')
+                                                টেন্ডিং নিউজ
+                                            @else
+                                                Trendy News
+                                            @endif
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" data-ajax-action="load_widget_most_watched">
+                                            @if (session()->get('lang') == 'bangla')
+                                                সর্বাধিক দেখা
+                                            @else
+                                                Most Watched
+                                            @endif
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="post--items post--items-3" data-ajax-content="outer">
+                                <div style="max-height: 400px; overflow-y: auto;">
+                                    <ul class="nav" data-ajax-content="inner">
+                                        @foreach ($tn as $index => $row)
+                                            <li style="{{ $index !== 0 ? 'margin-top: 15px;' : '' }}">
+                                                <div class="post--item post--layout-3">
+                                                    <div class="post--img">
+                                                        <a href="news-single-v1.html" class="thumb">
+
+                                                            @php
+                                                                $isPlaceholder = Str::contains($row->thumbnail, 'via.placeholder.com');
+                                                                $imageToShow = !$isPlaceholder && !empty($row->thumbnail) ? $row->thumbnail : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                                            @endphp
+
+                                                            <img src="{{ $imageToShow }}" alt="{{ $row->title_en }}" class="img-fluid">
+
+                                                        </a>
+                                                        <div class="post--info">
+                                                            <ul class="nav meta" style="margin-top: 5px;">
+                                                                <li><a href="#">{{ $row->newsUser->name }}</a></li>
+                                                                <li>
+                                                                    <a href="#">
+                                                                    @if (session()->get('lang') == 'bangla')
+                                                                        {{ formatBanglaDate($row->created_at) }}
+                                                                    @else
+                                                                        {{ $row->created_at->format('j F Y') }}
+                                                                    @endif
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                            <div class="title" style="margin-top: -4px;">
+                                                                <h3 class="h4">
+                                                                    <a href="news-single-v1.html" class="btn-link">
+                                                                        @if (session()->get('lang') == 'bangla')
+                                                                            {{ $row->title_bn }}
+                                                                        @else
+                                                                            {{ $row->title_en }}
+                                                                        @endif
+                                                                    </a>
+                                                                </h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                <div class="preloader bg--color-0--b" data-preloader="1">
+                                    <div class="preloader--inner"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="widget">
                         <div class="ad--widget">
                             <a href="#">
                                 <img src="{{ asset('frontend_assets') }}/img/ads-img/ad-300x250-1.jpg" alt="" />
                             </a>
                         </div>
                     </div>
-                    {{-- <div class="widget">
-                            <div class="widget--title">
-                            <h2 class="h4">Stay Connected</h2>
-                            <i class="icon fa fa-share-alt"></i>
-                            </div>
-                            <div class="social--widget style--1">
-                            <ul class="nav">
-                                <li class="facebook">
-                                <a href="#">
-                                    <span class="icon"
-                                    ><i class="fa fa-facebook-f"></i
-                                    ></span>
-                                    <span class="count">521</span>
-                                    <span class="title">Likes</span>
-                                </a>
-                                </li>
-                                <li class="twitter">
-                                <a href="#">
-                                    <span class="icon"
-                                    ><i class="fa fa-twitter"></i
-                                    ></span>
-                                    <span class="count">3297</span>
-                                    <span class="title">Followers</span>
-                                </a>
-                                </li>
-                                <li class="google-plus">
-                                <a href="#">
-                                    <span class="icon"
-                                    ><i class="fa fa-google-plus"></i
-                                    ></span>
-                                    <span class="count">596282</span>
-                                    <span class="title">Followers</span>
-                                </a>
-                                </li>
-                                <li class="rss">
-                                <a href="#">
-                                    <span class="icon"><i class="fa fa-rss"></i></span>
-                                    <span class="count">521</span>
-                                    <span class="title">Subscriber</span>
-                                </a>
-                                </li>
-                                <li class="vimeo">
-                                <a href="#">
-                                    <span class="icon"><i class="fa fa-vimeo"></i></span>
-                                    <span class="count">3297</span>
-                                    <span class="title">Followers</span>
-                                </a>
-                                </li>
-                                <li class="youtube">
-                                <a href="#">
-                                    <span class="icon"
-                                    ><i class="fa fa-youtube-square"></i
-                                    ></span>
-                                    <span class="count">596282</span>
-                                    <span class="title">Subscriber</span>
-                                </a>
-                                </li>
-                            </ul>
-                            </div>
-                        </div> --}}
                     <div class="card mb-4">
                         <div class="card-header bg-success text-white">
                             🕌 আজকের নামাজের সময়সূচি
@@ -1062,122 +832,6 @@
                                 </div>
                                 <div class="status"></div>
                             </form>
-                        </div>
-                    </div>
-                    <div class="widget">
-                        <div class="widget--title">
-                            <h2 class="h4">Featured News</h2>
-                            <i class="icon fa fa-newspaper-o"></i>
-                        </div>
-                        <div class="list--widget list--widget-1">
-                            <div class="list--widget-nav" data-ajax="tab">
-                                <ul class="nav nav-justified">
-                                    <li>
-                                        <a href="#" data-ajax-action="load_widget_hot_news">Hot News</a>
-                                    </li>
-                                    <li class="active">
-                                        <a href="#" data-ajax-action="load_widget_trendy_news">Trendy News</a>
-                                    </li>
-                                    <li>
-                                        <a href="#" data-ajax-action="load_widget_most_watched">Most Watched</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="post--items post--items-3" data-ajax-content="outer">
-                                <ul class="nav" data-ajax-content="inner">
-                                    <li>
-                                        <div class="post--item post--layout-3">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/widgets-img/news-widget-01.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Ninurta</a></li>
-                                                        <li><a href="#">16 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">Long
-                                                                established fact that a reader will
-                                                                be distracted</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="post--item post--layout-3">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/widgets-img/news-widget-02.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Orcus</a></li>
-                                                        <li><a href="#">16 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">Long
-                                                                established fact that a reader will
-                                                                be distracted</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="post--item post--layout-3">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/widgets-img/news-widget-03.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Rahab</a></li>
-                                                        <li><a href="#">16 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">Long
-                                                                established fact that a reader will
-                                                                be distracted</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="post--item post--layout-3">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/widgets-img/news-widget-04.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Tannin</a></li>
-                                                        <li><a href="#">16 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">Long
-                                                                established fact that a reader will
-                                                                be distracted</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="preloader bg--color-0--b" data-preloader="1">
-                                    <div class="preloader--inner"></div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div class="widget">
@@ -1729,7 +1383,7 @@
                             <div class="post--items post--items-1" data-ajax-content="outer">
                                 <ul class="nav row gutter--15" data-ajax-content="inner">
                                     <li class="col-md-12">
-                                        <div class="post--item post--layout-1 post--title-large">
+                                        <div>
                                             <div class="post--img">
                                                 <a href="news-single-v1.html" class="thumb"><img
                                                         src="{{ asset('frontend_assets') }}/img/home-img/photo-gallery-01.jpg"

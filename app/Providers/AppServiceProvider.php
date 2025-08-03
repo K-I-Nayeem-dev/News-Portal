@@ -34,12 +34,5 @@ class AppServiceProvider extends ServiceProvider
                 'position' => Location::get('119.30.39.113')->cityName
             ]);
         });
-
-        View::composer('layouts.newsIndex.home.home', function ($view) {
-
-            $view->with([
-                'meta' => Seo::first(),
-            ]);
-        });
     }
 }

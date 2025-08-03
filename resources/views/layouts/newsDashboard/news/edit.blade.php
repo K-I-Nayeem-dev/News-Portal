@@ -361,11 +361,11 @@
                                         </div>
 
                                         <div class="col-lg-3">
-                                            <input type="hidden" name="genaralBigThumbnail" value="off">
+                                            <input type="hidden" name="trendyNews" value="off">
                                             <input class="form-input me-2" type="checkbox"
-                                                {{ $news->genaralBigThumbnail == 'on' ? 'checked' : '' }}
-                                                name="genaralBigThumbnail" id="genaralBigThumbnail" value="on">
-                                            <label class='form-label mt-2' for="genaralBigThumbnail"
+                                                {{ $news->trendyNews == 'on' ? 'checked' : '' }}
+                                                name="trendyNews" id="trendyNews" value="on">
+                                            <label class='form-label mt-2' for="trendyNews"
                                                 style="font-size: 14px;">Genarel Big Thumbnail</label>
                                         </div>
                                     </div>

@@ -14,16 +14,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Stevebauman\Location\Facades\Location;
+use App\Jobs\ConvertDateToBangla;
 
 class HomeController extends Controller
 {
-
     // Method for Home
     public function index()
     {
-
-        // Time English To Bangla
-        
 
         // For breaking news and Notice
         $breaking_news = DB::table('breaking_news')->where('status', 1)->latest()->get();
@@ -32,10 +29,26 @@ class HomeController extends Controller
         // for First section News fsbt = firstSection_bigThumbnail
         $fsbt = News::where('firstSection_bigThumbnail', 'on')->where('status', 1)->latest()->first();
 
+        // for First section News fs = firstSection 1
+        $fs1 = News::where('firstSection', 'on')->where('status', 1)->latest()->take(2)->get();
+
+        // for First section News fs = firstSection 1
+        $fs2 = News::where('firstSection', 'on')->where('status', 1)->latest()->skip(2)->take(2)->get();
+
+        // for First section News fs = firstSection Select 9 News
+        $fs9 = News::where('firstSection', 'on')->where('status', 1)->latest()->skip(4)->take(9)->get();
+
+        // for First section News fs = firstSection Select 9 News
+        $tn = News::where('trendyNews', 'on')->where('status', 1)->latest()->take(10)->get();
+
         return view('layouts.newsIndex.home.home', [
             'breaking_news' => $breaking_news,
             'notice' => $notice,
-            'fsbt' => $fsbt
+            'fsbt' => $fsbt,
+            'fs1' => $fs1,
+            'fs2' => $fs2,
+            'fs9' => $fs9,
+            'tn' => $tn,
         ]);
     }
 

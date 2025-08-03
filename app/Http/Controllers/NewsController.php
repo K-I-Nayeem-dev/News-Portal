@@ -88,12 +88,12 @@ class NewsController extends Controller
 
         // 🔸 1. Save full-sized image
 
-        // Process new image
+        // Process new image for thumbnail
         $job = new ProcessImageUpload(
             $request->file('thumbnail'),
             'uploads/news_thumbs/',
-            650,
-            365,
+            1200,
+            830,
             50,
             $watermark->watermark
         );
@@ -121,8 +121,8 @@ class NewsController extends Controller
             'image_title' => $request->image_title,
             'news_photo' => $news_name,
             'url' => $request->url,
-            'genaralBigThumbnail' => $request->genarelBigThumbnail,
-            'firstSection_bigThumbnail' => $request->firstSectionBigThumbnail,
+            'trendyNews' => $request->trendyNews,
+            'firstSection_bigThumbnail' => $request->firstSection_bigThumbnail,
             'firstSection' => $request->firstSection,
             'status' => $request->status,
             'created_at' => now(),
@@ -301,7 +301,7 @@ class NewsController extends Controller
         // for news section update
         $news->firstSection_bigThumbnail = $request->firstSection_bigThumbnail; // 'on' or 'off'
         $news->firstSection = $request->firstSection; // 'on' or 'off'
-        $news->genaralBigThumbnail = $request->genaralBigThumbnail; // 'on' or 'off'
+        $news->trendyNews = $request->trendyNews; // 'on' or 'off'
 
         if ($request->hasFile('thumbnail')) {
             // Delete old images
@@ -333,8 +333,8 @@ class NewsController extends Controller
             $job = new ProcessImageUpload(
                 $originalFile,
                 'uploads/news_thumbs/',
-                650,
-                365,
+                1200,
+                830,
                 50,
                 $watermark->watermark // ✅ fixed typo
             );

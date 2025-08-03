@@ -303,8 +303,8 @@
                                             <label class='form-label mt-2' for="firstSection" style="font-size: 14px;">First Section</label>
                                         </div>
                                         <div class="col-lg-3">
-                                            <input class="form-input me-2" type="checkbox" name="genarelBigThumbnail" id="genarelBigThumbnail">
-                                            <label class='form-label mt-2' for="genarelBigThumbnail" style="font-size: 14px;">Genarel Big Thumbnail</label>
+                                            <input class="form-input me-2" type="checkbox" name="trendyNews" id="trendyNews">
+                                            <label class='form-label mt-2' for="trendyNews" style="font-size: 14px;">Genarel Big Thumbnail</label>
                                         </div>
                                     </div>
 
