@@ -38,8 +38,40 @@ class HomeController extends Controller
         // for First section News fs = firstSection Select 9 News
         $fs9 = News::where('firstSection', 'on')->where('status', 1)->latest()->skip(4)->take(9)->get();
 
-        // for First section News fs = firstSection Select 9 News
+        // for First section News Trending News
         $tn = News::where('trendyNews', 'on')->where('status', 1)->latest()->take(10)->get();
+
+        // for First section News Special Report
+        $sn = videogallery::where('special_news', 'on')->latest()->take(9)->get();
+
+        // Get News for Category national
+        $nationalCategory = Category::where('category_en', 'national')->first();
+
+        // News for Category national Big_thumbnail
+        $nnbt = News::where('category_id', $nationalCategory->id)->where('status', 1)->latest()->first();
+        // News for Category national left side 2 news
+        $nnln = News::where('category_id', $nationalCategory->id)->where('status', 1)->latest()->skip(1)->take(2)->get();
+        // News for Category national right side 4 news
+        $nnrn = News::where('category_id', $nationalCategory->id)->where('status', 1)->latest()->skip(3)->take(5)->get();
+
+        // Get News for Category national
+        $entertainmentCategory = Category::where('category_en', 'Entertainment')->first();
+
+        // News for Category Entertenmail Big_thumbnail
+        $enbt = News::where('category_id', $entertainmentCategory->id)->where('status', 1)->latest()->first();
+        // News for Category Entertenmail left side 2 news
+        $enrn = News::where('category_id', $entertainmentCategory->id)->where('status', 1)->latest()->skip(1)->take(4)->get();
+
+        // Get News for Category national
+        $countryCategory = Category::where('category_en', 'Country')->first();
+
+        // News for Category Entertenmail Big_thumbnail
+        $cnbt = News::where('category_id', $countryCategory->id)->where('status', 1)->latest()->first();
+        // News for Category Entertenmail left side 2 news
+        $cn1 = News::where('category_id', $countryCategory->id)->where('status', 1)->latest()->skip(1)->take(2)->get();
+        $cn2 = News::where('category_id', $countryCategory->id)->where('status', 1)->latest()->skip(3)->take(2)->get();
+
+
 
         return view('layouts.newsIndex.home.home', [
             'breaking_news' => $breaking_news,
@@ -49,6 +81,15 @@ class HomeController extends Controller
             'fs2' => $fs2,
             'fs9' => $fs9,
             'tn' => $tn,
+            'sn' => $sn,
+            'nnbt' => $nnbt,
+            'nnln' =>   $nnln,
+            'nnrn' => $nnrn,
+            'enbt' => $enbt,
+            'enrn' => $enrn,
+            'cnbt' => $cnbt,
+            'cn1' => $cn1,
+            'cn2' => $cn2,
         ]);
     }
 

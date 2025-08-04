@@ -3,9 +3,99 @@
 @section('content')
 
     <style>
+        @media (max-width: 768px) {
+            .splide__arrow {
+                display: none !important;
+            }
+        }
+
+
+        .splide__pagination {
+            display: none;
+        }
+
+        .splide__arrow {
+            -ms-flex-align: center;
+            align-items: center;
+            background: #ccc;
+            border: 0;
+            border-radius: 50%;
+            cursor: pointer;
+            display: -ms-flexbox;
+            display: flex;
+            height: 2em;
+            -ms-flex-pack: center;
+            justify-content: center;
+            opacity: .7;
+            padding: 0;
+            position: absolute;
+            top: 40%;
+            transform: translateY(-50%);
+            width: 2em;
+            z-index: 1;
+            left: 101.3%;
+        }
+
+        .splide__arrow--prev {
+            left: -3em;
+        }
+
         .gbt {
             width: 800px !important;
             height: 185px !important;
+        }
+
+        .responsive-iframe-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 78.95%;
+            /* (600 / 760) * 100 */
+            height: 0;
+            overflow: hidden;
+        }
+
+        .responsive-iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+
+        .video-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .play-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -80%);
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+
+        .video-wrapper {
+            overflow: hidden;
+        }
+
+        .card-body {
+            min-height: 70px;
+            /* keeps all titles aligned */
+        }
+
+        .title-black:hover {
+            color: red !important;
         }
     </style>
     <div>
@@ -248,423 +338,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="col-md-12 ptop--30 pbottom--30">
-                            <div class="post--items-title" data-ajax="tab">
-                                <h2 class="h4">Finance</h2>
-                                <div class="nav">
-                                    <a href="#" class="prev btn-link" data-ajax-action="load_prev_finance_posts">
-                                        <i class="fa fa-long-arrow-left"></i>
-                                    </a>
-                                    <span class="divider">/</span>
-                                    <a href="#" class="next btn-link" data-ajax-action="load_next_finance_posts">
-                                        <i class="fa fa-long-arrow-right"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="post--items post--items-2" data-ajax-content="outer">
-                                <ul class="nav row" data-ajax-content="inner">
-                                    <li class="col-md-6">
-                                        <div class="post--item post--layout-2">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/finance-01.jpg"
-                                                        alt="" /></a>
-                                                <a href="#" class="cat">Business</a>
-                                                <a href="#" class="icon"><i class="fa fa-star-o"></i></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Vassago</a></li>
-                                                        <li><a href="#">Today 03:30 am</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">At vero eos et
-                                                                accusamus et iusto odio
-                                                                dignissimos ducimus qui blanditiis
-                                                                praesentium voluptatum deleniti atque
-                                                                corrupti quos dolores et quas.</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="col-md-6">
-                                        <ul class="nav row">
-                                            <li class="col-xs-12 hidden-md hidden-lg">
-                                                <hr class="divider" />
-                                            </li>
-                                            <li class="col-xs-6">
-                                                <div class="post--item post--layout-2">
-                                                    <div class="post--img">
-                                                        <a href="news-single-v1.html" class="thumb"><img
-                                                                src="{{ asset('frontend_assets') }}/img/home-img/finance-02.jpg"
-                                                                alt="" /></a>
-                                                        <div class="post--info">
-                                                            <ul class="nav meta">
-                                                                <li><a href="#">Zepar</a></li>
-                                                                <li><a href="#">Today 03:52 pm</a></li>
-                                                            </ul>
-                                                            <div class="title">
-                                                                <h3 class="h4">
-                                                                    <a href="news-single-v1.html" class="btn-link">It is a
-                                                                        long established fact that a
-                                                                        reader will be</a>
-                                                                </h3>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="col-xs-6">
-                                                <div class="post--item post--layout-2">
-                                                    <div class="post--img">
-                                                        <a href="news-single-v1.html" class="thumb"><img
-                                                                src="{{ asset('frontend_assets') }}/img/home-img/finance-03.jpg"
-                                                                alt="" /></a>
-                                                        <div class="post--info">
-                                                            <ul class="nav meta">
-                                                                <li><a href="#">Demiurge</a></li>
-                                                                <li><a href="#">Today 03:02 pm</a></li>
-                                                            </ul>
-                                                            <div class="title">
-                                                                <h3 class="h4">
-                                                                    <a href="news-single-v1.html" class="btn-link">It is a
-                                                                        long established fact that a
-                                                                        reader will be</a>
-                                                                </h3>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="col-xs-12">
-                                                <hr class="divider" />
-                                            </li>
-                                            <li class="col-xs-6">
-                                                <div class="post--item post--layout-2">
-                                                    <div class="post--img">
-                                                        <a href="news-single-v1.html" class="thumb"><img
-                                                                src="{{ asset('frontend_assets') }}/img/home-img/finance-04.jpg"
-                                                                alt="" /></a>
-                                                        <div class="post--info">
-                                                            <ul class="nav meta">
-                                                                <li><a href="#">Demiurge</a></li>
-                                                                <li><a href="#">Today 02:05 am</a></li>
-                                                            </ul>
-                                                            <div class="title">
-                                                                <h3 class="h4">
-                                                                    <a href="news-single-v1.html" class="btn-link">It is a
-                                                                        long established fact that a
-                                                                        reader will be</a>
-                                                                </h3>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="col-xs-6">
-                                                <div class="post--item post--layout-2">
-                                                    <div class="post--img">
-                                                        <a href="news-single-v1.html" class="thumb"><img
-                                                                src="{{ asset('frontend_assets') }}/img/home-img/finance-05.jpg"
-                                                                alt="" /></a>
-                                                        <div class="post--info">
-                                                            <ul class="nav meta">
-                                                                <li><a href="#">Zepar</a></li>
-                                                                <li><a href="#">Today 12:35 am</a></li>
-                                                            </ul>
-                                                            <div class="title">
-                                                                <h3 class="h4">
-                                                                    <a href="news-single-v1.html" class="btn-link">It is a
-                                                                        long established fact that a
-                                                                        reader will be</a>
-                                                                </h3>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                                <div class="preloader bg--color-0--b" data-preloader="1">
-                                    <div class="preloader--inner"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 ptop--30 pbottom--30">
-                            <div class="post--items-title" data-ajax="tab">
-                                <h2 class="h4">Politics</h2>
-                                <div class="nav">
-                                    <a href="#" class="prev btn-link" data-ajax-action="load_prev_politics_posts">
-                                        <i class="fa fa-long-arrow-left"></i>
-                                    </a>
-                                    <span class="divider">/</span>
-                                    <a href="#" class="next btn-link" data-ajax-action="load_next_politics_posts">
-                                        <i class="fa fa-long-arrow-right"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="post--items post--items-2" data-ajax-content="outer">
-                                <ul class="nav row gutter--15" data-ajax-content="inner">
-                                    <li class="col-xs-12">
-                                        <div class="post--item post--layout-1">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/politics-01.jpg"
-                                                        alt="" /></a>
-                                                <a href="#" class="cat">Election</a>
-                                                <a href="#" class="icon"><i class="fa fa-fire"></i></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Astaroth</a></li>
-                                                        <li><a href="#">Yeasterday 03:52 pm</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">It is a long
-                                                                established fact that a
-                                                                reader will be distracted by</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="col-xs-12">
-                                        <hr class="divider" />
-                                    </li>
-                                    <li class="col-xs-6">
-                                        <div class="post--item post--layout-2">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/politics-02.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Hantu Raya</a></li>
-                                                        <li><a href="#">17 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">It is a long
-                                                                established fact that a
-                                                                reader will done</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="col-xs-6">
-                                        <div class="post--item post--layout-2">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/politics-03.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Astaroth</a></li>
-                                                        <li><a href="#">17 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">It is a long
-                                                                established fact that a
-                                                                reader will done</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="col-xs-12">
-                                        <hr class="divider" />
-                                    </li>
-                                    <li class="col-xs-6">
-                                        <div class="post--item post--layout-2">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/politics-04.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Astaroth</a></li>
-                                                        <li><a href="#">17 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">It is a long
-                                                                established fact that a
-                                                                reader will done</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="col-xs-6">
-                                        <div class="post--item post--layout-2">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/politics-05.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Hantu Raya</a></li>
-                                                        <li><a href="#">17 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">It is a long
-                                                                established fact that a
-                                                                reader will done</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="preloader bg--color-0--b" data-preloader="1">
-                                    <div class="preloader--inner"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 ptop--30 pbottom--30">
-                            <div class="post--items-title" data-ajax="tab">
-                                <h2 class="h4">Sports</h2>
-                                <div class="nav">
-                                    <a href="#" class="prev btn-link" data-ajax-action="load_prev_sports_posts">
-                                        <i class="fa fa-long-arrow-left"></i>
-                                    </a>
-                                    <span class="divider">/</span>
-                                    <a href="#" class="next btn-link" data-ajax-action="load_next_sports_posts">
-                                        <i class="fa fa-long-arrow-right"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="post--items post--items-3" data-ajax-content="outer">
-                                <ul class="nav" data-ajax-content="inner">
-                                    <li>
-                                        <div class="post--item post--layout-1">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/sports-01.jpg"
-                                                        alt="" /></a>
-                                                <a href="#" class="cat">Basketball</a>
-                                                <a href="#" class="icon"><i class="fa fa-eye"></i></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Bathin</a></li>
-                                                        <li><a href="#">Yeasterday 03:52 pm</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">It is a long
-                                                                established fact that a
-                                                                reader will be distracted by</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="post--item post--layout-3">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/sports-02.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Bune</a></li>
-                                                        <li><a href="#">16 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">Long
-                                                                established fact that a reader will
-                                                                be distracted by the readable</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="post--item post--layout-3">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/sports-03.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Bune</a></li>
-                                                        <li><a href="#">16 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">Long
-                                                                established fact that a reader will
-                                                                be distracted by the readable</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="post--item post--layout-3">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/sports-04.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Bune</a></li>
-                                                        <li><a href="#">16 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">Long
-                                                                established fact that a reader will
-                                                                be distracted by the readable</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="post--item post--layout-3">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/sports-05.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Bune</a></li>
-                                                        <li><a href="#">16 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">Long
-                                                                established fact that a reader will
-                                                                be distracted by the readable</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="preloader bg--color-0--b" data-preloader="1">
-                                    <div class="preloader--inner"></div>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -714,11 +388,20 @@
                                                         <a href="news-single-v1.html" class="thumb">
 
                                                             @php
-                                                                $isPlaceholder = Str::contains($row->thumbnail, 'via.placeholder.com');
-                                                                $imageToShow = !$isPlaceholder && !empty($row->thumbnail) ? $row->thumbnail : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                                                $isPlaceholder = Str::contains(
+                                                                    $row->thumbnail,
+                                                                    'via.placeholder.com',
+                                                                );
+                                                                $imageToShow =
+                                                                    !$isPlaceholder && !empty($row->thumbnail)
+                                                                        ? $row->thumbnail
+                                                                        : asset(
+                                                                            'uploads/default_images/deafult_thumbnail.jpg',
+                                                                        );
                                                             @endphp
 
-                                                            <img src="{{ $imageToShow }}" alt="{{ $row->title_en }}" class="img-fluid">
+                                                            <img src="{{ $imageToShow }}" alt="{{ $row->title_en }}"
+                                                                class="img-fluid">
 
                                                         </a>
                                                         <div class="post--info">
@@ -726,11 +409,11 @@
                                                                 <li><a href="#">{{ $row->newsUser->name }}</a></li>
                                                                 <li>
                                                                     <a href="#">
-                                                                    @if (session()->get('lang') == 'bangla')
-                                                                        {{ formatBanglaDate($row->created_at) }}
-                                                                    @else
-                                                                        {{ $row->created_at->format('j F Y') }}
-                                                                    @endif
+                                                                        @if (session()->get('lang') == 'bangla')
+                                                                            {{ formatBanglaDate($row->created_at) }}
+                                                                        @else
+                                                                            {{ $row->created_at->format('j F Y') }}
+                                                                        @endif
                                                                     </a>
                                                                 </li>
                                                             </ul>
@@ -752,20 +435,10 @@
                                         @endforeach
                                     </ul>
                                 </div>
-                                <div class="preloader bg--color-0--b" data-preloader="1">
-                                    <div class="preloader--inner"></div>
-                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="widget">
-                        <div class="ad--widget">
-                            <a href="#">
-                                <img src="{{ asset('frontend_assets') }}/img/ads-img/ad-300x250-1.jpg" alt="" />
-                            </a>
-                        </div>
-                    </div>
-                    <div class="card mb-4">
+                    <div class="card mb-4" style="margin-top: 25px">
                         <div class="card-header bg-success text-white">
                             🕌 আজকের নামাজের সময়সূচি
                         </div>
@@ -804,1012 +477,519 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="widget">
-                        <div class="widget--title">
-                            <h2 class="h4">Get Newsletter</h2>
-                            <i class="icon fa fa-envelope-open-o"></i>
-                        </div>
-                        <div class="subscribe--widget">
-                            <div class="content">
-                                <p>
-                                    Subscribe to our newsletter to get latest news, popular
-                                    news and exclusive updates.
-                                </p>
-                            </div>
-                            <form
-                                action="https://themelooks.us13.list-manage.com/subscribe/post?u=79f0b132ec25ee223bb41835f&id=f4e0e93d1d"
-                                method="post" name="mc-embedded-subscribe-form" target="_blank"
-                                data-form="mailchimpAjax">
-                                <div class="input-group">
-                                    <input type="email" name="EMAIL" placeholder="E-mail address"
-                                        class="form-control" autocomplete="off" required="" />
-                                    <div class="input-group-btn">
-                                        <button type="submit" class="btn btn-lg btn-default active">
-                                            <i class="fa fa-paper-plane-o"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="status"></div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="widget">
-                        <div class="widget--title">
-                            <h2 class="h4">Advertisement</h2>
-                            <i class="icon fa fa-bullhorn"></i>
-                        </div>
-                        <div class="ad--widget">
-                            <a href="#">
-                                <img src="{{ asset('frontend_assets') }}/img/ads-img/ad-300x250-2.jpg" alt="" />
-                            </a>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
         <div class="main--content pd--30-0">
             <div class="post--items-title" data-ajax="tab">
-                <h2 class="h4">Audio &amp; Videos</h2>
-                <div class="nav">
-                    <a href="#" class="prev btn-link" data-ajax-action="load_prev_audio_video_posts">
-                        <i class="fa fa-long-arrow-left"></i>
-                    </a>
-                    <span class="divider">/</span>
-                    <a href="#" class="next btn-link" data-ajax-action="load_next_audio_video_posts">
-                        <i class="fa fa-long-arrow-right"></i>
-                    </a>
+                <h2 class="h4">
+                    @if (session()->get('lang') == 'bangla')
+                        বিশেষ খবর
+                    @else
+                        Special Report
+                    @endif
+                </h2>
+            </div>
+
+            {{-- Video Slider For Special News --}}
+            <div id="image-slider" class="splide">
+                <div class="splide__track">
+                    <ul class="splide__list">
+
+                        @foreach ($sn as $row)
+                            <li style="cursor: pointer" class="splide__slide">
+                                <div style="padding: 0 15px">
+                                    @php
+                                        preg_match('/src="([^"]+)"/', $row->embed_code, $matches);
+                                        $iframeSrc = $matches[1] ?? null;
+                                        $videoId = null;
+                                        if ($iframeSrc && Str::contains($iframeSrc, 'youtube.com')) {
+                                            preg_match('/embed\/([^\?&"]+)/', $iframeSrc, $idMatch);
+                                            $videoId = $idMatch[1] ?? null;
+                                        }
+                                    @endphp
+
+                                    @if ($iframeSrc)
+                                        <a data-fancybox data-type="iframe" href="{{ $iframeSrc }}"
+                                            class="video-wrapper">
+                                            @if ($videoId)
+                                                <img style="border-radius: 10px"
+                                                    src="https://img.youtube.com/vi/{{ $videoId }}/hqdefault.jpg"
+                                                    alt="Video Thumbnail">
+                                            @else
+                                                <img src="{{ asset('default-thumb.jpg') }}" alt="Default Thumbnail">
+                                            @endif
+                                            <div class="play-overlay">
+                                                <i class="fa fa-play"
+                                                    style="font-size: 24px; color: white !important"></i>
+                                            </div>
+                                        </a>
+                                    @endif
+
+                                    <div>
+                                        <a data-fancybox data-type="iframe" href="{{ $iframeSrc }}"
+                                            class="card-link title-black text-center"
+                                            style="color: black; font-size: 18px;">{{ \Illuminate\Support\Str::limit($row->title, 38) }}</a>
+                                    </div>
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
                 </div>
             </div>
-            <div class="post--items post--items-4" data-ajax-content="outer">
-                <ul class="nav row" data-ajax-content="inner">
-                    <li class="col-md-8">
-                        <div class="post--item post--layout-1 post--type-video post--title-large">
-                            <div class="post--img">
-                                <a href="news-single-v1.html" class="thumb"><img
-                                        src="{{ asset('frontend_assets') }}/img/home-img/audio-video-01.jpg"
-                                        alt="" /></a>
-                                <a href="#" class="cat">Wave</a>
-                                <a href="#" class="icon"><i class="fa fa-eye"></i></a>
-                                <div class="post--info">
-                                    <ul class="nav meta">
-                                        <li><a href="#">Succubus</a></li>
-                                        <li><a href="#">Today 03:52 pm</a></li>
-                                    </ul>
-                                    <div class="title">
-                                        <h2 class="h4">
-                                            <a href="news-single-v1.html" class="btn-link">Standard chunk of Lorem Ipsum
-                                                used since the
-                                                1500s is reproduced below for those interested.
-                                                Sections 1.10.32 and 1.10.33 from "de Finibus
-                                                Bonorum</a>
-                                        </h2>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr class="divider hidden-md hidden-lg" />
-                    </li>
-                    <li class="col-md-4">
-                        <ul class="nav">
-                            <li>
-                                <div class="post--item post--type-audio post--layout-3">
-                                    <div class="post--img">
-                                        <a href="news-single-v1.html" class="thumb"><img
-                                                src="{{ asset('frontend_assets') }}/img/home-img/audio-video-02.jpg"
-                                                alt="" /></a>
-                                        <div class="post--info">
-                                            <ul class="nav meta">
-                                                <li><a href="#">Maclaan John</a></li>
-                                                <li><a href="#">16 April 2017</a></li>
-                                            </ul>
-                                            <div class="title">
-                                                <h3 class="h4">
-                                                    <a href="news-single-v1.html" class="btn-link">Long established fact
-                                                        that a reader will be
-                                                        distracted by the readable</a>
-                                                </h3>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="post--item post--type-video post--layout-3">
-                                    <div class="post--img">
-                                        <a href="news-single-v1.html" class="thumb"><img
-                                                src="{{ asset('frontend_assets') }}/img/home-img/audio-video-03.jpg"
-                                                alt="" /></a>
-                                        <div class="post--info">
-                                            <ul class="nav meta">
-                                                <li><a href="#">Maclaan John</a></li>
-                                                <li><a href="#">16 April 2017</a></li>
-                                            </ul>
-                                            <div class="title">
-                                                <h3 class="h4">
-                                                    <a href="news-single-v1.html" class="btn-link">Long established fact
-                                                        that a reader will be
-                                                        distracted by the readable</a>
-                                                </h3>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="post--item post--type-video post--layout-3">
-                                    <div class="post--img">
-                                        <a href="news-single-v1.html" class="thumb"><img
-                                                src="{{ asset('frontend_assets') }}/img/home-img/audio-video-04.jpg"
-                                                alt="" /></a>
-                                        <div class="post--info">
-                                            <ul class="nav meta">
-                                                <li><a href="#">Maclaan John</a></li>
-                                                <li><a href="#">16 April 2017</a></li>
-                                            </ul>
-                                            <div class="title">
-                                                <h3 class="h4">
-                                                    <a href="news-single-v1.html" class="btn-link">Long established fact
-                                                        that a reader will be
-                                                        distracted by the readable</a>
-                                                </h3>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="post--item post--type-audio post--layout-3">
-                                    <div class="post--img">
-                                        <a href="news-single-v1.html" class="thumb"><img
-                                                src="{{ asset('frontend_assets') }}/img/home-img/audio-video-05.jpg"
-                                                alt="" /></a>
-                                        <div class="post--info">
-                                            <ul class="nav meta">
-                                                <li><a href="#">Maclaan John</a></li>
-                                                <li><a href="#">16 April 2017</a></li>
-                                            </ul>
-                                            <div class="title">
-                                                <h3 class="h4">
-                                                    <a href="news-single-v1.html" class="btn-link">Long established fact
-                                                        that a reader will be
-                                                        distracted by the readable</a>
-                                                </h3>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-                <div class="preloader bg--color-0--b" data-preloader="1">
-                    <div class="preloader--inner"></div>
-                </div>
-            </div>
-        </div>
-        <div class="ad--space pd--30-0">
-            <a href="#">
-                <img src="{{ asset('frontend_assets') }}/img/ads-img/ad-970x90.jpg" alt=""
-                    class="center-block" />
-            </a>
+
         </div>
         <div class="row">
-            <div class="main--content col-md-8 col-sm-7" data-sticky-content="true">
+            <div class="main--content" data-sticky-content="true">
                 <div class="sticky-content-inner">
                     <div class="row">
-                        <div class="col-md-6 ptop--30 pbottom--30">
-                            <div class="post--items-title" data-ajax="tab">
-                                <h2 class="h4">Health &amp; fitness</h2>
-                                <div class="nav">
-                                    <a href="#" class="prev btn-link"
-                                        data-ajax-action="load_prev_health_fitness_posts">
-                                        <i class="fa fa-long-arrow-left"></i>
-                                    </a>
-                                    <span class="divider">/</span>
-                                    <a href="#" class="next btn-link"
-                                        data-ajax-action="load_next_health_fitness_posts">
-                                        <i class="fa fa-long-arrow-right"></i>
-                                    </a>
+
+                        {{-- Section Title --}}
+                        <div class="post--items-title" data-ajax="tab">
+                            <h2 class="h4">
+                                @if (session()->get('lang') == 'bangla')
+                                    {{ $nnbt->newsCategory->category_bn }}
+                                @else
+                                    {{ $nnbt->newsCategory->category_en }}
+                                @endif
+                            </h2>
+                        </div>
+
+                        {{-- Main Content --}}
+                        <div class="main--content pd--30-0">
+                            <div class="post--items post--items-4" data-ajax-content="outer">
+
+                                {{-- Left Column (col-md-3) --}}
+                                <div class="col-md-3">
+                                    <ul class="nav flex-column">
+                                        @foreach ($nnln as $index => $row)
+                                            <li style="{{ $index !== 0 ? 'margin-top: 20px;' : '' }}">
+                                                <div class="post--item">
+                                                    <div class="post--img">
+                                                        <a href="news-single-v1.html" class="thumb">
+                                                            @php
+                                                                $isPlaceholder = Str::contains(
+                                                                    $row->thumbnail,
+                                                                    'via.placeholder.com',
+                                                                );
+                                                                $imageToShow =
+                                                                    !$isPlaceholder && !empty($row->thumbnail)
+                                                                        ? $row->thumbnail
+                                                                        : asset(
+                                                                            'uploads/default_images/deafult_thumbnail.jpg',
+                                                                        );
+                                                            @endphp
+
+                                                            <img src="{{ $imageToShow }}" alt="{{ $row->title_en }}"
+                                                                class="img-fluid">
+                                                        </a>
+
+                                                        <div class="post--info">
+                                                            <div class="title">
+                                                                <h3 class="h4">
+                                                                    <a href="news-single-v1.html" class="btn-link">
+                                                                        @if (session()->get('lang') == 'bangla')
+                                                                            {{ $row->title_bn }}
+                                                                        @else
+                                                                            {{ $row->title_en }}
+                                                                        @endif
+                                                                    </a>
+                                                                </h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        @endforeach
+                                    </ul>
                                 </div>
-                            </div>
-                            <div class="post--items post--items-3" data-ajax-content="outer">
-                                <ul class="nav" data-ajax-content="inner">
-                                    <li>
-                                        <div class="post--item post--layout-1">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/health-and-fitness-01.jpg"
-                                                        alt="" /></a>
-                                                <a href="#" class="cat">Business</a>
-                                                <a href="#" class="icon"><i class="fa fa-star-o"></i></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Bathin</a></li>
-                                                        <li><a href="#">Yeasterday 03:52 pm</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">It is a long
-                                                                established fact that a
-                                                                reader will be distracted by</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
+
+                                {{-- Middle Column (col-md-7) --}}
+                                <div class="col-md-6">
+                                    <div class="post--img">
+                                        <a href="news-single-v1.html" class="thumb">
+                                            @php
+                                                $isPlaceholder = Str::contains($nnbt->thumbnail, 'via.placeholder.com');
+                                                $imageToShow =
+                                                    !$isPlaceholder && !empty($nnbt->thumbnail)
+                                                        ? $nnbt->thumbnail
+                                                        : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                            @endphp
+
+                                            <img src="{{ $imageToShow }}" alt="{{ $nnbt->title_en }}"
+                                                class="img-fluid">
+                                        </a>
+
+                                        <div class="post--info">
+                                            <div class="title">
+                                                <h2 class="h4" style="font-size: 24px">
+                                                    <a href="news-single-v1.html" class="btn-link">
+                                                        @if (session()->get('lang') == 'bangla')
+                                                            {{ $nnbt->title_bn }}
+                                                        @else
+                                                            {{ $nnbt->title_en }}
+                                                        @endif
+                                                    </a>
+                                                </h2>
+                                                <p style="font-size: 16px; margin-top: -5px">
+                                                    @if (session()->get('lang') == 'bangla')
+                                                        {!! Str::limit($nnbt->details_bn, 200, '...') !!}
+                                                    @else
+                                                        {!! Str::limit($nnbt->details_en, 200, '...') !!}
+                                                    @endif
+                                                </p>
                                             </div>
                                         </div>
-                                    </li>
-                                    <li>
-                                        <div class="post--item post--layout-3">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/health-and-fitness-02.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Maclaan John</a></li>
-                                                        <li><a href="#">16 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">Established
-                                                                fact that a reader will be
-                                                                distracted by the readable content</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="post--item post--layout-3">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/health-and-fitness-03.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Ziminiar</a></li>
-                                                        <li><a href="#">16 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">Long
-                                                                established fact that a reader will
-                                                                be distracted by the readable</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="post--item post--layout-3">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/health-and-fitness-04.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Vanth</a></li>
-                                                        <li><a href="#">16 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">Long
-                                                                established fact that a reader will
-                                                                be distracted by the readable</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="post--item post--layout-3">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/health-and-fitness-05.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Vanth</a></li>
-                                                        <li><a href="#">16 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">Long
-                                                                established fact that a reader will
-                                                                be distracted by the readable</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="preloader bg--color-0--b" data-preloader="1">
-                                    <div class="preloader--inner"></div>
+                                    </div>
+                                    <hr class="divider hidden-md hidden-lg">
                                 </div>
+
+                                {{-- Right Column (col-md-2) --}}
+                                <div class="col-md-3">
+                                    <ul class="nav ">
+                                        @foreach ($nnrn as $index => $row)
+                                            {{-- Replace this with real loop if needed --}}
+                                            <li style="{{ $index !== 0 ? 'margin-top: 15px;' : '' }}">
+                                                <div class="post--item post--layout-3">
+                                                    <div class="post--img">
+                                                        <a href="news-single-v1.html" class="thumb">
+                                                            @php
+                                                                $isPlaceholder = Str::contains(
+                                                                    $row->thumbnail,
+                                                                    'via.placeholder.com',
+                                                                );
+                                                                $imageToShow =
+                                                                    !$isPlaceholder && !empty($row->thumbnail)
+                                                                        ? $row->thumbnail
+                                                                        : asset(
+                                                                            'uploads/default_images/deafult_thumbnail.jpg',
+                                                                        );
+                                                            @endphp
+
+                                                            <img src="{{ $imageToShow }}" alt="{{ $row->title_en }}"
+                                                                class="img-fluid">
+                                                        </a>
+                                                        <div class="post--info">
+                                                            <div class="title">
+                                                                <h3 class="h4">
+                                                                    <a href="news-single-v1.html" class="btn-link">
+                                                                        @if (session()->get('lang') == 'bangla')
+                                                                            {{ $row->title_bn }}
+                                                                        @else
+                                                                            {{ $row->title_en }}
+                                                                        @endif
+                                                                    </a>
+                                                                </h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+
                             </div>
                         </div>
-                        <div class="col-md-6 ptop--30 pbottom--30">
-                            <div class="post--items-title" data-ajax="tab">
-                                <h2 class="h4">Lifestyle</h2>
-                                <div class="nav">
-                                    <a href="#" class="prev btn-link" data-ajax-action="load_prev_lifestyle_posts">
-                                        <i class="fa fa-long-arrow-left"></i>
-                                    </a>
-                                    <span class="divider">/</span>
-                                    <a href="#" class="next btn-link" data-ajax-action="load_next_lifestyle_posts">
-                                        <i class="fa fa-long-arrow-right"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="post--items post--items-2" data-ajax-content="outer">
-                                <ul class="nav row gutter--15" data-ajax-content="inner">
-                                    <li class="col-xs-12">
-                                        <div class="post--item post--layout-1">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/lifestyle-01.jpg"
-                                                        alt="" /></a>
-                                                <a href="#" class="cat">Fashion</a>
-                                                <a href="#" class="icon"><i class="fa fa-heart-o"></i></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Astaroth</a></li>
-                                                        <li><a href="#">Yeasterday 03:52 pm</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">Siriya
-                                                                attaced
-                                                                by a long established fact
-                                                                that a reader will be distracted by</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="col-xs-12">
-                                        <hr class="divider" />
-                                    </li>
-                                    <li class="col-xs-6">
-                                        <div class="post--item post--layout-2">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/lifestyle-02.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Astaroth</a></li>
-                                                        <li><a href="#">17 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">It is a long
-                                                                established fact that a
-                                                                reader will done</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="col-xs-6">
-                                        <div class="post--item post--layout-2">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/lifestyle-03.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Astaroth</a></li>
-                                                        <li><a href="#">17 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">It is a long
-                                                                established fact that a
-                                                                reader will done</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="col-xs-12">
-                                        <hr class="divider" />
-                                    </li>
-                                    <li class="col-xs-6">
-                                        <div class="post--item post--layout-2">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/lifestyle-04.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Astaroth</a></li>
-                                                        <li><a href="#">17 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">It is a long
-                                                                established fact that a
-                                                                reader will done</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="col-xs-6">
-                                        <div class="post--item post--layout-2">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/lifestyle-05.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Astaroth</a></li>
-                                                        <li><a href="#">17 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">It is a long
-                                                                established fact that a
-                                                                reader will done</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="preloader bg--color-0--b" data-preloader="1">
-                                    <div class="preloader--inner"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 ptop--30 pbottom--30">
-                            <div class="post--items-title" data-ajax="tab">
-                                <h2 class="h4">Foods &amp; Recipes</h2>
-                                <div class="nav">
-                                    <a href="#" class="prev btn-link"
-                                        data-ajax-action="load_prev_food_resturent_posts">
-                                        <i class="fa fa-long-arrow-left"></i>
-                                    </a>
-                                    <span class="divider">/</span>
-                                    <a href="#" class="next btn-link"
-                                        data-ajax-action="load_next_food_resturent_posts">
-                                        <i class="fa fa-long-arrow-right"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="post--items" data-ajax-content="outer">
-                                <ul class="nav row gutter--15" data-ajax-content="inner">
-                                    <li class="col-md-4 col-xs-6 col-xxs-12">
-                                        <div class="post--item post--layout-1">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/food-and-resturent-01.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Astaroth</a></li>
-                                                        <li><a href="#">Yeasterday 03:52 pm</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">It is a long
-                                                                established fact that a
-                                                                reader will be distracted by</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="col-xs-12 hidden shown-xxs">
-                                        <hr class="divider" />
-                                    </li>
-                                    <li class="col-md-4 col-xs-6 col-xxs-12">
-                                        <div class="post--item post--layout-1">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/food-and-resturent-02.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Astaroth</a></li>
-                                                        <li><a href="#">Yeasterday 03:52 pm</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">It is a long
-                                                                established fact that a
-                                                                reader will be distracted by</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="col-md-4 hidden-sm hidden-xs">
-                                        <div class="post--item post--layout-1">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/food-and-resturent-03.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Astaroth</a></li>
-                                                        <li><a href="#">Yeasterday 03:52 pm</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">It is a long
-                                                                established fact that a
-                                                                reader will be distracted by</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="preloader bg--color-0--b" data-preloader="1">
-                                    <div class="preloader--inner"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 ptop--30 pbottom--30">
-                            <div class="post--items-title" data-ajax="tab">
-                                <h2 class="h4">Photo Gallery</h2>
-                                <div class="nav">
-                                    <a href="#" class="prev btn-link"
-                                        data-ajax-action="load_prev_photo_gallery_posts">
-                                        <i class="fa fa-long-arrow-left"></i>
-                                    </a>
-                                    <span class="divider">/</span>
-                                    <a href="#" class="next btn-link"
-                                        data-ajax-action="load_next_photo_gallery_posts">
-                                        <i class="fa fa-long-arrow-right"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="post--items post--items-1" data-ajax-content="outer">
-                                <ul class="nav row gutter--15" data-ajax-content="inner">
-                                    <li class="col-md-12">
-                                        <div>
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/photo-gallery-01.jpg"
-                                                        alt="" /></a>
-                                                <a href="#" class="cat">Serfer</a>
-                                                <a href="#" class="icon"><i class="fa fa-eye"></i></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Astaroth</a></li>
-                                                        <li><a href="#">Today 05:52 pm</a></li>
-                                                    </ul>
-                                                    <div class="title text-xxs-ellipsis">
-                                                        <h2 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">Standard
-                                                                chunk of Lorem Ipsum used since
-                                                                the 1500s is reproduced below for those
-                                                                interested. Sections 1.10.32 and 1.10.33
-                                                                from "de Finibus Bonorum</a>
-                                                        </h2>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="col-md-4 col-xs-6 col-xxs-12">
-                                        <div class="post--item post--layout-1">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/photo-gallery-02.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Astaroth</a></li>
-                                                        <li><a href="#">Today 03:52 pm</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h2 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">It is a long
-                                                                established fact that a
-                                                                reader will be distracted by</a>
-                                                        </h2>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="col-md-4 col-xs-6 col-xxs-12">
-                                        <div class="post--item post--layout-1">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/photo-gallery-03.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Astaroth</a></li>
-                                                        <li><a href="#">Today 03:52 pm</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h2 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">It is a long
-                                                                established fact that a
-                                                                reader will be distracted by</a>
-                                                        </h2>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="col-md-4 hidden-sm hidden-xs">
-                                        <div class="post--item post--layout-1">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/home-img/photo-gallery-04.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Astaroth</a></li>
-                                                        <li><a href="#">Today 03:52 pm</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h2 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">It is a long
-                                                                established fact that a
-                                                                reader will be distracted by</a>
-                                                        </h2>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="preloader bg--color-0--b" data-preloader="1">
-                                    <div class="preloader--inner"></div>
-                                </div>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>
-            <div class="main--sidebar col-md-4 col-sm-5 ptop--30 pbottom--30" data-sticky-content="true">
+
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="main--content" data-sticky-content="true">
                 <div class="sticky-content-inner">
-                    <div class="widget">
-                        <div class="widget--title" data-ajax="tab">
-                            <h2 class="h4">Voting Poll (Checkbox)</h2>
-                            <div class="nav">
-                                <a href="#" class="prev btn-link" data-ajax-action="load_prev_poll_widget">
-                                    <i class="fa fa-long-arrow-left"></i>
-                                </a>
-                                <span class="divider">/</span>
-                                <a href="#" class="next btn-link" data-ajax-action="load_next_poll_widget">
-                                    <i class="fa fa-long-arrow-right"></i>
-                                </a>
-                            </div>
+                    <div class="row">
+
+                        {{-- Section Title --}}
+                        <div class="post--items-title" data-ajax="tab">
+                            <h2 class="h4">
+                                @if (session()->get('lang') == 'bangla')
+                                    {{ $enbt->newsCategory->category_bn }}
+                                @else
+                                    {{ $enbt->newsCategory->category_en }}
+                                @endif
+                            </h2>
                         </div>
-                        <div class="poll--widget" data-ajax-content="outer">
-                            <ul class="nav" data-ajax-content="inner">
-                                <li class="title">
-                                    <h3 class="h4">
-                                        Which was the best Football World Cup ever in your
-                                        opinion?
-                                    </h3>
-                                </li>
-                                <li class="options">
-                                    <form action="#">
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="option-1" />
-                                                <span>Brazil 2014</span>
-                                            </label>
-                                            <p>65%<span style="width: 65%"></span></p>
+
+                        {{-- Main Content --}}
+                        <div class="main--content pd--30-0">
+                            <div class="post--items post--items-4" data-ajax-content="outer">
+                                {{-- Middle Column (col-md-7) --}}
+                                <div class="col-md-6">
+                                    <div class="post--img">
+                                        <a href="news-single-v1.html" class="thumb">
+                                            @php
+                                                $isPlaceholder = Str::contains($enbt->thumbnail, 'via.placeholder.com');
+                                                $imageToShow =
+                                                    !$isPlaceholder && !empty($enbt->thumbnail)
+                                                        ? $enbt->thumbnail
+                                                        : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                            @endphp
+
+                                            <img src="{{ $imageToShow }}" alt="{{ $enbt->title_en }}"
+                                                class="img-fluid">
+                                        </a>
+
+                                        <div class="post--info">
+                                            <div class="title">
+                                                <h2 class="h4" style="font-size: 24px">
+                                                    <a href="news-single-v1.html" class="btn-link">
+                                                        @if (session()->get('lang') == 'bangla')
+                                                            {{ $enbt->title_bn }}
+                                                        @else
+                                                            {{ $enbt->title_en }}
+                                                        @endif
+                                                    </a>
+                                                </h2>
+                                                <p style="font-size: 16px; margin-top: -5px">
+                                                    @if (session()->get('lang') == 'bangla')
+                                                        {!! Str::limit($enbt->details_bn, 200, '...') !!}
+                                                    @else
+                                                        {!! Str::limit($enbt->details_en, 200, '...') !!}
+                                                    @endif
+                                                </p>
+                                            </div>
                                         </div>
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="option-2" />
-                                                <span>South Africa 2010</span>
-                                            </label>
-                                            <p>28%<span style="width: 28%"></span></p>
-                                        </div>
-                                        <div class="checkbox">
-                                            <label>
-                                                <input type="checkbox" name="option-2" />
-                                                <span>Germany 2006</span>
-                                            </label>
-                                            <p>07%<span style="width: 07%"></span></p>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">
-                                            Vote Now
-                                        </button>
-                                    </form>
-                                </li>
-                            </ul>
-                            <div class="preloader bg--color-0--b" data-preloader="1">
-                                <div class="preloader--inner"></div>
+                                    </div>
+                                    <hr class="divider hidden-md hidden-lg">
+                                </div>
+
+                                {{-- Right Column (col-md-2) --}}
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        @foreach ($enrn as $index => $row)
+                                            <div class="col-sm-12">
+                                                <div
+                                                    style="display: flex; align-items: center; margin-top: -18px !important;">
+                                                    <!-- Text Block on the Left -->
+                                                    <div class="pe-3 flex-grow-1">
+                                                        <h2 class="h4" style="font-size: 18px; margin-bottom: 10px;">
+                                                            <a href="#" class="btn-link">
+                                                                @if (session()->get('lang') == 'bangla')
+                                                                    {{ $row->title_bn }}
+                                                                @else
+                                                                    {{ $row->title_en }}
+                                                                @endif
+                                                            </a>
+                                                        </h2>
+                                                        <p style="font-size: 14px; margin: 0;">
+                                                            <a href="#" class="btn-link">
+                                                                @if (session()->get('lang') == 'bangla')
+                                                                    {!! Str::limit($row->details_bn, 200, '...') !!}
+                                                                @else
+                                                                    {!! Str::limit($row->details_en, 200, '...') !!}
+                                                                @endif
+                                                            </a>
+                                                        </p>
+                                                    </div>
+
+                                                    <!-- Image on the Right -->
+                                                    <div style="flex-shrink: 0;">
+                                                        <a href="news-single-v1.html" class="thumb">
+                                                            @php
+                                                                $isPlaceholder = Str::contains(
+                                                                    $row->thumbnail,
+                                                                    'via.placeholder.com',
+                                                                );
+                                                                $imageToShow =
+                                                                    !$isPlaceholder && !empty($row->thumbnail)
+                                                                        ? $row->thumbnail
+                                                                        : asset(
+                                                                            'uploads/default_images/deafult_thumbnail.jpg',
+                                                                        );
+                                                            @endphp
+
+                                                            <img width="150px" height="85" src="{{ $imageToShow }}"
+                                                                alt="{{ $row->title_en }}" class="img-fluid">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                @if (!$loop->last)
+                                                    <hr>
+                                                @endif
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
                             </div>
+                            <hr>
                         </div>
+
                     </div>
-                    <div class="widget">
-                        <div class="widget--title" data-ajax="tab">
-                            <h2 class="h4">Voting Poll (Radio)</h2>
-                            <div class="nav">
-                                <a href="#" class="prev btn-link" data-ajax-action="load_prev_poll_widget">
-                                    <i class="fa fa-long-arrow-left"></i>
-                                </a>
-                                <span class="divider">/</span>
-                                <a href="#" class="next btn-link" data-ajax-action="load_next_poll_widget">
-                                    <i class="fa fa-long-arrow-right"></i>
-                                </a>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row" style="margin-top: 30px">
+
+            {{-- Section Title --}}
+            <div class="post--items-title" data-ajax="tab">
+                <h2 class="h4">
+                    @if (session()->get('lang') == 'bangla')
+                        {{ $cnbt->newsCategory->category_bn }}
+                    @else
+                        {{ $cnbt->newsCategory->category_en }}
+                    @endif
+                </h2>
+            </div>
+
+            <div class="d-flex justify-content-between" style="margin-bottom: 40px">
+                <div class="col-md-3">
+                    <select class="form-select" aria-label="Default select example">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select" aria-label="Default select example">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-select" aria-label="Default select example">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+                <div class="col-md-3 w-100">
+                    <button class="btn btn-primary">Search <i class="fa fa-search" style="margin-left: 20px"
+                            aria-hidden="true"></i></button>
+                </div>
+            </div>
+
+            <div class="main--content">
+                <div class="post--items post--items-1 pd--30-0">
+                    <div class="row gutter--15">
+                        <div class="col-md-3">
+                            <div class="row gutter--15">
+                                {{-- First Section News --}}
+                                @foreach ($cn1 as $row)
+                                    <div class="col-md-12 col-xs-6 col-xxs-12">
+                                        <div>
+                                            <div class="post--img">
+                                                <a href="news-single-v1.html" class="thumb">
+                                                    @php
+                                                        $isPlaceholder = Str::contains(
+                                                            $row->thumbnail,
+                                                            'via.placeholder.com',
+                                                        );
+                                                        $imageToShow =
+                                                            !$isPlaceholder && !empty($row->thumbnail)
+                                                                ? $row->thumbnail
+                                                                : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                                    @endphp
+
+                                                    <img src="{{ $imageToShow }}"
+                                                        alt="{{ $row->title_en }}"class="img-fluid">
+                                                </a>
+                                                <div class="post--info">
+                                                    <div class="title">
+                                                        <h2 class="h4">
+                                                            <a href="news-single-v1.html" class="btn-link">
+                                                                @if (session()->get('lang') == 'bangla')
+                                                                    {{ $row->title_bn }}
+                                                                @else
+                                                                    {{ $row->title_en }}
+                                                                @endif
+                                                            </a>
+                                                        </h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
-                        <div class="poll--widget" data-ajax-content="outer">
-                            <ul class="nav" data-ajax-content="inner">
-                                <li class="title">
-                                    <h3 class="h4">
-                                        Do you think the cost of sending money to mobile phone
-                                        should be reduced?
-                                    </h3>
-                                </li>
-                                <li class="options">
-                                    <form action="#">
-                                        <div class="radio">
-                                            <label>
-                                                <input type="radio" name="option-1" />
-                                                <span>Yes</span>
-                                            </label>
-                                            <p>65%<span style="width: 65%"></span></p>
+
+                        <div class="col-md-3">
+                            <div class="row gutter--15">
+                                @foreach ($cn2 as $row)
+                                    <div class="col-md-12 col-xs-6 col-xxs-12">
+                                        <div>
+                                            <div class="post--img">
+                                                <a href="news-single-v1.html" class="thumb">
+                                                    <a href="news-single-v1.html" class="thumb">
+                                                        @php
+                                                            $isPlaceholder = Str::contains(
+                                                                $row->thumbnail,
+                                                                'via.placeholder.com',
+                                                            );
+                                                            $imageToShow =
+                                                                !$isPlaceholder && !empty($row->thumbnail)
+                                                                    ? $row->thumbnail
+                                                                    : asset(
+                                                                        'uploads/default_images/deafult_thumbnail.jpg',
+                                                                    );
+                                                        @endphp
+
+                                                        <img src="{{ $imageToShow }}"
+                                                            alt="{{ $row->title_en }}"class="img-fluid">
+
+                                                    </a>
+                                                </a>
+                                                <div class="post--info">
+                                                    <div class="title">
+                                                        <h2 class="h4">
+                                                            <a href="news-single-v1.html" class="btn-link">
+                                                                @if (session()->get('lang') == 'bangla')
+                                                                    {{ $row->title_bn }}
+                                                                @else
+                                                                    {{ $row->title_en }}
+                                                                @endif
+                                                            </a>
+                                                        </h2>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="radio">
-                                            <label>
-                                                <input type="radio" name="option-1" />
-                                                <span>No</span>
-                                            </label>
-                                            <p>28%<span style="width: 28%"></span></p>
-                                        </div>
-                                        <div class="radio">
-                                            <label>
-                                                <input type="radio" name="option-1" />
-                                                <span>Average</span>
-                                            </label>
-                                            <p>07%<span style="width: 07%"></span></p>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">
-                                            Vote Now
-                                        </button>
-                                    </form>
-                                </li>
-                            </ul>
-                            <div class="preloader bg--color-0--b" data-preloader="1">
-                                <div class="preloader--inner"></div>
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
-                    </div>
-                    <div class="widget">
-                        <div class="ad--widget">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <a href="#">
-                                        <img src="{{ asset('frontend_assets') }}/img/ads-img/ad-150x150-1.jpg"
-                                            alt="" />
+                        {{-- This Section will Show Main news --}}
+                        <div class="col-md-6">
+                            <div>
+                                <div class="post--img">
+                                    {{-- <a href="news-single-v1.html" class="thumb"><img src="{{ asset('uploads/news_photos/'. $fsbt->news_photo) }}"alt="{{ $fsbt->title }}" /></a> --}}
+                                    <a href="news-single-v1.html" class="thumb">
+                                        @php
+                                            $isPlaceholder = Str::contains($cnbt->thumbnail, 'via.placeholder.com');
+                                            $imageToShow =
+                                                !$isPlaceholder && !empty($cnbt->thumbnail)
+                                                    ? $cnbt->thumbnail
+                                                    : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                        @endphp
+
+                                        <img src="{{ $imageToShow }}" alt="{{ $cnbt->title_en }}"class="img-fluid">
                                     </a>
-                                </div>
-                                <div class="col-sm-6">
-                                    <a href="#">
-                                        <img src="{{ asset('frontend_assets') }}/img/ads-img/ad-150x150-2.jpg"
-                                            alt="" />
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="widget">
-                        <div class="widget--title" data-ajax="tab">
-                            <h2 class="h4">Readers Opinion</h2>
-                            <div class="nav">
-                                <a href="#" class="prev btn-link"
-                                    data-ajax-action="load_prev_readers_opinion_widget">
-                                    <i class="fa fa-long-arrow-left"></i>
-                                </a>
-                                <span class="divider">/</span>
-                                <a href="#" class="next btn-link"
-                                    data-ajax-action="load_next_readers_opinion_widget">
-                                    <i class="fa fa-long-arrow-right"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="list--widget list--widget-2" data-ajax-content="outer">
-                            <div class="post--items post--items-3">
-                                <ul class="nav" data-ajax-content="inner">
-                                    <li>
-                                        <div class="post--item post--layout-3">
-                                            <div class="post--img">
-                                                <span class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/widgets-img/readers-opinion-01.png"
-                                                        alt="" /></span>
-                                                <div class="post--info">
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            Long established fact that a reader will be
-                                                            distracted
-                                                        </h3>
-                                                    </div>
-                                                    <ul class="nav meta">
-                                                        <li><span>by Ninurta</span></li>
-                                                        <li><span>16 April 2017</span></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
+                                    <div class="post--info">
+                                        <div class="title">
+                                            <h2 class="h4">
+                                                <a href="news-single-v1.html" class="btn-link">
+                                                    @if (session()->get('lang') == 'bangla')
+                                                        <h2>{{ $cnbt->title_bn }}</h2>
+                                                    @else
+                                                        <h2>{{ $cnbt->title_en }}</h2>
+                                                    @endif
+
+                                                </a>
+                                            </h2>
                                         </div>
-                                    </li>
-                                    <li>
-                                        <div class="post--item post--layout-3">
-                                            <div class="post--img">
-                                                <span class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/widgets-img/readers-opinion-02.png"
-                                                        alt="" /></span>
-                                                <div class="post--info">
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            Long established fact that a reader will be
-                                                            distracted
-                                                        </h3>
-                                                    </div>
-                                                    <ul class="nav meta">
-                                                        <li><span>by Ninurta</span></li>
-                                                        <li><span>16 April 2017</span></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="post--item post--layout-3">
-                                            <div class="post--img">
-                                                <span class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/widgets-img/readers-opinion-03.png"
-                                                        alt="" /></span>
-                                                <div class="post--info">
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            Long established fact that a reader will be
-                                                            distracted
-                                                        </h3>
-                                                    </div>
-                                                    <ul class="nav meta">
-                                                        <li><span>by Ninurta</span></li>
-                                                        <li><span>16 April 2017</span></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="preloader bg--color-0--b" data-preloader="1">
-                                    <div class="preloader--inner"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="widget">
-                        <div class="widget--title" data-ajax="tab">
-                            <h2 class="h4">Editors Choice</h2>
-                            <div class="nav">
-                                <a href="#" class="prev btn-link"
-                                    data-ajax-action="load_prev_editors_choice_widget">
-                                    <i class="fa fa-long-arrow-left"></i>
-                                </a>
-                                <span class="divider">/</span>
-                                <a href="#" class="next btn-link"
-                                    data-ajax-action="load_next_editors_choice_widget">
-                                    <i class="fa fa-long-arrow-right"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="list--widget list--widget-1" data-ajax-content="outer">
-                            <div class="post--items post--items-3">
-                                <ul class="nav" data-ajax-content="inner">
-                                    <li>
-                                        <div class="post--item post--layout-3">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/widgets-img/editors-choice-01.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Ninurta</a></li>
-                                                        <li><a href="#">16 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">Long
-                                                                established fact that a reader will
-                                                                be distracted</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="post--item post--layout-3">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/widgets-img/editors-choice-02.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Orcus</a></li>
-                                                        <li><a href="#">16 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">Long
-                                                                established fact that a reader will
-                                                                be distracted</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="post--item post--layout-3">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/widgets-img/editors-choice-03.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Rahab</a></li>
-                                                        <li><a href="#">16 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">Long
-                                                                established fact that a reader will
-                                                                be distracted</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="post--item post--layout-3">
-                                            <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb"><img
-                                                        src="{{ asset('frontend_assets') }}/img/widgets-img/editors-choice-04.jpg"
-                                                        alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Tannin</a></li>
-                                                        <li><a href="#">16 April 2017</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">Long
-                                                                established fact that a reader will
-                                                                be distracted</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="preloader bg--color-0--b" data-preloader="1">
-                                    <div class="preloader--inner"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1817,6 +997,9 @@
                 </div>
             </div>
         </div>
+
+    </div>
+    </div>
     </div>
 
     {{-- Salat Time will Update Dynamically with api --}}
@@ -1840,4 +1023,28 @@
                 });
         });
     </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            new Splide('#image-slider', {
+                type: 'loop',
+                perPage: 4,
+                perMove: 1,
+                autoplay: false,
+                breakpoints: {
+                    1024: {
+                        perPage: 3,
+                    },
+                    768: {
+                        perPage: 2,
+                    },
+                    480: {
+                        perPage: 1,
+                    },
+                },
+            }).mount();
+        });
+    </script>
+
+
 @endsection
