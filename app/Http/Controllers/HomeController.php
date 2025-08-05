@@ -65,13 +65,59 @@ class HomeController extends Controller
         // Get News for Category national
         $countryCategory = Category::where('category_en', 'Country')->first();
 
-        // News for Category Entertenmail Big_thumbnail
+        // News for Category country Big_thumbnail
         $cnbt = News::where('category_id', $countryCategory->id)->where('status', 1)->latest()->first();
-        // News for Category Entertenmail left side 2 news
+        // News for Category country left side 2 news
         $cn1 = News::where('category_id', $countryCategory->id)->where('status', 1)->latest()->skip(1)->take(2)->get();
         $cn2 = News::where('category_id', $countryCategory->id)->where('status', 1)->latest()->skip(3)->take(2)->get();
 
 
+        // Get News for Category international
+        $internationalCategory = Category::where('category_en', 'International')->first();
+
+        // News for Category international Big_thumbnail
+        $innbt = News::where('category_id', $internationalCategory->id)->where('status', 1)->latest()->first();
+        // News for Category international right side 2 news
+        $inn2 = News::where('category_id', $internationalCategory->id)->where('status', 1)->latest()->skip(1)->take(2)->get();
+        // News for Category international right side 4 news
+        $inn4 = News::where('category_id', $internationalCategory->id)->where('status', 1)->latest()->skip(3)->take(4)->get();
+
+
+        // Get News for Category Sports
+        $sportsCategory = Category::where('category_en', 'Sports')->first();
+
+        // News for Category Sports Big_thumbnail
+        $snbt = News::where('category_id', $sportsCategory->id)->where('status', 1)->latest()->first();
+        // News for Category Sports right side 2 news
+        $sn2 = News::where('category_id', $sportsCategory->id)->where('status', 1)->latest()->skip(1)->take(2)->get();
+        // News for Category Sports right side 4 news
+        $sn4 = News::where('category_id', $sportsCategory->id)->where('status', 1)->latest()->skip(3)->take(4)->get();
+
+
+        // Get News for Category LifeStyle
+        $LifeStyleCategory = Category::where('category_en', 'Lifestyle')->first();
+
+        // News for Category Sports Big_thumbnail
+        $lsnbt = News::where('category_id', $LifeStyleCategory->id)->where('status', 1)->latest()->first();
+        // News for Category Sports right side 2 news
+        $lsnb = News::where('category_id', $LifeStyleCategory->id)->where('status', 1)->latest()->skip(1)->first();
+        // News for Category Sports right side 4 news
+        $lsnr = News::where('category_id', $LifeStyleCategory->id)->where('status', 1)->latest()->skip(2)->take(4)->get();
+
+
+        // Get News for Category LifeStyle
+        $lawOrderCategory = Category::where('category_en', 'Health')->first();
+
+        // News for Category law-Order Big_thumbnail
+        $lonbt = News::where('category_id', $lawOrderCategory->id)->where('status', 1)->latest()->first();
+
+        // News for Category law-Order right side 3 news
+        $lonrn3 = News::where('category_id', $lawOrderCategory->id)->where('status', 1)->latest()->skip(1)->take(3)->get();
+        // News for Category law-Order right side 4 news
+        $lon4 = News::where('category_id', $lawOrderCategory->id)->where('status', 1)->latest()->skip(4)->take(4)->get();
+
+        // For Category News Counts
+        $categoriesCount = Category::withCount('news')->get();
 
         return view('layouts.newsIndex.home.home', [
             'breaking_news' => $breaking_news,
@@ -90,7 +136,21 @@ class HomeController extends Controller
             'cnbt' => $cnbt,
             'cn1' => $cn1,
             'cn2' => $cn2,
+            'innbt' => $innbt,
+            'inn2' => $inn2,
+            'inn4' => $inn4,
+            'snbt' => $snbt,
+            'sn2' => $sn2,
+            'sn4' => $sn4,
+            'lsnbt' => $lsnbt,
+            'lsnb' => $lsnb,
+            'lsnr' => $lsnr,
+            'lonbt' => $lonbt,
+            'lonrn3' => $lonrn3,
+            'lon4' => $lon4,
+            'categoriesCount' => $categoriesCount,
         ]);
+
     }
 
     // Method For get sub_cates news

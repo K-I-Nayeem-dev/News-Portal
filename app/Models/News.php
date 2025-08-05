@@ -12,7 +12,7 @@ class News extends Model
 
     protected $guarded = [];
 
-     // Category relationship (One-to-One)
+    // Category relationship (One-to-One)
     public function newsCategory()
     {
         return $this->belongsTo(Category::class, 'category_id');
@@ -24,13 +24,13 @@ class News extends Model
         return $this->belongsTo(SubCategory::class, 'sub_cate_id');
     }
 
-     // Category relationship (One-to-One)
+    // Category relationship (One-to-One)
     public function newsDivision()
     {
         return $this->belongsTo(Division::class, 'division_id');
     }
 
-     // Category relationship (One-to-One)
+    // Category relationship (One-to-One)
     public function newsDistrict()
     {
         return $this->belongsTo(District::class, 'dist_id');
@@ -53,4 +53,8 @@ class News extends Model
         return $this->belongsTo(User::class, 'update_by_user');
     }
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
 }

@@ -2,6 +2,7 @@
 
 @section('content')
 
+    {{-- Custom CSS Code section Start --}}
     <style>
         @media (max-width: 768px) {
             .splide__arrow {
@@ -9,6 +10,57 @@
             }
         }
 
+        .calendar-box {
+            border: 1px solid #ccc;
+            text-align: center;
+            border-radius: 6px;
+            width: 100%;
+            max-width: 320px;
+            font-family: 'Siyam Rupali', sans-serif;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding-bottom: 20px
+        }
+
+        .calendar-header select {
+            padding: 4px 6px;
+            font-size: 14px;
+        }
+
+        .calendar-days,
+        .calendar-dates {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 6px;
+            padding-bottom: 10px;
+        }
+
+        .calendar-days div {
+            font-weight: bold;
+        }
+
+        .calendar-dates div {
+            padding: 6px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .calendar-dates div:hover,
+        .calendar-dates .selected {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        .disabled {
+            color: #ccc;
+            pointer-events: none;
+        }
 
         .splide__pagination {
             display: none;
@@ -98,6 +150,10 @@
             color: red !important;
         }
     </style>
+    {{-- Custom CSS Code section End --}}
+
+
+    {{-- Breaking News Section Start --}}
     <div>
         @if ($breaking_news->count() > 0)
             <div class="news--ticker">
@@ -126,6 +182,9 @@
             </div>
         @endif
     </div>
+    {{-- Breaking News Section End --}}
+
+    {{-- Notice Section Start --}}
     <div>
         @if ($notice)
             <div class="news--ticker">
@@ -160,8 +219,10 @@
             </div>
         @endif
     </div>
+    {{-- Notice News Section End --}}
 
     <div class="container">
+        {{-- Main Headline or fisrt News Section & Frist Section 2 News Start --}}
         <div class="main--content">
             <div class="post--items post--items-1 pd--30-0">
                 <div class="row gutter--15">
@@ -284,6 +345,10 @@
                 </div>
             </div>
         </div>
+        {{-- Main Headline or fisrt News Section & Frist Section 2 News End --}}
+
+
+        {{-- fisrt Section 9 News with widget Start --}}
         <div class="row">
             <div class="main--content col-md-8 col-sm-7" data-sticky-content="true">
                 <div class="sticky-content-inner">
@@ -480,6 +545,9 @@
                 </div>
             </div>
         </div>
+        {{-- fisrt Section 9 News with widget  End --}}
+
+        {{-- Special Report Section News with video slide  Start --}}
         <div class="main--content pd--30-0">
             <div class="post--items-title" data-ajax="tab">
                 <h2 class="h4">
@@ -539,6 +607,11 @@
             </div>
 
         </div>
+
+        {{-- Special Report Section News with video slide End --}}
+
+
+        {{-- National Section News  Start --}}
         <div class="row">
             <div class="main--content" data-sticky-content="true">
                 <div class="sticky-content-inner">
@@ -697,9 +770,11 @@
             </div>
 
         </div>
+        {{-- National Section News End --}}
 
         <hr>
 
+        {{-- Entertainment Section News Start  --}}
         <div class="row">
             <div class="main--content" data-sticky-content="true">
                 <div class="sticky-content-inner">
@@ -819,13 +894,13 @@
                             </div>
                             <hr>
                         </div>
-
                     </div>
                 </div>
             </div>
-
         </div>
+        {{-- Entertainment Section News End --}}
 
+        {{-- Country Section News Start --}}
         <div class="row" style="margin-top: 30px">
 
             {{-- Section Title --}}
@@ -997,6 +1072,712 @@
                 </div>
             </div>
         </div>
+        {{-- Country Section News End --}}
+
+        {{-- International Section News Start --}}
+        <div class="row" style="margin-top: 30px">
+
+            {{-- Section Title --}}
+            <div class="post--items-title" data-ajax="tab">
+                <h2 class="h4">
+                    @if (session()->get('lang') == 'bangla')
+                        {{ $innbt->newsCategory->category_bn }}
+                    @else
+                        {{ $innbt->newsCategory->category_en }}
+                    @endif
+                </h2>
+            </div>
+
+            <div class="main--content">
+                <div class="post--items post--items-1 pd--30-0">
+                    <div class="row gutter--15">
+                        {{-- This Section will Show Main news --}}
+                        <div class="col-md-6">
+                            <div>
+                                <div class="post--img">
+                                    {{-- <a href="news-single-v1.html" class="thumb"><img src="{{ asset('uploads/news_photos/'. $fsbt->news_photo) }}"alt="{{ $fsbt->title }}" /></a> --}}
+                                    <a href="news-single-v1.html" class="thumb">
+                                        @php
+                                            $isPlaceholder = Str::contains($innbt->thumbnail, 'via.placeholder.com');
+                                            $imageToShow =
+                                                !$isPlaceholder && !empty($innbt->thumbnail)
+                                                    ? $innbt->thumbnail
+                                                    : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                        @endphp
+
+                                        <img src="{{ $imageToShow }}" alt="{{ $innbt->title_en }}"class="img-fluid">
+                                    </a>
+                                    <div class="post--info">
+                                        <div class="title">
+                                            <h2 class="h4">
+                                                <a href="news-single-v1.html" class="btn-link">
+                                                    @if (session()->get('lang') == 'bangla')
+                                                        <h2>{{ $innbt->title_bn }}</h2>
+                                                    @else
+                                                        <h2>{{ $innbt->title_en }}</h2>
+                                                    @endif
+
+                                                </a>
+                                            </h2>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row gutter--15">
+                                {{-- First Section News --}}
+                                @foreach ($inn2 as $index => $row)
+                                    <div class="col-md-12 col-xs-6 col-xxs-12">
+                                        <div>
+                                            <div class="post--img" style="{{ $index !== 0 ? 'margin-top: 15px;' : '' }}">
+                                                <a href="news-single-v1.html" class="thumb">
+                                                    @php
+                                                        $isPlaceholder = Str::contains(
+                                                            $row->thumbnail,
+                                                            'via.placeholder.com',
+                                                        );
+                                                        $imageToShow =
+                                                            !$isPlaceholder && !empty($row->thumbnail)
+                                                                ? $row->thumbnail
+                                                                : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                                    @endphp
+
+                                                    <img src="{{ $imageToShow }}"
+                                                        alt="{{ $row->title_en }}"class="img-fluid">
+                                                </a>
+                                                <div class="post--info">
+                                                    <div class="title">
+                                                        <h2 class="h4">
+                                                            <a href="news-single-v1.html" class="btn-link">
+                                                                @if (session()->get('lang') == 'bangla')
+                                                                    {{ $row->title_bn }}
+                                                                @else
+                                                                    {{ $row->title_en }}
+                                                                @endif
+                                                            </a>
+                                                        </h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="row gutter--15">
+                                {{-- Right Column (col-md-2) --}}
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        @foreach ($inn4 as $index => $row)
+                                            <div class="col-sm-12">
+                                                <div
+                                                    style="display: flex; align-items: center; margin-top: -5px !important; {{ $index !== 0 ? 'padding-top: 15px;' : '' }}">
+                                                    <!-- Text Block on the Left -->
+                                                    <div class="pe-3 flex-grow-1" style="padding-right: 50px !important">
+                                                        <h2 class="h4" style="font-size: 18px; margin-bottom: 10px;">
+                                                            <a href="#" class="btn-link">
+                                                                @if (session()->get('lang') == 'bangla')
+                                                                    {{ $row->title_bn }}
+                                                                @else
+                                                                    {{ $row->title_en }}
+                                                                @endif
+                                                            </a>
+                                                        </h2>
+                                                    </div>
+
+                                                    <!-- Image on the Right -->
+                                                    <div style="flex-shrink: 0;">
+                                                        <a href="news-single-v1.html" class="thumb">
+                                                            @php
+                                                                $isPlaceholder = Str::contains(
+                                                                    $row->thumbnail,
+                                                                    'via.placeholder.com',
+                                                                );
+                                                                $imageToShow =
+                                                                    !$isPlaceholder && !empty($row->thumbnail)
+                                                                        ? $row->thumbnail
+                                                                        : asset(
+                                                                            'uploads/default_images/deafult_thumbnail.jpg',
+                                                                        );
+                                                            @endphp
+
+                                                            <img width="150px" height="85" src="{{ $imageToShow }}"
+                                                                alt="{{ $row->title_en }}" class="img-fluid">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                @if (!$loop->last)
+                                                    <hr>
+                                                @endif
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- International Section News End --}}
+
+        {{-- Sports Section News  Start --}}
+        <div class="row">
+            <div class="main--content" data-sticky-content="true">
+                <div class="sticky-content-inner">
+                    <div class="row">
+
+                        {{-- Section Title --}}
+                        <div class="post--items-title" data-ajax="tab">
+                            <h2 class="h4">
+                                @if (session()->get('lang') == 'bangla')
+                                    {{ $snbt->newsCategory->category_bn }}
+                                @else
+                                    {{ $snbt->newsCategory->category_en }}
+                                @endif
+                            </h2>
+                        </div>
+
+                        {{-- Main Content --}}
+                        <div class="main--content pd--30-0">
+                            <div class="post--items post--items-4" data-ajax-content="outer">
+
+                                {{-- Left Column (col-md-3) --}}
+                                <div class="col-md-3">
+                                    <ul class="nav flex-column">
+                                        @foreach ($sn2 as $index => $row)
+                                            <li style="{{ $index !== 0 ? 'margin-top: 20px;' : '' }}">
+                                                <div class="post--item">
+                                                    <div class="post--img">
+                                                        <a href="news-single-v1.html" class="thumb">
+                                                            @php
+                                                                $isPlaceholder = Str::contains(
+                                                                    $row->thumbnail,
+                                                                    'via.placeholder.com',
+                                                                );
+                                                                $imageToShow =
+                                                                    !$isPlaceholder && !empty($row->thumbnail)
+                                                                        ? $row->thumbnail
+                                                                        : asset(
+                                                                            'uploads/default_images/deafult_thumbnail.jpg',
+                                                                        );
+                                                            @endphp
+
+                                                            <img src="{{ $imageToShow }}" alt="{{ $row->title_en }}"
+                                                                class="img-fluid">
+                                                        </a>
+
+                                                        <div class="post--info">
+                                                            <div class="title">
+                                                                <h3 class="h4">
+                                                                    <a href="news-single-v1.html" class="btn-link">
+                                                                        @if (session()->get('lang') == 'bangla')
+                                                                            {{ $row->title_bn }}
+                                                                        @else
+                                                                            {{ $row->title_en }}
+                                                                        @endif
+                                                                    </a>
+                                                                </h3>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+
+                                {{-- Middle Column (col-md-7) --}}
+                                <div class="col-md-6">
+                                    <div class="post--img">
+                                        <a href="news-single-v1.html" class="thumb">
+                                            @php
+                                                $isPlaceholder = Str::contains($snbt->thumbnail, 'via.placeholder.com');
+                                                $imageToShow =
+                                                    !$isPlaceholder && !empty($snbt->thumbnail)
+                                                        ? $snbt->thumbnail
+                                                        : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                            @endphp
+
+                                            <img src="{{ $imageToShow }}" alt="{{ $snbt->title_en }}"
+                                                class="img-fluid">
+                                        </a>
+
+                                        <div class="post--info">
+                                            <div class="title">
+                                                <h2 class="h4" style="font-size: 24px">
+                                                    <a href="news-single-v1.html" class="btn-link">
+                                                        @if (session()->get('lang') == 'bangla')
+                                                            {{ $snbt->title_bn }}
+                                                        @else
+                                                            {{ $snbt->title_en }}
+                                                        @endif
+                                                    </a>
+                                                </h2>
+                                                <p style="font-size: 16px; margin-top: -5px">
+                                                    @if (session()->get('lang') == 'bangla')
+                                                        {!! Str::limit($snbt->details_bn, 200, '...') !!}
+                                                    @else
+                                                        {!! Str::limit($snbt->details_en, 200, '...') !!}
+                                                    @endif
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr class="divider hidden-md hidden-lg">
+                                </div>
+
+                                {{-- Right Column (col-md-2) --}}
+                                <div class="col-md-3">
+                                    @foreach ($sn4 as $index => $row)
+                                        <div
+                                            class="row"style="display: flex; justify-content: space-between; align-items: center; {{ $index !== 0 ? 'margin-top: 15px;' : '' }}">
+                                            <div class="col-sm-6">
+                                                @if (session()->get('lang') == 'bangla')
+                                                    {{ $row->title_bn }}
+                                                @else
+                                                    {{ $row->title_en }}
+                                                @endif
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <a href="news-single-v1.html" class="thumb">
+                                                    @php
+                                                        $isPlaceholder = Str::contains(
+                                                            $row->thumbnail,
+                                                            'via.placeholder.com',
+                                                        );
+                                                        $imageToShow =
+                                                            !$isPlaceholder && !empty($row->thumbnail)
+                                                                ? $row->thumbnail
+                                                                : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                                    @endphp
+
+                                                    <img src="{{ $imageToShow }}" alt="{{ $row->title_en }}"
+                                                        class="img-fluid">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <hr>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {{-- Sports Section News End --}}
+
+        {{-- Lifestyle Section News  Start --}}
+        <div class="row" style="margin-top: 30px">
+            <div class="main--content" data-sticky-content="true">
+                <div class="sticky-content-inner">
+                    <div class="row">
+
+                        {{-- Section Title --}}
+                        <div class="post--items-title" data-ajax="tab">
+                            <h2 class="h4">
+                                @if (session()->get('lang') == 'bangla')
+                                    {{ $lsnbt->newsCategory->category_bn }}
+                                @else
+                                    {{ $lsnbt->newsCategory->category_en }}
+                                @endif
+                            </h2>
+                        </div>
+
+                        {{-- Main Content --}}
+                        <div class="main--content col-md-8 col-sm-7">
+                            <div class="post--items post--items-4" data-ajax-content="outer">
+
+                                {{-- Left Column (col-md-3) --}}
+                                <div class="col-md-6" style="margin: 0 !important; padding: 0 !important">
+                                    <div class="post--img">
+                                        <a href="news-single-v1.html" class="thumb">
+                                            @php
+                                                $isPlaceholder = Str::contains(
+                                                    $lsnbt->thumbnail,
+                                                    'via.placeholder.com',
+                                                );
+                                                $imageToShow =
+                                                    !$isPlaceholder && !empty($lsnbt->thumbnail)
+                                                        ? $lsnbt->thumbnail
+                                                        : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                            @endphp
+
+                                            <img src="{{ $imageToShow }}" alt="{{ $lsnbt->title_en }}"
+                                                class="img-fluid">
+                                        </a>
+
+                                        <div class="post--info">
+                                            <div class="title">
+                                                <h2 class="h4" style="font-size: 24px">
+                                                    <a href="news-single-v1.html" class="btn-link">
+                                                        @if (session()->get('lang') == 'bangla')
+                                                            {{ $lsnbt->title_bn }}
+                                                        @else
+                                                            {{ $lsnbt->title_en }}
+                                                        @endif
+                                                    </a>
+                                                </h2>
+                                                <p style="font-size: 16px; margin-top: -5px">
+                                                    @if (session()->get('lang') == 'bangla')
+                                                        {!! Str::limit($lsnbt->details_bn, 150, '...') !!}
+                                                    @else
+                                                        {!! Str::limit($lsnbt->details_en, 150, '...') !!}
+                                                    @endif
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr class="divider hidden-md hidden-lg">
+                                    <div>
+                                        <div
+                                            class="row"style="display: flex; justify-content: space-between; align-items: center; {{ $index !== 0 ? 'margin-top: 15px;' : '' }}">
+                                            <div class="col-sm-6">
+                                                @if (session()->get('lang') == 'bangla')
+                                                    {{ $row->title_bn }}
+                                                @else
+                                                    {{ $row->title_en }}
+                                                @endif
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <a href="news-single-v1.html" class="thumb">
+                                                    @php
+                                                        $isPlaceholder = Str::contains(
+                                                            $row->thumbnail,
+                                                            'via.placeholder.com',
+                                                        );
+                                                        $imageToShow =
+                                                            !$isPlaceholder && !empty($row->thumbnail)
+                                                                ? $row->thumbnail
+                                                                : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                                    @endphp
+
+                                                    <img src="{{ $imageToShow }}" alt="{{ $row->title_en }}"
+                                                        class="img-fluid">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- Middle Column (col-md-7) --}}
+                                <div class="col-md-6">
+                                    <div>
+                                        @foreach ($sn4 as $index => $row)
+                                            <div
+                                                class="row"style="display: flex; justify-content: space-between; align-items: center; {{ $index !== 0 ? 'margin-top: 15px;' : '' }}">
+                                                <div class="col-sm-6">
+                                                    @if (session()->get('lang') == 'bangla')
+                                                        {{ $row->title_bn }}
+                                                    @else
+                                                        {{ $row->title_en }}
+                                                    @endif
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <a href="news-single-v1.html" class="thumb">
+                                                        @php
+                                                            $isPlaceholder = Str::contains(
+                                                                $row->thumbnail,
+                                                                'via.placeholder.com',
+                                                            );
+                                                            $imageToShow =
+                                                                !$isPlaceholder && !empty($row->thumbnail)
+                                                                    ? $row->thumbnail
+                                                                    : asset(
+                                                                        'uploads/default_images/deafult_thumbnail.jpg',
+                                                                    );
+                                                        @endphp
+
+                                                        <img src="{{ $imageToShow }}" alt="{{ $row->title_en }}"
+                                                            class="img-fluid">
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="main--sidebar col-md-4 col-sm-5 ptop--30 pbottom--30"">
+                            <div class="sticky-content-inner">
+                                <div class="widget">
+                                    <div class="widget--title" data-ajax="tab">
+                                        <h2 class="h4">
+                                            @if (session()->get('lang') == 'bangla')
+                                                অনলাইন জরিপ
+                                            @else
+                                                Voting Poll
+                                            @endif
+                                        </h2>
+                                        <div class="nav"> <a href="#" class="prev btn-link"
+                                                data-ajax-action="load_prev_poll_widget"> <i
+                                                    class="fa fa-long-arrow-left"></i> </a> <span class="divider">/</span>
+                                            <a href="#" class="next btn-link"
+                                                data-ajax-action="load_next_poll_widget"> <i
+                                                    class="fa fa-long-arrow-right"></i> </a>
+                                        </div>
+                                    </div>
+                                    <div class="poll--widget" data-ajax-content="outer">
+                                        <ul class="nav" data-ajax-content="inner">
+                                            <li class="title">
+                                                <h3 class="h4">Do you think the cost of sending money to mobile phone
+                                                    should be reduced?</h3>
+                                            </li>
+                                            <li class="options">
+                                                <form action="#">
+                                                    <div class="radio"> <label> <input type="radio" name="option-1">
+                                                            <span>Yes</span> </label>
+                                                        <p>65%<span style="width: 65%;"></span></p>
+                                                    </div>
+                                                    <div class="radio"> <label> <input type="radio" name="option-1">
+                                                            <span>No</span> </label>
+                                                        <p>28%<span style="width: 28%;"></span></p>
+                                                    </div>
+                                                    <div class="radio"> <label> <input type="radio" name="option-1">
+                                                            <span>Average</span> </label>
+                                                        <p>07%<span style="width: 07%;"></span></p>
+                                                    </div><button type="submit" class="btn btn-primary">
+                                                        @if (session()->get('lang') == 'bangla')
+                                                            ভোট দিন
+                                                        @else
+                                                            Vote Now
+                                                        @endif
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                        <div class="preloader bg--color-0--b" data-preloader="1">
+                                            <div class="preloader--inner"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {{-- LifeStyle Section News End --}}
+
+        {{-- Law-Order Section News  Start --}}
+        <div class="row" style="margin-top: 30px">
+            <div class="main--content" data-sticky-content="true">
+                <div class="sticky-content-inner">
+                    <div class="row">
+                        {{-- Section Title --}}
+                        <div class="post--items-title" data-ajax="tab">
+                            <h2 class="h4">
+                                @if (session()->get('lang') == 'bangla')
+                                    {{ $lonbt->newsCategory->category_bn }}
+                                @else
+                                    {{ $lonbt->newsCategory->category_en }}
+                                @endif
+                            </h2>
+                        </div>
+
+                        {{-- Main Content --}}
+                        <div class="main--content col-md-8 col-sm-7">
+                            <div class="post--items post--items-4" data-ajax-content="outer">
+                                <div class="row">
+                                    {{-- Left Column (col-md-3) --}}
+                                    <div class="col-md-6" style="margin: 0 !important; padding: 0 !important">
+                                        <div class="post--img">
+                                            <a href="news-single-v1.html" class="thumb">
+                                                @php
+                                                    $isPlaceholder = Str::contains(
+                                                        $lonbt->thumbnail,
+                                                        'via.placeholder.com',
+                                                    );
+                                                    $imageToShow =
+                                                        !$isPlaceholder && !empty($lonbt->thumbnail)
+                                                            ? $lonbt->thumbnail
+                                                            : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                                @endphp
+
+                                                <img src="{{ $imageToShow }}" alt="{{ $lonbt->title_en }}"
+                                                    class="img-fluid">
+                                            </a>
+
+                                            <div class="post--info">
+                                                <div class="title">
+                                                    <h2 class="h4" style="font-size: 24px">
+                                                        <a href="news-single-v1.html" class="btn-link">
+                                                            @if (session()->get('lang') == 'bangla')
+                                                                {{ $lonbt->title_bn }}
+                                                            @else
+                                                                {{ $lonbt->title_en }}
+                                                            @endif
+                                                        </a>
+                                                    </h2>
+                                                    <p style="font-size: 16px; margin-top: -5px">
+                                                        @if (session()->get('lang') == 'bangla')
+                                                            {!! Str::limit($lonbt->details_bn, 150, '...') !!}
+                                                        @else
+                                                            {!! Str::limit($lonbt->details_en, 150, '...') !!}
+                                                        @endif
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr class="divider hidden-md hidden-lg">
+                                    </div>
+
+                                    {{-- Middle Column (col-md-7) --}}
+                                    <div class="col-md-6">
+                                        <div>
+                                            @foreach ($lonrn3 as $index => $row)
+                                                <div
+                                                    class="row"style="display: flex; justify-content: space-between; align-items: center; {{ $index !== 0 ? 'margin-top: 15px;' : '' }}">
+                                                    <div class="col-sm-6">
+                                                        @if (session()->get('lang') == 'bangla')
+                                                            <h4>{{ $row->title_bn }}</h4>
+                                                        @else
+                                                            <h4>{{ $row->title_en }}</h4>
+                                                        @endif
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <a href="news-single-v1.html" class="thumb">
+                                                            @php
+                                                                $isPlaceholder = Str::contains(
+                                                                    $row->thumbnail,
+                                                                    'via.placeholder.com',
+                                                                );
+                                                                $imageToShow =
+                                                                    !$isPlaceholder && !empty($row->thumbnail)
+                                                                        ? $row->thumbnail
+                                                                        : asset(
+                                                                            'uploads/default_images/deafult_thumbnail.jpg',
+                                                                        );
+                                                            @endphp
+
+                                                            <img src="{{ $imageToShow }}" alt="{{ $row->title_en }}"
+                                                                class="img-fluid">
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top: 30px">
+                                    @foreach ($lon4 as $index => $row)
+                                        <div class="col-md-6"
+                                            style="display: flex; align-items: center; margin: 0; padding: 0; {{ $index === 2 || $index === 3 ? 'margin-top: 30px;' : '' }}">
+                                            <div class="col-md-8">
+                                                <div>
+                                                    @if (session()->get('lang') == 'bangla')
+                                                        <h4>{{ $row->title_bn }}</h4>
+                                                    @else
+                                                        <h4>{{ $row->title_bn }}</h4>
+                                                    @endif
+                                                </div>
+                                                <div>
+                                                    @if (session()->get('lang') == 'bangla')
+                                                        {!! Str::limit($row->details_bn, 100, '...') !!}
+                                                    @else
+                                                        {!! Str::limit($row->details_en, 100, '...') !!}
+                                                    @endif
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <a href="news-single-v1.html" class="thumb">
+                                                    @php
+                                                        $isPlaceholder = Str::contains(
+                                                            $row->thumbnail,
+                                                            'via.placeholder.com',
+                                                        );
+                                                        $imageToShow =
+                                                            !$isPlaceholder && !empty($row->thumbnail)
+                                                                ? $row->thumbnail
+                                                                : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                                    @endphp
+
+                                                    <img src="{{ $imageToShow }}" alt="{{ $row->title_en }}"
+                                                        class="img-fluid">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                        <div class="main--sidebar col-md-4 col-sm-5 ptop--30 pbottom--30"">
+                            <div class="sticky-content-inner">
+                                <div class="widget">
+                                    <div class="widget--title">
+                                        <h2 class="h4">
+                                            @if (session()->get('lang') == 'bangla')
+                                                ট্যাগ সমূহ
+                                            @else
+                                                TAGS
+                                            @endif
+                                        </h2> <i class="icon fa fa-tags"></i>
+                                    </div>
+                                    <div class="tags--widget style--3">
+                                        <ul class="nav">
+                                            @foreach ($categoriesCount as $category)
+                                                <li>
+                                                    <a href="#">
+                                                        @if (session()->get('lang') == 'bangla')
+                                                            {{ $category->category_bn }}
+                                                        @else
+                                                            {{ $category->category_en }}
+                                                        @endif
+                                                        <span>{{ $category->news_count }}</span>
+                                                    </a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div style="display: flex; justify-content: center; margin-top: 30px;">
+                                    <div class="calendar-box">
+                                        <div
+                                            style="background-color: #F0F0F0; margin-top: -10px !important; padding: 0px !important">
+                                            <h4 style="padding: 15px 0 20px 0">
+                                                @if (session()->get('lang') == 'bangla')
+                                                    আর্কাইভ
+                                                @else
+                                                    Archive
+                                                @endif
+                                            </h4>
+                                            <div class="calendar-header">
+                                                <select id="yearSelect"></select>
+                                                <select id="monthSelect"></select>
+                                            </div>
+                                            <div class="calendar-days">
+                                                <div>রবি</div>
+                                                <div>সোম</div>
+                                                <div>মঙ্গল</div>
+                                                <div>বুধ</div>
+                                                <div>বৃহঃ</div>
+                                                <div>শুক্র</div>
+                                                <div>শনি</div>
+                                            </div>
+                                        </div>
+                                        <div class="calendar-dates" id="calendarDates"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    {{-- LifeStyle Section News End --}}
+
 
     </div>
     </div>
@@ -1024,6 +1805,7 @@
         });
     </script>
 
+    {{-- slider for special report --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             new Splide('#image-slider', {
@@ -1045,6 +1827,115 @@
             }).mount();
         });
     </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            flatpickr("#archiveDate", {
+                dateFormat: "Y-m-d",
+                defaultDate: new Date(),
+                onChange: function(selectedDates, dateStr, instance) {
+                    fetchArchiveNews(dateStr);
+                }
+            });
+
+            function fetchArchiveNews(date) {
+                $('#archive-news-widget .preloader').show();
+
+                $.ajax({
+                    url: "",
+                    method: "GET",
+                    data: {
+                        date: date
+                    },
+                    success: function(response) {
+                        $('#archive-news-widget').html(response);
+                    },
+                    error: function() {
+                        $('#archive-news-widget').html('<p>নিউজ লোড করা যাচ্ছে না।</p>');
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script>
+        const monthsBn = [
+            'জানুয়ারি', 'ফেব্রুয়ারি', 'মার্চ', 'এপ্রিল', 'মে', 'জুন',
+            'জুলাই', 'আগস্ট', 'সেপ্টেম্বর', 'অক্টোবর', 'নভেম্বর', 'ডিসেম্বর'
+        ];
+
+        const today = new Date();
+        const monthSelect = document.getElementById('monthSelect');
+        const yearSelect = document.getElementById('yearSelect');
+        const calendarDates = document.getElementById('calendarDates');
+
+        // Populate years
+        const currentYear = today.getFullYear();
+        for (let y = currentYear; y >= currentYear - 5; y--) {
+            const option = document.createElement('option');
+            option.value = y;
+            option.textContent = y;
+            yearSelect.appendChild(option);
+        }
+
+        // Populate months
+        monthsBn.forEach((m, i) => {
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = m;
+            monthSelect.appendChild(option);
+        });
+
+        // Set current month/year
+        monthSelect.value = today.getMonth();
+        yearSelect.value = today.getFullYear();
+
+        function renderCalendar() {
+            const month = parseInt(monthSelect.value);
+            const year = parseInt(yearSelect.value);
+            const firstDay = new Date(year, month, 1).getDay();
+            const totalDays = new Date(year, month + 1, 0).getDate();
+
+            calendarDates.innerHTML = '';
+
+            for (let i = 0; i < firstDay; i++) {
+                const empty = document.createElement('div');
+                calendarDates.appendChild(empty);
+            }
+
+            for (let d = 1; d <= totalDays; d++) {
+                const date = document.createElement('div');
+                date.textContent = d;
+                date.addEventListener('click', () => {
+                    document.querySelectorAll('.calendar-dates div').forEach(el => el.classList.remove('selected'));
+                    date.classList.add('selected');
+                    const selectedDate =
+                        `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                    fetchNewsForDate(selectedDate);
+                });
+                calendarDates.appendChild(date);
+            }
+        }
+
+        function fetchNewsForDate(date) {
+            document.getElementById("archive-news-widget").innerHTML = "<p>লোড হচ্ছে...</p>";
+            fetch(`/archive-news?date=${date}`)
+                .then(res => res.text())
+                .then(html => {
+                    document.getElementById("archive-news-widget").innerHTML = html;
+                })
+                .catch(() => {
+                    document.getElementById("archive-news-widget").innerHTML = "<p>নিউজ লোড করা যাচ্ছে না।</p>";
+                });
+        }
+
+        monthSelect.addEventListener('change', renderCalendar);
+        yearSelect.addEventListener('change', renderCalendar);
+
+        renderCalendar();
+    </script>
+
+
 
 
 @endsection

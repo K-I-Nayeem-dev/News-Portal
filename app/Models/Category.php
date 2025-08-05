@@ -14,13 +14,19 @@ class Category extends Model
     protected $guarded = [];
 
     // for SubCategory table one to one relation
-    public function subCate(){
+    public function subCate()
+    {
         return $this->hasOne(SubCategory::class);
     }
 
     // for news table one to one relation
-    public function newsCate(){
+    public function newsCate()
+    {
         return $this->hasOne(News::class);
     }
 
+    public function news()
+    {
+        return $this->hasMany(News::class, 'category_id');
+    }
 }
