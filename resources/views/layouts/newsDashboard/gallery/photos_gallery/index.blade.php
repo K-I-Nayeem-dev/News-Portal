@@ -62,12 +62,21 @@
                                         <div class="mt-3">
 
                                             <div>
-                                                <label class='form-label' for="title">Title<sup><code
-                                                            style="font-size: 12px">*</code></sup></label>
-                                                <input id="title" class="form-control" type="text" name="title"
-                                                    autocomplete="off" value="{{ old('title') }}">
+                                                <label class='form-label' for="title_en">Title English<sup><code style="font-size: 12px">*</code></sup></label>
+                                                <input id="title_en" class="form-control" type="text" name="title_en"
+                                                    autocomplete="off" value="{{ old('title_en') }}">
 
                                                 @error('title_en')
+                                                    <p class="text-danger mt-2">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+
+                                            <div class="mt-3">
+                                                <label class='form-label' for="title_bn">Title Bangla<sup><code style="font-size: 12px">*</code></sup></label>
+                                                <input id="title_bn" class="form-control" type="text" name="title_bn"
+                                                    autocomplete="off" value="{{ old('title_bn') }}">
+
+                                                @error('title_bn')
                                                     <p class="text-danger mt-2">{{ $message }}</p>
                                                 @enderror
                                             </div>
@@ -113,10 +122,10 @@
                         <div class="col-6 col-sm-4 col-md-3">
                             <div class="card" style="width: 18rem;">
                                 <a data-fancybox="gallery" href="{{ asset($photo->image) }}">
-                                    <img src="{{ asset($photo->image) }}" class="card-img-top" alt="{{ $photo->title }}">
+                                    <img src="{{ asset($photo->image) }}" class="card-img-top" alt="{{ $photo->title_en }}">
                                 </a>
                                 <div class="card-body">
-                                    <p class="card-text">{{ $photo->title }}</p>
+                                    <p class="card-text">{{ $photo->title_en }}</p>
                                     <div class="row">
                                         <div class="d-flex">
                                             <!-- Edit Button -->
@@ -131,7 +140,7 @@
                                             <div class="w-50 ps-1">
                                                 <form method="POST"
                                                     action="{{ route('photogallery.destroy', $photo->id) }}"
-                                                    onsubmit="return confirm('Are you sure you want to delete: {{ addslashes($photo->title) }}?');">
+                                                    onsubmit="return confirm('Are you sure you want to delete: {{ addslashes($photo->title_en) }}?');">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm w-100">

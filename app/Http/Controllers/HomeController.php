@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Stevebauman\Location\Facades\Location;
 use App\Jobs\ConvertDateToBangla;
+use App\Models\PhotoGallery;
 
 class HomeController extends Controller
 {
@@ -116,6 +117,33 @@ class HomeController extends Controller
         // News for Category law-Order right side 4 news
         $lon4 = News::where('category_id', $lawOrderCategory->id)->where('status', 1)->latest()->skip(4)->take(4)->get();
 
+
+        // Get News for Category Politics
+        $politicsCategory = Category::where('category_en', 'Politics')->first();
+
+        // News for Category Politics Big_thumbnail
+        $pnbt = News::where('category_id', $politicsCategory->id)->where('status', 1)->latest()->first();
+        // News for Category Politics right side 3 news
+        $pn3 = News::where('category_id', $politicsCategory->id)->where('status', 1)->latest()->skip(1)->take(3)->get();
+
+
+        // Get News for Category finance
+        $financeCategory = Category::where('category_en', 'Finance')->first();
+
+        // News for Category finance Big_thumbnail
+        $fnbt = News::where('category_id', $financeCategory->id)->where('status', 1)->latest()->first();
+        // News for Category finance right side 3 news
+        $fn3 = News::where('category_id', $financeCategory->id)->where('status', 1)->latest()->skip(1)->take(3)->get();
+
+        // Get News for  Video Gallery Big thumbnail & botton 3 news
+        $vgnbt = VideoGallery::where('type', 1)->latest()->first();
+        $vgn3 =  VideoGallery::where('type', 0)->latest()->take(3)->get();
+
+
+        // Get News for  Video Gallery Big thumbnail & botton 3 news
+        $pgnbt = PhotoGallery::where('type', 1)->latest()->first();
+        $pgn3 =  PhotoGallery::where('type', 0)->latest()->take(3)->get();
+
         // For Category News Counts
         $categoriesCount = Category::withCount('news')->get();
 
@@ -149,6 +177,14 @@ class HomeController extends Controller
             'lonrn3' => $lonrn3,
             'lon4' => $lon4,
             'categoriesCount' => $categoriesCount,
+            'vgnbt' => $vgnbt,
+            'vgn3' => $vgn3,
+            'pgnbt' => $pgnbt,
+            'pgn3' => $pgn3,
+            'pnbt' => $pnbt,
+            'pn3' => $pn3,
+            'fnbt' => $fnbt,
+            'fn3' => $fn3,
         ]);
 
     }

@@ -36,13 +36,15 @@ class PhotoGalleryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|min:3',
+            'title_en' => 'required|min:3',
+            'title_bn' => 'required|min:3',
             'type' => 'required',
             'image' => 'required|image|mimes:jpg,jpeg,png,gif|max:1024',
         ]);
 
         $data = [
-            'title' => $request->title,
+            'title_en' => $request->title_en,
+            'title_bn' => $request->title_bn,
             'type' => $request->type,
             'created_at' => now(),
             'updated_at' => null
@@ -93,7 +95,8 @@ class PhotoGalleryController extends Controller
         $photo = PhotoGallery::findOrFail($id);
 
         $data = [
-            'title' => $request->title,
+            'title_en' => $request->title_en,
+            'title_bn' => $request->title_bn,
             'type' => $request->type,
             'updated_at' => now()
         ];

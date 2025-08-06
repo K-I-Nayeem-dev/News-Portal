@@ -32,13 +32,15 @@ class VideoGalleryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|min:3',
+            'title_en' => 'required|min:3',
+            'title_bn' => 'required|min:3',
             'embed_code' => 'required',
             'type' => 'required',
         ]);
 
         $data = [
-            'title' => $request->title,
+            'title_en' => $request->title_en,
+            'title_bn' => $request->title_bn,
             'type' => $request->type,
             'embed_code' => $request->embed_code,
             'created_at' => now(),
@@ -77,7 +79,8 @@ class VideoGalleryController extends Controller
     {
 
         $data = [
-            'title' => $request->title,
+            'title_en' => $request->title_en,
+            'title_bn' => $request->title_bn,
             'type' => $request->type,
             'embed_code' => $request->embed_code,
             'updated_at' => now()

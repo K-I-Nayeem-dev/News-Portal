@@ -61,12 +61,23 @@
                                         <div class="mt-3">
 
                                             <div>
-                                                <label class='form-label' for="title">Title<sup><code
+                                                <label class='form-label' for="title_en">Title English<sup><code
                                                             style="font-size: 12px">*</code></sup></label>
-                                                <input id="title" class="form-control" type="text" name="title"
-                                                    autocomplete="off" value="{{ old('title') }}">
+                                                <input id="title_en" class="form-control" type="text" name="title_en"
+                                                    autocomplete="off" value="{{ old('title_en') }}">
 
                                                 @error('title_en')
+                                                    <p class="text-danger mt-2">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+
+                                            <div class="mt-3">
+                                                <label class='form-label' for="title_bn">Title Bangla<sup><code
+                                                            style="font-size: 12px">*</code></sup></label>
+                                                <input id="title_bn" class="form-control" type="text" name="title_bn"
+                                                    autocomplete="off" value="{{ old('title_bn') }}">
+
+                                                @error('title_bn')
                                                     <p class="text-danger mt-2">{{ $message }}</p>
                                                 @enderror
                                             </div>
@@ -157,7 +168,7 @@
                                 @endif
 
                                 <div class="card-body">
-                                    <p class="card-text">{{ $video->title }}</p>
+                                    <p class="card-text">{{ $video->title_en }}</p>
                                     @if ($video->type == 1)
                                         <p class="badge bg-info">Big Video</p>
                                     @else
@@ -177,7 +188,7 @@
                                             <div class="w-50 ps-1">
                                                 <form method="POST"
                                                     action="{{ route('videogallery.destroy', $video->id) }}"
-                                                    onsubmit="return confirm('Are you sure you want to delete: {{ addslashes($video->title) }}?');">
+                                                    onsubmit="return confirm('Are you sure you want to delete: {{ addslashes($video->title_en) }}?');">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-danger btn-sm w-100">

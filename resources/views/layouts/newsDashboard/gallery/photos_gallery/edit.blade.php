@@ -49,11 +49,21 @@
                                 <div class="mt-3">
 
                                     <div>
-                                        <label class='form-label' for="title">Title</label>
-                                        <input id="title" class="form-control" type="text" name="title"
-                                            autocomplete="off" value="{{ old('title', $photo->title) }}">
+                                        <label class='form-label' for="title_en">Title English</label>
+                                        <input id="title_en" class="form-control" type="text" name="title_en"
+                                            autocomplete="off" value="{{ old('title_en', $photo->title_en) }}">
 
                                         @error('title_en')
+                                            <p class="text-danger mt-2">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <div class="mt-3">
+                                        <label class='form-label' for="title_bn">Title Bangla</label>
+                                        <input id="title_bn" class="form-control" type="text" name="title_bn"
+                                            autocomplete="off" value="{{ old('title_bn', $photo->title_bn) }}">
+
+                                        @error('title_bn')
                                             <p class="text-danger mt-2">{{ $message }}</p>
                                         @enderror
                                     </div>

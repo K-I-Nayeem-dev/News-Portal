@@ -4,6 +4,10 @@
 
     {{-- Custom CSS Code section Start --}}
     <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+        }
+
         @media (max-width: 768px) {
             .splide__arrow {
                 display: none !important;
@@ -13,11 +17,11 @@
         .calendar-box {
             border: 1px solid #ccc;
             text-align: center;
-            border-radius: 6px;
             width: 100%;
             max-width: 320px;
             font-family: 'Siyam Rupali', sans-serif;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid black;
         }
 
         .calendar-header {
@@ -25,7 +29,7 @@
             justify-content: center;
             gap: 10px;
             margin-bottom: 10px;
-            padding-bottom: 20px
+            padding-bottom: 20px;
         }
 
         .calendar-header select {
@@ -38,7 +42,7 @@
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 6px;
-            padding-bottom: 10px;
+            padding: 10px 15px;
         }
 
         .calendar-days div {
@@ -116,12 +120,6 @@
         }
 
 
-        .video-wrapper img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
         .play-overlay {
             position: absolute;
             top: 50%;
@@ -148,6 +146,72 @@
 
         .title-black:hover {
             color: red !important;
+        }
+
+        .video-wrapper3 img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .video-wrapper3 {
+            position: relative;
+            display: inline-block;
+        }
+
+        .play-overlay3 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .video-wrapperg {
+            position: relative;
+            display: block;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .video-wrapperg img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .play-overlayg {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        .play-overlayg i.fa-play {
+            font-size: 40px;
+            color: white;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.7);
+        }
+
+        .posthover {
+            transition: transform 0.1s ease-in-out;
+            cursor: pointer;
+            display: inline-block;
+            /* needed to scale properly */
+        }
+
+        .posthover:hover {
+            transform: scale(1.05);
         }
     </style>
     {{-- Custom CSS Code section End --}}
@@ -563,7 +627,6 @@
             <div id="image-slider" class="splide">
                 <div class="splide__track">
                     <ul class="splide__list">
-
                         @foreach ($sn as $row)
                             <li style="cursor: pointer" class="splide__slide">
                                 <div style="padding: 0 15px">
@@ -1677,14 +1740,14 @@
                                                     @if (session()->get('lang') == 'bangla')
                                                         <h4>{{ $row->title_bn }}</h4>
                                                     @else
-                                                        <h4>{{ $row->title_bn }}</h4>
+                                                        <h4>{{ $row->title_en }}</h4>
                                                     @endif
                                                 </div>
                                                 <div>
                                                     @if (session()->get('lang') == 'bangla')
                                                         {!! Str::limit($row->details_bn, 100, '...') !!}
                                                     @else
-                                                        {!! Str::limit($row->details_en, 100, '...') !!}
+                                                        {!! Str::limit($row->details_en, 80, '...') !!}
                                                     @endif
                                                 </div>
                                             </div>
@@ -1754,7 +1817,7 @@
                                                 <select id="yearSelect"></select>
                                                 <select id="monthSelect"></select>
                                             </div>
-                                            <div class="calendar-days">
+                                            <div class="calendar-days" style=" border-bottom: 1px solid black;">
                                                 <div>রবি</div>
                                                 <div>সোম</div>
                                                 <div>মঙ্গল</div>
@@ -1774,11 +1837,685 @@
                 </div>
             </div>
         </div>
+        {{-- Law-Order Section News End --}}
 
+        {{-- Video & Photo Gallery Section News Start --}}
+        <div class="row" style="margin-top: 30px">
+
+            <div class="main--content">
+                <div class="post--items post--items-1 pd--30-0">
+                    <div class="row gutter--15">
+                        {{-- This Section will Show Main news --}}
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {{-- Video Section  --}}
+                                    <div class="post--items-title" data-ajax="tab">
+                                        <h2 class="h4">
+                                            @if (session()->get('lang') == 'bangla')
+                                                ভিডিও গ্যালারী
+                                            @else
+                                                Video Gallery
+                                            @endif
+                                        </h2>
+                                    </div>
+                                    <div>
+                                        @php
+                                            preg_match('/src="([^"]+)"/', $vgnbt->embed_code, $matches);
+                                            $iframeSrc = $matches[1] ?? null;
+                                            $videoId = null;
+                                            if ($iframeSrc && Str::contains($iframeSrc, 'youtube.com')) {
+                                                preg_match('/embed\/([^\?&"]+)/', $iframeSrc, $idMatch);
+                                                $videoId = $idMatch[1] ?? null;
+                                            }
+                                        @endphp
+
+                                        <div class="video-container">
+                                            <a data-fancybox data-type="iframe" href="{{ $iframeSrc }}"
+                                                class="video-wrapperg">
+                                                @if ($videoId)
+                                                    <img src="https://img.youtube.com/vi/{{ $videoId }}/hqdefault.jpg"
+                                                        alt="Video Thumbnail">
+                                                @else
+                                                    <img src="{{ asset('default-thumb.jpg') }}" alt="Default Thumbnail">
+                                                @endif
+
+                                                <div class="play-overlayg">
+                                                    <i class="fa fa-play"></i>
+                                                </div>
+                                            </a>
+
+                                            <div>
+                                                <a data-fancybox data-type="iframe" href="{{ $iframeSrc }}"
+                                                    class="card-link title-black" style="color: black; font-size: 18px;">
+                                                    <h4 style="margin: 10 !important; padding: 0 !important;">
+                                                        <a href="news-single-v1.html" class="btn-link">
+                                                            {{ session('lang') == 'bangla' ? $vgnbt->title_bn : $vgnbt->title_en }}
+                                                        </a>
+                                                    </h4>
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                {{-- Loop for 3 videos --}}
+                                @foreach ($vgn3 as $row)
+                                    <div class="col-md-4" style="display:flex; margin-top: 30px">
+                                        <div>
+                                            @php
+                                                preg_match('/src="([^"]+)"/', $row->embed_code, $matches);
+                                                $iframeSrc = $matches[1] ?? null;
+                                                $videoId = null;
+                                                if ($iframeSrc && Str::contains($iframeSrc, 'youtube.com')) {
+                                                    preg_match('/embed\/([^\?&"]+)/', $iframeSrc, $idMatch);
+                                                    $videoId = $idMatch[1] ?? null;
+                                                }
+                                            @endphp
+
+                                            @if ($iframeSrc)
+                                                <a data-fancybox data-type="iframe" href="{{ $iframeSrc }}"
+                                                    class="video-wrapper3">
+                                                    @if ($videoId)
+                                                        <img src="https://img.youtube.com/vi/{{ $videoId }}/hqdefault.jpg"
+                                                            alt="Video Thumbnail">
+                                                    @else
+                                                        <img src="{{ asset('default-thumb.jpg') }}"
+                                                            alt="Default Thumbnail">
+                                                    @endif
+                                                    <div class="play-overlay3">
+                                                        <i class="fa fa-play"
+                                                            style="font-size: 24px; color: white !important"></i>
+                                                    </div>
+                                                </a>
+                                            @endif
+
+                                            <div class="post--info">
+                                                <div class="title">
+                                                    <h2 class="h4">
+                                                        <a data-fancybox href="{{ $imageToShow }}"
+                                                            style="margin-top: 10px" class="btn-link">
+                                                            @if (session()->get('lang') == 'bangla')
+                                                                {{ \Illuminate\Support\Str::limit($row->title_bn, 38) }}
+                                                            @else
+                                                                {{ \Illuminate\Support\Str::limit($row->title_en, 38) }}
+                                                            @endif
+                                                        </a>
+                                                    </h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        {{-- This Section will Show Main news --}}
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {{-- Photos Section --}}
+                                    <div class="post--items-title" data-ajax="tab">
+                                        <h2 class="h4">
+                                            @if (session()->get('lang') == 'bangla')
+                                                ফটো গ্যালারী
+                                            @else
+                                                Photo Gallery
+                                            @endif
+                                        </h2>
+                                    </div>
+                                    <div>
+                                        <a href="news-single-v1.html" class="thumb">
+                                            @php
+                                                $isPlaceholder = Str::contains(
+                                                    $pgnbt->thumbnail,
+                                                    'via.placeholder.com',
+                                                );
+                                                $imageToShow =
+                                                    !$isPlaceholder && !empty($pgnbt->thumbnail)
+                                                        ? $pgnbt->thumbnail
+                                                        : $pgnbt->image;
+                                            @endphp
+
+                                            <img data-fancybox src="{{ $imageToShow }}" alt="{{ $pgnbt->title_en }}"
+                                                class="img-fluid w-100" style="height: 433px !important">
+                                        </a>
+
+                                        <div class="post--info">
+                                            <div class="title">
+                                                <h4 style="margin: 10 !important; padding: 0 !important;">
+                                                    <a data-fancybox href="{{ $imageToShow }}" class="btn-link"
+                                                        data-fancybox>
+                                                        {{ session('lang') == 'bangla' ? $pgnbt->title_bn : $pgnbt->title_en }}
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{-- Loop for 3 photos --}}
+                                @foreach ($pgn3 as $row)
+                                    <div class="col-md-4" style="display:flex; margin-top: 15px">
+                                        <div class="post--img" style="{{ $index !== 0 ? 'margin-top: 15px;' : '' }}">
+                                            <a data-fancybox href="news-single-v1.html" class="thumb">
+                                                @php
+                                                    $isPlaceholder = Str::contains(
+                                                        $row->thumbnail,
+                                                        'via.placeholder.com',
+                                                    );
+                                                    $imageToShow =
+                                                        !$isPlaceholder && !empty($row->thumbnail)
+                                                            ? $row->thumbnail
+                                                            : $row->image;
+                                                @endphp
+
+
+                                                <img data-fancybox src="{{ $imageToShow }}"
+                                                    alt="{{ $row->title_en }}"class="img-fluid"
+                                                    style="width: 173px; height: 130px;">
+                                            </a>
+                                            <div class="post--info">
+                                                <div class="title">
+                                                    <h2 class="h4">
+                                                        <a data-fancybox href="{{ $imageToShow }}"
+                                                            style="margin-top: 10px" class="btn-link">
+                                                            {{ session('lang') == 'bangla' ? $row->title_bn : $row->title_en }}
+                                                        </a>
+                                                    </h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- Video & Photo Gallery Section News End --}}
+
+        {{-- Polictics And Economics Section News  Start --}}
+        <div class="row" style="margin-top: 30px">
+            <div class="main--content" data-sticky-content="true">
+                <div class="sticky-content-inner">
+                    <div class="row">
+                        {{-- Main Content --}}
+                        <div class="main--content col-md-6 col-sm-7">
+                            {{-- Politic Title --}}
+                            <div class="post--items-title" data-ajax="tab">
+                                <h2 class="h4">
+                                    @if (session()->get('lang') == 'bangla')
+                                        {{ $pnbt->newsCategory->category_bn }}
+                                    @else
+                                        {{ $pnbt->newsCategory->category_en }}
+                                    @endif
+                                </h2>
+                            </div>
+                            <div class="post--items post--items-4" data-ajax-content="outer">
+
+                                {{-- Left Column (col-md-3) --}}
+                                <div class="col-md-6" style="margin: 0 !important; padding: 0 !important">
+                                    <div class="post--img">
+                                        <a href="news-single-v1.html" class="thumb">
+                                            @php
+                                                $isPlaceholder = Str::contains($pnbt->thumbnail, 'via.placeholder.com');
+                                                $imageToShow =
+                                                    !$isPlaceholder && !empty($pnbt->thumbnail)
+                                                        ? $pnbt->thumbnail
+                                                        : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                            @endphp
+
+                                            <img src="{{ $imageToShow }}" alt="{{ $pnbt->title_en }}"
+                                                class="img-fluid">
+                                        </a>
+
+                                        <div class="post--info">
+                                            <div class="title">
+                                                <h2 class="h4" style="font-size: 24px">
+                                                    <a href="news-single-v1.html" class="btn-link">
+                                                        @if (session()->get('lang') == 'bangla')
+                                                            {{ $pnbt->title_bn }}
+                                                        @else
+                                                            {{ $pnbt->title_en }}
+                                                        @endif
+                                                    </a>
+                                                </h2>
+                                                <p style="font-size: 16px; margin-top: -5px">
+                                                    @if (session()->get('lang') == 'bangla')
+                                                        {!! Str::limit($pnbt->details_bn, 150, '...') !!}
+                                                    @else
+                                                        {!! Str::limit($pnbt->details_en, 150, '...') !!}
+                                                    @endif
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- Middle Column (col-md-7) --}}
+                                <div class="col-md-6">
+                                    <div>
+                                        @foreach ($pn3 as $index => $row)
+                                            <div
+                                                class="row"style="display: flex; justify-content: space-between; align-items: center; {{ $index !== 0 ? 'margin-top: 15px;' : '' }}">
+                                                <div class="col-sm-6">
+                                                    @if (session()->get('lang') == 'bangla')
+                                                        {{ $row->title_bn }}
+                                                    @else
+                                                        {{ $row->title_en }}
+                                                    @endif
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <h3>
+                                                        <a href="news-single-v1.html" class="thumb">
+                                                            @php
+                                                                $isPlaceholder = Str::contains(
+                                                                    $row->thumbnail,
+                                                                    'via.placeholder.com',
+                                                                );
+                                                                $imageToShow =
+                                                                    !$isPlaceholder && !empty($row->thumbnail)
+                                                                        ? $row->thumbnail
+                                                                        : asset(
+                                                                            'uploads/default_images/deafult_thumbnail.jpg',
+                                                                        );
+                                                            @endphp
+
+                                                            <img src="{{ $imageToShow }}" alt="{{ $row->title_en }}"
+                                                                class="img-fluid">
+                                                        </a>
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Finance Section --}}
+                        <div class="main--content col-md-6 col-sm-7">
+                            {{-- Finance Title --}}
+                            <div class="post--items-title" data-ajax="tab">
+                                <h2 class="h4">
+                                    @if (session()->get('lang') == 'bangla')
+                                        {{ $fnbt->newsCategory->category_bn }}
+                                    @else
+                                        {{ $fnbt->newsCategory->category_en }}
+                                    @endif
+                                </h2>
+                            </div>
+                            <div class="post--items post--items-4" data-ajax-content="outer">
+
+                                {{-- Left Column (col-md-3) --}}
+                                <div class="col-md-6" style="margin: 0 !important; padding: 0 !important">
+                                    <div class="post--img">
+                                        <a href="news-single-v1.html" class="thumb">
+                                            @php
+                                                $isPlaceholder = Str::contains($fnbt->thumbnail, 'via.placeholder.com');
+                                                $imageToShow =
+                                                    !$isPlaceholder && !empty($fnbt->thumbnail)
+                                                        ? $fnbt->thumbnail
+                                                        : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                            @endphp
+
+                                            <img src="{{ $imageToShow }}" alt="{{ $fnbt->title_en }}"
+                                                class="img-fluid">
+                                        </a>
+
+                                        <div class="post--info">
+                                            <div class="title">
+                                                <h2 class="h4" style="font-size: 24px">
+                                                    <a href="news-single-v1.html" class="btn-link">
+                                                        @if (session()->get('lang') == 'bangla')
+                                                            {{ $fnbt->title_bn }}
+                                                        @else
+                                                            {{ $fnbt->title_en }}
+                                                        @endif
+                                                    </a>
+                                                </h2>
+                                                <p style="font-size: 16px; margin-top: -5px">
+                                                    @if (session()->get('lang') == 'bangla')
+                                                        {!! Str::limit($fnbt->details_bn, 150, '...') !!}
+                                                    @else
+                                                        {!! Str::limit($fnbt->details_en, 150, '...') !!}
+                                                    @endif
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- Middle Column (col-md-7) --}}
+                                <div class="col-md-6">
+                                    <div>
+                                        @foreach ($fn3 as $index => $row)
+                                            <div
+                                                class="row"style="display: flex; justify-content: space-between; align-items: center; {{ $index !== 0 ? 'margin-top: 15px;' : '' }}">
+                                                <div class="col-sm-6">
+                                                    @if (session()->get('lang') == 'bangla')
+                                                        {{ $row->title_bn }}
+                                                    @else
+                                                        {{ $row->title_en }}
+                                                    @endif
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <h3>
+                                                        <a href="news-single-v1.html" class="thumb">
+                                                            @php
+                                                                $isPlaceholder = Str::contains(
+                                                                    $row->thumbnail,
+                                                                    'via.placeholder.com',
+                                                                );
+                                                                $imageToShow =
+                                                                    !$isPlaceholder && !empty($row->thumbnail)
+                                                                        ? $row->thumbnail
+                                                                        : asset(
+                                                                            'uploads/default_images/deafult_thumbnail.jpg',
+                                                                        );
+                                                            @endphp
+
+                                                            <img src="{{ $imageToShow }}" alt="{{ $row->title_en }}"
+                                                                class="img-fluid">
+                                                        </a>
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {{-- Polictics And Economics Section News  End --}}
+
+
+        {{-- Polictics And Economics Section News  Start --}}
+        <div class="row" style="margin-top: 30px">
+            <div class="main--content" data-sticky-content="true">
+                <div class="sticky-content-inner">
+                    <div class="row">
+                        {{-- Job Section Content --}}
+                        <div class="main--content col-md-3 col-sm-7">
+                            {{-- Politic Title --}}
+                            <div class="post--items-title" data-ajax="tab">
+                                <h2 class="h4">
+                                    @if (session()->get('lang') == 'bangla')
+                                        {{ $pnbt->newsCategory->category_bn }}
+                                    @else
+                                        {{ $pnbt->newsCategory->category_en }}
+                                    @endif
+                                </h2>
+                            </div>
+                            <div class="post--items post--items-4" data-ajax-content="outer">
+
+                                {{-- Left Column (col-md-3) --}}
+                                <div class="col-md-12" style="margin: 0 !important; padding: 0 !important">
+                                    <div class="post--img">
+                                        <a href="news-single-v1.html" class="thumb">
+                                            @php
+                                                $isPlaceholder = Str::contains($pnbt->thumbnail, 'via.placeholder.com');
+                                                $imageToShow =
+                                                    !$isPlaceholder && !empty($pnbt->thumbnail)
+                                                        ? $pnbt->thumbnail
+                                                        : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                            @endphp
+
+                                            <img src="{{ $imageToShow }}" alt="{{ $pnbt->title_en }}"
+                                                class="img-fluid">
+                                        </a>
+
+                                        <div class="post--info">
+                                            <div class="title">
+                                                <h2 class="h4" style="font-size: 20.8px">
+                                                    <a href="news-single-v1.html" class="btn-link">
+                                                        @if (session()->get('lang') == 'bangla')
+                                                            {{ $pnbt->title_bn }}
+                                                        @else
+                                                            {{ $pnbt->title_en }}
+                                                        @endif
+                                                    </a>
+                                                </h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @foreach ([1, 2, 3] as $index => $row)
+                                    <div class="col-md-12" style="margin: 0 !important; padding: 0 !important">
+                                        <div class="post--info" style="margin-top: 15px;">
+                                            <div class="title">
+                                                <h2 class="h4" style="font-size: 19.2px">
+                                                    <a href="news-single-v1.html" class="btn-link posthover">
+                                                        @if (session()->get('lang') == 'bangla')
+                                                            {{ $pnbt->title_bn }}
+                                                        @else
+                                                            {{ $pnbt->title_en }}
+                                                        @endif
+                                                    </a>
+                                                </h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        {{-- Other Section Content --}}
+                        <div class="main--content col-md-3 col-sm-7">
+                            {{-- Politic Title --}}
+                            <div class="post--items-title" data-ajax="tab">
+                                <h2 class="h4">
+                                    @if (session()->get('lang') == 'bangla')
+                                        {{ $pnbt->newsCategory->category_bn }}
+                                    @else
+                                        {{ $pnbt->newsCategory->category_en }}
+                                    @endif
+                                </h2>
+                            </div>
+                            <div class="post--items post--items-4" data-ajax-content="outer">
+
+                                {{-- Left Column (col-md-3) --}}
+                                <div class="col-md-12" style="margin: 0 !important; padding: 0 !important">
+                                    <div class="post--img">
+                                        <a href="news-single-v1.html" class="thumb">
+                                            @php
+                                                $isPlaceholder = Str::contains($pnbt->thumbnail, 'via.placeholder.com');
+                                                $imageToShow =
+                                                    !$isPlaceholder && !empty($pnbt->thumbnail)
+                                                        ? $pnbt->thumbnail
+                                                        : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                            @endphp
+
+                                            <img src="{{ $imageToShow }}" alt="{{ $pnbt->title_en }}"
+                                                class="img-fluid">
+                                        </a>
+
+                                        <div class="post--info">
+                                            <div class="title">
+                                                <h2 class="h4" style="font-size: 20.8px">
+                                                    <a href="news-single-v1.html" class="btn-link">
+                                                        @if (session()->get('lang') == 'bangla')
+                                                            {{ $pnbt->title_bn }}
+                                                        @else
+                                                            {{ $pnbt->title_en }}
+                                                        @endif
+                                                    </a>
+                                                </h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @foreach ([1, 2, 3] as $index => $row)
+                                    <div class="col-md-12" style="margin: 0 !important; padding: 0 !important">
+                                        <div class="post--info" style="margin-top: 15px;">
+                                            <div class="title">
+                                                <h2 class="h4" style="font-size: 19.2px">
+                                                    <a href="news-single-v1.html" class="btn-link posthover">
+                                                        @if (session()->get('lang') == 'bangla')
+                                                            {{ $pnbt->title_bn }}
+                                                        @else
+                                                            {{ $pnbt->title_en }}
+                                                        @endif
+                                                    </a>
+                                                </h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        {{-- Crime Section Content --}}
+                        <div class="main--content col-md-3 col-sm-7">
+                            {{-- Politic Title --}}
+                            <div class="post--items-title" data-ajax="tab">
+                                <h2 class="h4">
+                                    @if (session()->get('lang') == 'bangla')
+                                        {{ $pnbt->newsCategory->category_bn }}
+                                    @else
+                                        {{ $pnbt->newsCategory->category_en }}
+                                    @endif
+                                </h2>
+                            </div>
+                            <div class="post--items post--items-4" data-ajax-content="outer">
+
+                                {{-- Left Column (col-md-3) --}}
+                                <div class="col-md-12" style="margin: 0 !important; padding: 0 !important">
+                                    <div class="post--img">
+                                        <a href="news-single-v1.html" class="thumb">
+                                            @php
+                                                $isPlaceholder = Str::contains($pnbt->thumbnail, 'via.placeholder.com');
+                                                $imageToShow =
+                                                    !$isPlaceholder && !empty($pnbt->thumbnail)
+                                                        ? $pnbt->thumbnail
+                                                        : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                            @endphp
+
+                                            <img src="{{ $imageToShow }}" alt="{{ $pnbt->title_en }}"
+                                                class="img-fluid">
+                                        </a>
+
+                                        <div class="post--info">
+                                            <div class="title">
+                                                <h2 class="h4" style="font-size: 20.8px">
+                                                    <a href="news-single-v1.html" class="btn-link">
+                                                        @if (session()->get('lang') == 'bangla')
+                                                            {{ $pnbt->title_bn }}
+                                                        @else
+                                                            {{ $pnbt->title_en }}
+                                                        @endif
+                                                    </a>
+                                                </h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @foreach ([1, 2, 3] as $index => $row)
+                                    <div class="col-md-12" style="margin: 0 !important; padding: 0 !important">
+                                        <div class="post--info" style="margin-top: 15px;">
+                                            <div class="title">
+                                                <h2 class="h4" style="font-size: 19.2px">
+                                                    <a href="news-single-v1.html" class="btn-link posthover">
+                                                        @if (session()->get('lang') == 'bangla')
+                                                            {{ $pnbt->title_bn }}
+                                                        @else
+                                                            {{ $pnbt->title_en }}
+                                                        @endif
+                                                    </a>
+                                                </h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        {{-- Technology Section Content --}}
+                        <div class="main--content col-md-3 col-sm-7">
+                            {{-- Politic Title --}}
+                            <div class="post--items-title" data-ajax="tab">
+                                <h2 class="h4">
+                                    @if (session()->get('lang') == 'bangla')
+                                        {{ $pnbt->newsCategory->category_bn }}
+                                    @else
+                                        {{ $pnbt->newsCategory->category_en }}
+                                    @endif
+                                </h2>
+                            </div>
+                            <div class="post--items post--items-4" data-ajax-content="outer">
+
+                                {{-- Left Column (col-md-3) --}}
+                                <div class="col-md-12" style="margin: 0 !important; padding: 0 !important">
+                                    <div class="post--img">
+                                        <a href="news-single-v1.html" class="thumb">
+                                            @php
+                                                $isPlaceholder = Str::contains($pnbt->thumbnail, 'via.placeholder.com');
+                                                $imageToShow =
+                                                    !$isPlaceholder && !empty($pnbt->thumbnail)
+                                                        ? $pnbt->thumbnail
+                                                        : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                            @endphp
+
+                                            <img src="{{ $imageToShow }}" alt="{{ $pnbt->title_en }}"
+                                                class="img-fluid">
+                                        </a>
+
+                                        <div class="post--info">
+                                            <div class="title">
+                                                <h2 class="h4" style="font-size: 20.8px">
+                                                    <a href="news-single-v1.html" class="btn-link">
+                                                        @if (session()->get('lang') == 'bangla')
+                                                            {{ $pnbt->title_bn }}
+                                                        @else
+                                                            {{ $pnbt->title_en }}
+                                                        @endif
+                                                    </a>
+                                                </h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @foreach ([1, 2, 3] as $index => $row)
+                                    <div class="col-md-12" style="margin: 0 !important; padding: 0 !important">
+                                        <div class="post--info" style="margin-top: 15px;">
+                                            <div class="title">
+                                                <h2 class="h4" style="font-size: 19.2px">
+                                                    <a href="news-single-v1.html" class="btn-link posthover">
+                                                        @if (session()->get('lang') == 'bangla')
+                                                            {{ $pnbt->title_bn }}
+                                                        @else
+                                                            {{ $pnbt->title_en }}
+                                                        @endif
+                                                    </a>
+                                                </h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {{-- Polictics And Economics Section News  End --}}
+
+            <div class="main--content col-md-12 col-sm-7" style="margin-top: 35px; border-top: 1px solid black;">
+        <div class="container">
+            <div class="row">
+                <div padding: 5px 5px;">
+                    <ul style="display: flex; justify-content: center;">
+                        @foreach ([1, 2, 3, 4, 5, 6] as $row)
+                            <li>hi</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
-    {{-- LifeStyle Section News End --}}
-
-
+    </div>
     </div>
     </div>
     </div>
@@ -1809,10 +2546,10 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             new Splide('#image-slider', {
-                type: 'loop',
                 perPage: 4,
                 perMove: 1,
                 autoplay: false,
+                omitEnd: true,
                 breakpoints: {
                     1024: {
                         perPage: 3,
