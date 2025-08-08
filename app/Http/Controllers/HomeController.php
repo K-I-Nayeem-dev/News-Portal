@@ -186,8 +186,50 @@ class HomeController extends Controller
             'fnbt' => $fnbt,
             'fn3' => $fn3,
         ]);
-
     }
+
+    // For Single Page News Show
+    public function showCate_news($category, $subcategoryOrId = null, $maybeId = null)
+    {
+        // Detect if only category + ID given
+        if (is_numeric($subcategoryOrId) && $maybeId === null) {
+            $id = $subcategoryOrId;
+            $subcategory = null;
+        } else {
+            $subcategory = $subcategoryOrId;
+            $id = $maybeId;
+        }
+
+        // Load news with related category and subcategory
+        $news = News::with(['newsCategory', 'newsSubCategory'])->findOrFail($id);
+
+        // Check if category name matches
+        if (strtolower($news->newsCategory->category_en) !== strtolower($category)) {
+            abort(404, 'Category mismatch');
+        }
+
+        // If subcategory exists, check it
+        if ($subcategory && $news->newsSubCategory) {
+            if (strtolower($news->newsSubCategory->sub_cate_en) !== strtolower($subcategory)) {
+                abort(404, 'Subcategory mismatch');
+            }
+        }
+
+
+        // Get Tags for News And set language for that
+        $locale = session()->get('lang') === 'english' ? 'en' : 'bn';
+
+        $tagsRaw = $locale === 'en' ? $news->tags_en : $news->tags_bn;
+
+        $tags = array_map('trim', explode(',', $tagsRaw));
+
+
+        return view('layouts.newsIndex.home.show', [
+            'news' => $news,
+            'tags' => $tags,
+        ]);
+    }
+
 
     // Method For get sub_cates news
     public function sub_cate_news($name)

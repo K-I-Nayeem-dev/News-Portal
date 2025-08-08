@@ -223,10 +223,10 @@
             <div class="news--ticker">
                 <div class="container">
                     <div class="title">
-                        @if (session()->get('lang') == 'bangla')
-                            <h2>শিরোনাম</h2>
-                        @else
+                        @if (session()->get('lang') == 'english')
                             <h2>Headline</h2>
+                        @else
+                            <h2>শিরোনাম</h2>
                         @endif
                         {{-- <span>(Update {{ \Carbon\Carbon::parse($time->created_at)->diffForHumans() }})</span> --}}
                     </div>
@@ -234,10 +234,17 @@
                         <ul class="nav">
                             @foreach ($breaking_news as $news)
                                 <li>
-                                    <h3 class="h3">
-                                        <a target="_blank" {{ $news->url ? 'href=' . $news->url . ' ' : '' }}> **
-                                            {{ $news->news }} ** </a>
-                                    </h3>
+                                    @if (session()->get('lang') == 'english')
+                                        <h3 class="h3">
+                                            <a target="_blank" {{ $news->url ? 'href=' . $news->url . ' ' : '' }}> **
+                                                {{ $news->news_en }} ** </a>
+                                        </h3>
+                                    @else
+                                        <h3 class="h3">
+                                            <a target="_blank" {{ $news->url ? 'href=' . $news->url . ' ' : '' }}> **
+                                                {{ $news->news_bn }} ** </a>
+                                        </h3>
+                                    @endif
                                 </li>
                             @endforeach
                         </ul>
@@ -254,25 +261,25 @@
             <div class="news--ticker">
                 <div class="container">
                     <div class="title">
-                        @if (session()->get('lang') == 'bangla')
-                            <h2>নোটিশ</h2>
-                        @else
+                        @if (session()->get('lang') == 'english')
                             <h2>Notice</h2>
+                        @else
+                            <h2>নোটিশ</h2>
                         @endif
                         {{-- <span>(Update {{ \Carbon\Carbon::parse($time->created_at)->diffForHumans() }})</span> --}}
                     </div>
                     <div class="news-updates--list" data-marquee="true">
                         <ul class="nav">
-                            @if (session()->get('lang') == 'bangla')
+                            @if (session()->get('lang') == 'english')
                                 <li>
                                     <h3 class="h3">
-                                        <a> !!! {{ $notice->notice_bn }} !!! </a>
+                                        <a> !!! {{ $notice->notice_en }} !!! </a>
                                     </h3>
                                 </li>
                             @else
                                 <li>
                                     <h3 class="h3">
-                                        <a> !!! {{ $notice->notice_en }} !!! </a>
+                                        <a> !!! {{ $notice->notice_bn }} !!! </a>
                                     </h3>
                                 </li>
                             @endif
@@ -300,20 +307,20 @@
                                             <a href="news-single-v1.html" class="thumb"><img src="{{ $row->thumbnail }}"
                                                     alt="{{ $row->title }}" /></a>
                                             <a href="#" class="cat">
-                                                @if (session()->get('lang') == 'bangla')
-                                                    {{ $row->newsCategory->category_bn }}
-                                                @else
+                                                @if (session()->get('lang') == 'english')
                                                     {{ $row->newsCategory->category_en }}
+                                                @else
+                                                    {{ $row->newsCategory->category_bn }}
                                                 @endif
                                             </a>
                                             <div class="post--info">
                                                 <div class="title">
                                                     <h2 class="h4">
                                                         <a href="news-single-v1.html" class="btn-link">
-                                                            @if (session()->get('lang') == 'bangla')
-                                                                {{ $row->title_bn }}
-                                                            @else
+                                                            @if (session()->get('lang') == 'english')
                                                                 {{ $row->title_en }}
+                                                            @else
+                                                                {{ $row->title_bn }}
                                                             @endif
                                                         </a>
                                                     </h2>
@@ -333,20 +340,20 @@
                                 <a href="news-single-v1.html" class="thumb"><img
                                         src="{{ $fsbt->thumbnail }}"alt="{{ $fsbt->title }}" /></a>
                                 <a href="#" class="cat">
-                                    @if (session()->get('lang') == 'bangla')
-                                        {{ $fsbt->newsCategory->category_bn }}
-                                    @else
+                                    @if (session()->get('lang') == 'english')
                                         {{ $fsbt->newsCategory->category_en }}
+                                    @else
+                                        {{ $fsbt->newsCategory->category_bn }}
                                     @endif
                                 </a>
                                 <div class="post--info">
                                     <div class="title">
                                         <h2 class="h4">
                                             <a href="news-single-v1.html" class="btn-link">
-                                                @if (session()->get('lang') == 'bangla')
-                                                    <h2>{{ $fsbt->title_bn }}</h2>
-                                                @else
+                                                @if (session()->get('lang') == 'english')
                                                     <h2>{{ $fsbt->title_en }}</h2>
+                                                @else
+                                                    <h2>{{ $fsbt->title_bn }}</h2>
                                                 @endif
 
                                             </a>
@@ -381,20 +388,20 @@
                                                 </a>
                                             </a>
                                             <a href="#" class="cat">
-                                                @if (session()->get('lang') == 'bangla')
-                                                    {{ $row->newsCategory->category_bn }}
-                                                @else
+                                                @if (session()->get('lang') == 'english')
                                                     {{ $row->newsCategory->category_en }}
+                                                @else
+                                                    {{ $row->newsCategory->category_bn }}
                                                 @endif
                                             </a>
                                             <div class="post--info">
                                                 <div class="title">
                                                     <h2 class="h4">
                                                         <a href="news-single-v1.html" class="btn-link">
-                                                            @if (session()->get('lang') == 'bangla')
-                                                                {{ $row->title_bn }}
-                                                            @else
+                                                            @if (session()->get('lang') == 'english')
                                                                 {{ $row->title_en }}
+                                                            @else
+                                                                {{ $row->title_bn }}
                                                             @endif
                                                         </a>
                                                     </h2>
@@ -434,10 +441,10 @@
 
                                         </a>
                                         <a href="#" class="cat">
-                                            @if (session()->get('lang') == 'bangla')
-                                                {{ $row->newsCategory->category_bn }}
-                                            @else
+                                            @if (session()->get('lang') == 'english')
                                                 {{ $row->newsCategory->category_en }}
+                                            @else
+                                                {{ $row->newsCategory->category_bn }}
                                             @endif
                                         </a>
                                         <div class="post--info">
@@ -445,10 +452,10 @@
                                             <div class="title">
                                                 <h2 class="h4">
                                                     <a href="news-single-v1.html" class="btn-link">
-                                                        @if (session()->get('lang') == 'bangla')
-                                                            {{ $row->title_bn }}
-                                                        @else
+                                                        @if (session()->get('lang') == 'english')
                                                             {{ $row->title_en }}
+                                                        @else
+                                                            {{ $row->title_bn }}
                                                         @endif
                                                     </a>
                                                 </h2>
@@ -476,10 +483,10 @@
                     <div class="widget">
                         <div class="widget--title">
                             <h2 class="h4">
-                                @if (session()->get('lang') == 'bangla')
-                                    আলোচিত খবর
-                                @else
+                                @if (session()->get('lang') == 'english')
                                     Featured News
+                                @else
+                                    আলোচিত খবর
                                 @endif
                             </h2>
                             <i class="icon fa fa-newspaper-o"></i>
@@ -489,19 +496,19 @@
                                 <ul class="nav nav-justified">
                                     <li class="active">
                                         <a href="#" data-ajax-action="load_widget_trendy_news">
-                                            @if (session()->get('lang') == 'bangla')
-                                                টেন্ডিং নিউজ
-                                            @else
+                                            @if (session()->get('lang') == 'english')
                                                 Trendy News
+                                            @else
+                                                টেন্ডিং নিউজ
                                             @endif
                                         </a>
                                     </li>
                                     <li>
                                         <a href="#" data-ajax-action="load_widget_most_watched">
-                                            @if (session()->get('lang') == 'bangla')
-                                                সর্বাধিক দেখা
-                                            @else
+                                            @if (session()->get('lang') == 'english')
                                                 Most Watched
+                                            @else
+                                                সর্বাধিক দেখা
                                             @endif
                                         </a>
                                     </li>
@@ -539,7 +546,7 @@
                                                                 <li>
                                                                     <a href="#">
                                                                         @if (session()->get('lang') == 'bangla')
-                                                                            {{ formatBanglaDate($row->created_at) }}
+                                                                            {{ formatBanglaDateTime($row->created_at) }}
                                                                         @else
                                                                             {{ $row->created_at->format('j F Y') }}
                                                                         @endif
@@ -549,10 +556,10 @@
                                                             <div class="title" style="margin-top: -4px;">
                                                                 <h3 class="h4">
                                                                     <a href="news-single-v1.html" class="btn-link">
-                                                                        @if (session()->get('lang') == 'bangla')
-                                                                            {{ $row->title_bn }}
-                                                                        @else
+                                                                        @if (session()->get('lang') == 'english')
                                                                             {{ $row->title_en }}
+                                                                        @else
+                                                                            {{ $row->title_bn }}
                                                                         @endif
                                                                     </a>
                                                                 </h3>
@@ -615,10 +622,10 @@
         <div class="main--content pd--30-0">
             <div class="post--items-title" data-ajax="tab">
                 <h2 class="h4">
-                    @if (session()->get('lang') == 'bangla')
-                        বিশেষ খবর
-                    @else
+                    @if (session()->get('lang') == 'english')
                         Special Report
+                    @else
+                        বিশেষ খবর
                     @endif
                 </h2>
             </div>
@@ -683,10 +690,10 @@
                         {{-- Section Title --}}
                         <div class="post--items-title" data-ajax="tab">
                             <h2 class="h4">
-                                @if (session()->get('lang') == 'bangla')
-                                    {{ $nnbt->newsCategory->category_bn }}
-                                @else
+                                @if (session()->get('lang') == 'english')
                                     {{ $nnbt->newsCategory->category_en }}
+                                @else
+                                    {{ $nnbt->newsCategory->category_bn }}
                                 @endif
                             </h2>
                         </div>
@@ -724,10 +731,10 @@
                                                             <div class="title">
                                                                 <h3 class="h4">
                                                                     <a href="news-single-v1.html" class="btn-link">
-                                                                        @if (session()->get('lang') == 'bangla')
-                                                                            {{ $row->title_bn }}
-                                                                        @else
+                                                                        @if (session()->get('lang') == 'english')
                                                                             {{ $row->title_en }}
+                                                                        @else
+                                                                            {{ $row->title_bn }}
                                                                         @endif
                                                                     </a>
                                                                 </h3>
@@ -760,18 +767,18 @@
                                             <div class="title">
                                                 <h2 class="h4" style="font-size: 24px">
                                                     <a href="news-single-v1.html" class="btn-link">
-                                                        @if (session()->get('lang') == 'bangla')
-                                                            {{ $nnbt->title_bn }}
-                                                        @else
+                                                        @if (session()->get('lang') == 'english')
                                                             {{ $nnbt->title_en }}
+                                                        @else
+                                                            {{ $nnbt->title_bn }}
                                                         @endif
                                                     </a>
                                                 </h2>
                                                 <p style="font-size: 16px; margin-top: -5px">
-                                                    @if (session()->get('lang') == 'bangla')
-                                                        {!! Str::limit($nnbt->details_bn, 200, '...') !!}
-                                                    @else
+                                                    @if (session()->get('lang') == 'english')
                                                         {!! Str::limit($nnbt->details_en, 200, '...') !!}
+                                                    @else
+                                                        {!! Str::limit($nnbt->details_bn, 200, '...') !!}
                                                     @endif
                                                 </p>
                                             </div>
@@ -809,10 +816,10 @@
                                                             <div class="title">
                                                                 <h3 class="h4">
                                                                     <a href="news-single-v1.html" class="btn-link">
-                                                                        @if (session()->get('lang') == 'bangla')
-                                                                            {{ $row->title_bn }}
-                                                                        @else
+                                                                        @if (session()->get('lang') == 'english')
                                                                             {{ $row->title_en }}
+                                                                        @else
+                                                                            {{ $row->title_bn }}
                                                                         @endif
                                                                     </a>
                                                                 </h3>
@@ -846,10 +853,10 @@
                         {{-- Section Title --}}
                         <div class="post--items-title" data-ajax="tab">
                             <h2 class="h4">
-                                @if (session()->get('lang') == 'bangla')
-                                    {{ $enbt->newsCategory->category_bn }}
-                                @else
+                                @if (session()->get('lang') == 'english')
                                     {{ $enbt->newsCategory->category_en }}
+                                @else
+                                    {{ $enbt->newsCategory->category_bn }}
                                 @endif
                             </h2>
                         </div>
@@ -877,18 +884,18 @@
                                             <div class="title">
                                                 <h2 class="h4" style="font-size: 24px">
                                                     <a href="news-single-v1.html" class="btn-link">
-                                                        @if (session()->get('lang') == 'bangla')
-                                                            {{ $enbt->title_bn }}
-                                                        @else
+                                                        @if (session()->get('lang') == 'english')
                                                             {{ $enbt->title_en }}
+                                                        @else
+                                                            {{ $enbt->title_bn }}
                                                         @endif
                                                     </a>
                                                 </h2>
                                                 <p style="font-size: 16px; margin-top: -5px">
-                                                    @if (session()->get('lang') == 'bangla')
-                                                        {!! Str::limit($enbt->details_bn, 200, '...') !!}
-                                                    @else
+                                                    @if (session()->get('lang') == 'english')
                                                         {!! Str::limit($enbt->details_en, 200, '...') !!}
+                                                    @else
+                                                        {!! Str::limit($enbt->details_bn, 200, '...') !!}
                                                     @endif
                                                 </p>
                                             </div>
@@ -908,19 +915,19 @@
                                                     <div class="pe-3 flex-grow-1">
                                                         <h2 class="h4" style="font-size: 18px; margin-bottom: 10px;">
                                                             <a href="#" class="btn-link">
-                                                                @if (session()->get('lang') == 'bangla')
-                                                                    {{ $row->title_bn }}
-                                                                @else
+                                                                @if (session()->get('lang') == 'english')
                                                                     {{ $row->title_en }}
+                                                                @else
+                                                                    {{ $row->title_bn }}
                                                                 @endif
                                                             </a>
                                                         </h2>
                                                         <p style="font-size: 14px; margin: 0;">
                                                             <a href="#" class="btn-link">
-                                                                @if (session()->get('lang') == 'bangla')
-                                                                    {!! Str::limit($row->details_bn, 200, '...') !!}
-                                                                @else
+                                                                @if (session()->get('lang') == 'english')
                                                                     {!! Str::limit($row->details_en, 200, '...') !!}
+                                                                @else
+                                                                    {!! Str::limit($row->details_bn, 200, '...') !!}
                                                                 @endif
                                                             </a>
                                                         </p>
@@ -969,10 +976,10 @@
             {{-- Section Title --}}
             <div class="post--items-title" data-ajax="tab">
                 <h2 class="h4">
-                    @if (session()->get('lang') == 'bangla')
-                        {{ $cnbt->newsCategory->category_bn }}
-                    @else
+                    @if (session()->get('lang') == 'english')
                         {{ $cnbt->newsCategory->category_en }}
+                    @else
+                        {{ $cnbt->newsCategory->category_bn }}
                     @endif
                 </h2>
             </div>
@@ -1037,10 +1044,10 @@
                                                     <div class="title">
                                                         <h2 class="h4">
                                                             <a href="news-single-v1.html" class="btn-link">
-                                                                @if (session()->get('lang') == 'bangla')
-                                                                    {{ $row->title_bn }}
-                                                                @else
+                                                                @if (session()->get('lang') == 'english')
                                                                     {{ $row->title_en }}
+                                                                @else
+                                                                    {{ $row->title_bn }}
                                                                 @endif
                                                             </a>
                                                         </h2>
@@ -1083,10 +1090,10 @@
                                                     <div class="title">
                                                         <h2 class="h4">
                                                             <a href="news-single-v1.html" class="btn-link">
-                                                                @if (session()->get('lang') == 'bangla')
-                                                                    {{ $row->title_bn }}
-                                                                @else
+                                                                @if (session()->get('lang') == 'english')
                                                                     {{ $row->title_en }}
+                                                                @else
+                                                                    {{ $row->title_bn }}
                                                                 @endif
                                                             </a>
                                                         </h2>
@@ -1118,10 +1125,10 @@
                                         <div class="title">
                                             <h2 class="h4">
                                                 <a href="news-single-v1.html" class="btn-link">
-                                                    @if (session()->get('lang') == 'bangla')
-                                                        <h2>{{ $cnbt->title_bn }}</h2>
-                                                    @else
+                                                    @if (session()->get('lang') == 'english')
                                                         <h2>{{ $cnbt->title_en }}</h2>
+                                                    @else
+                                                        <h2>{{ $cnbt->title_bn }}</h2>
                                                     @endif
 
                                                 </a>
@@ -1143,10 +1150,10 @@
             {{-- Section Title --}}
             <div class="post--items-title" data-ajax="tab">
                 <h2 class="h4">
-                    @if (session()->get('lang') == 'bangla')
-                        {{ $innbt->newsCategory->category_bn }}
-                    @else
+                    @if (session()->get('lang') == 'english')
                         {{ $innbt->newsCategory->category_en }}
+                    @else
+                        {{ $innbt->newsCategory->category_bn }}
                     @endif
                 </h2>
             </div>
@@ -1174,10 +1181,10 @@
                                         <div class="title">
                                             <h2 class="h4">
                                                 <a href="news-single-v1.html" class="btn-link">
-                                                    @if (session()->get('lang') == 'bangla')
-                                                        <h2>{{ $innbt->title_bn }}</h2>
-                                                    @else
+                                                    @if (session()->get('lang') == 'english')
                                                         <h2>{{ $innbt->title_en }}</h2>
+                                                    @else
+                                                        <h2>{{ $innbt->title_bn }}</h2>
                                                     @endif
 
                                                 </a>
@@ -1213,10 +1220,10 @@
                                                     <div class="title">
                                                         <h2 class="h4">
                                                             <a href="news-single-v1.html" class="btn-link">
-                                                                @if (session()->get('lang') == 'bangla')
-                                                                    {{ $row->title_bn }}
-                                                                @else
+                                                                @if (session()->get('lang') == 'english')
                                                                     {{ $row->title_en }}
+                                                                @else
+                                                                    {{ $row->title_bn }}
                                                                 @endif
                                                             </a>
                                                         </h2>
@@ -1242,10 +1249,10 @@
                                                     <div class="pe-3 flex-grow-1" style="padding-right: 50px !important">
                                                         <h2 class="h4" style="font-size: 18px; margin-bottom: 10px;">
                                                             <a href="#" class="btn-link">
-                                                                @if (session()->get('lang') == 'bangla')
-                                                                    {{ $row->title_bn }}
-                                                                @else
+                                                                @if (session()->get('lang') == 'english')
                                                                     {{ $row->title_en }}
+                                                                @else
+                                                                    {{ $row->title_bn }}
                                                                 @endif
                                                             </a>
                                                         </h2>
@@ -1296,10 +1303,10 @@
                         {{-- Section Title --}}
                         <div class="post--items-title" data-ajax="tab">
                             <h2 class="h4">
-                                @if (session()->get('lang') == 'bangla')
-                                    {{ $snbt->newsCategory->category_bn }}
-                                @else
+                                @if (session()->get('lang') == 'english')
                                     {{ $snbt->newsCategory->category_en }}
+                                @else
+                                    {{ $snbt->newsCategory->category_bn }}
                                 @endif
                             </h2>
                         </div>
@@ -1337,10 +1344,10 @@
                                                             <div class="title">
                                                                 <h3 class="h4">
                                                                     <a href="news-single-v1.html" class="btn-link">
-                                                                        @if (session()->get('lang') == 'bangla')
-                                                                            {{ $row->title_bn }}
-                                                                        @else
+                                                                        @if (session()->get('lang') == 'english')
                                                                             {{ $row->title_en }}
+                                                                        @else
+                                                                            {{ $row->title_bn }}
                                                                         @endif
                                                                     </a>
                                                                 </h3>
@@ -1373,18 +1380,18 @@
                                             <div class="title">
                                                 <h2 class="h4" style="font-size: 24px">
                                                     <a href="news-single-v1.html" class="btn-link">
-                                                        @if (session()->get('lang') == 'bangla')
-                                                            {{ $snbt->title_bn }}
-                                                        @else
+                                                        @if (session()->get('lang') == 'english')
                                                             {{ $snbt->title_en }}
+                                                        @else
+                                                            {{ $snbt->title_bn }}
                                                         @endif
                                                     </a>
                                                 </h2>
                                                 <p style="font-size: 16px; margin-top: -5px">
-                                                    @if (session()->get('lang') == 'bangla')
-                                                        {!! Str::limit($snbt->details_bn, 200, '...') !!}
-                                                    @else
+                                                    @if (session()->get('lang') == 'english')
                                                         {!! Str::limit($snbt->details_en, 200, '...') !!}
+                                                    @else
+                                                        {!! Str::limit($snbt->details_bn, 200, '...') !!}
                                                     @endif
                                                 </p>
                                             </div>
@@ -1399,10 +1406,10 @@
                                         <div
                                             class="row"style="display: flex; justify-content: space-between; align-items: center; {{ $index !== 0 ? 'margin-top: 15px;' : '' }}">
                                             <div class="col-sm-6">
-                                                @if (session()->get('lang') == 'bangla')
-                                                    {{ $row->title_bn }}
-                                                @else
+                                                @if (session()->get('lang') == 'english')
                                                     {{ $row->title_en }}
+                                                @else
+                                                    {{ $row->title_bn }}
                                                 @endif
                                             </div>
                                             <div class="col-sm-6">
@@ -1446,10 +1453,10 @@
                         {{-- Section Title --}}
                         <div class="post--items-title" data-ajax="tab">
                             <h2 class="h4">
-                                @if (session()->get('lang') == 'bangla')
-                                    {{ $lsnbt->newsCategory->category_bn }}
-                                @else
+                                @if (session()->get('lang') == 'english')
                                     {{ $lsnbt->newsCategory->category_en }}
+                                @else
+                                    {{ $lsnbt->newsCategory->category_bn }}
                                 @endif
                             </h2>
                         </div>
@@ -1481,18 +1488,18 @@
                                             <div class="title">
                                                 <h2 class="h4" style="font-size: 24px">
                                                     <a href="news-single-v1.html" class="btn-link">
-                                                        @if (session()->get('lang') == 'bangla')
-                                                            {{ $lsnbt->title_bn }}
-                                                        @else
+                                                        @if (session()->get('lang') == 'english')
                                                             {{ $lsnbt->title_en }}
+                                                        @else
+                                                            {{ $lsnbt->title_bn }}
                                                         @endif
                                                     </a>
                                                 </h2>
                                                 <p style="font-size: 16px; margin-top: -5px">
-                                                    @if (session()->get('lang') == 'bangla')
-                                                        {!! Str::limit($lsnbt->details_bn, 150, '...') !!}
-                                                    @else
+                                                    @if (session()->get('lang') == 'english')
                                                         {!! Str::limit($lsnbt->details_en, 150, '...') !!}
+                                                    @else
+                                                        {!! Str::limit($lsnbt->details_bn, 150, '...') !!}
                                                     @endif
                                                 </p>
                                             </div>
@@ -1503,10 +1510,10 @@
                                         <div
                                             class="row"style="display: flex; justify-content: space-between; align-items: center; {{ $index !== 0 ? 'margin-top: 15px;' : '' }}">
                                             <div class="col-sm-6">
-                                                @if (session()->get('lang') == 'bangla')
-                                                    {{ $row->title_bn }}
-                                                @else
+                                                @if (session()->get('lang') == 'english')
                                                     {{ $row->title_en }}
+                                                @else
+                                                    {{ $row->title_bn }}
                                                 @endif
                                             </div>
                                             <div class="col-sm-6">
@@ -1537,10 +1544,10 @@
                                             <div
                                                 class="row"style="display: flex; justify-content: space-between; align-items: center; {{ $index !== 0 ? 'margin-top: 15px;' : '' }}">
                                                 <div class="col-sm-6">
-                                                    @if (session()->get('lang') == 'bangla')
-                                                        {{ $row->title_bn }}
-                                                    @else
+                                                    @if (session()->get('lang') == 'english')
                                                         {{ $row->title_en }}
+                                                    @else
+                                                        {{ $row->title_bn }}
                                                     @endif
                                                 </div>
                                                 <div class="col-sm-6">
@@ -1573,10 +1580,10 @@
                                 <div class="widget">
                                     <div class="widget--title" data-ajax="tab">
                                         <h2 class="h4">
-                                            @if (session()->get('lang') == 'bangla')
-                                                অনলাইন জরিপ
-                                            @else
+                                            @if (session()->get('lang') == 'english')
                                                 Voting Poll
+                                            @else
+                                                অনলাইন জরিপ
                                             @endif
                                         </h2>
                                         <div class="nav"> <a href="#" class="prev btn-link"
@@ -1607,10 +1614,10 @@
                                                             <span>Average</span> </label>
                                                         <p>07%<span style="width: 07%;"></span></p>
                                                     </div><button type="submit" class="btn btn-primary">
-                                                        @if (session()->get('lang') == 'bangla')
-                                                            ভোট দিন
-                                                        @else
+                                                        @if (session()->get('lang') == 'english')
                                                             Vote Now
+                                                        @else
+                                                            ভোট দিন
                                                         @endif
                                                     </button>
                                                 </form>
@@ -1639,10 +1646,10 @@
                         {{-- Section Title --}}
                         <div class="post--items-title" data-ajax="tab">
                             <h2 class="h4">
-                                @if (session()->get('lang') == 'bangla')
-                                    {{ $lonbt->newsCategory->category_bn }}
-                                @else
+                                @if (session()->get('lang') == 'english')
                                     {{ $lonbt->newsCategory->category_en }}
+                                @else
+                                    {{ $lonbt->newsCategory->category_bn }}
                                 @endif
                             </h2>
                         </div>
@@ -1674,18 +1681,18 @@
                                                 <div class="title">
                                                     <h2 class="h4" style="font-size: 24px">
                                                         <a href="news-single-v1.html" class="btn-link">
-                                                            @if (session()->get('lang') == 'bangla')
-                                                                {{ $lonbt->title_bn }}
-                                                            @else
+                                                            @if (session()->get('lang') == 'english')
                                                                 {{ $lonbt->title_en }}
+                                                            @else
+                                                                {{ $lonbt->title_bn }}
                                                             @endif
                                                         </a>
                                                     </h2>
                                                     <p style="font-size: 16px; margin-top: -5px">
-                                                        @if (session()->get('lang') == 'bangla')
-                                                            {!! Str::limit($lonbt->details_bn, 150, '...') !!}
-                                                        @else
+                                                        @if (session()->get('lang') == 'english')
                                                             {!! Str::limit($lonbt->details_en, 150, '...') !!}
+                                                        @else
+                                                            {!! Str::limit($lonbt->details_bn, 150, '...') !!}
                                                         @endif
                                                     </p>
                                                 </div>
@@ -1701,10 +1708,10 @@
                                                 <div
                                                     class="row"style="display: flex; justify-content: space-between; align-items: center; {{ $index !== 0 ? 'margin-top: 15px;' : '' }}">
                                                     <div class="col-sm-6">
-                                                        @if (session()->get('lang') == 'bangla')
-                                                            <h4>{{ $row->title_bn }}</h4>
-                                                        @else
+                                                        @if (session()->get('lang') == 'english')
                                                             <h4>{{ $row->title_en }}</h4>
+                                                        @else
+                                                            <h4>{{ $row->title_bn }}</h4>
                                                         @endif
                                                     </div>
                                                     <div class="col-sm-6">
@@ -1737,17 +1744,17 @@
                                             style="display: flex; align-items: center; margin: 0; padding: 0; {{ $index === 2 || $index === 3 ? 'margin-top: 30px;' : '' }}">
                                             <div class="col-md-8">
                                                 <div>
-                                                    @if (session()->get('lang') == 'bangla')
-                                                        <h4>{{ $row->title_bn }}</h4>
-                                                    @else
+                                                    @if (session()->get('lang') == 'english')
                                                         <h4>{{ $row->title_en }}</h4>
+                                                    @else
+                                                        <h4>{{ $row->title_bn }}</h4>
                                                     @endif
                                                 </div>
                                                 <div>
-                                                    @if (session()->get('lang') == 'bangla')
-                                                        {!! Str::limit($row->details_bn, 100, '...') !!}
-                                                    @else
+                                                    @if (session()->get('lang') == 'english')
                                                         {!! Str::limit($row->details_en, 80, '...') !!}
+                                                    @else
+                                                        {!! Str::limit($row->details_bn, 100, '...') !!}
                                                     @endif
                                                 </div>
                                             </div>
@@ -1778,10 +1785,10 @@
                                 <div class="widget">
                                     <div class="widget--title">
                                         <h2 class="h4">
-                                            @if (session()->get('lang') == 'bangla')
-                                                ট্যাগ সমূহ
-                                            @else
+                                            @if (session()->get('lang') == 'english')
                                                 TAGS
+                                            @else
+                                                ট্যাগ সমূহ
                                             @endif
                                         </h2> <i class="icon fa fa-tags"></i>
                                     </div>
@@ -1807,10 +1814,10 @@
                                         <div
                                             style="background-color: #F0F0F0; margin-top: -10px !important; padding: 0px !important">
                                             <h4 style="padding: 15px 0 20px 0">
-                                                @if (session()->get('lang') == 'bangla')
-                                                    আর্কাইভ
-                                                @else
+                                                @if (session()->get('lang') == 'english')
                                                     Archive
+                                                @else
+                                                    আর্কাইভ
                                                 @endif
                                             </h4>
                                             <div class="calendar-header">
@@ -1852,10 +1859,10 @@
                                     {{-- Video Section  --}}
                                     <div class="post--items-title" data-ajax="tab">
                                         <h2 class="h4">
-                                            @if (session()->get('lang') == 'bangla')
-                                                ভিডিও গ্যালারী
-                                            @else
+                                            @if (session()->get('lang') == 'english')
                                                 Video Gallery
+                                            @else
+                                                ভিডিও গ্যালারী
                                             @endif
                                         </h2>
                                     </div>
@@ -1890,7 +1897,7 @@
                                                     class="card-link title-black" style="color: black; font-size: 18px;">
                                                     <h4 style="margin: 10 !important; padding: 0 !important;">
                                                         <a href="news-single-v1.html" class="btn-link">
-                                                            {{ session('lang') == 'bangla' ? $vgnbt->title_bn : $vgnbt->title_en }}
+                                                            {{ session('lang') == 'english' ? $vgnbt->title_en : $vgnbt->title_bn }}
                                                         </a>
                                                     </h4>
                                                 </a>
@@ -1935,10 +1942,10 @@
                                                     <h2 class="h4">
                                                         <a data-fancybox href="{{ $imageToShow }}"
                                                             style="margin-top: 10px" class="btn-link">
-                                                            @if (session()->get('lang') == 'bangla')
-                                                                {{ \Illuminate\Support\Str::limit($row->title_bn, 38) }}
-                                                            @else
+                                                            @if (session()->get('lang') == 'english')
                                                                 {{ \Illuminate\Support\Str::limit($row->title_en, 38) }}
+                                                            @else
+                                                                {{ \Illuminate\Support\Str::limit($row->title_bn, 38) }}
                                                             @endif
                                                         </a>
                                                     </h2>
@@ -1985,7 +1992,7 @@
                                                 <h4 style="margin: 10 !important; padding: 0 !important;">
                                                     <a data-fancybox href="{{ $imageToShow }}" class="btn-link"
                                                         data-fancybox>
-                                                        {{ session('lang') == 'bangla' ? $pgnbt->title_bn : $pgnbt->title_en }}
+                                                        {{ session('lang') == 'english' ? $pgnbt->title_en : $pgnbt->title_bn }}
                                                     </a>
                                                 </h4>
                                             </div>
@@ -2018,7 +2025,7 @@
                                                     <h2 class="h4">
                                                         <a data-fancybox href="{{ $imageToShow }}"
                                                             style="margin-top: 10px" class="btn-link">
-                                                            {{ session('lang') == 'bangla' ? $row->title_bn : $row->title_en }}
+                                                            {{ session('lang') == 'english' ? $row->title_en : $row->title_bn }}
                                                         </a>
                                                     </h2>
                                                 </div>
@@ -2044,10 +2051,10 @@
                             {{-- Politic Title --}}
                             <div class="post--items-title" data-ajax="tab">
                                 <h2 class="h4">
-                                    @if (session()->get('lang') == 'bangla')
-                                        {{ $pnbt->newsCategory->category_bn }}
-                                    @else
+                                    @if (session()->get('lang') == 'english')
                                         {{ $pnbt->newsCategory->category_en }}
+                                    @else
+                                        {{ $pnbt->newsCategory->category_bn }}
                                     @endif
                                 </h2>
                             </div>
@@ -2073,18 +2080,18 @@
                                             <div class="title">
                                                 <h2 class="h4" style="font-size: 24px">
                                                     <a href="news-single-v1.html" class="btn-link">
-                                                        @if (session()->get('lang') == 'bangla')
-                                                            {{ $pnbt->title_bn }}
-                                                        @else
+                                                        @if (session()->get('lang') == 'english')
                                                             {{ $pnbt->title_en }}
+                                                        @else
+                                                            {{ $pnbt->title_bn }}
                                                         @endif
                                                     </a>
                                                 </h2>
                                                 <p style="font-size: 16px; margin-top: -5px">
-                                                    @if (session()->get('lang') == 'bangla')
-                                                        {!! Str::limit($pnbt->details_bn, 150, '...') !!}
-                                                    @else
+                                                    @if (session()->get('lang') == 'english')
                                                         {!! Str::limit($pnbt->details_en, 150, '...') !!}
+                                                    @else
+                                                        {!! Str::limit($pnbt->details_bn, 150, '...') !!}
                                                     @endif
                                                 </p>
                                             </div>
@@ -2099,10 +2106,10 @@
                                             <div
                                                 class="row"style="display: flex; justify-content: space-between; align-items: center; {{ $index !== 0 ? 'margin-top: 15px;' : '' }}">
                                                 <div class="col-sm-6">
-                                                    @if (session()->get('lang') == 'bangla')
-                                                        {{ $row->title_bn }}
-                                                    @else
+                                                    @if (session()->get('lang') == 'english')
                                                         {{ $row->title_en }}
+                                                    @else
+                                                        {{ $row->title_bn }}
                                                     @endif
                                                 </div>
                                                 <div class="col-sm-6">
@@ -2138,10 +2145,10 @@
                             {{-- Finance Title --}}
                             <div class="post--items-title" data-ajax="tab">
                                 <h2 class="h4">
-                                    @if (session()->get('lang') == 'bangla')
-                                        {{ $fnbt->newsCategory->category_bn }}
-                                    @else
+                                    @if (session()->get('lang') == 'english')
                                         {{ $fnbt->newsCategory->category_en }}
+                                    @else
+                                        {{ $fnbt->newsCategory->category_bn }}
                                     @endif
                                 </h2>
                             </div>
@@ -2167,18 +2174,18 @@
                                             <div class="title">
                                                 <h2 class="h4" style="font-size: 24px">
                                                     <a href="news-single-v1.html" class="btn-link">
-                                                        @if (session()->get('lang') == 'bangla')
-                                                            {{ $fnbt->title_bn }}
-                                                        @else
+                                                        @if (session()->get('lang') == 'english')
                                                             {{ $fnbt->title_en }}
+                                                        @else
+                                                            {{ $fnbt->title_bn }}
                                                         @endif
                                                     </a>
                                                 </h2>
                                                 <p style="font-size: 16px; margin-top: -5px">
-                                                    @if (session()->get('lang') == 'bangla')
-                                                        {!! Str::limit($fnbt->details_bn, 150, '...') !!}
-                                                    @else
+                                                    @if (session()->get('lang') == 'english')
                                                         {!! Str::limit($fnbt->details_en, 150, '...') !!}
+                                                    @else
+                                                        {!! Str::limit($fnbt->details_bn, 150, '...') !!}
                                                     @endif
                                                 </p>
                                             </div>
@@ -2244,10 +2251,10 @@
                             {{-- Politic Title --}}
                             <div class="post--items-title" data-ajax="tab">
                                 <h2 class="h4">
-                                    @if (session()->get('lang') == 'bangla')
-                                        {{ $pnbt->newsCategory->category_bn }}
-                                    @else
+                                    @if (session()->get('lang') == 'english')
                                         {{ $pnbt->newsCategory->category_en }}
+                                    @else
+                                        {{ $pnbt->newsCategory->category_bn }}
                                     @endif
                                 </h2>
                             </div>
@@ -2273,10 +2280,10 @@
                                             <div class="title">
                                                 <h2 class="h4" style="font-size: 20.8px">
                                                     <a href="news-single-v1.html" class="btn-link">
-                                                        @if (session()->get('lang') == 'bangla')
-                                                            {{ $pnbt->title_bn }}
-                                                        @else
+                                                        @if (session()->get('lang') == 'english')
                                                             {{ $pnbt->title_en }}
+                                                        @else
+                                                            {{ $pnbt->title_bn }}
                                                         @endif
                                                     </a>
                                                 </h2>
@@ -2290,10 +2297,10 @@
                                             <div class="title">
                                                 <h2 class="h4" style="font-size: 19.2px">
                                                     <a href="news-single-v1.html" class="btn-link posthover">
-                                                        @if (session()->get('lang') == 'bangla')
-                                                            {{ $pnbt->title_bn }}
-                                                        @else
+                                                        @if (session()->get('lang') == 'english')
                                                             {{ $pnbt->title_en }}
+                                                        @else
+                                                            {{ $pnbt->title_bn }}
                                                         @endif
                                                     </a>
                                                 </h2>
@@ -2308,10 +2315,10 @@
                             {{-- Politic Title --}}
                             <div class="post--items-title" data-ajax="tab">
                                 <h2 class="h4">
-                                    @if (session()->get('lang') == 'bangla')
-                                        {{ $pnbt->newsCategory->category_bn }}
-                                    @else
+                                    @if (session()->get('lang') == 'english')
                                         {{ $pnbt->newsCategory->category_en }}
+                                    @else
+                                        {{ $pnbt->newsCategory->category_bn }}
                                     @endif
                                 </h2>
                             </div>
@@ -2337,10 +2344,10 @@
                                             <div class="title">
                                                 <h2 class="h4" style="font-size: 20.8px">
                                                     <a href="news-single-v1.html" class="btn-link">
-                                                        @if (session()->get('lang') == 'bangla')
-                                                            {{ $pnbt->title_bn }}
-                                                        @else
+                                                        @if (session()->get('lang') == 'english')
                                                             {{ $pnbt->title_en }}
+                                                        @else
+                                                            {{ $pnbt->title_bn }}
                                                         @endif
                                                     </a>
                                                 </h2>
@@ -2354,10 +2361,10 @@
                                             <div class="title">
                                                 <h2 class="h4" style="font-size: 19.2px">
                                                     <a href="news-single-v1.html" class="btn-link posthover">
-                                                        @if (session()->get('lang') == 'bangla')
-                                                            {{ $pnbt->title_bn }}
-                                                        @else
+                                                        @if (session()->get('lang') == 'english')
                                                             {{ $pnbt->title_en }}
+                                                        @else
+                                                            {{ $pnbt->title_bn }}
                                                         @endif
                                                     </a>
                                                 </h2>
@@ -2372,10 +2379,10 @@
                             {{-- Politic Title --}}
                             <div class="post--items-title" data-ajax="tab">
                                 <h2 class="h4">
-                                    @if (session()->get('lang') == 'bangla')
-                                        {{ $pnbt->newsCategory->category_bn }}
-                                    @else
+                                    @if (session()->get('lang') == 'english')
                                         {{ $pnbt->newsCategory->category_en }}
+                                    @else
+                                        {{ $pnbt->newsCategory->category_bn }}
                                     @endif
                                 </h2>
                             </div>
@@ -2401,10 +2408,10 @@
                                             <div class="title">
                                                 <h2 class="h4" style="font-size: 20.8px">
                                                     <a href="news-single-v1.html" class="btn-link">
-                                                        @if (session()->get('lang') == 'bangla')
-                                                            {{ $pnbt->title_bn }}
-                                                        @else
+                                                        @if (session()->get('lang') == 'english')
                                                             {{ $pnbt->title_en }}
+                                                        @else
+                                                            {{ $pnbt->title_bn }}
                                                         @endif
                                                     </a>
                                                 </h2>
@@ -2418,10 +2425,10 @@
                                             <div class="title">
                                                 <h2 class="h4" style="font-size: 19.2px">
                                                     <a href="news-single-v1.html" class="btn-link posthover">
-                                                        @if (session()->get('lang') == 'bangla')
-                                                            {{ $pnbt->title_bn }}
-                                                        @else
+                                                        @if (session()->get('lang') == 'english')
                                                             {{ $pnbt->title_en }}
+                                                        @else
+                                                            {{ $pnbt->title_bn }}
                                                         @endif
                                                     </a>
                                                 </h2>
@@ -2436,10 +2443,10 @@
                             {{-- Politic Title --}}
                             <div class="post--items-title" data-ajax="tab">
                                 <h2 class="h4">
-                                    @if (session()->get('lang') == 'bangla')
-                                        {{ $pnbt->newsCategory->category_bn }}
-                                    @else
+                                    @if (session()->get('lang') == 'english')
                                         {{ $pnbt->newsCategory->category_en }}
+                                    @else
+                                        {{ $pnbt->newsCategory->category_bn }}
                                     @endif
                                 </h2>
                             </div>
@@ -2465,10 +2472,10 @@
                                             <div class="title">
                                                 <h2 class="h4" style="font-size: 20.8px">
                                                     <a href="news-single-v1.html" class="btn-link">
-                                                        @if (session()->get('lang') == 'bangla')
-                                                            {{ $pnbt->title_bn }}
-                                                        @else
+                                                        @if (session()->get('lang') == 'english')
                                                             {{ $pnbt->title_en }}
+                                                        @else
+                                                            {{ $pnbt->title_bn }}
                                                         @endif
                                                     </a>
                                                 </h2>
@@ -2482,10 +2489,10 @@
                                             <div class="title">
                                                 <h2 class="h4" style="font-size: 19.2px">
                                                     <a href="news-single-v1.html" class="btn-link posthover">
-                                                        @if (session()->get('lang') == 'bangla')
-                                                            {{ $pnbt->title_bn }}
-                                                        @else
+                                                        @if (session()->get('lang') == 'english')
                                                             {{ $pnbt->title_en }}
+                                                        @else
+                                                            {{ $pnbt->title_bn }}
                                                         @endif
                                                     </a>
                                                 </h2>
@@ -2501,20 +2508,6 @@
 
         </div>
         {{-- Polictics And Economics Section News  End --}}
-
-            <div class="main--content col-md-12 col-sm-7" style="margin-top: 35px; border-top: 1px solid black;">
-        <div class="container">
-            <div class="row">
-                <div padding: 5px 5px;">
-                    <ul style="display: flex; justify-content: center;">
-                        @foreach ([1, 2, 3, 4, 5, 6] as $row)
-                            <li>hi</li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
     </div>
     </div>
     </div>

@@ -40,11 +40,23 @@
                                     @method('PUT')
 
                                     <div>
-                                        <label for="BN" class="form-label">Edit Headline</label>
 
-                                        <textarea name="breaking_news" id="BN" rows="5" class="form-control" autocomplete="off" >{{ old('breaking_news', $breakings->news) }}</textarea>
+                                        <label for="BNE" class="form-label">Make English Headline</label>
 
-                                        @error('breaking_news')
+                                        <textarea name="news_en" id="BNE" rows="5" class="form-control" autocomplete="off">{{ old('news_en', $breakings->news_en) }}</textarea>
+
+                                        @error('news_en')
+                                            <p class="text-danger mt-2">{{ $message }}</p>
+                                        @enderror
+
+                                    </div>
+                                    <div class="mt-3">
+
+                                        <label for="BNB" class="form-label">Make Bangla Headline</label>
+
+                                        <textarea name="news_bn" id="BNB" rows="5" class="form-control" autocomplete="off">{{ old('news_bn', $breakings->news_bn) }}</textarea>
+
+                                        @error('news_bn')
                                             <p class="text-danger mt-2">{{ $message }}</p>
                                         @enderror
 
@@ -54,7 +66,9 @@
 
                                         <label for="url" class="form-label">News Url</label>
 
-                                        <input name="url" id="url" type="text" value="{{ old('url', $breakings->url) }}" class="form-control" autocomplete="off" />
+                                        <input name="url" id="url" type="text"
+                                            value="{{ old('url', $breakings->url) }}" class="form-control"
+                                            autocomplete="off" />
 
                                         @error('url')
                                             <p class="text-danger mt-2">{{ $message }}</p>

@@ -34,14 +34,15 @@ class BreakingNewsController extends Controller
      */
     public function store(Request $request)
     {
-
         $request->validate([
-            'breaking_news' => 'required',
+            'news_en' => 'required',
+            'news_bn' => 'required',
             'status' => 'required'
         ]);
 
         $data = [
-            'news' => $request->breaking_news,
+            'news_en' => $request->news_en,
+            'news_bn' => $request->news_bn,
             'status' => $request->status,
             'url' => $request->url,
             'created_at' => now(),
@@ -91,10 +92,12 @@ class BreakingNewsController extends Controller
         }
 
         $request->validate([
-            'breaking_news' => 'required',
+            'news_en' => 'required',
+            'news_bn' => 'required',
         ]);
 
-        $breaking->news = $request->breaking_news;
+        $breaking->news_en = $request->news_en;
+        $breaking->news_bn = $request->news_bn;
         $breaking->url = $request->url;
         $breaking->save();
 

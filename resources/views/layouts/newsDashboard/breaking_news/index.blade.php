@@ -30,7 +30,7 @@
             <!-- -------------------------------------------------------------- -->
             <!-- Row -->
             <div class="row">
-                <div class="col-lg col-lg-5 px-1">
+                <div class="col-lg col-lg-4 px-1">
                     <div class="card">
                         <h5 class="card-header text-white" style="background-color: #1B84FF">Create News</h5>
                         <div class="card-body">
@@ -38,11 +38,22 @@
                                 @csrf
                                 <div>
 
-                                    <label for="BN" class="form-label">Make Headline</label>
+                                    <label for="BNE" class="form-label">Make English Headline</label>
 
-                                    <textarea name="breaking_news" id="BN" rows="5" class="form-control" autocomplete="off">{{ old('breaking_news') }}</textarea>
+                                    <textarea name="news_en" id="BNE" rows="5" class="form-control" autocomplete="off">{{ old('news_en') }}</textarea>
 
-                                    @error('breaking_news')
+                                    @error('news_en')
+                                        <p class="text-danger mt-2">{{ $message }}</p>
+                                    @enderror
+
+                                </div>
+                                <div class="mt-3">
+
+                                    <label for="BNB" class="form-label">Make Bangla Headline</label>
+
+                                    <textarea name="news_bn" id="BNB" rows="5" class="form-control" autocomplete="off">{{ old('news_bn') }}</textarea>
+
+                                    @error('news_bn')
                                         <p class="text-danger mt-2">{{ $message }}</p>
                                     @enderror
 
@@ -86,7 +97,7 @@
                     @endif
 
                 </div>
-                <div class="col-lg col-lg-7 px-1">
+                <div class="col-lg col-lg-8 px-1">
                     <div class="card">
                         <h5 class="card-header text-white d-flex justify-content-between" style="background-color: #1B84FF">
                             <span>All News</span>
@@ -97,7 +108,8 @@
                                 <thead class="text-center">
                                     <tr>
                                         <th scope="col">SL</th>
-                                        <th scope="col">News</th>
+                                        <th scope="col">News English</th>
+                                        <th scope="col">News Bangla</th>
                                         <th scope="col">Actions</th>
                                         <th scope="col">URL</th>
                                         <th width='120px' scope="col">Status</th>
@@ -107,7 +119,8 @@
                                     @forelse($breaking_news as $key => $breaking)
                                         <tr>
                                             <th class="text-center" scope="row">{{ ++$key }}</th>
-                                            <td>{{ Str::limit($breaking->news, 35, '...') }}</td>
+                                            <td>{{ Str::limit($breaking->news_en, 35, '...') }}</td>
+                                            <td>{{ Str::limit($breaking->news_bn, 35, '...') }}</td>
                                             <td >
                                                 <div class="d-flex justify-content-around align-items-center">
                                                     <a class="btn btn-sm btn-primary"

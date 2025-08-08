@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\View;
 use Stevebauman\Location\Facades\Location;
 use Illuminate\Support\ServiceProvider;
 
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -25,13 +26,39 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
         View::composer('layouts.newsIndex.newsMaster', function ($view) {
+            $ip = request()->ip();
+
+            // For local testing, override IP if needed:
+            $ip = '119.30.39.113';
+
+            $location = Location::get($ip);
+
+            $cityEn = $location ? $location->cityName : 'Unknown';
+
+            // Simple manual Bangla translations for common BD cities (expand as needed)
+            $cityBnMap = [
+                'Dhaka' => 'ঢাকা',
+                'Chittagong' => 'চট্টগ্রাম',
+                'Khulna' => 'খুলনা',
+                'Rajshahi' => 'রাজশাহী',
+                'Barisal' => 'বরিশাল',
+                'Sylhet' => 'সিলেট',
+                'Rangpur' => 'রংপুর',
+                'Mymensingh' => 'ময়মনসিংহ',
+            ];
+
+            $cityBn = $cityBnMap[$cityEn] ?? $cityEn; // fallback to English if not found
+
             $view->with([
                 'meta' => Seo::first(),
                 'social' => Social::first(),
                 'categories' => Category::where('status', 1)->orderBy('category_bn')->get(),
                 'time' => DB::table('breaking_news')->latest()->get(),
-                'position' => Location::get('119.30.39.113')->cityName
+                'position_en' => $cityEn,
+                'position_bn' => $cityBn,
+                'getCates' => Category::latest()->take(8)->get(),
             ]);
         });
     }

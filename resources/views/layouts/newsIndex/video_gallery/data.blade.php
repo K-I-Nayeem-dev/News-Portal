@@ -25,8 +25,13 @@
             @endif
 
             <div class="card-body" style="margin-top: 10px !important;">
-                <a data-fancybox data-type="iframe" href="{{ $iframeSrc }}" class="card-link title-black"
-                    style="color: black; font-size: 18px;">{{ \Illuminate\Support\Str::limit($video->title, 38) }}</a>
+                @if (session()->get('lang') == 'english')
+                    <a data-fancybox data-type="iframe" href="{{ $iframeSrc }}" class="card-link title-black"
+                        style="color: black; font-size: 18px;">{{ \Illuminate\Support\Str::limit($video->title_en, 38) }}</a>
+                @else
+                    <a data-fancybox data-type="iframe" href="{{ $iframeSrc }}" class="card-link title-black"
+                        style="color: black; font-size: 18px;">{{ \Illuminate\Support\Str::limit($video->title_bn, 38) }}</a>
+                @endif
             </div>
         </div>
     </div>

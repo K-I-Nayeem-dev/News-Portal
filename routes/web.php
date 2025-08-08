@@ -20,6 +20,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoGalleryController;
 use App\Http\Controllers\WatermarkController;
 use App\Http\Controllers\WebsiteListController;
+use App\Models\News;
 use Illuminate\Support\Facades\Route;
 
 // News Home page Route for Visitor Or Users
@@ -40,6 +41,10 @@ Route::controller(HomeController::class)->group(function () {
 
     // Route For  Video Gallery
     Route::get('/video-gallery', 'videogallery')->name('video.gallery');
+
+    Route::prefix('news')->group(function () {
+        Route::get('/{category}/{subcategoryOrId}/{maybeId?}', 'showCate_news')->name('showCate.news');
+    });
 
 });
 

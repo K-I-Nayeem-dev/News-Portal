@@ -95,6 +95,17 @@
                 box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
             }
         }
+
+        .catehover {
+            transition: transform 0.1s ease-in-out;
+            cursor: pointer;
+            display: inline-block;
+            /* needed to scale properly */
+        }
+
+        .catehover:hover {
+            transform: scale(1.05);
+        }
     </style>
 
 </head>
@@ -106,11 +117,18 @@
                 <div class="container">
                     <div class="float--left float--xs-none text-xs-center">
                         <ul class="header--topbar-info nav">
-                            <li><i class="fa fm fa-map-marker"></i>{{ $position }}</li>
+                            <li><i class="fa fm fa-map-marker"></i>{{ session('lang') == 'english' ? $position_en : $position_bn }}</li>
                             <li>
-                                <i class="fa fm fa-calendar"></i>Today (Sunday 19 April 2017)
-                            </li>
-                            <li><i class="fa fm fa-mixcloud"></i><span id="date-today"></span></li>
+                                <i class="fa fm fa-calendar"></i>
+                                {{ session('lang') == 'english'
+                                    ? \Carbon\Carbon::now()->setTimezone('Asia/Dhaka')->format('j F Y, g:i A')
+                                    : formatBanglaDateTime(now()) }}
+
+                                @if (session('lang') != 'english')
+                                <li>
+                                    <i class="fa fm fa-mixcloud"></i><span id="date-today"></span>
+                                </li>
+                                @endif
                         </ul>
                     </div>
                     <div class="float--right float--xs-none text-xs-center">
@@ -175,23 +193,23 @@
                                     style="display: flex !important; justify-content: space-around !important; align-items: center !important;">
 
                                     @if (DB::table('live_tvs')->where('status', 1)->first())
-                                        @if (session()->get('lang') == 'bangla')
+                                        @if (session()->get('lang') == 'english')
+                                            <a href="{{ route('live.tv') }}" class="pulse">Live Tv</a>
+                                        @else
                                             <a href="{{ route('live.tv') }}" class="pulse"
                                                 style="font-size: 12px">লাইভ টিভি</a>
-                                        @else
-                                            <a href="{{ route('live.tv') }}" class="pulse">Live Tv</a>
                                         @endif
                                     @endif
                                     <a href="{{ route('video.gallery') }}"><abbr
                                             style="border: none; cursor: pointer; font-size: 20px;"
                                             title="Video Gallery"><i class="fa fa-video-camera text-primary"
                                                 aria-hidden="true"></abbr></i></a>
-                                    @if (session()->get('lang') == 'bangla')
-                                        <a href="{{ route('news.english') }}"style="padding: 2px 6px !important; border-radius: 2px; font-size: 14px; "
-                                            id="banglaToEnglish" class="bg-primary">English</a>
-                                    @else
+                                    @if (session()->get('lang') == 'english')
                                         <a href="{{ route('news.bangla') }}"style="padding: 2px 6px !important; border-radius: 2px; font-size: 14px; "
                                             id="banglaToEnglish" class="bg-primary">বাংলা</a>
+                                    @else
+                                        <a href="{{ route('news.english') }}"style="padding: 2px 6px !important; border-radius: 2px; font-size: 14px; "
+                                            id="banglaToEnglish" class="bg-primary">English</a>
                                     @endif
                                     <button id="theme-toggle" class="text-gray-500 dark:text-yellow-300">
                                         <span id="icon-moon" class="hidden">🌙</span>
@@ -223,9 +241,9 @@
                                             ->get();
                                     @endphp
                                     <li class="dropdown @if (request()->is('category/' . $category->category_en)) active @endif">
-                                        <a href="{{ route('news.cates', session()->get('lang') == 'bangla' ? $category->category_bn : $category->category_en) }}"
+                                        <a href="{{ route('news.cates', session()->get('lang') == 'english' ? $category->category_en : $category->category_bn) }}"
                                             class="dropdown-toggle" data-toggle="dropdown">
-                                            {{ session()->get('lang') == 'bangla' ? $category->category_bn : $category->category_en }}
+                                            {{ session()->get('lang') == 'english' ? $category->category_en : $category->category_bn }}
                                             @if ($sub_cates->count())
                                                 <i class="fa flm fa-angle-down"></i>
                                             @endif
@@ -235,10 +253,10 @@
                                             <ul class="dropdown-menu">
                                                 @foreach ($sub_cates as $sub_cate)
                                                     <li class="@if (request()->is(
-                                                            'news/subcategories/' . session()->get('lang') == 'bangla' ? $sub_cate->sub_cate_bn : $sub_cate->sub_cate_en)) active @endif">
+                                                            'news/subcategories/' . session()->get('lang') == 'english' ? $sub_cate->sub_cate_en : $sub_cate->sub_cate_bn)) active @endif">
                                                         <a
-                                                            href="{{ route('news.sub_cates', session()->get('lang') == 'bangla' ? $sub_cate->sub_cate_bn : $sub_cate->sub_cate_en) }}">
-                                                            {{ session()->get('lang') == 'bangla' ? $sub_cate->sub_cate_bn : $sub_cate->sub_cate_en }}
+                                                            href="{{ route('news.sub_cates', session()->get('lang') == 'english' ? $sub_cate->sub_cate_en : $sub_cate->sub_cate_bn) }}">
+                                                            {{ session()->get('lang') == 'english' ? $sub_cate->sub_cate_en : $sub_cate->sub_cate_bn }}
                                                         </a>
 
                                                     </li>
@@ -262,6 +280,24 @@
         </header>
         <div class="main-content--section pbottom--30">
             @yield('content')
+        </div>
+        <!-- Full-width border -->
+        <div style="border-top: 1px solid #727272; border-bottom: 1px solid #727272; width: 100%; margin-bottom: 10px">
+
+            <div style="padding: 5px 0; display: flex; justify-content: center;">
+
+                @foreach ($getCates as $row)
+                    <div style="margin: 0 15px; font-size: 16px; font-weight: bold;">
+                        <a href="#" class="catehover">
+                            @if (session()->get('lang') == 'english')
+                                {{ $row->category_en }}
+                            @else
+                                {{ $row->category_bn }}
+                            @endif
+                        </a>
+                    </div>
+                @endforeach
+            </div>
         </div>
         <footer class="footer--section">
             <div class="footer--widgets pd--30-0 bg--color-2">
@@ -464,6 +500,7 @@
             </li>
         </ul>
     </div>
+
     <div id="backToTop">
         <a href="#"><i class="fa fa-angle-double-up"></i></a>
     </div>

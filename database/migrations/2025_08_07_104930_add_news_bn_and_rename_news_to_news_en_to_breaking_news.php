@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('news', function (Blueprint $table) {
-            $table->integer('sub_cate_id')->nullable();
+        Schema::table('breaking_news', function (Blueprint $table) {
+            $table->renameColumn('news', 'news_en');
+            $table->string('news_bn');
         });
     }
 
@@ -21,8 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('news', function (Blueprint $table) {
-            $table->dropColumn('sub_cate_id');
+        Schema::table('breaking_news', function (Blueprint $table) {
+            $table->renameColumn('news_en', 'news');
+            $table->dropColumn('news_bn');
         });
     }
 };
