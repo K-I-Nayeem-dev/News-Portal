@@ -1,6 +1,26 @@
 @extends('layouts.newsIndex.newsMaster')
 
 @section('content')
+  {{-- @php
+    $variables = ['fsbt', 'fs1', 'fs2', 'fs9', 'tn', 'sn', 'nnbt', 'nnln', 'nnrn', 'enbt', 'enrn', 'cnbt', 'cn1', 'cn2', 'innbt', 'inn2', 'inn4', 'snbt', 'sn2', 'sn4', 'lsnbt', 'lsnb', 'lsnr', 'lonbt', 'lonrn3', 'lon4', 'vgnbt', 'vgn3', 'pgnbt', 'pgn3', 'pnbt', 'pn3', 'fnbt', 'fn3'];
+
+    $slugs = [];
+
+    foreach ($variables as $var) {
+        if (isset($$var)) { // $$var accesses variable by name
+            $slugs[$var] = generateSlugs($$var);
+        } else {
+            $slugs[$var] = ['categorySlug' => null, 'subcategorySlug' => null];
+        }
+    }
+@endphp --}}
+
+@php
+    use Illuminate\Support\Str;
+
+    $categorySlug = Str::slug($fsbt->newsCategory->category_en);
+    $subcategorySlug = $fsbt->newsSubcategory ? Str::slug($fsbt->newsSubcategory->sub_cate_en) : null;
+@endphp
 
     {{-- Custom CSS Code section Start --}}
     <style>
@@ -337,8 +357,12 @@
                         <div>
                             <div class="post--img">
                                 {{-- <a href="news-single-v1.html" class="thumb"><img src="{{ asset('uploads/news_photos/'. $fsbt->news_photo) }}"alt="{{ $fsbt->title }}" /></a> --}}
-                                <a href="news-single-v1.html" class="thumb"><img
-                                        src="{{ $fsbt->thumbnail }}"alt="{{ $fsbt->title }}" /></a>
+                                <a href="{{ route('showCate.news', array_filter([
+    'category' => $categorySlug,
+    'subcategory' => $subcategorySlug,
+    'id' => $fsbt->id,
+])) }}"
+                                    class="thumb"><img src="{{ $fsbt->thumbnail }}"alt="{{ $fsbt->title }}" /></a>
                                 <a href="#" class="cat">
                                     @if (session()->get('lang') == 'english')
                                         {{ $fsbt->newsCategory->category_en }}

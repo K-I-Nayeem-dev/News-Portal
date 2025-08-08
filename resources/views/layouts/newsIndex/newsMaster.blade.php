@@ -15,7 +15,8 @@
     <meta name="google_analytics" content="{{ $meta->google_analytics }}" />
     <meta name="goolge_verificatoins" content="{{ $meta->goolge_verificatoins }}" />
     <meta name="alexa_analytics" content="{{ $meta->alexa_analytics }}" />
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    @yield('meta')
     {{-- For Seo with dynamic name End  --}}
 
 
@@ -48,6 +49,8 @@
 
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+
 
     <style>
         body {
@@ -108,6 +111,7 @@
         }
     </style>
 
+    <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=6896161ae700c1c978e64e5f&product=sop' async='async'></script>
 </head>
 
 <body>
@@ -117,7 +121,9 @@
                 <div class="container">
                     <div class="float--left float--xs-none text-xs-center">
                         <ul class="header--topbar-info nav">
-                            <li><i class="fa fm fa-map-marker"></i>{{ session('lang') == 'english' ? $position_en : $position_bn }}</li>
+                            <li><i
+                                    class="fa fm fa-map-marker"></i>{{ session('lang') == 'english' ? $position_en : $position_bn }}
+                            </li>
                             <li>
                                 <i class="fa fm fa-calendar"></i>
                                 {{ session('lang') == 'english'
@@ -125,10 +131,10 @@
                                     : formatBanglaDateTime(now()) }}
 
                                 @if (session('lang') != 'english')
-                                <li>
-                                    <i class="fa fm fa-mixcloud"></i><span id="date-today"></span>
-                                </li>
-                                @endif
+                            <li>
+                                <i class="fa fm fa-mixcloud"></i><span id="date-today"></span>
+                            </li>
+                            @endif
                         </ul>
                     </div>
                     <div class="float--right float--xs-none text-xs-center">
@@ -504,6 +510,8 @@
     <div id="backToTop">
         <a href="#"><i class="fa fa-angle-double-up"></i></a>
     </div>
+
+
     <script src="https://bangla.plus/scripts/bangladatetoday.min.js"></script>
     <script>
         dateToday('date-today', 'bangla');
@@ -595,5 +603,4 @@
     <!-- Fancybox JS -->
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
 </body>
-
 </html>

@@ -42,8 +42,8 @@ Route::controller(HomeController::class)->group(function () {
     // Route For  Video Gallery
     Route::get('/video-gallery', 'videogallery')->name('video.gallery');
 
-    Route::prefix('news')->group(function () {
-        Route::get('/{category}/{subcategoryOrId}/{maybeId?}', 'showCate_news')->name('showCate.news');
+    Route::prefix('hello')->group(function () {
+        Route::get('/{category}/{subcategory?}/{id}', 'showCate_news')->name('showCate.news');
     });
 
 });

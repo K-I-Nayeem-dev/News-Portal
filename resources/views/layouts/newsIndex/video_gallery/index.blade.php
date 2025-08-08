@@ -62,10 +62,10 @@
 
             <div class="row">
                 <div class="card-title" style="font-size: 1.5rem; color: black; margin-top: 20px; margin-left: 15px">
-                    @if (session()->get('lang') == 'bangla')
-                        <h3>ভিডিও গ্যালারি</h3>
-                    @else
+                    @if (session()->get('lang') == 'english')
                         <h3>Video Gallery</h3>
+                    @else
+                        <h3>ভিডিও গ্যালারি</h3>
                     @endif
                 </div>
 
@@ -103,11 +103,13 @@
 
                             <div class="card-body" style="margin-top: 10px !important;">
                                 @if (session()->get('lang') == 'english')
-                                    <a data-fancybox data-type="iframe" href="{{ $iframeSrc }}" class="card-link title-black"
-                                    style="color: black; font-size: 18px;">{{ \Illuminate\Support\Str::limit($video->title_en, 38) }}</a>
+                                    <a data-fancybox data-type="iframe" href="{{ $iframeSrc }}"
+                                        class="card-link title-black"
+                                        style="color: black; font-size: 18px;">{{ \Illuminate\Support\Str::limit($video->title_en, 38) }}</a>
                                 @else
-                                <a data-fancybox data-type="iframe" href="{{ $iframeSrc }}" class="card-link title-black"
-                                    style="color: black; font-size: 18px;">{{ \Illuminate\Support\Str::limit($video->title_bn, 38) }}</a>
+                                    <a data-fancybox data-type="iframe" href="{{ $iframeSrc }}"
+                                        class="card-link title-black"
+                                        style="color: black; font-size: 18px;">{{ \Illuminate\Support\Str::limit($video->title_bn, 38) }}</a>
                                 @endif
                             </div>
                         </div>
@@ -142,7 +144,8 @@
                         dataType: "html",
                         success: function(response) {
                             if ($.trim(response) === '') {
-                                $('#load_more_data').hide(); // ← Only change: hide when no more data
+                                $('#load_more_data')
+                            .hide(); // ← Only change: hide when no more data
                             } else {
                                 $('#postList').append(response);
                                 $("#load_more_data").prop("disabled", false);

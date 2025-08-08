@@ -9,13 +9,11 @@ use App\Models\Seo;
 use App\Models\Social;
 use App\Models\SubCategory;
 use App\Models\VideoGallery;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use Stevebauman\Location\Facades\Location;
-use App\Jobs\ConvertDateToBangla;
 use App\Models\PhotoGallery;
+use Illuminate\Support\Str;
 
 class HomeController extends Controller
 {
@@ -189,40 +187,30 @@ class HomeController extends Controller
     }
 
     // For Single Page News Show
-    public function showCate_news($category, $subcategoryOrId = null, $maybeId = null)
-    {
-        // Detect if only category + ID given
-        if (is_numeric($subcategoryOrId) && $maybeId === null) {
-            $id = $subcategoryOrId;
-            $subcategory = null;
-        } else {
-            $subcategory = $subcategoryOrId;
-            $id = $maybeId;
-        }
 
-        // Load news with related category and subcategory
+    public function showCate_news($category, $subcategory = null, $id)
+    {
         $news = News::with(['newsCategory', 'newsSubCategory'])->findOrFail($id);
 
-        // Check if category name matches
-        if (strtolower($news->newsCategory->category_en) !== strtolower($category)) {
+        $expectedCategory = Str::slug($news->newsCategory->category_en);
+        $expectedSubcategory = $news->newsSubCategory ? Str::slug($news->newsSubCategory->sub_cate_en) : null;
+
+        if (mb_strtolower($category, 'UTF-8') !== mb_strtolower($expectedCategory, 'UTF-8')) {
             abort(404, 'Category mismatch');
         }
 
-        // If subcategory exists, check it
-        if ($subcategory && $news->newsSubCategory) {
-            if (strtolower($news->newsSubCategory->sub_cate_en) !== strtolower($subcategory)) {
+        if ($expectedSubcategory) {
+            if (!$subcategory || mb_strtolower($subcategory, 'UTF-8') !== mb_strtolower($expectedSubcategory, 'UTF-8')) {
                 abort(404, 'Subcategory mismatch');
+            }
+        } else {
+            if ($subcategory) {
+                abort(404, 'Unexpected subcategory');
             }
         }
 
-
-        // Get Tags for News And set language for that
-        $locale = session()->get('lang') === 'english' ? 'en' : 'bn';
-
-        $tagsRaw = $locale === 'en' ? $news->tags_en : $news->tags_bn;
-
+        $tagsRaw = $news->tags_en; // Only English tags now
         $tags = array_map('trim', explode(',', $tagsRaw));
-
 
         return view('layouts.newsIndex.home.show', [
             'news' => $news,
@@ -231,10 +219,11 @@ class HomeController extends Controller
     }
 
 
+
+
     // Method For get sub_cates news
     public function sub_cate_news($name)
     {
-        dd('sub_cates: ' . $name);
 
         // Bangla or English name passed via route
         $subCategory = SubCategory::where('sub_cate_bn', $name)->firstOrFail();
@@ -248,7 +237,6 @@ class HomeController extends Controller
     // Method For get Category News
     public function cate_news($name)
     {
-        dd('cates: ' . $name);
 
         // Bangla or English name passed via route
         $subCategory = SubCategory::where('sub_cate_bn', $name)->firstOrFail();

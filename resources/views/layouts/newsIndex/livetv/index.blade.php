@@ -62,10 +62,10 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div>
-                                @if (session()->get('lang') == 'bangla')
-                                    <h3 style="color: black" class="pulsee">লাইভ টিভি</h3>
-                                @else
+                                @if (session()->get('lang') == 'english')
                                     <h3 style="color: black" class="pulsee">Live TV</h3>
+                                @else
+                                    <h3 style="color: black" class="pulsee">লাইভ টিভি</h3>
                                 @endif
                             </div>
                             <div style="border-bottom: 2px solid #1B84FF; margin-bottom: 15px"></div>
