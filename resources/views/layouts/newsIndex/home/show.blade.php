@@ -4,11 +4,11 @@
     <meta property="og:url" content="{{ Request::fullUrl() }}" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="{{ session('lang') == 'english' ? $news->title_en : $news->title_bn }}" />
-    <meta property="og:description" content="{{ session('lang') == 'english' ? Str::limit(strip_tags($news->details_en), 150) : Str::limit(strip_tags($news->details_bn), 150) }}" />
+    <meta property="og:description"
+        content="{{ session('lang') == 'english' ? Str::limit(strip_tags($news->details_en), 150) : Str::limit(strip_tags($news->details_bn), 150) }}" />
     <meta property="og:image" content="{{ asset($news->thumbnail) }}" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-
 @endsection
 
 @section('content')
@@ -37,7 +37,8 @@
         <div class="container">
             <ul class="breadcrumb">
                 <li>
-                    <a href="{{ route('home') }}" class="btn-link"><i class="fa fm fa-home"></i>Home</a>
+                    <a href="{{ route('home') }}" class="btn-link"><i
+                            class="fa fm fa-home"></i>{{ session()->get('lang') == 'english' ? 'Home' : 'হোম' }}</a>
                 </li>
                 <li>
                     <a href="travel.html" class="btn-link">
@@ -52,7 +53,7 @@
             </ul>
         </div>
     </div>
-    <div class="main-content--section pbottom--30">
+    <div class="main-content--section">
         <div class="container">
             <div class="row">
                 <div class="main--content col-md-8" data-sticky-content="true">
@@ -71,7 +72,7 @@
                                 </div>
                                 <div class="post--social" style="margin-bottom: 15px">
                                     <!-- ShareThis START -->
-                                    <div class="sharethis-inline-share-buttons"  data-href='{{ Request::url() }}'></div>
+                                    <div class="sharethis-inline-share-buttons" data-href='{{ Request::url() }}'></div>
                                     <!-- ShareThis END -->
                                 </div>
                             </div>
@@ -100,10 +101,10 @@
                                             : $news->newsSubDist->sub_district_bn;
                                     @endphp
 
-                                    <i class="fa-solid fa-location-dot"></i>
+                                    <i class="fa fa-map-marker" aria-hidden="true"></i>
                                     <span class="breadcrumb-text">
-                                        {{ $division }}  /
-                                        {{ $district }}  /
+                                        {{ $division }} /
+                                        {{ $district }} /
                                         {{ $subDistrict }}
                                     </span>
                                 </div>
@@ -144,278 +145,180 @@
                             </div>
                             <div class="ad--space pd--20-0-40">
                                 <a href="#">
-                                    <img src="{{ asset('frontend_assets/img/ads-img/ad-728x90-02.jpg') }}" alt="" class="center-block" />
+                                    <img src="{{ asset('frontend_assets/img/ads-img/ad-728x90-02.jpg') }}" alt=""
+                                        class="center-block" />
                                 </a>
                             </div>
-                            <div class="post--author-info clearfix">
 
-                            </div>
-                            <div class="post--nav">
-                                <ul class="nav row">
-                                    <li class="col-xs-6 ptop--30 pbottom--30">
-                                        <div class="post--item">
-                                            <div class="post--img">
-                                                <a href="#" class="thumb"><img
-                                                        src="img/news-single-img/post-nav-prev.jpg" alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Astaroth</a></li>
-                                                        <li><a href="#">Yeasterday 03:52 pm</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="#" class="btn-link">On the other hand, we
-                                                                denounce
-                                                                with righteous
-                                                                indignation and dislike demoralized</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="col-xs-6 ptop--30 pbottom--30">
-                                        <div class="post--item">
-                                            <div class="post--img">
-                                                <a href="#" class="thumb"><img
-                                                        src="img/news-single-img/post-nav-next.jpg" alt="" /></a>
-                                                <div class="post--info">
-                                                    <ul class="nav meta">
-                                                        <li><a href="#">Astaroth</a></li>
-                                                        <li><a href="#">Yeasterday 03:52 pm</a></li>
-                                                    </ul>
-                                                    <div class="title">
-                                                        <h3 class="h4">
-                                                            <a href="#" class="btn-link">On the other hand, we
-                                                                denounce
-                                                                with righteous
-                                                                indignation and dislike demoralized</a>
-                                                        </h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="post--related ptop--30">
-                                <div class="post--items-title" data-ajax="tab">
-                                    <h2 class="h4">You Might Also Like</h2>
-                                    <div class="nav">
-                                        <a href="#" class="prev btn-link"
-                                            data-ajax-action="load_prev_related_posts">
-                                            <i class="fa fa-long-arrow-left"></i>
-                                        </a>
-                                        <span class="divider">/</span>
-                                        <a href="#" class="next btn-link"
-                                            data-ajax-action="load_next_related_posts">
-                                            <i class="fa fa-long-arrow-right"></i>
-                                        </a>
+                            @if ($morePhotos->count() > 0)
+                                @foreach ($morePhotos as $row)
+                                    <div style="width: 100%; padding: 20px 0">
+                                        <img src="{{ asset('uploads/news_related_photos/' . $row->photo) }}"
+                                            alt="{{ $news->title_en }}" class="img-fluid">
                                     </div>
-                                </div>
-                                <div class="post--items post--items-2" data-ajax-content="outer">
-                                    <ul class="nav row" data-ajax-content="inner">
-                                        <li class="col-sm-6 pbottom--30">
-                                            <div class="post--item post--layout-1">
-                                                <div class="post--img">
-                                                    <a href="#" class="thumb"><img
-                                                            src="img/news-single-img/related-post-01.jpg"
-                                                            alt="" /></a>
-                                                    <a href="#" class="cat">Fitness</a>
-                                                    <a href="#" class="icon"><i class="fa fa-flash"></i></a>
-                                                    <div class="post--info">
-                                                        <ul class="nav meta">
-                                                            <li><a href="#">Astaroth</a></li>
-                                                            <li><a href="#">Yeasterday 03:52 pm</a></li>
-                                                        </ul>
-                                                        <div class="title">
-                                                            <h3 class="h4">
-                                                                <a href="#" class="btn-link">On the other hand, we
-                                                                    denounce with
-                                                                    righteous indignation and dislike
-                                                                    demoralized</a>
-                                                            </h3>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="post--content">
-                                                    <p>
-                                                        At vero eos et accusamus et iusto odio dignissimos
-                                                        ducimus qui blanditiis praesentium voluptatum
-                                                        deleniti atque corrupti quos mollitia animi, id
-                                                        est laborum et dolorum fuga.
-                                                    </p>
-                                                </div>
-                                                <div class="post--action">
-                                                    <a href="#">Continue Reading... </a>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="col-sm-6 hidden-xs pbottom--30">
-                                            <div class="post--item post--layout-1">
-                                                <div class="post--img">
-                                                    <a href="#" class="thumb"><img
-                                                            src="img/news-single-img/related-post-02.jpg"
-                                                            alt="" /></a>
-                                                    <a href="#" class="cat">Fitness</a>
-                                                    <a href="#" class="icon"><i class="fa fa-flash"></i></a>
-                                                    <div class="post--info">
-                                                        <ul class="nav meta">
-                                                            <li><a href="#">Astaroth</a></li>
-                                                            <li><a href="#">Yeasterday 03:52 pm</a></li>
-                                                        </ul>
-                                                        <div class="title">
-                                                            <h3 class="h4">
-                                                                <a href="#" class="btn-link">On the other hand, we
-                                                                    denounce with
-                                                                    righteous indignation and dislike
-                                                                    demoralized</a>
-                                                            </h3>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="post--content">
-                                                    <p>
-                                                        At vero eos et accusamus et iusto odio dignissimos
-                                                        ducimus qui blanditiis praesentium voluptatum
-                                                        deleniti atque corrupti quos mollitia animi, id
-                                                        est laborum et dolorum fuga.
-                                                    </p>
-                                                </div>
-                                                <div class="post--action">
-                                                    <a href="#">Continue Reading... </a>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <div class="preloader bg--color-0--b" data-preloader="1">
-                                        <div class="preloader--inner"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="comment--list pd--30-0">
-                                <div class="post--items-title">
-                                    <h2 class="h4">03 Comments</h2>
-                                    <i class="icon fa fa-comments-o"></i>
-                                </div>
-                                <ul class="comment--items nav">
-                                    <li>
-                                        <div class="comment--item clearfix">
-                                            <div class="comment--img float--left">
-                                                <img src="img/news-single-img/comment-avatar-01.jpg" alt="" />
-                                            </div>
-                                            <div class="comment--info">
-                                                <div class="comment--header clearfix">
-                                                    <p class="name">Karla Gleichauf</p>
-                                                    <p class="date">12 May 2017 at 05:28 pm</p>
-                                                    <a href="#" class="reply"><i class="fa fa-mail-reply"></i></a>
-                                                </div>
-                                                <div class="comment--content">
-                                                    <p>
-                                                        On the other hand, we denounce with righteous
-                                                        indignation and dislike men who are so beguiled
-                                                        and demoralized by the charms of pleasure of the
-                                                        moment
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="comment--item clearfix">
-                                            <div class="comment--img float--left">
-                                                <img src="img/news-single-img/comment-avatar-02.jpg" alt="" />
-                                            </div>
-                                            <div class="comment--info">
-                                                <div class="comment--header clearfix">
-                                                    <p class="name">M Shyamalan</p>
-                                                    <p class="date">12 May 2017 at 05:28 pm</p>
-                                                    <a href="#" class="reply"><i class="fa fa-mail-reply"></i></a>
-                                                </div>
-                                                <div class="comment--content">
-                                                    <p>
-                                                        On the other hand, we denounce with righteous
-                                                        indignation and dislike men who are so beguiled
-                                                        and demoralized by the charms of pleasure of the
-                                                        moment
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <ul class="comment--items nav">
-                                            <li>
-                                                <div class="comment--item clearfix">
-                                                    <div class="comment--img float--left">
-                                                        <img src="img/news-single-img/comment-avatar-03.jpg"
-                                                            alt="" />
-                                                    </div>
-                                                    <div class="comment--info">
-                                                        <div class="comment--header clearfix">
-                                                            <p class="name">Liz Montano</p>
-                                                            <p class="date">12 May 2017 at 05:28 pm</p>
-                                                            <a href="#" class="reply"><i
-                                                                    class="fa fa-mail-reply"></i></a>
-                                                        </div>
-                                                        <div class="comment--content">
-                                                            <p>
-                                                                On the other hand, we denounce with righteous
-                                                                indignation and dislike men who are so
-                                                                beguiled and demoralized by the charms of
-                                                                pleasure of the moment
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
+                                @endforeach
+                            @endif
+
+                            {{-- Facebook comment For news --}}
                             <div class="comment--form pd--30-0">
-                                <div class="post--items-title">
-                                    <h2 class="h4">Leave A Comment</h2>
-                                    <i class="icon fa fa-pencil-square-o"></i>
-                                </div>
-                                <div class="comment-respond">
-                                    <form action="#" data-form="validate">
-                                        <p>
-                                            Don’t worry ! Your email address will not be published.
-                                            Required fields are marked (*).
-                                        </p>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <label>
-                                                    <span>Comment *</span>
-                                                    <textarea name="comment" class="form-control" required></textarea>
-                                                </label>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <label>
-                                                    <span>Name *</span>
-                                                    <input type="text" name="name" class="form-control" required />
-                                                </label>
-                                                <label>
-                                                    <span>Email Address *</span>
-                                                    <input type="email" name="email" class="form-control" required />
-                                                </label>
-                                                <label>
-                                                    <span>Website</span>
-                                                    <input type="text" name="website" class="form-control" />
-                                                </label>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <button type="submit" class="btn btn-primary">
-                                                    Post a Comment
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
+                                <div class="fb-comments" data-href="{{ Request::fullUrl() }}" data-width="100%"
+                                    data-numposts="5"></div>
                             </div>
                         </div>
                     </div>
 
                 </div>
+                <div class="main--sidebar col-md-4 col-sm-5 ptop--30 pbottom--30" data-sticky-content="true">
+                    <div class="sticky-content-inner"
+                        style="padding-top: 0px; padding-bottom: 1px; position: static; transform: none;">
+                        <div class="widget">
+                            <div class="ad--widget"> <a href="#"> <img
+                                        src="{{ asset('frontend_assets/img/ads-img/ad-300x250-1.jpg') }}" alt=""
+                                        data-rjs="2"> </a> </div>
+                        </div>
+                        <div>
+                            <div style="margin-top: 30px;">
+                                <h3
+                                    style="font-size: 18px; font-weight: bold; display: inline; border-bottom: 2px solid #DA0000; padding-bottom: 10px">
+                                    {!! session()->get('lang') == 'english'
+                                        ? $news->newsCategory->category_en . '<span> Peoples Choice </span>'
+                                        : $news->newsCategory->category_bn . '<span> এর পাঠক প্রিয় </span>' !!}
+                                </h3>
+                            </div>
+                            @foreach ($relatedNews as $row)
+                                <div>
+                                    <h3 style="font-size: 19.2px;">{{ $row->title_en }}</h3>
+                                    <div style="display: flex; align-items: center; margin-top: 20px">
+                                        <p>{!! session()->get('lang') == 'english'
+                                            ? \Illuminate\Support\Str::limit($row->details_en, 60)
+                                            : \Illuminate\Support\Str::limit($row->details_bn, 60) !!}</p>
+
+                                        <a href="news-single-v1.html" class="thumb">
+                                            @php
+                                                $isPlaceholder = Str::contains($row->thumbnail, 'via.placeholder.com');
+                                                $imageToShow =
+                                                    !$isPlaceholder && !empty($row->thumbnail)
+                                                        ? asset($row->thumbnail)
+                                                        : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                            @endphp
+
+                                            <img style="width: 300px; height: 80px; padding: 0px 0px 0px 20px"
+                                                src="{{ $imageToShow }}" alt="{{ $row->title_en }}" class="img-fluid">
+
+                                        </a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="resize-sensor"
+                            style="position: absolute; inset: 0px; overflow: hidden; z-index: -1; visibility: hidden;">
+                            <div class="resize-sensor-expand"
+                                style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;">
+                                <div
+                                    style="position: absolute; left: 0px; top: 0px; transition: all; width: 400px; height: 4061px;">
+                                </div>
+                            </div>
+                            <div class="resize-sensor-shrink"
+                                style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;">
+                                <div style="position: absolute; left: 0; top: 0; transition: 0s; width: 200%; height: 200%">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    @endsection
+    </div>
+    <div class="main-content--section">
+        <div class="container">
+            <div class="row">
+                <div class="main--content col-md-8 col-sm-7" data-sticky-content="true">
+                    <div class="sticky-content-inner">
+                        <div class="row">
+                            @foreach ($randomNews as $row)
+                                <div class="col-6 col-sm-6 col-md-4 mt-3" style="margin-top: 20px">
+                                    <div>
+                                        <div class="post--img">
+                                            <a href="news-single-v1.html" class="thumb">
+                                                @php
+                                                    $isPlaceholder = Str::contains(
+                                                        $row->thumbnail,
+                                                        'via.placeholder.com',
+                                                    );
+                                                    $imageToShow =
+                                                        !$isPlaceholder && !empty($row->thumbnail)
+                                                            ? asset($row->thumbnail)
+                                                            : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                                @endphp
+
+                                                <img src="{{ $imageToShow }}" alt="{{ $row->title_en }}"
+                                                    class="img-fluid">
+
+                                            </a>
+                                            <a href="#" class="cat">
+                                                @if (session()->get('lang') == 'english')
+                                                    {{ $row->newsCategory->category_en }}
+                                                @else
+                                                    {{ $row->newsCategory->category_bn }}
+                                                @endif
+                                            </a>
+                                            <div class="post--info">
+
+                                                <div class="title">
+                                                    <h2 class="h4">
+                                                        <a href="news-single-v1.html" class="btn-link">
+                                                            @if (session()->get('lang') == 'english')
+                                                                {{ $row->title_en }}
+                                                            @else
+                                                                {{ $row->title_bn }}
+                                                            @endif
+                                                        </a>
+                                                    </h2>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+
+                            <div class="col-md-12 ptop--30 pbottom--30">
+                                <div class="ad--space">
+                                    <a href="#">
+                                        <img src="{{ asset('frontend_assets') }}/img/ads-img/ad-728x90-01.jpg"
+                                            alt="" class="center-block" />
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="main--sidebar col-md-4 col-sm-5 ptop--30 pbottom--30" data-sticky-content="true">
+                    <div class="sticky-content-inner"
+                        style="padding-top: 0px; padding-bottom: 1px; position: static; transform: none;">
+                        <div class="widget">
+                            <div class="ad--widget">
+                                <a href="#">
+                                    <img src="{{ asset('frontend_assets/img/ads-img/ad-300x250-1.jpg') }}"
+                                        alt=""data-rjs="2">
+                                </a>
+                            </div>
+                            <div class="ad--widget" style="margin-top: 30px">
+                                <a href="#">
+                                    <img src="{{ asset('frontend_assets/img/ads-img/ad-300x250-1.jpg') }}"
+                                        alt=""data-rjs="2">
+                                </a>
+                            </div>
+                            <div class="ad--widget" style="margin-top: 30px">
+                                <a href="#">
+                                    <img src="{{ asset('frontend_assets/img/ads-img/ad-300x250-1.jpg') }}"
+                                        alt=""data-rjs="2">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection

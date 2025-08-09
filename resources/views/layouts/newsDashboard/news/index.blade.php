@@ -41,7 +41,7 @@
                         <h5 class="card-header text-white d-flex justify-content-between align-items-center"
                             style="background-color: #1B84FF">
                             <span>News Lists</span>
-                            <span>Total News: {{ $news->count() }}<a href="{{ route('news.create') }}"
+                            <span>Total News: {{ $news->count() }}<a href="{{ route('dashboard_news.create') }}"
                                     class="btn rounded ms-2 bg-success text-white hover-btn">Create News</a></span>
                         </h5>
                         <div class="card-body">
@@ -65,7 +65,7 @@
                                 <tbody>
                                     @forelse ($news as $key => $new)
                                         <tr>
-                                            <a href="{{ route('news.show', $new->id) }}">
+                                            <a href="{{ route('dashboard_news.show', $new->id) }}">
                                                 <td>{{ $new->id }}</td>
                                                 <td>{{ $new->newsUser->name }} {!! Auth::id() == $new->newsUser->id ? '<sup><code style="font-size: 12px">*</code></sup>' : '' !!}</td>
                                                 <td class="text-center"><img src="{{ $new->thumbnail }}" width="120"
@@ -73,12 +73,12 @@
                                                 <td>
                                                     <div class="d-flex justify-content-around align-items-center">
                                                         <a class="btn btn-sm btn-success rounded"
-                                                            href="{{ route('news.show', $new->id) }}"><i
+                                                            href="{{ route('dashboard_news.show', $new->id) }}"><i
                                                                 class="fa-solid fa-eye"></i></a>
                                                         <a class="btn btn-sm btn-primary rounded"
-                                                            href="{{ route('news.edit', $new->id) }}"><i
+                                                            href="{{ route('dashboard_news.edit', $new->id) }}"><i
                                                                 class="fa-solid fa-pen-to-square"></i></a>
-                                                        <form method="POST" action="{{ route('news.destroy', $new->id) }}"
+                                                        <form method="POST" action="{{ route('dashboard_news.destroy', $new->id) }}"
                                                             onsubmit="return confirm('Are you sure you want to delete this?')">
                                                             @csrf
                                                             @method('DELETE')
@@ -89,7 +89,7 @@
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <form method="POST" action="{{ route('news.update', $new->id) }}">
+                                                    <form method="POST" action="{{ route('dashboard_news.update', $new->id) }}">
                                                         @csrf
                                                         @method('PUT')
                                                         <select class="form-select" name="status" id="status"

@@ -357,11 +357,8 @@
                         <div>
                             <div class="post--img">
                                 {{-- <a href="news-single-v1.html" class="thumb"><img src="{{ asset('uploads/news_photos/'. $fsbt->news_photo) }}"alt="{{ $fsbt->title }}" /></a> --}}
-                                <a href="{{ route('showCate.news', array_filter([
-    'category' => $categorySlug,
-    'subcategory' => $subcategorySlug,
-    'id' => $fsbt->id,
-])) }}"
+                                <a href="{{ route('showFull.news', array_filter(['category' => $categorySlug,'subcategory' => $subcategorySlug,'id' => $fsbt->id,])) }}"
+
                                     class="thumb"><img src="{{ $fsbt->thumbnail }}"alt="{{ $fsbt->title }}" /></a>
                                 <a href="#" class="cat">
                                     @if (session()->get('lang') == 'english')

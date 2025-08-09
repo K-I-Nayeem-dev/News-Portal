@@ -165,7 +165,7 @@
                             </a>
                             <ul aria-expanded="false" class="collapse first-level">
                                 <li class="sidebar-item">
-                                    <a href="{{ route('news.index') }}" class="sidebar-link sublink">
+                                    <a href="{{ route('dashboard_news.index') }}" class="sidebar-link sublink">
                                         <div class="round-16 d-flex align-items-center justify-content-center">
                                             <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
                                         </div>
@@ -173,7 +173,7 @@
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
-                                    <a href="{{ route('news.create') }}" class="sidebar-link sublink">
+                                    <a href="{{ route('dashboard_news.create') }}" class="sidebar-link sublink">
                                         <div class="round-16 d-flex align-items-center justify-content-center">
                                             <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
                                         </div>

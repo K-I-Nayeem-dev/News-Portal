@@ -18,7 +18,7 @@
                                         </a>
                                     </li>
                                     <li class="breadcrumb-item">
-                                        <a class="text-muted text-decoration-none" href="{{ route('news.index') }}">All News
+                                        <a class="text-muted text-decoration-none" href="{{ route('dashboard_news.index') }}">All News
                                         </a>
                                     </li>
                                     <li class="breadcrumb-item text-muted" aria-current="page">News : {{ $news->id }}
@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-center">
-                    <a href="{{ route('news.index') }}" class="btn btn-primary rounded">Back</a>
+                    <a href="{{ route('dashboard_news.index') }}" class="btn btn-primary rounded">Back</a>
                 </div>
             </div>
         </div>

@@ -111,7 +111,9 @@
         }
     </style>
 
-    <script type='text/javascript' src='https://platform-api.sharethis.com/js/sharethis.js#property=6896161ae700c1c978e64e5f&product=sop' async='async'></script>
+    <script type='text/javascript'
+        src='https://platform-api.sharethis.com/js/sharethis.js#property=6896161ae700c1c978e64e5f&product=sop'
+        async='async'></script>
 </head>
 
 <body>
@@ -284,7 +286,7 @@
                 </div>
             </div>
         </header>
-        <div class="main-content--section pbottom--30">
+        <div class="main-content--section">
             @yield('content')
         </div>
         <!-- Full-width border -->
@@ -511,6 +513,8 @@
         <a href="#"><i class="fa fa-angle-double-up"></i></a>
     </div>
 
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v12.0"></script>
 
     <script src="https://bangla.plus/scripts/bangladatetoday.min.js"></script>
     <script>
@@ -603,4 +607,5 @@
     <!-- Fancybox JS -->
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
 </body>
+
 </html>

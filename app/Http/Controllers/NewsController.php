@@ -164,8 +164,9 @@ class NewsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(News $news)
+    public function show($id)
     {
+        $news = News::findOrFail($id);
         return view('layouts.newsDashboard.news.show', [
             'news' => $news,
         ]);
@@ -214,8 +215,11 @@ class NewsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(News $news)
+    public function edit($id)
     {
+
+        $news = News::findOrFail($id);
+
         // Get Categories and Sub Categories get
         $categories = Category::all();
         $sub_cates = SubCategory::where('category_id', $news->category_id)->get();
@@ -349,9 +353,9 @@ class NewsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(News $news)
+    public function destroy($id)
     {
-        $news->delete();
+        News::findOrFail($id)->delete();
         return back()->with('news_delete', 'News Deleted');
     }
 }

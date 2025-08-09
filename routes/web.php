@@ -42,8 +42,8 @@ Route::controller(HomeController::class)->group(function () {
     // Route For  Video Gallery
     Route::get('/video-gallery', 'videogallery')->name('video.gallery');
 
-    Route::prefix('hello')->group(function () {
-        Route::get('/{category}/{subcategory?}/{id}', 'showCate_news')->name('showCate.news');
+    Route::prefix('news')->group(function () {
+        Route::get('/{category}/{subcategory?}/{id}', 'showFull_news')->name('showFull.news');
     });
 
 });
@@ -77,7 +77,7 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
 
     // Resource Urls
     Route::resources([
-        'news' => NewsController::class,
+        'dashboard_news' => NewsController::class,
         'categories' => CategoryController::class,
         'breaking_news' => BreakingNewsController::class,
         'sub_categories' => SubCategoryController::class,
@@ -92,7 +92,7 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
     ]);
 
     // Specific Version (Bangla/English) News Show Routes
-    Route::prefix('news')->controller(NewsController::class)->group(function () {
+    Route::prefix('dashboard_news')->controller(NewsController::class)->group(function () {
         Route::get('/{id}/news_en', 'show_en')->name('news_en');
         Route::get('/{id}/news_bn', 'show_bn')->name('news_bn');
     });

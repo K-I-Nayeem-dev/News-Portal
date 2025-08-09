@@ -35,11 +35,11 @@
                         <h5 class="card-header text-white d-flex justify-content-between align-items-center"
                             style="background-color: #1B84FF">
                             <span>Post News</span>
-                            <span><a href="{{ route('news.index') }}"
+                            <span><a href="{{ route('dashboard_news.index') }}"
                                     class="btn rounded ms-2 bg-success text-white hover-btn">All News</a></span>
                         </h5>
                         <div class="card-body">
-                            <form method="POST" action="{{ route('news.store') }}" enctype="multipart/form-data">
+                            <form method="POST" action="{{ route('dashboard_news.store') }}" enctype="multipart/form-data">
                                 @csrf
 
                                 {{-- Title Bangla and English Row --}}

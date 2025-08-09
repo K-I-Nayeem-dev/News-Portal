@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\LiveTv;
 use App\Models\News;
+use App\Models\news_photo;
 use App\Models\Seo;
 use App\Models\Social;
 use App\Models\SubCategory;
@@ -188,7 +189,7 @@ class HomeController extends Controller
 
     // For Single Page News Show
 
-    public function showCate_news($category, $subcategory = null, $id)
+    public function showFull_news($category, $subcategory = null, $id)
     {
         $news = News::with(['newsCategory', 'newsSubCategory'])->findOrFail($id);
 
@@ -212,9 +213,25 @@ class HomeController extends Controller
         $tagsRaw = $news->tags_en; // Only English tags now
         $tags = array_map('trim', explode(',', $tagsRaw));
 
+        // show related Category News
+        $relatedNews = News::where('category_id', $news->category_id) // Same category
+            ->where('id', '!=', $news->id) // Exclude current news
+            ->latest()
+            ->take(5) // Limit results if needed
+            ->get();
+
+        // If news Have more Photos then show
+        $morePhotos = news_photo::where('id',$news->id)->latest()->get();
+
+        // If news Have more Photos then show
+        $randomNews = News::latest()->take(100)->get()->random(12);
+
         return view('layouts.newsIndex.home.show', [
             'news' => $news,
             'tags' => $tags,
+            'relatedNews' => $relatedNews,
+            'morePhotos' => $morePhotos,
+            'randomNews' => $randomNews,
         ]);
     }
 

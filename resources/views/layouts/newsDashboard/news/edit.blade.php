@@ -18,11 +18,11 @@
                                         </a>
                                     </li>
                                     <li class="breadcrumb-item">
-                                        <a class="text-muted text-decoration-none" href="{{ route('news.index') }}">All News
+                                        <a class="text-muted text-decoration-none" href="{{ route('dashboard_news.index') }}">All News
                                         </a>
                                     </li>
                                     <li class="breadcrumb-item " aria-current="page">
-                                        <a class="text-muted" href="{{ route('news.show', $news->id) }}">News :
+                                        <a class="text-muted" href="{{ route('dashboard_news.show', $news->id) }}">News :
                                             {{ $news->id }}</a>
                                     </li>
                                     <li class="breadcrumb-item text-muted" aria-current="page">Edit News</li>
@@ -43,11 +43,11 @@
                         <h5 class="card-header text-white d-flex justify-content-between align-items-center"
                             style="background-color: #1B84FF">
                             <span>Edit News</span>
-                            <span><a href="{{ route('news.index') }}"
+                            <span><a href="{{ route('dashboard_news.index') }}"
                                     class="btn rounded ms-2 bg-success text-white hover-btn">Back</a></span>
                         </h5>
                         <div class="card-body">
-                            <form method="POST" action="{{ route('news.update', $news->id) }}"
+                            <form method="POST" action="{{ route('dashboard_news.update', $news->id) }}"
                                 enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
@@ -374,7 +374,7 @@
 
                                 <div>
                                     <button class="btn btn-primary mt-3">Update News</button>
-                                    <a class="btn btn-primary mt-3 ms-2" href="{{ route('news.index') }}">Back</a>
+                                    <a class="btn btn-primary mt-3 ms-2" href="{{ route('dashboard_news.index') }}">Back</a>
                                 </div>
 
                             </form>
