@@ -469,7 +469,6 @@
                                             @endif
                                         </a>
                                         <div class="post--info">
-
                                             <div class="title">
                                                 <h2 class="h4">
                                                     <a href="news-single-v1.html" class="btn-link">

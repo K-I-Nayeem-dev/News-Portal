@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Models\PhotoGallery;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Response;
 
 class HomeController extends Controller
 {
@@ -187,8 +188,42 @@ class HomeController extends Controller
         ]);
     }
 
-    // For Single Page News Show
+    // Only Category News Show when Click Nav
+    public function getCate_news($categoryName, Request $request)
+    {
+        // Find category by English name
+        $category = Category::where('category_en', $categoryName)->firstOrFail();
+        $get_subcates = SubCategory::where('category_id', $category->id)->orderBy('sub_cate_en', 'DESC')->get();
 
+        // Fetch latest news in that category
+        $cnbt = News::where('category_id', $category->id)->latest()->first();
+        $cn2 = News::where('category_id', $category->id)->latest()->skip(1)->take(2)->get();
+        $cn4 = News::where('category_id', $category->id)->latest()->skip(3)->take(4)->get();
+
+        // For Infinite News Scroll
+        $acn = News::where('category_id', $category->id)->latest()->skip(7)->paginate(10);
+        if ($request->ajax()) {
+            $view = view('layouts.newsIndex.category_news.load', compact('acn'))->render();
+            return Response::json(['view' => $view, 'nextPageUrl' => $acn->nextPageUrl()]);
+        }
+
+
+        // Retrun view with compact variable
+        return view('layouts.newsIndex.category_news.index', [
+            'category' => $category,
+            'get_subcates' => $get_subcates,
+            'cnbt' => $cnbt,
+            'cn2' => $cn2,
+            'cn4' => $cn4,
+            'acn' => $acn,
+        ]);
+    }
+
+
+
+
+
+    // For Single Page News Show
     public function showFull_news($category, $subcategory = null, $id)
     {
         $news = News::with(['newsCategory', 'newsSubCategory'])->findOrFail($id);
@@ -221,7 +256,7 @@ class HomeController extends Controller
             ->get();
 
         // If news Have more Photos then show
-        $morePhotos = news_photo::where('id',$news->id)->latest()->get();
+        $morePhotos = news_photo::where('id', $news->id)->latest()->get();
 
         // If news Have more Photos then show
         $randomNews = News::latest()->take(100)->get()->random(12);
@@ -235,34 +270,23 @@ class HomeController extends Controller
         ]);
     }
 
-
-
-
     // Method For get sub_cates news
-    public function sub_cate_news($name)
+    public function sub_cate_news($categorySlug, $subCategorySlug)
     {
+        // Find category
+        $category = Category::where('category_en', $categorySlug)->firstOrFail();
 
-        // Bangla or English name passed via route
-        $subCategory = SubCategory::where('sub_cate_bn', $name)->firstOrFail();
+        // Find subcategory under that category
+        $subCategory = SubCategory::where('sub_cate_en', $subCategorySlug)
+            ->where('category_id', $category->id)
+            ->firstOrFail();
 
-        // Example: get news under this sub-category
-        $posts = News::where('sub_cate_id', $subCategory->id)->get();
+        // Get news for this subcategory
+        $posts = News::where('sub_cate_id', $subCategory->id)->latest()->get();
 
-        return view('frontend.sub_category', compact('subCategory', 'posts'));
+        return view('layouts.newsIndex.subcategory_news.index', compact('posts', 'category', 'subCategory'));
     }
 
-    // Method For get Category News
-    public function cate_news($name)
-    {
-
-        // Bangla or English name passed via route
-        $subCategory = SubCategory::where('sub_cate_bn', $name)->firstOrFail();
-
-        // Example: get news under this sub-category
-        $posts = News::where('sub_cate_id', $subCategory->id)->get();
-
-        return view('frontend.sub_category', compact('subCategory', 'posts'));
-    }
 
     // Method for bangla website
     public function bangla()

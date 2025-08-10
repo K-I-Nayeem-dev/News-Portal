@@ -248,9 +248,9 @@
                                             ->where('status', 1)
                                             ->get();
                                     @endphp
-                                    <li class="dropdown @if (request()->is('category/' . $category->category_en)) active @endif">
-                                        <a href="{{ route('news.cates', session()->get('lang') == 'english' ? $category->category_en : $category->category_bn) }}"
-                                            class="dropdown-toggle" data-toggle="dropdown">
+                                    <li class="dropdown @if (request()->is('news/' . $category->category_en)) active @endif">
+                                        <a href="{{ route('getCate.news', $category->category_en) }}"
+                                            class="dropdown-toggle category-link" data-toggle="dropdown">
                                             {{ session()->get('lang') == 'english' ? $category->category_en : $category->category_bn }}
                                             @if ($sub_cates->count())
                                                 <i class="fa flm fa-angle-down"></i>
@@ -260,10 +260,12 @@
                                         @if ($sub_cates->count())
                                             <ul class="dropdown-menu">
                                                 @foreach ($sub_cates as $sub_cate)
-                                                    <li class="@if (request()->is(
-                                                            'news/subcategories/' . session()->get('lang') == 'english' ? $sub_cate->sub_cate_en : $sub_cate->sub_cate_bn)) active @endif">
+                                                    <li class="{{ request()->is('news/' . $category->category_en . '/' . $sub_cate->sub_cate_en) ? 'active' : '' }}">
                                                         <a
-                                                            href="{{ route('news.sub_cates', session()->get('lang') == 'english' ? $sub_cate->sub_cate_en : $sub_cate->sub_cate_bn) }}">
+                                                            href="{{ route('news.sub_cates', [
+                                                                'category' => $category->category_en,
+                                                                'subcategory' => $sub_cate->sub_cate_en,
+                                                            ]) }}">
                                                             {{ session()->get('lang') == 'english' ? $sub_cate->sub_cate_en : $sub_cate->sub_cate_bn }}
                                                         </a>
 
@@ -514,7 +516,8 @@
     </div>
 
     <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v12.0"></script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v12.0">
+    </script>
 
     <script src="https://bangla.plus/scripts/bangladatetoday.min.js"></script>
     <script>
@@ -601,6 +604,13 @@
             } else {
                 localStorage.setItem('color-theme', 'light');
             }
+        });
+
+        // For Category Switch
+        document.querySelectorAll('.category-link').forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                window.location = this.getAttribute('href');
+            });
         });
     </script>
 

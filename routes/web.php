@@ -28,10 +28,6 @@ Route::controller(HomeController::class)->group(function () {
     // Route for Home Page
     Route::get('/', 'index')->name('home');
 
-    // Route For Category And SubCategories News
-    Route::get('/news/subcategories/{name}', 'sub_cate_news')->name('news.sub_cates');
-    Route::get('/news/category/{name}', 'cate_news')->name('news.cates');
-
     // Route For Dynamic Localizaiton or Multilangual (English & Bangla)
     Route::get('/lang/english', 'english')->name('news.english');
     Route::get('/lang/bangla', 'bangla')->name('news.bangla');
@@ -43,9 +39,17 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/video-gallery', 'videogallery')->name('video.gallery');
 
     Route::prefix('news')->group(function () {
+        // For Single News View Method
         Route::get('/{category}/{subcategory?}/{id}', 'showFull_news')->name('showFull.news');
-    });
 
+        // For Category Wise news Show
+        Route::get('/{categoryName}', 'getCate_news')->name('getCate.news');
+
+        // For SubCategory Wise news Show
+        Route::get('/{category}/{subcategory}', 'sub_cate_news')->name('news.sub_cates');
+
+
+    });
 });
 
 
