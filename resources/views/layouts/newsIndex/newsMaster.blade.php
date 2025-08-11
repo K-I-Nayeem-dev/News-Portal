@@ -248,8 +248,8 @@
                                             ->where('status', 1)
                                             ->get();
                                     @endphp
-                                    <li class="dropdown @if (request()->is('news/' . $category->category_en)) active @endif">
-                                        <a href="{{ route('getCate.news', $category->category_en) }}"
+                                    <li class="dropdown @if (request()->is('news/' . $category->slug)) active @endif">
+                                        <a href="{{ route('getCate.news', $category->slug) }}"
                                             class="dropdown-toggle category-link" data-toggle="dropdown">
                                             {{ session()->get('lang') == 'english' ? $category->category_en : $category->category_bn }}
                                             @if ($sub_cates->count())
@@ -260,11 +260,12 @@
                                         @if ($sub_cates->count())
                                             <ul class="dropdown-menu">
                                                 @foreach ($sub_cates as $sub_cate)
-                                                    <li class="{{ request()->is('news/' . $category->category_en . '/' . $sub_cate->sub_cate_en) ? 'active' : '' }}">
+                                                    <li
+                                                        class="{{ request()->is('news/' . $category->slug . '/' . $sub_cate->slug) ? 'active' : '' }}">
                                                         <a
                                                             href="{{ route('news.sub_cates', [
-                                                                'category' => $category->category_en,
-                                                                'subcategory' => $sub_cate->sub_cate_en,
+                                                                'category' => trim($category->slug),
+                                                                'subcategory' => trim($sub_cate->slug),
                                                             ]) }}">
                                                             {{ session()->get('lang') == 'english' ? $sub_cate->sub_cate_en : $sub_cate->sub_cate_bn }}
                                                         </a>
@@ -292,13 +293,13 @@
             @yield('content')
         </div>
         <!-- Full-width border -->
-        <div style="border-top: 1px solid #727272; border-bottom: 1px solid #727272; width: 100%; margin-bottom: 10px">
+        <div style="border-top: 1px solid #727272; border-bottom: 1px solid #727272; width: 100%; margin: 20px 0;">
 
             <div style="padding: 5px 0; display: flex; justify-content: center;">
 
                 @foreach ($getCates as $row)
                     <div style="margin: 0 15px; font-size: 16px; font-weight: bold;">
-                        <a href="#" class="catehover">
+                        <a href="{{ route('getCate.news', $row->slug) }}" class="catehover">
                             @if (session()->get('lang') == 'english')
                                 {{ $row->category_en }}
                             @else

@@ -156,6 +156,17 @@
                         </li>
 
                         <!-- ---------------------------------- -->
+                        <!-- Ads Pages -->
+                        <!-- ---------------------------------- -->
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="{{ route('ads.index') }}">
+                                <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
+                                <span class="hide-menu">Ads</span>
+                            </a>
+                        </li>
+
+                        <!-- ---------------------------------- -->
                         <!-- Front Pages -->
                         <!-- ---------------------------------- -->
                         <li class="sidebar-item">

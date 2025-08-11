@@ -192,7 +192,7 @@ class HomeController extends Controller
     public function getCate_news($categoryName, Request $request)
     {
         // Find category by English name
-        $category = Category::where('category_en', $categoryName)->firstOrFail();
+        $category = Category::where('slug', $categoryName)->firstOrFail();
         $get_subcates = SubCategory::where('category_id', $category->id)->orderBy('sub_cate_en', 'DESC')->get();
 
         // Fetch latest news in that category
@@ -271,31 +271,38 @@ class HomeController extends Controller
     }
 
     // Method For get sub_cates news
-    public function sub_cate_news($categorySlug, $subCategorySlug)
+    public function sub_cate_news($categorySlug, $subCategorySlug, Request $request)
     {
-        // Find category
-        $category = Category::where('category_en', $categorySlug)->firstOrFail();
-
-        // Find subcategory under that category
-        $subCategory = SubCategory::where('sub_cate_en', $subCategorySlug)
+        $category = Category::where('slug', $categorySlug)->firstOrFail();
+        $subCategory = SubCategory::where('slug', $subCategorySlug)
             ->where('category_id', $category->id)
             ->firstOrFail();
 
-        // Get news for this subcategory
-        $posts = News::where('sub_cate_id', $subCategory->id)->latest()->get();
 
-        return view('layouts.newsIndex.subcategory_news.index', compact('posts', 'category', 'subCategory'));
+        // Fetch latest news in that category
+        $scnbt = News::where('sub_cate_id', $subCategory->id)->latest()->first();
+        $scn2 = News::where('sub_cate_id', $subCategory->id)->latest()->skip(1)->take(2)->get();
+        $scn4 = News::where('sub_cate_id', $subCategory->id)->latest()->skip(3)->take(4)->get();
+        
+        // For Infinite News Scroll
+        $ascn = News::where('sub_cate_id', $subCategory->id)->latest()->skip(7)->paginate(10);
+
+        if ($request->ajax()) {
+            $view = view('layouts.newsIndex.subcategory_news.load', compact('ascn'))->render();
+            return response()->json(['view' => $view, 'nextPageUrl' => $ascn->nextPageUrl()]);
+        }
+
+        return view('layouts.newsIndex.subcategory_news.index', [
+            'category' => $category,
+            'subCategory' => $subCategory,
+            'scnbt' => $scnbt,
+            'scn2' => $scn2,
+            'scn4' => $scn4,
+            'ascn' => $ascn,
+
+        ]);
     }
 
-
-    // Method for bangla website
-    public function bangla()
-    {
-        Session::get('lang');
-        session()->forget('lang');
-        session()->put('lang', 'bangla');
-        return back();
-    }
 
     // Method for english website
     public function english()

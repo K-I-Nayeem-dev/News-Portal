@@ -15,7 +15,7 @@ class PhotoGalleryController extends Controller
      */
     public function index()
     {
-        $photos = PhotoGallery::orderBy('created_at', 'ASC')->paginate(30);
+        $photos = PhotoGallery::latest()->paginate(30);
         return view('layouts.newsDashboard.gallery.photos_gallery.index', [
             'photos' => $photos
         ]);
@@ -133,8 +133,6 @@ class PhotoGalleryController extends Controller
     {
         $photo = PhotoGallery::findOrFail($id);
 
-        // Delete image from storage
-        $imagePath = public_path('uploads/photo_gallery/' . $photo->image);
         // Delete old image if exists
         if (!empty($photo->image) && file_exists(public_path($photo->image))) {
             unlink(public_path($photo->image));

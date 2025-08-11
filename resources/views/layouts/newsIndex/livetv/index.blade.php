@@ -98,6 +98,17 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12  pbottom--30">
+                    <div class="ad--space">
+                        <a
+                            href="#">
+                            <img src="{{ asset('frontend_assets') }}/img/ads-img/ad-728x90-01.jpg" alt=""
+                                class="center-block" />
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 @endsection

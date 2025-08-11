@@ -1,4 +1,4 @@
-@foreach ($acn as $row)
+@foreach ($ascn as $row)
     <div class="col-md-3">
         <div class="col-md-12 col-xs-6 col-xxs-12">
             <div>
@@ -44,6 +44,6 @@
 @endforeach
 
 <div style="display: none">
-    {{ $acn->links() }}
+    {{ $ascn->links() }}
 </div>
 {{-- fisrt Section 9 News with widget  End --}}

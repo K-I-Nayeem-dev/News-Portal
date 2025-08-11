@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdsController;
 use App\Http\Controllers\BreakingNewsController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DistrictController;
@@ -93,6 +94,7 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
         'websiteLIst' => WebsiteListController::class,
         'photogallery' => PhotoGalleryController::class,
         'videogallery' => VideoGalleryController::class,
+        'ads' => AdsController::class,
     ]);
 
     // Specific Version (Bangla/English) News Show Routes

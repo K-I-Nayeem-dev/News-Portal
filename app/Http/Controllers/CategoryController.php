@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -44,11 +45,11 @@ class CategoryController extends Controller
         $data = [
             'category_en' => $request->category_en,
             'category_bn' => $request->category_bn,
+            'slug' => Str::slug($request->category_en),
             'status' => $request->status,
             'created_at' => now(),
             'updated_at' => null,
         ];
-
         DB::table('categories')->insert($data);
 
         return back()->with('cate_create', 'Category Created');
@@ -80,6 +81,7 @@ class CategoryController extends Controller
 
         $category->category_en = $request->input('category_en');
         $category->category_bn = $request->input('category_bn');
+        $category->slug =  Str::slug($category->category_en);
         $category->status = $request->input('status');
         $category->updated_at = now();
         $category->save();

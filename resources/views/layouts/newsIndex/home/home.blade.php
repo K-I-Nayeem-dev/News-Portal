@@ -1,7 +1,7 @@
 @extends('layouts.newsIndex.newsMaster')
 
 @section('content')
-  {{-- @php
+    {{-- @php
     $variables = ['fsbt', 'fs1', 'fs2', 'fs9', 'tn', 'sn', 'nnbt', 'nnln', 'nnrn', 'enbt', 'enrn', 'cnbt', 'cn1', 'cn2', 'innbt', 'inn2', 'inn4', 'snbt', 'sn2', 'sn4', 'lsnbt', 'lsnb', 'lsnr', 'lonbt', 'lonrn3', 'lon4', 'vgnbt', 'vgn3', 'pgnbt', 'pgn3', 'pnbt', 'pn3', 'fnbt', 'fn3'];
 
     $slugs = [];
@@ -15,12 +15,12 @@
     }
 @endphp --}}
 
-@php
-    use Illuminate\Support\Str;
+    @php
+        use Illuminate\Support\Str;
 
-    $categorySlug = Str::slug($fsbt->newsCategory->category_en);
-    $subcategorySlug = $fsbt->newsSubcategory ? Str::slug($fsbt->newsSubcategory->sub_cate_en) : null;
-@endphp
+        $categorySlug = Str::slug($fsbt->newsCategory->category_en);
+        $subcategorySlug = $fsbt->newsSubcategory ? Str::slug($fsbt->newsSubcategory->sub_cate_en) : null;
+    @endphp
 
     {{-- Custom CSS Code section Start --}}
     <style>
@@ -144,7 +144,7 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -80%);
+            transform: translate(-50%, -50%);
             background: rgba(0, 0, 0, 0.6);
             border-radius: 50%;
             width: 60px;
@@ -320,13 +320,15 @@
                     <div class="col-md-3">
                         <div class="row gutter--15">
                             {{-- First Section News --}}
-                            @foreach ($fs1 as $row)
+                            @foreach ($fs1 as $index => $row)
                                 <div class="col-md-12 col-xs-6 col-xxs-12">
-                                    <div>
+                                    <div style="{{ $index != 0 ? 'margin-top:15px' : '' }}">
                                         <div class="post--img">
-                                            <a href="news-single-v1.html" class="thumb"><img src="{{ $row->thumbnail }}"
+                                            <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                class="thumb"><img src="{{ $row->thumbnail }}"
                                                     alt="{{ $row->title }}" /></a>
-                                            <a href="#" class="cat">
+                                            <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                class="cat">
                                                 @if (session()->get('lang') == 'english')
                                                     {{ $row->newsCategory->category_en }}
                                                 @else
@@ -336,7 +338,8 @@
                                             <div class="post--info">
                                                 <div class="title">
                                                     <h2 class="h4">
-                                                        <a href="news-single-v1.html" class="btn-link">
+                                                        <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                            class="btn-link">
                                                             @if (session()->get('lang') == 'english')
                                                                 {{ $row->title_en }}
                                                             @else
@@ -356,11 +359,11 @@
                     <div class="col-md-6">
                         <div>
                             <div class="post--img">
-                                {{-- <a href="news-single-v1.html" class="thumb"><img src="{{ asset('uploads/news_photos/'. $fsbt->news_photo) }}"alt="{{ $fsbt->title }}" /></a> --}}
-                                <a href="{{ route('showFull.news', array_filter(['category' => $categorySlug,'subcategory' => $subcategorySlug,'id' => $fsbt->id,])) }}"
-
+                                {{-- <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}" class="thumb"><img src="{{ asset('uploads/news_photos/'. $fsbt->news_photo) }}"alt="{{ $fsbt->title }}" /></a> --}}
+                                <a href="{{ route('showFull.news', array_filter(['category' => $categorySlug, 'subcategory' => $subcategorySlug, 'id' => $fsbt->id])) }}"
                                     class="thumb"><img src="{{ $fsbt->thumbnail }}"alt="{{ $fsbt->title }}" /></a>
-                                <a href="#" class="cat">
+                                <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                    class="cat">
                                     @if (session()->get('lang') == 'english')
                                         {{ $fsbt->newsCategory->category_en }}
                                     @else
@@ -370,7 +373,8 @@
                                 <div class="post--info">
                                     <div class="title">
                                         <h2 class="h4">
-                                            <a href="news-single-v1.html" class="btn-link">
+                                            <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                class="btn-link">
                                                 @if (session()->get('lang') == 'english')
                                                     <h2>{{ $fsbt->title_en }}</h2>
                                                 @else
@@ -386,12 +390,14 @@
                     </div>
                     <div class="col-md-3">
                         <div class="row gutter--15">
-                            @foreach ($fs2 as $row)
+                            @foreach ($fs2 as $index => $row)
                                 <div class="col-md-12 col-xs-6 col-xxs-12">
-                                    <div>
+                                    <div style="{{ $index != 0 ? 'margin-top:15px' : '' }}">
                                         <div class="post--img">
-                                            <a href="news-single-v1.html" class="thumb">
-                                                <a href="news-single-v1.html" class="thumb">
+                                            <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                class="thumb">
+                                                <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                    class="thumb">
                                                     @php
                                                         $isPlaceholder = Str::contains(
                                                             $row->thumbnail,
@@ -408,7 +414,8 @@
 
                                                 </a>
                                             </a>
-                                            <a href="#" class="cat">
+                                            <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                class="cat">
                                                 @if (session()->get('lang') == 'english')
                                                     {{ $row->newsCategory->category_en }}
                                                 @else
@@ -418,7 +425,8 @@
                                             <div class="post--info">
                                                 <div class="title">
                                                     <h2 class="h4">
-                                                        <a href="news-single-v1.html" class="btn-link">
+                                                        <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                            class="btn-link">
                                                             @if (session()->get('lang') == 'english')
                                                                 {{ $row->title_en }}
                                                             @else
@@ -445,11 +453,12 @@
             <div class="main--content col-md-8 col-sm-7" data-sticky-content="true">
                 <div class="sticky-content-inner">
                     <div class="row">
-                        @foreach ($fs9 as $row)
+                        @foreach ($fs9 as $index => $row)
                             <div class="col-6 col-sm-6 col-md-4 mt-3" style="margin-top: 20px">
                                 <div>
                                     <div class="post--img">
-                                        <a href="news-single-v1.html" class="thumb">
+                                        <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                            class="thumb">
                                             @php
                                                 $isPlaceholder = Str::contains($row->thumbnail, 'via.placeholder.com');
                                                 $imageToShow =
@@ -461,7 +470,8 @@
                                             <img src="{{ $imageToShow }}" alt="{{ $row->title_en }}" class="img-fluid">
 
                                         </a>
-                                        <a href="#" class="cat">
+                                        <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                            class="cat">
                                             @if (session()->get('lang') == 'english')
                                                 {{ $row->newsCategory->category_en }}
                                             @else
@@ -471,7 +481,8 @@
                                         <div class="post--info">
                                             <div class="title">
                                                 <h2 class="h4">
-                                                    <a href="news-single-v1.html" class="btn-link">
+                                                    <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                        class="btn-link">
                                                         @if (session()->get('lang') == 'english')
                                                             {{ $row->title_en }}
                                                         @else
@@ -488,7 +499,8 @@
 
                         <div class="col-md-12 ptop--30 pbottom--30">
                             <div class="ad--space">
-                                <a href="#">
+                                <a
+                                    href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}">
                                     <img src="{{ asset('frontend_assets') }}/img/ads-img/ad-728x90-01.jpg" alt=""
                                         class="center-block" />
                                 </a>
@@ -515,7 +527,8 @@
                             <div class="list--widget-nav" data-ajax="tab">
                                 <ul class="nav nav-justified">
                                     <li class="active">
-                                        <a href="#" data-ajax-action="load_widget_trendy_news">
+                                        <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                            data-ajax-action="load_widget_trendy_news">
                                             @if (session()->get('lang') == 'english')
                                                 Trendy News
                                             @else
@@ -524,7 +537,8 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#" data-ajax-action="load_widget_most_watched">
+                                        <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                            data-ajax-action="load_widget_most_watched">
                                             @if (session()->get('lang') == 'english')
                                                 Most Watched
                                             @else
@@ -541,7 +555,8 @@
                                             <li style="{{ $index !== 0 ? 'margin-top: 15px;' : '' }}">
                                                 <div class="post--item post--layout-3">
                                                     <div class="post--img">
-                                                        <a href="news-single-v1.html" class="thumb">
+                                                        <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                            class="thumb">
 
                                                             @php
                                                                 $isPlaceholder = Str::contains(
@@ -562,9 +577,12 @@
                                                         </a>
                                                         <div class="post--info">
                                                             <ul class="nav meta" style="margin-top: 5px;">
-                                                                <li><a href="#">{{ $row->newsUser->name }}</a></li>
+                                                                <li><a
+                                                                        href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}">{{ $row->newsUser->name }}</a>
+                                                                </li>
                                                                 <li>
-                                                                    <a href="#">
+                                                                    <a
+                                                                        href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}">
                                                                         @if (session()->get('lang') == 'bangla')
                                                                             {{ formatBanglaDateTime($row->created_at) }}
                                                                         @else
@@ -575,7 +593,8 @@
                                                             </ul>
                                                             <div class="title" style="margin-top: -4px;">
                                                                 <h3 class="h4">
-                                                                    <a href="news-single-v1.html" class="btn-link">
+                                                                    <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                                        class="btn-link">
                                                                         @if (session()->get('lang') == 'english')
                                                                             {{ $row->title_en }}
                                                                         @else
@@ -709,13 +728,17 @@
 
                         {{-- Section Title --}}
                         <div class="post--items-title" data-ajax="tab">
-                            <h2 class="h4">
-                                @if (session()->get('lang') == 'english')
-                                    {{ $nnbt->newsCategory->category_en }}
-                                @else
-                                    {{ $nnbt->newsCategory->category_bn }}
-                                @endif
-                            </h2>
+                            <div style="display: flex; justify-content: space-between">
+                                <h2 class="h4">
+                                    @if (session()->get('lang') == 'english')
+                                        {{ $nnbt->newsCategory->category_en }}
+                                    @else
+                                        {{ $nnbt->newsCategory->category_bn }}
+                                    @endif
+                                </h2>
+                                <a href="{{ route('getCate.news', $nnbt->newsCategory->slug) }}"
+                                    style="font-size: 15px; font-weight: bold">{{ session()->get('lang') == 'english' ? 'More' : 'আরও' }}</a>
+                            </div>
                         </div>
 
                         {{-- Main Content --}}
@@ -729,7 +752,8 @@
                                             <li style="{{ $index !== 0 ? 'margin-top: 20px;' : '' }}">
                                                 <div class="post--item">
                                                     <div class="post--img">
-                                                        <a href="news-single-v1.html" class="thumb">
+                                                        <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                            class="thumb">
                                                             @php
                                                                 $isPlaceholder = Str::contains(
                                                                     $row->thumbnail,
@@ -750,7 +774,8 @@
                                                         <div class="post--info">
                                                             <div class="title">
                                                                 <h3 class="h4">
-                                                                    <a href="news-single-v1.html" class="btn-link">
+                                                                    <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                                        class="btn-link">
                                                                         @if (session()->get('lang') == 'english')
                                                                             {{ $row->title_en }}
                                                                         @else
@@ -770,7 +795,8 @@
                                 {{-- Middle Column (col-md-7) --}}
                                 <div class="col-md-6">
                                     <div class="post--img">
-                                        <a href="news-single-v1.html" class="thumb">
+                                        <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                            class="thumb">
                                             @php
                                                 $isPlaceholder = Str::contains($nnbt->thumbnail, 'via.placeholder.com');
                                                 $imageToShow =
@@ -786,7 +812,8 @@
                                         <div class="post--info">
                                             <div class="title">
                                                 <h2 class="h4" style="font-size: 24px">
-                                                    <a href="news-single-v1.html" class="btn-link">
+                                                    <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                        class="btn-link">
                                                         @if (session()->get('lang') == 'english')
                                                             {{ $nnbt->title_en }}
                                                         @else
@@ -815,7 +842,8 @@
                                             <li style="{{ $index !== 0 ? 'margin-top: 15px;' : '' }}">
                                                 <div class="post--item post--layout-3">
                                                     <div class="post--img">
-                                                        <a href="news-single-v1.html" class="thumb">
+                                                        <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                            class="thumb">
                                                             @php
                                                                 $isPlaceholder = Str::contains(
                                                                     $row->thumbnail,
@@ -835,7 +863,8 @@
                                                         <div class="post--info">
                                                             <div class="title">
                                                                 <h3 class="h4">
-                                                                    <a href="news-single-v1.html" class="btn-link">
+                                                                    <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                                        class="btn-link">
                                                                         @if (session()->get('lang') == 'english')
                                                                             {{ $row->title_en }}
                                                                         @else
@@ -872,13 +901,17 @@
 
                         {{-- Section Title --}}
                         <div class="post--items-title" data-ajax="tab">
-                            <h2 class="h4">
-                                @if (session()->get('lang') == 'english')
-                                    {{ $enbt->newsCategory->category_en }}
-                                @else
-                                    {{ $enbt->newsCategory->category_bn }}
-                                @endif
-                            </h2>
+                            <div style="display: flex; justify-content: space-between">
+                                <h2 class="h4">
+                                    @if (session()->get('lang') == 'english')
+                                        {{ $enbt->newsCategory->category_en }}
+                                    @else
+                                        {{ $enbt->newsCategory->category_bn }}
+                                    @endif
+                                </h2>
+                                <a href="{{ route('getCate.news', $enbt->newsCategory->slug) }}"
+                                    style="font-size: 15px; font-weight: bold">{{ session()->get('lang') == 'english' ? 'More' : 'আরও' }}</a>
+                            </div>
                         </div>
 
                         {{-- Main Content --}}
@@ -887,7 +920,8 @@
                                 {{-- Middle Column (col-md-7) --}}
                                 <div class="col-md-6">
                                     <div class="post--img">
-                                        <a href="news-single-v1.html" class="thumb">
+                                        <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                            class="thumb">
                                             @php
                                                 $isPlaceholder = Str::contains($enbt->thumbnail, 'via.placeholder.com');
                                                 $imageToShow =
@@ -903,7 +937,8 @@
                                         <div class="post--info">
                                             <div class="title">
                                                 <h2 class="h4" style="font-size: 24px">
-                                                    <a href="news-single-v1.html" class="btn-link">
+                                                    <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                        class="btn-link">
                                                         @if (session()->get('lang') == 'english')
                                                             {{ $enbt->title_en }}
                                                         @else
@@ -934,7 +969,8 @@
                                                     <!-- Text Block on the Left -->
                                                     <div class="pe-3 flex-grow-1">
                                                         <h2 class="h4" style="font-size: 18px; margin-bottom: 10px;">
-                                                            <a href="#" class="btn-link">
+                                                            <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                                class="btn-link">
                                                                 @if (session()->get('lang') == 'english')
                                                                     {{ $row->title_en }}
                                                                 @else
@@ -943,7 +979,8 @@
                                                             </a>
                                                         </h2>
                                                         <p style="font-size: 14px; margin: 0;">
-                                                            <a href="#" class="btn-link">
+                                                            <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                                class="btn-link">
                                                                 @if (session()->get('lang') == 'english')
                                                                     {!! Str::limit($row->details_en, 200, '...') !!}
                                                                 @else
@@ -955,7 +992,8 @@
 
                                                     <!-- Image on the Right -->
                                                     <div style="flex-shrink: 0;">
-                                                        <a href="news-single-v1.html" class="thumb">
+                                                        <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                            class="thumb">
                                                             @php
                                                                 $isPlaceholder = Str::contains(
                                                                     $row->thumbnail,
@@ -969,8 +1007,9 @@
                                                                         );
                                                             @endphp
 
-                                                            <img width="150px" height="85" src="{{ $imageToShow }}"
-                                                                alt="{{ $row->title_en }}" class="img-fluid">
+                                                            <img width="150px" height="85"
+                                                                src="{{ $imageToShow }}" alt="{{ $row->title_en }}"
+                                                                class="img-fluid">
                                                         </a>
                                                     </div>
                                                 </div>
@@ -995,14 +1034,19 @@
 
             {{-- Section Title --}}
             <div class="post--items-title" data-ajax="tab">
-                <h2 class="h4">
-                    @if (session()->get('lang') == 'english')
-                        {{ $cnbt->newsCategory->category_en }}
-                    @else
-                        {{ $cnbt->newsCategory->category_bn }}
-                    @endif
-                </h2>
+                <div style="display: flex; justify-content: space-between">
+                    <h2 class="h4">
+                        @if (session()->get('lang') == 'english')
+                            {{ $cnbt->newsCategory->category_en }}
+                        @else
+                            {{ $cnbt->newsCategory->category_bn }}
+                        @endif
+                    </h2>
+                    <a href="{{ route('getCate.news', $cnbt->newsCategory->slug) }}"
+                        style="font-size: 15px; font-weight: bold">{{ session()->get('lang') == 'english' ? 'More' : 'আরও' }}</a>
+                </div>
             </div>
+
 
             <div class="d-flex justify-content-between" style="margin-bottom: 40px">
                 <div class="col-md-3">
@@ -1045,7 +1089,8 @@
                                     <div class="col-md-12 col-xs-6 col-xxs-12">
                                         <div>
                                             <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb">
+                                                <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                    class="thumb">
                                                     @php
                                                         $isPlaceholder = Str::contains(
                                                             $row->thumbnail,
@@ -1063,7 +1108,8 @@
                                                 <div class="post--info">
                                                     <div class="title">
                                                         <h2 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">
+                                                            <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                                class="btn-link">
                                                                 @if (session()->get('lang') == 'english')
                                                                     {{ $row->title_en }}
                                                                 @else
@@ -1086,8 +1132,10 @@
                                     <div class="col-md-12 col-xs-6 col-xxs-12">
                                         <div>
                                             <div class="post--img">
-                                                <a href="news-single-v1.html" class="thumb">
-                                                    <a href="news-single-v1.html" class="thumb">
+                                                <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                    class="thumb">
+                                                    <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                        class="thumb">
                                                         @php
                                                             $isPlaceholder = Str::contains(
                                                                 $row->thumbnail,
@@ -1109,7 +1157,8 @@
                                                 <div class="post--info">
                                                     <div class="title">
                                                         <h2 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">
+                                                            <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                                class="btn-link">
                                                                 @if (session()->get('lang') == 'english')
                                                                     {{ $row->title_en }}
                                                                 @else
@@ -1129,8 +1178,9 @@
                         <div class="col-md-6">
                             <div>
                                 <div class="post--img">
-                                    {{-- <a href="news-single-v1.html" class="thumb"><img src="{{ asset('uploads/news_photos/'. $fsbt->news_photo) }}"alt="{{ $fsbt->title }}" /></a> --}}
-                                    <a href="news-single-v1.html" class="thumb">
+                                    {{-- <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}" class="thumb"><img src="{{ asset('uploads/news_photos/'. $fsbt->news_photo) }}"alt="{{ $fsbt->title }}" /></a> --}}
+                                    <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                        class="thumb">
                                         @php
                                             $isPlaceholder = Str::contains($cnbt->thumbnail, 'via.placeholder.com');
                                             $imageToShow =
@@ -1144,7 +1194,8 @@
                                     <div class="post--info">
                                         <div class="title">
                                             <h2 class="h4">
-                                                <a href="news-single-v1.html" class="btn-link">
+                                                <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                    class="btn-link">
                                                     @if (session()->get('lang') == 'english')
                                                         <h2>{{ $cnbt->title_en }}</h2>
                                                     @else
@@ -1169,13 +1220,18 @@
 
             {{-- Section Title --}}
             <div class="post--items-title" data-ajax="tab">
-                <h2 class="h4">
-                    @if (session()->get('lang') == 'english')
-                        {{ $innbt->newsCategory->category_en }}
-                    @else
-                        {{ $innbt->newsCategory->category_bn }}
-                    @endif
-                </h2>
+                <div style="display: flex; justify-content: space-between">
+                    <h2 class="h4">
+                        @if (session()->get('lang') == 'english')
+                            {{ $innbt->newsCategory->category_en }}
+                        @else
+                            {{ $innbt->newsCategory->category_bn }}
+                        @endif
+                    </h2>
+                    </h2>
+                    <a href="{{ route('getCate.news', $innbt->newsCategory->slug) }}"
+                        style="font-size: 15px; font-weight: bold">{{ session()->get('lang') == 'english' ? 'More' : 'আরও' }}</a>
+                </div>
             </div>
 
             <div class="main--content">
@@ -1185,8 +1241,9 @@
                         <div class="col-md-6">
                             <div>
                                 <div class="post--img">
-                                    {{-- <a href="news-single-v1.html" class="thumb"><img src="{{ asset('uploads/news_photos/'. $fsbt->news_photo) }}"alt="{{ $fsbt->title }}" /></a> --}}
-                                    <a href="news-single-v1.html" class="thumb">
+                                    {{-- <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}" class="thumb"><img src="{{ asset('uploads/news_photos/'. $fsbt->news_photo) }}"alt="{{ $fsbt->title }}" /></a> --}}
+                                    <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                        class="thumb">
                                         @php
                                             $isPlaceholder = Str::contains($innbt->thumbnail, 'via.placeholder.com');
                                             $imageToShow =
@@ -1200,7 +1257,8 @@
                                     <div class="post--info">
                                         <div class="title">
                                             <h2 class="h4">
-                                                <a href="news-single-v1.html" class="btn-link">
+                                                <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                    class="btn-link">
                                                     @if (session()->get('lang') == 'english')
                                                         <h2>{{ $innbt->title_en }}</h2>
                                                     @else
@@ -1220,8 +1278,10 @@
                                 @foreach ($inn2 as $index => $row)
                                     <div class="col-md-12 col-xs-6 col-xxs-12">
                                         <div>
-                                            <div class="post--img" style="{{ $index !== 0 ? 'margin-top: 15px;' : '' }}">
-                                                <a href="news-single-v1.html" class="thumb">
+                                            <div class="post--img"
+                                                style="{{ $index !== 0 ? 'margin-top: 15px;' : '' }}">
+                                                <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                    class="thumb">
                                                     @php
                                                         $isPlaceholder = Str::contains(
                                                             $row->thumbnail,
@@ -1239,7 +1299,8 @@
                                                 <div class="post--info">
                                                     <div class="title">
                                                         <h2 class="h4">
-                                                            <a href="news-single-v1.html" class="btn-link">
+                                                            <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                                class="btn-link">
                                                                 @if (session()->get('lang') == 'english')
                                                                     {{ $row->title_en }}
                                                                 @else
@@ -1268,7 +1329,8 @@
                                                     <!-- Text Block on the Left -->
                                                     <div class="pe-3 flex-grow-1" style="padding-right: 50px !important">
                                                         <h2 class="h4" style="font-size: 18px; margin-bottom: 10px;">
-                                                            <a href="#" class="btn-link">
+                                                            <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                                class="btn-link">
                                                                 @if (session()->get('lang') == 'english')
                                                                     {{ $row->title_en }}
                                                                 @else
@@ -1280,7 +1342,8 @@
 
                                                     <!-- Image on the Right -->
                                                     <div style="flex-shrink: 0;">
-                                                        <a href="news-single-v1.html" class="thumb">
+                                                        <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                            class="thumb">
                                                             @php
                                                                 $isPlaceholder = Str::contains(
                                                                     $row->thumbnail,
@@ -1294,8 +1357,9 @@
                                                                         );
                                                             @endphp
 
-                                                            <img width="150px" height="85" src="{{ $imageToShow }}"
-                                                                alt="{{ $row->title_en }}" class="img-fluid">
+                                                            <img width="150px" height="85"
+                                                                src="{{ $imageToShow }}" alt="{{ $row->title_en }}"
+                                                                class="img-fluid">
                                                         </a>
                                                     </div>
                                                 </div>
@@ -1322,13 +1386,17 @@
 
                         {{-- Section Title --}}
                         <div class="post--items-title" data-ajax="tab">
-                            <h2 class="h4">
-                                @if (session()->get('lang') == 'english')
-                                    {{ $snbt->newsCategory->category_en }}
-                                @else
-                                    {{ $snbt->newsCategory->category_bn }}
-                                @endif
-                            </h2>
+                            <div style="display: flex; justify-content: space-between">
+                                <h2 class="h4">
+                                    @if (session()->get('lang') == 'english')
+                                        {{ $snbt->newsCategory->category_en }}
+                                    @else
+                                        {{ $snbt->newsCategory->category_bn }}
+                                    @endif
+                                </h2>
+                                <a href="{{ route('getCate.news', $snbt->newsCategory->slug) }}"
+                                    style="font-size: 15px; font-weight: bold">{{ session()->get('lang') == 'english' ? 'More' : 'আরও' }}</a>
+                            </div>
                         </div>
 
                         {{-- Main Content --}}
@@ -1342,7 +1410,8 @@
                                             <li style="{{ $index !== 0 ? 'margin-top: 20px;' : '' }}">
                                                 <div class="post--item">
                                                     <div class="post--img">
-                                                        <a href="news-single-v1.html" class="thumb">
+                                                        <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                            class="thumb">
                                                             @php
                                                                 $isPlaceholder = Str::contains(
                                                                     $row->thumbnail,
@@ -1363,7 +1432,8 @@
                                                         <div class="post--info">
                                                             <div class="title">
                                                                 <h3 class="h4">
-                                                                    <a href="news-single-v1.html" class="btn-link">
+                                                                    <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                                        class="btn-link">
                                                                         @if (session()->get('lang') == 'english')
                                                                             {{ $row->title_en }}
                                                                         @else
@@ -1383,7 +1453,8 @@
                                 {{-- Middle Column (col-md-7) --}}
                                 <div class="col-md-6">
                                     <div class="post--img">
-                                        <a href="news-single-v1.html" class="thumb">
+                                        <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                            class="thumb">
                                             @php
                                                 $isPlaceholder = Str::contains($snbt->thumbnail, 'via.placeholder.com');
                                                 $imageToShow =
@@ -1399,7 +1470,8 @@
                                         <div class="post--info">
                                             <div class="title">
                                                 <h2 class="h4" style="font-size: 24px">
-                                                    <a href="news-single-v1.html" class="btn-link">
+                                                    <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                        class="btn-link">
                                                         @if (session()->get('lang') == 'english')
                                                             {{ $snbt->title_en }}
                                                         @else
@@ -1433,7 +1505,8 @@
                                                 @endif
                                             </div>
                                             <div class="col-sm-6">
-                                                <a href="news-single-v1.html" class="thumb">
+                                                <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                    class="thumb">
                                                     @php
                                                         $isPlaceholder = Str::contains(
                                                             $row->thumbnail,
@@ -1472,13 +1545,17 @@
 
                         {{-- Section Title --}}
                         <div class="post--items-title" data-ajax="tab">
-                            <h2 class="h4">
-                                @if (session()->get('lang') == 'english')
-                                    {{ $lsnbt->newsCategory->category_en }}
-                                @else
-                                    {{ $lsnbt->newsCategory->category_bn }}
-                                @endif
-                            </h2>
+                            <div style="display: flex; justify-content: space-between">
+                                <h2 class="h4">
+                                    @if (session()->get('lang') == 'english')
+                                        {{ $lsnbt->newsCategory->category_en }}
+                                    @else
+                                        {{ $lsnbt->newsCategory->category_bn }}
+                                    @endif
+                                </h2>
+                                <a href="{{ route('getCate.news', $lsnbt->newsCategory->slug) }}"
+                                    style="font-size: 15px; font-weight: bold">{{ session()->get('lang') == 'english' ? 'More' : 'আরও' }}</a>
+                            </div>
                         </div>
 
                         {{-- Main Content --}}
@@ -1488,7 +1565,8 @@
                                 {{-- Left Column (col-md-3) --}}
                                 <div class="col-md-6" style="margin: 0 !important; padding: 0 !important">
                                     <div class="post--img">
-                                        <a href="news-single-v1.html" class="thumb">
+                                        <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                            class="thumb">
                                             @php
                                                 $isPlaceholder = Str::contains(
                                                     $lsnbt->thumbnail,
@@ -1507,7 +1585,8 @@
                                         <div class="post--info">
                                             <div class="title">
                                                 <h2 class="h4" style="font-size: 24px">
-                                                    <a href="news-single-v1.html" class="btn-link">
+                                                    <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                        class="btn-link">
                                                         @if (session()->get('lang') == 'english')
                                                             {{ $lsnbt->title_en }}
                                                         @else
@@ -1537,7 +1616,8 @@
                                                 @endif
                                             </div>
                                             <div class="col-sm-6">
-                                                <a href="news-single-v1.html" class="thumb">
+                                                <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                    class="thumb">
                                                     @php
                                                         $isPlaceholder = Str::contains(
                                                             $row->thumbnail,
@@ -1571,7 +1651,8 @@
                                                     @endif
                                                 </div>
                                                 <div class="col-sm-6">
-                                                    <a href="news-single-v1.html" class="thumb">
+                                                    <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                        class="thumb">
                                                         @php
                                                             $isPlaceholder = Str::contains(
                                                                 $row->thumbnail,
@@ -1606,11 +1687,12 @@
                                                 অনলাইন জরিপ
                                             @endif
                                         </h2>
-                                        <div class="nav"> <a href="#" class="prev btn-link"
-                                                data-ajax-action="load_prev_poll_widget"> <i
+                                        <div class="nav"> <a
+                                                href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                class="prev btn-link" data-ajax-action="load_prev_poll_widget"> <i
                                                     class="fa fa-long-arrow-left"></i> </a> <span class="divider">/</span>
-                                            <a href="#" class="next btn-link"
-                                                data-ajax-action="load_next_poll_widget"> <i
+                                            <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                class="next btn-link" data-ajax-action="load_next_poll_widget"> <i
                                                     class="fa fa-long-arrow-right"></i> </a>
                                         </div>
                                     </div>
@@ -1621,7 +1703,8 @@
                                                     should be reduced?</h3>
                                             </li>
                                             <li class="options">
-                                                <form action="#">
+                                                <form
+                                                    action="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}">
                                                     <div class="radio"> <label> <input type="radio" name="option-1">
                                                             <span>Yes</span> </label>
                                                         <p>65%<span style="width: 65%;"></span></p>
@@ -1665,13 +1748,17 @@
                     <div class="row">
                         {{-- Section Title --}}
                         <div class="post--items-title" data-ajax="tab">
-                            <h2 class="h4">
-                                @if (session()->get('lang') == 'english')
-                                    {{ $lonbt->newsCategory->category_en }}
-                                @else
-                                    {{ $lonbt->newsCategory->category_bn }}
-                                @endif
-                            </h2>
+                            <div style="display: flex; justify-content: space-between">
+                                <h2 class="h4">
+                                    @if (session()->get('lang') == 'english')
+                                        {{ $lonbt->newsCategory->category_en }}
+                                    @else
+                                        {{ $lonbt->newsCategory->category_bn }}
+                                    @endif
+                                </h2>
+                                <a href="{{ route('getCate.news', $lonbt->newsCategory->slug) }}"
+                                    style="font-size: 15px; font-weight: bold">{{ session()->get('lang') == 'english' ? 'More' : 'আরও' }}</a>
+                            </div>
                         </div>
 
                         {{-- Main Content --}}
@@ -1681,7 +1768,8 @@
                                     {{-- Left Column (col-md-3) --}}
                                     <div class="col-md-6" style="margin: 0 !important; padding: 0 !important">
                                         <div class="post--img">
-                                            <a href="news-single-v1.html" class="thumb">
+                                            <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                class="thumb">
                                                 @php
                                                     $isPlaceholder = Str::contains(
                                                         $lonbt->thumbnail,
@@ -1700,7 +1788,8 @@
                                             <div class="post--info">
                                                 <div class="title">
                                                     <h2 class="h4" style="font-size: 24px">
-                                                        <a href="news-single-v1.html" class="btn-link">
+                                                        <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                            class="btn-link">
                                                             @if (session()->get('lang') == 'english')
                                                                 {{ $lonbt->title_en }}
                                                             @else
@@ -1735,7 +1824,8 @@
                                                         @endif
                                                     </div>
                                                     <div class="col-sm-6">
-                                                        <a href="news-single-v1.html" class="thumb">
+                                                        <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                            class="thumb">
                                                             @php
                                                                 $isPlaceholder = Str::contains(
                                                                     $row->thumbnail,
@@ -1779,7 +1869,8 @@
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
-                                                <a href="news-single-v1.html" class="thumb">
+                                                <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                    class="thumb">
                                                     @php
                                                         $isPlaceholder = Str::contains(
                                                             $row->thumbnail,
@@ -1816,11 +1907,11 @@
                                         <ul class="nav">
                                             @foreach ($categoriesCount as $category)
                                                 <li>
-                                                    <a href="#">
-                                                        @if (session()->get('lang') == 'bangla')
-                                                            {{ $category->category_bn }}
-                                                        @else
+                                                    <a href="{{ route('getCate.news', $category->slug) }}">
+                                                        @if (session()->get('lang') == 'english')
                                                             {{ $category->category_en }}
+                                                        @else
+                                                            {{ $category->category_bn }}
                                                         @endif
                                                         <span>{{ $category->news_count }}</span>
                                                     </a>
@@ -1877,14 +1968,19 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     {{-- Video Section  --}}
+
                                     <div class="post--items-title" data-ajax="tab">
-                                        <h2 class="h4">
-                                            @if (session()->get('lang') == 'english')
-                                                Video Gallery
-                                            @else
-                                                ভিডিও গ্যালারী
-                                            @endif
-                                        </h2>
+                                        <div style="display: flex; justify-content: space-between">
+                                            <h2 class="h4">
+                                                @if (session()->get('lang') == 'english')
+                                                    Video Gallery
+                                                @else
+                                                    ভিডিও গ্যালারী
+                                                @endif
+                                            </h2>
+                                            <a href="{{ route('video.gallery') }}"
+                                                style="font-size: 15px; font-weight: bold">{{ session()->get('lang') == 'english' ? 'More' : 'আরও' }}</a>
+                                        </div>
                                     </div>
                                     <div>
                                         @php
@@ -1916,7 +2012,8 @@
                                                 <a data-fancybox data-type="iframe" href="{{ $iframeSrc }}"
                                                     class="card-link title-black" style="color: black; font-size: 18px;">
                                                     <h4 style="margin: 10 !important; padding: 0 !important;">
-                                                        <a href="news-single-v1.html" class="btn-link">
+                                                        <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                            class="btn-link">
                                                             {{ session('lang') == 'english' ? $vgnbt->title_en : $vgnbt->title_bn }}
                                                         </a>
                                                     </h4>
@@ -1982,14 +2079,19 @@
                                 <div class="col-md-12">
                                     {{-- Photos Section --}}
                                     <div class="post--items-title" data-ajax="tab">
-                                        <h2 class="h4">
-                                            @if (session()->get('lang') == 'bangla')
-                                                ফটো গ্যালারী
-                                            @else
-                                                Photo Gallery
-                                            @endif
-                                        </h2>
+                                        <div style="display: flex; justify-content: space-between">
+                                            <h2 class="h4">
+                                                @if (session()->get('lang') == 'bangla')
+                                                    ফটো গ্যালারী
+                                                @else
+                                                    Photo Gallery
+                                                @endif
+                                            </h2>
+                                            <a href="{{ route('getCate.news', $nnbt->newsCategory->slug) }}"
+                                                style="font-size: 15px; font-weight: bold">{{ session()->get('lang') == 'english' ? 'More' : 'আরও' }}</a>
+                                        </div>
                                     </div>
+
                                     <div>
                                         <a href="news-single-v1.html" class="thumb">
                                             @php
@@ -2070,20 +2172,26 @@
                         <div class="main--content col-md-6 col-sm-7">
                             {{-- Politic Title --}}
                             <div class="post--items-title" data-ajax="tab">
-                                <h2 class="h4">
-                                    @if (session()->get('lang') == 'english')
-                                        {{ $pnbt->newsCategory->category_en }}
-                                    @else
-                                        {{ $pnbt->newsCategory->category_bn }}
-                                    @endif
-                                </h2>
+                                <div style="display: flex; justify-content: space-between">
+                                    <h2 class="h4">
+                                        @if (session()->get('lang') == 'english')
+                                            {{ $pnbt->newsCategory->category_en }}
+                                        @else
+                                            {{ $pnbt->newsCategory->category_bn }}
+                                        @endif
+                                    </h2>
+                                    <a href="{{ route('getCate.news', $pnbt->newsCategory->slug) }}"
+                                        style="font-size: 15px; font-weight: bold">{{ session()->get('lang') == 'english' ? 'More' : 'আরও' }}</a>
+                                </div>
                             </div>
+
                             <div class="post--items post--items-4" data-ajax-content="outer">
 
                                 {{-- Left Column (col-md-3) --}}
                                 <div class="col-md-6" style="margin: 0 !important; padding: 0 !important">
                                     <div class="post--img">
-                                        <a href="news-single-v1.html" class="thumb">
+                                        <a href="{{ route('showFull.news', ['category' => $pnbt->newsCategory->slug, 'subcategory' => $pnbt->newsSubcategory->slug, 'id' => $pnbt->id]) }}"
+                                            class="thumb">
                                             @php
                                                 $isPlaceholder = Str::contains($pnbt->thumbnail, 'via.placeholder.com');
                                                 $imageToShow =
@@ -2099,7 +2207,8 @@
                                         <div class="post--info">
                                             <div class="title">
                                                 <h2 class="h4" style="font-size: 24px">
-                                                    <a href="news-single-v1.html" class="btn-link">
+                                                    <a href="{{ route('showFull.news', ['category' => $pnbt->newsCategory->slug, 'subcategory' => $pnbt->newsSubcategory->slug, 'id' => $pnbt->id]) }}"
+                                                        class="btn-link">
                                                         @if (session()->get('lang') == 'english')
                                                             {{ $pnbt->title_en }}
                                                         @else
@@ -2134,7 +2243,8 @@
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <h3>
-                                                        <a href="news-single-v1.html" class="thumb">
+                                                        <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                            class="thumb">
                                                             @php
                                                                 $isPlaceholder = Str::contains(
                                                                     $row->thumbnail,
@@ -2164,20 +2274,25 @@
                         <div class="main--content col-md-6 col-sm-7">
                             {{-- Finance Title --}}
                             <div class="post--items-title" data-ajax="tab">
-                                <h2 class="h4">
-                                    @if (session()->get('lang') == 'english')
+                                <div style="display: flex; justify-content: space-between">
+                                    <h2 class="h4">
+                                           @if (session()->get('lang') == 'english')
                                         {{ $fnbt->newsCategory->category_en }}
                                     @else
                                         {{ $fnbt->newsCategory->category_bn }}
                                     @endif
-                                </h2>
+                                    </h2>
+                                    <a href="{{ route('getCate.news', $fnbt->newsCategory->slug) }}"
+                                        style="font-size: 15px; font-weight: bold">{{ session()->get('lang') == 'english' ? 'More' : 'আরও' }}</a>
+                                </div>
                             </div>
                             <div class="post--items post--items-4" data-ajax-content="outer">
 
                                 {{-- Left Column (col-md-3) --}}
                                 <div class="col-md-6" style="margin: 0 !important; padding: 0 !important">
                                     <div class="post--img">
-                                        <a href="news-single-v1.html" class="thumb">
+                                        <a href="{{ route('showFull.news', ['category' => $fnbt->newsCategory->slug, 'subcategory' => $fnbt->newsSubcategory->slug, 'id' => $fnbt->id]) }}"
+                                            class="thumb">
                                             @php
                                                 $isPlaceholder = Str::contains($fnbt->thumbnail, 'via.placeholder.com');
                                                 $imageToShow =
@@ -2193,7 +2308,8 @@
                                         <div class="post--info">
                                             <div class="title">
                                                 <h2 class="h4" style="font-size: 24px">
-                                                    <a href="news-single-v1.html" class="btn-link">
+                                                    <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                        class="btn-link">
                                                         @if (session()->get('lang') == 'english')
                                                             {{ $fnbt->title_en }}
                                                         @else
@@ -2228,7 +2344,8 @@
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <h3>
-                                                        <a href="news-single-v1.html" class="thumb">
+                                                        <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                            class="thumb">
                                                             @php
                                                                 $isPlaceholder = Str::contains(
                                                                     $row->thumbnail,
@@ -2262,7 +2379,7 @@
 
 
         {{-- Polictics And Economics Section News  Start --}}
-        <div class="row" style="margin-top: 30px">
+        <div class="row" style="margin-top: 30px; margin-bottom: 20px">
             <div class="main--content" data-sticky-content="true">
                 <div class="sticky-content-inner">
                     <div class="row">
@@ -2270,20 +2387,25 @@
                         <div class="main--content col-md-3 col-sm-7">
                             {{-- Politic Title --}}
                             <div class="post--items-title" data-ajax="tab">
-                                <h2 class="h4">
-                                    @if (session()->get('lang') == 'english')
-                                        {{ $pnbt->newsCategory->category_en }}
-                                    @else
-                                        {{ $pnbt->newsCategory->category_bn }}
-                                    @endif
-                                </h2>
+                                <div style="display: flex; justify-content: space-between">
+                                    <h2 class="h4">
+                                        @if (session()->get('lang') == 'english')
+                                            {{ $pnbt->newsCategory->category_en }}
+                                        @else
+                                            {{ $pnbt->newsCategory->category_bn }}
+                                        @endif
+                                    </h2>
+                                    <a href="{{ route('getCate.news', $pnbt->newsCategory->slug) }}"
+                                        style="font-size: 15px; font-weight: bold">{{ session()->get('lang') == 'english' ? 'More' : 'আরও' }}</a>
+                                </div>
                             </div>
                             <div class="post--items post--items-4" data-ajax-content="outer">
 
                                 {{-- Left Column (col-md-3) --}}
                                 <div class="col-md-12" style="margin: 0 !important; padding: 0 !important">
                                     <div class="post--img">
-                                        <a href="news-single-v1.html" class="thumb">
+                                        <a href="{{ route('showFull.news', ['category' => $pnbt->newsCategory->slug, 'subcategory' => $pnbt->newsSubcategory->slug, 'id' => $pnbt->id]) }}"
+                                            class="thumb">
                                             @php
                                                 $isPlaceholder = Str::contains($pnbt->thumbnail, 'via.placeholder.com');
                                                 $imageToShow =
@@ -2299,7 +2421,8 @@
                                         <div class="post--info">
                                             <div class="title">
                                                 <h2 class="h4" style="font-size: 20.8px">
-                                                    <a href="news-single-v1.html" class="btn-link">
+                                                    <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                        class="btn-link">
                                                         @if (session()->get('lang') == 'english')
                                                             {{ $pnbt->title_en }}
                                                         @else
@@ -2316,7 +2439,7 @@
                                         <div class="post--info" style="margin-top: 15px;">
                                             <div class="title">
                                                 <h2 class="h4" style="font-size: 19.2px">
-                                                    <a href="news-single-v1.html" class="btn-link posthover">
+                                                    <a href="#" class="btn-link posthover">
                                                         @if (session()->get('lang') == 'english')
                                                             {{ $pnbt->title_en }}
                                                         @else
@@ -2334,20 +2457,25 @@
                         <div class="main--content col-md-3 col-sm-7">
                             {{-- Politic Title --}}
                             <div class="post--items-title" data-ajax="tab">
-                                <h2 class="h4">
-                                    @if (session()->get('lang') == 'english')
-                                        {{ $pnbt->newsCategory->category_en }}
-                                    @else
-                                        {{ $pnbt->newsCategory->category_bn }}
-                                    @endif
-                                </h2>
+                                <div style="display: flex; justify-content: space-between">
+                                    <h2 class="h4">
+                                        @if (session()->get('lang') == 'english')
+                                            {{ $pnbt->newsCategory->category_en }}
+                                        @else
+                                            {{ $pnbt->newsCategory->category_bn }}
+                                        @endif
+                                    </h2>
+                                    <a href="{{ route('getCate.news', $pnbt->newsCategory->slug) }}"
+                                        style="font-size: 15px; font-weight: bold">{{ session()->get('lang') == 'english' ? 'More' : 'আরও' }}</a>
+                                </div>
                             </div>
                             <div class="post--items post--items-4" data-ajax-content="outer">
 
                                 {{-- Left Column (col-md-3) --}}
                                 <div class="col-md-12" style="margin: 0 !important; padding: 0 !important">
                                     <div class="post--img">
-                                        <a href="news-single-v1.html" class="thumb">
+                                        <a href="{{ route('showFull.news', ['category' => $pnbt->newsCategory->slug, 'subcategory' => $pnbt->newsSubcategory->slug, 'id' => $pnbt->id]) }}"
+                                            class="thumb">
                                             @php
                                                 $isPlaceholder = Str::contains($pnbt->thumbnail, 'via.placeholder.com');
                                                 $imageToShow =
@@ -2363,7 +2491,8 @@
                                         <div class="post--info">
                                             <div class="title">
                                                 <h2 class="h4" style="font-size: 20.8px">
-                                                    <a href="news-single-v1.html" class="btn-link">
+                                                    <a href="{{ route('showFull.news', ['category' => $pnbt->newsCategory->slug, 'subcategory' => $pnbt->newsSubcategory->slug, 'id' => $pnbt->id]) }}"
+                                                        class="btn-link">
                                                         @if (session()->get('lang') == 'english')
                                                             {{ $pnbt->title_en }}
                                                         @else
@@ -2380,7 +2509,7 @@
                                         <div class="post--info" style="margin-top: 15px;">
                                             <div class="title">
                                                 <h2 class="h4" style="font-size: 19.2px">
-                                                    <a href="news-single-v1.html" class="btn-link posthover">
+                                                    <a href="#" class="btn-link posthover">
                                                         @if (session()->get('lang') == 'english')
                                                             {{ $pnbt->title_en }}
                                                         @else
@@ -2398,20 +2527,25 @@
                         <div class="main--content col-md-3 col-sm-7">
                             {{-- Politic Title --}}
                             <div class="post--items-title" data-ajax="tab">
-                                <h2 class="h4">
-                                    @if (session()->get('lang') == 'english')
-                                        {{ $pnbt->newsCategory->category_en }}
-                                    @else
-                                        {{ $pnbt->newsCategory->category_bn }}
-                                    @endif
-                                </h2>
+                                <div style="display: flex; justify-content: space-between">
+                                    <h2 class="h4">
+                                        @if (session()->get('lang') == 'english')
+                                            {{ $pnbt->newsCategory->category_en }}
+                                        @else
+                                            {{ $pnbt->newsCategory->category_bn }}
+                                        @endif
+                                    </h2>
+                                    <a href="{{ route('getCate.news', $pnbt->newsCategory->slug) }}"
+                                        style="font-size: 15px; font-weight: bold">{{ session()->get('lang') == 'english' ? 'More' : 'আরও' }}</a>
+                                </div>
                             </div>
                             <div class="post--items post--items-4" data-ajax-content="outer">
 
                                 {{-- Left Column (col-md-3) --}}
                                 <div class="col-md-12" style="margin: 0 !important; padding: 0 !important">
                                     <div class="post--img">
-                                        <a href="news-single-v1.html" class="thumb">
+                                        <a href="{{ route('showFull.news', ['category' => $pnbt->newsCategory->slug, 'subcategory' => $pnbt->newsSubcategory->slug, 'id' => $pnbt->id]) }}"
+                                            class="thumb">
                                             @php
                                                 $isPlaceholder = Str::contains($pnbt->thumbnail, 'via.placeholder.com');
                                                 $imageToShow =
@@ -2427,7 +2561,8 @@
                                         <div class="post--info">
                                             <div class="title">
                                                 <h2 class="h4" style="font-size: 20.8px">
-                                                    <a href="news-single-v1.html" class="btn-link">
+                                                    <a href="{{ route('showFull.news', ['category' => $pnbt->newsCategory->slug, 'subcategory' => $pnbt->newsSubcategory->slug, 'id' => $pnbt->id]) }}"
+                                                        class="btn-link">
                                                         @if (session()->get('lang') == 'english')
                                                             {{ $pnbt->title_en }}
                                                         @else
@@ -2462,20 +2597,25 @@
                         <div class="main--content col-md-3 col-sm-7">
                             {{-- Politic Title --}}
                             <div class="post--items-title" data-ajax="tab">
-                                <h2 class="h4">
-                                    @if (session()->get('lang') == 'english')
-                                        {{ $pnbt->newsCategory->category_en }}
-                                    @else
-                                        {{ $pnbt->newsCategory->category_bn }}
-                                    @endif
-                                </h2>
+                                <div style="display: flex; justify-content: space-between">
+                                    <h2 class="h4">
+                                        @if (session()->get('lang') == 'english')
+                                            {{ $pnbt->newsCategory->category_en }}
+                                        @else
+                                            {{ $pnbt->newsCategory->category_bn }}
+                                        @endif
+                                    </h2>
+                                    <a href="{{ route('getCate.news', $pnbt->newsCategory->slug) }}"
+                                        style="font-size: 15px; font-weight: bold">{{ session()->get('lang') == 'english' ? 'More' : 'আরও' }}</a>
+                                </div>
                             </div>
                             <div class="post--items post--items-4" data-ajax-content="outer">
 
                                 {{-- Left Column (col-md-3) --}}
                                 <div class="col-md-12" style="margin: 0 !important; padding: 0 !important">
                                     <div class="post--img">
-                                        <a href="news-single-v1.html" class="thumb">
+                                        <a href="{{ route('showFull.news', ['category' => $pnbt->newsCategory->slug, 'subcategory' => $pnbt->newsSubcategory->slug, 'id' => $pnbt->id]) }}"
+                                            class="thumb">
                                             @php
                                                 $isPlaceholder = Str::contains($pnbt->thumbnail, 'via.placeholder.com');
                                                 $imageToShow =

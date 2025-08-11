@@ -1,6 +1,37 @@
 @extends('layouts.newsIndex.newsMaster')
 
 @section('content')
+    <style>
+        #loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #loading p {
+            font-weight: bold;
+            font-size: 18px;
+            color: #555;
+            margin: 0 0 10px 0;
+        }
+
+        /* Simple spinner */
+        .spinner {
+            margin: 0 auto;
+            width: 30px;
+            height: 30px;
+            border: 4px solid #ddd;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
     @php
         use Illuminate\Support\Str;
 
@@ -14,18 +45,25 @@
             <div style="border-bottom: 2px solid #DA0000; margin-top: 20px" data-ajax="tab">
                 <h2 style="font-size: 20px; font-weight: bold;">
                     {{ session()->get('lang') == 'english' ? $category->category_en : $category->category_bn }}
-
-                    @if ($get_subcates->count() > 0)
-                        <ul style="display: flex; align-items: center;">
-                            @foreach ($get_subcates as $row)
-                                <li style="margin-right:15px; font-size: 14px;">
-                                    <p><a href="#">{{ session()->get('lang') == 'english' ? $row->sub_cate_en : $row->sub_cate_bn }}</a>
-                                    </p>
-                                </li>
-                            @endforeach
-                        </ul>
-                    @endif
                 </h2>
+                @if ($get_subcates->count() > 0)
+                    <!-- Option 2: CSS pseudo-element approach -->
+                    <ul
+                        style="display: flex; align-items: center; margin-bottom: 5px; margin-left: -40px; list-style: none;">
+                        @foreach ($get_subcates as $index => $row)
+                            <li style="{{ $index != 0 ? 'padding-left:15px;' : '' }} font-size: 14px;">
+                                <p>
+                                    <span style="margin-right: 4px; color: #007acc; font-size: 15px;">•</span>
+                                    <a
+                                        href="{{ route('news.sub_cates', [
+                                            'category' => trim($category->slug),
+                                            'subcategory' => trim($row->slug),
+                                        ]) }}">{{ session()->get('lang') == 'english' ? $row->sub_cate_en : $row->sub_cate_bn }}</a>
+                                </p>
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
             </div>
             <div class="main--content col-md-8 col-sm-7" data-sticky-content="true" style="margin-top: 30px;">
                 {{-- This Section will Show Main news --}}
@@ -201,11 +239,12 @@
             </div>
         </div>
 
-
         {{-- Loading animation --}}
-        <div id="loading" style="display:none;text-align:center;">
+        <div id="loading">
             <p>Loading...</p>
+            <div class="spinner"></div>
         </div>
+
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -213,6 +252,7 @@
     <script>
         $(document).ready(function() {
             let nextPageUrl = '{{ $acn->nextPageUrl() }}';
+
             $(window).scroll(function() {
                 if ($(window).scrollTop() + $(window).height() >= $(document).height() - 100) {
                     if (nextPageUrl) {
@@ -226,6 +266,9 @@
                     url: nextPageUrl,
                     type: 'get',
                     beforeSend: function() {
+                        // Show loading button
+                        $('#loading').show();
+                        // Prevent multiple requests
                         nextPageUrl = '';
                     },
                     success: function(data) {
@@ -234,6 +277,10 @@
                     },
                     error: function(xhr, status, error) {
                         console.error("Error loading more posts:", error);
+                    },
+                    complete: function() {
+                        // Hide loading button after request finished
+                        $('#loading').hide();
                     }
                 });
             }

@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class SubCategoryController extends Controller
 {
@@ -46,6 +47,7 @@ class SubCategoryController extends Controller
             'category_id' => $request->category_id,
             'sub_cate_en' => $request->sub_cate_en,
             'sub_cate_bn' => $request->sub_cate_bn,
+            'slug' => Str::slug($request->sub_cate_en),
             'status' => $request->status,
             'created_at' => now(),
             'updated_at' => null,
@@ -93,6 +95,7 @@ class SubCategoryController extends Controller
         $subCategory->sub_cate_en = $request->input('sub_cate_en');
         $subCategory->sub_cate_bn = $request->input('sub_cate_bn');
         $subCategory->category_id = $request->input('category_id');
+        $subCategory->slug =  Str::slug($subCategory->sub_cate_en);
         $subCategory->status = $request->input('status');
         $subCategory->updated_at = now();
         $subCategory->save();
