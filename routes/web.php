@@ -11,8 +11,10 @@ use App\Http\Controllers\LiveTvController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\NewsFetchController;
 use App\Http\Controllers\NoticeController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PhotoGalleryController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\SeoController;
 use App\Http\Controllers\SocailController;
 use App\Http\Controllers\SubCategoryController;
@@ -21,7 +23,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoGalleryController;
 use App\Http\Controllers\WatermarkController;
 use App\Http\Controllers\WebsiteListController;
-use App\Models\News;
+use App\Http\Controllers\WebsiteSettingController;
 use Illuminate\Support\Facades\Route;
 
 // News Home page Route for Visitor Or Users
@@ -48,8 +50,6 @@ Route::controller(HomeController::class)->group(function () {
 
         // For SubCategory Wise news Show
         Route::get('/{category}/{subcategory}', 'sub_cate_news')->name('news.sub_cates');
-
-
     });
 });
 
@@ -95,6 +95,7 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
         'photogallery' => PhotoGalleryController::class,
         'videogallery' => VideoGalleryController::class,
         'ads' => AdsController::class,
+        'website_setting' => WebsiteSettingController::class,
     ]);
 
     // Specific Version (Bangla/English) News Show Routes
@@ -145,15 +146,25 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
         Route::get('/notice/deactive/{id}', [NoticeController::class, 'deactiveNotice'])->name('notice.deactive');
     });
 
-    // Users  Urls
-    // Route::get('/api/news',[NewsFetchController::class, 'fetch'])->name('apiNews');
+    // Routes For  Permission CRUD
+    Route::prefix('/permission')->middleware('auth')->controller(PermissionController::class)->group(function () {
+        Route::get('/', 'index')->name('permission.index');
+        Route::get('/create', 'create')->name('permission.create');
+        Route::post('/store', 'store')->name('permission.store');
+        Route::get('/{id}/edit', 'edit')->name('permission.edit');
+        Route::put('/{id}/update', 'update')->name('permission.update');
+        Route::delete('/{id}/destroy', 'destroy')->name('permission.destroy');
+    });
 
-    // test
-    // Route::get('/test',[TestController::class, 'test']);
-
-    // Route::controller(TestController::class)->group(function(){
-    //     Route::get('/test', 'test')->name('test');
-    // });
+    // Routes For  Roles CRUD
+    Route::prefix('/role')->middleware('auth')->controller(RoleController::class)->group(function () {
+        Route::get('/', 'index')->name('role.index');
+        Route::get('/create', 'create')->name('role.create');
+        Route::post('/store', 'store')->name('role.store');
+        Route::get('/{id}/edit', 'edit')->name('role.edit');
+        Route::put('/{id}/update', 'update')->name('role.update');
+        Route::delete('/{id}/destroy', 'destroy')->name('role.destroy');
+    });
 });
 
 // 404 page not found error

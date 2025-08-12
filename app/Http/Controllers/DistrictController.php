@@ -6,9 +6,22 @@ use App\Models\District;
 use App\Models\Division;
 use App\Models\SubDistrict;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class DistrictController extends Controller
+class DistrictController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:view districts', only: ['index']),
+            new Middleware('permission:edit districts', only: ['edit']),
+            new Middleware('permission:create districts', only: ['create']),
+            new Middleware('permission:delete districts', only: ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -112,12 +125,11 @@ class DistrictController extends Controller
         return redirect()->route('district.index')->with('district_delete', 'District Deleted');
     }
 
-    public function getSubdist($id){
+    public function getSubdist($id)
+    {
 
         $getSubdist = SubDistrict::where('district_id', $id)->get();
 
         return response()->json($getSubdist);
-
     }
-
 }

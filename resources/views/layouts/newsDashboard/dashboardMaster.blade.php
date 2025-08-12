@@ -47,6 +47,9 @@
     <!-- Fancybox CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" />
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css">
+
+
     <!-- ✅ jQuery (required by Summernote) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -343,11 +346,43 @@
                                 </a>
                             </li>
                             <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('website_setting.index') }}">
+                                    <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
+                                    <span class="hide-menu">Website Setting</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
                                 <a class="sidebar-link" href="{{ route('user.index') }}">
                                     <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
                                     <span class="hide-menu">Invite Member</span>
                                 </a>
                             </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                                <iconify-icon icon="solar:home-angle-linear" class="aside-icon"></iconify-icon>
+                                <span class="hide-menu">Role & Permission</span>
+                            </a>
+                            <ul aria-expanded="false" class="collapse first-level">
+                                <li class="sidebar-item">
+                                    <a href="{{ route('permission.index') }}" class="sidebar-link sublink">
+                                        <div class="round-16 d-flex align-items-center justify-content-center">
+                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                        </div>
+                                        <span class="hide-menu">Permission</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a href="{{ route('role.index') }}" class="sidebar-link sublink">
+                                        <div class="round-16 d-flex align-items-center justify-content-center">
+                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                        </div>
+                                        <span class="hide-menu">Role</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
                         @endif
                     </ul>
 
@@ -1501,6 +1536,7 @@
     </div>
     <div class="dark-transparent sidebartoggler"></div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
     <!-- Import Js Files -->
     {{-- <script src="{{ asset('dashboard_assets') }}/js/breadcrumb/breadcrumbChart.js"></script> --}}
     {{-- <script src="{{ asset('dashboard_assets') }}/libs/apexcharts/dist/apexcharts.min.js"></script> --}}

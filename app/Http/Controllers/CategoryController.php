@@ -7,9 +7,22 @@ use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class CategoryController extends Controller
+class CategoryController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:view categories', only: ['index']),
+            new Middleware('permission:edit categories', only: ['edit']),
+            new Middleware('permission:create categories', only: ['create']),
+            new Middleware('permission:delete categories', only: ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -74,8 +87,8 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $request->validate([
-            'category_en' => 'required|unique:categories,category_en,'. $category->id,
-            'category_bn' => 'required|unique:categories,category_bn,'. $category->id,
+            'category_en' => 'required|unique:categories,category_en,' . $category->id,
+            'category_bn' => 'required|unique:categories,category_bn,' . $category->id,
             'status' => 'required'
         ]);
 
@@ -100,13 +113,11 @@ class CategoryController extends Controller
     }
 
     // For Dynamic live Drop down
-    public function getSubcate($id){
+    public function getSubcate($id)
+    {
 
         $getSubCate = SubCategory::where('category_id', $id)->get();
 
         return response()->json($getSubCate);
-
     }
-
-
 }

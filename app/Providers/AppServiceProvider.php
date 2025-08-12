@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Category;
 use App\Models\Seo;
 use App\Models\Social;
+use App\Models\Website_Setting;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Stevebauman\Location\Facades\Location;
@@ -59,6 +60,7 @@ class AppServiceProvider extends ServiceProvider
                 'position_en' => $cityEn,
                 'position_bn' => $cityBn,
                 'getCates' => Category::latest()->take(8)->get(),
+                'webSite_setting' => Website_Setting::latest()->first(),
             ]);
         });
     }

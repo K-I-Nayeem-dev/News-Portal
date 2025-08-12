@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Models\PhotoGallery;
+use App\Models\Website_Setting;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Response;
 
@@ -146,6 +147,7 @@ class HomeController extends Controller
 
         // For Category News Counts
         $categoriesCount = Category::withCount('news')->get();
+
 
         return view('layouts.newsIndex.home.home', [
             'breaking_news' => $breaking_news,
@@ -283,7 +285,7 @@ class HomeController extends Controller
         $scnbt = News::where('sub_cate_id', $subCategory->id)->latest()->first();
         $scn2 = News::where('sub_cate_id', $subCategory->id)->latest()->skip(1)->take(2)->get();
         $scn4 = News::where('sub_cate_id', $subCategory->id)->latest()->skip(3)->take(4)->get();
-        
+
         // For Infinite News Scroll
         $ascn = News::where('sub_cate_id', $subCategory->id)->latest()->skip(7)->paginate(10);
 
@@ -310,6 +312,15 @@ class HomeController extends Controller
         Session::get('lang');
         session()->forget('lang');
         session()->put('lang', 'english');
+        return back();
+    }
+
+    // Method for Bangla website
+    public function bangla()
+    {
+        Session::get('lang');
+        session()->forget('lang');
+        session()->put('lang', 'bangla');
         return back();
     }
 

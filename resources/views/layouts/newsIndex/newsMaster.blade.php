@@ -181,7 +181,11 @@
                             <div class="col-lg-4 col-md-6">
                                 <h1 class="h1">
                                     <a href="{{ route('home') }}" class="btn-link">
-                                        <img src="{{ asset('frontend_assets') }}/img/logo.png" alt="USNews Logo" />
+                                        @if ($webSite_setting->logo)
+                                            <img src="{{ asset($webSite_setting->logo) }}" alt="">
+                                        @else
+                                            <img src="{{ asset('frontend_assets') }}/img/logo.png" alt="USNews Logo" />
+                                        @endif
                                         <span class="hidden">USNews Logo</span>
                                     </a>
                                 </h1>

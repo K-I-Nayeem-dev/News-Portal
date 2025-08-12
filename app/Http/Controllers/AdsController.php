@@ -4,11 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Models\Ads;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 use Intervention\Image\Drivers\Imagick\Driver;
 use Intervention\Image\ImageManager;
+use Illuminate\Routing\Controllers\Middleware;
 
-class AdsController extends Controller
+class AdsController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:view ads', only: ['index']),
+            new Middleware('permission:edit ads', only: ['edit']),
+            new Middleware('permission:create ads', only: ['create']),
+            new Middleware('permission:delete ads', only: ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */

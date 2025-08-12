@@ -6,9 +6,22 @@ use App\Models\watermark;
 use Illuminate\Http\Request;
 use App\Jobs\ProcessImageUpload;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class WatermarkController extends Controller
+class WatermarkController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:view watermart', only: ['index']),
+            new Middleware('permission:edit watermart', only: ['edit']),
+            new Middleware('permission:create watermart', only: ['create']),
+            new Middleware('permission:delete watermart', only: ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */

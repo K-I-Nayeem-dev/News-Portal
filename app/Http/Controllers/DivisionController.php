@@ -5,9 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\District;
 use App\Models\Division;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class DivisionController extends Controller
+class DivisionController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:view divisions', only: ['index']),
+            new Middleware('permission:edit divisions', only: ['edit']),
+            new Middleware('permission:create divisions', only: ['create']),
+            new Middleware('permission:delete divisions', only: ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */

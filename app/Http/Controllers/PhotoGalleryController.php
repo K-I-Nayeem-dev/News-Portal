@@ -7,9 +7,22 @@ use Intervention\Image\Drivers\Imagick\Driver;
 use Intervention\Image\ImageManager;
 use App\Models\PhotoGallery;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class PhotoGalleryController extends Controller
+class PhotoGalleryController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:view gallery', only: ['index']),
+            new Middleware('permission:edit gallery', only: ['edit']),
+            new Middleware('permission:create gallery', only: ['create']),
+            new Middleware('permission:delete gallery', only: ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */

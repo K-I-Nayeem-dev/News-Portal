@@ -4,9 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Models\VideoGallery;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class VideoGalleryController extends Controller
+class VideoGalleryController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:view gallery', only: ['index']),
+            new Middleware('permission:edit gallery', only: ['edit']),
+            new Middleware('permission:create gallery', only: ['create']),
+            new Middleware('permission:delete gallery', only: ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -100,6 +113,5 @@ class VideoGalleryController extends Controller
         VideoGallery::findOrFail($id)->delete();
 
         return back()->with('video_delete', 'Video Delete');
-
     }
 }

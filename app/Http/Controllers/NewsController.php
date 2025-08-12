@@ -18,9 +18,22 @@ use App\Models\Division;
 use App\Models\news_photo;
 use App\Models\SubDistrict;
 use App\Models\watermark;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class NewsController extends Controller
+class NewsController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:view news', only: ['index']),
+            new Middleware('permission:edit news', only: ['edit']),
+            new Middleware('permission:create news', only: ['create']),
+            new Middleware('permission:delete news', only: ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */

@@ -11,15 +11,27 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class UserController extends Controller
+class UserController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:view members', only: ['index']),
+            new Middleware('permission:invite membe', only: ['create']),
+            new Middleware('permission:view members', only: ['edit']),
+            new Middleware('permission:remove member', only: ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-
         $users = User::orderBy('name', 'ASC')->latest()->paginate(15);
         return view('layouts.newsDashboard.users.index', [
             'users' => $users,
