@@ -17,7 +17,7 @@
                                         <a class="text-muted text-decoration-none" href="{{ route('dashboard') }}">Home
                                         </a>
                                     </li>
-                                    <li class="breadcrumb-item text-muted" aria-current="page">Breaking News Manage</li>
+                                    <li class="breadcrumb-item text-muted" aria-current="page">Headline Manage</li>
                                 </ol>
                             </nav>
                         </div>

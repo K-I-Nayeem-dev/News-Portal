@@ -72,11 +72,28 @@
 
                                     </div>
 
-                                    <div class="mt-3">
-                                        <label for="role" class="form-label">Role</label>
-                                        <input id='role' type="role" class="form-control" name="role"
-                                            value="{{ old('role', $user->role) }}" autocomplete="off">
+                                    <div class="row">
+                                        <div class="mt-3">
+                                            <label class="form-label">Roles</label>
+                                        </div>
+                                        {{-- For Permissions select --}}
+                                        @if ($roles->isNotEmpty())
+                                            @foreach ($roles as $role)
+                                                <div class="col-md-3 mt-3">
+                                                    <input {{ $hasRoles->contains($role->id) ? 'checked' : ' ' }} type="checkbox" id="perm_{{ $role->id }}" name="role[]"
+                                                        class="form-check-input" value="{{ $role->name }}">
+                                                    <label for="perm_{{ $role->id }}" class="form-check-label">
+                                                        {{ $role->name }}
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        @endif
 
+                                        @error('permission')
+                                            <div class="col-12">
+                                                <p class="text-danger text-sm mt-2">{{ $message }}</p>
+                                            </div>
+                                        @enderror
                                     </div>
                                     @if ($user->phone_number)
                                         <div class="mt-3 d-flex justify-content-start">

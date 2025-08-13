@@ -233,6 +233,17 @@
         .posthover:hover {
             transform: scale(1.05);
         }
+
+        /* General container for select */
+        .custom-select {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            max-width: 200px;
+            /* optional */
+        }
+
+
     </style>
     {{-- Custom CSS Code section End --}}
 
@@ -1047,35 +1058,98 @@
                 </div>
             </div>
 
+            <style>
 
-            <div class="d-flex justify-content-between" style="margin-bottom: 40px">
+
+/* Select styling */
+select {
+    width: 100%;
+    padding: 10px 15px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    font-size: 16px;
+    color: #333;
+    appearance: none; /* Remove default arrow */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'><path fill='%23333' d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 12px;
+}
+
+select:focus {
+    border-color: #1B84FF;
+    box-shadow: 0 0 5px rgba(27, 132, 255, 0.5);
+    outline: none;
+}
+
+/* Button styling */
+.button {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(45deg, #ff4b2b, #ff416c);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255, 65, 108, 0.4);
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+    .col-md-3 {
+        flex: 1 1 48%;
+        margin-top: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .col-md-3 {
+        flex: 1 1 100%;
+        margin-top: 15px;
+    }
+}
+
+            </style>
+
+
+            <div class="row">
                 <div class="col-md-3">
-                    <select class="form-select" aria-label="Default select example">
+                    <select style="width: 100%">
                         <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        <option value="1">Option 1</option>
+                        <option value="2">Option 2</option>
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <select class="form-select" aria-label="Default select example">
+                    <select style="width: 100%">
                         <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        <option value="1">Option 1</option>
+                        <option value="2">Option 2</option>
                     </select>
                 </div>
                 <div class="col-md-3">
-                    <select class="form-select" aria-label="Default select example">
+                    <select style="width: 100%">
                         <option selected>Open this select menu</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                        <option value="1">Option 1</option>
+                        <option value="2">Option 2</option>
                     </select>
                 </div>
-                <div class="col-md-3 w-100">
-                    <button class="btn btn-primary">Search <i class="fa fa-search" style="margin-left: 20px"
-                            aria-hidden="true"></i></button>
+                <div class="col-md-3">
+                    <button class="button" style="width: 100%">{{ session()->get('lang') == 'english' ? 'Search' : 'খুঁজুন' }} <i class="fa fa-search"></i></button>
                 </div>
             </div>
 
@@ -2276,11 +2350,11 @@
                             <div class="post--items-title" data-ajax="tab">
                                 <div style="display: flex; justify-content: space-between">
                                     <h2 class="h4">
-                                           @if (session()->get('lang') == 'english')
-                                        {{ $fnbt->newsCategory->category_en }}
-                                    @else
-                                        {{ $fnbt->newsCategory->category_bn }}
-                                    @endif
+                                        @if (session()->get('lang') == 'english')
+                                            {{ $fnbt->newsCategory->category_en }}
+                                        @else
+                                            {{ $fnbt->newsCategory->category_bn }}
+                                        @endif
                                     </h2>
                                     <a href="{{ route('getCate.news', $fnbt->newsCategory->slug) }}"
                                         style="font-size: 15px; font-weight: bold">{{ session()->get('lang') == 'english' ? 'More' : 'আরও' }}</a>

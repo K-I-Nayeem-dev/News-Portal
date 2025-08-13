@@ -87,7 +87,8 @@
 
                                 </div>
 
-                                <button style="background-color: #1B84FF" class="btn text-white mt-3 disabled">Create</button>
+                                <button style="background-color: #1B84FF"
+                                    class="btn text-white mt-3 disabled">Create</button>
 
                             </form>
                         </div>
@@ -98,32 +99,41 @@
                     @endif
 
                 </div>
-                <div class="col-lg col-lg-8 px-1">
+                <div class="col-lg col-lg-8 px-1 table-responsive">
                     <div class="card">
                         <h5 class="card-header text-white d-flex justify-content-between" style="background-color: #1B84FF">
                             <span>All Districts</span>
                             <span>Total District : {{ $districts->count() }}</span>
                         </h5>
-                        <div class="card-body" style="height: 400px; overflow-y: auto; overflow-x: hidden;">
+                        <div class="card-body  p-0 p-md-5" style="height: 400px; overflow-y: auto; overflow-x: hidden;">
                             <table class="table table-striped table-bordered">
                                 <thead class="text-center">
                                     <tr>
-                                        <th scope="col">SL</th>
-                                        <th scope="col">District EN</th>
-                                        <th scope="col">District BN</th>
-                                        <th scope="col">Division</th>
-                                        <th scope="col">Actions</th>
-                                        <th scope="col">Status</th>
+                                        <th scope="col" class="d-none d-md-table-cell">SL</th>
+                                        <th scope="col" class="fs-2 fs-md-4">District EN</th>
+                                        <th scope="col" class="d-none d-md-table-cell">District BN</th>
+                                        <th scope="col" class="fs-2 fs-md-4">Division</th>
+                                        <th scope="col" class="fs-2 fs-md-4">Actions</th>
+                                        <th scope="col" class="fs-2 fs-md-4">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @forelse($districts as $key => $district)
                                         <tr onclick="window.location='{{ route('district.edit', $district->id) }}'"
                                             style="cursor: pointer;">
-                                            <th class="text-center" scope="row">{{ ++$key }}</th>
-                                            <td>{{ $district->district_en }}</td>
-                                            <td>{{ $district->district_bn }}</td>
-                                            <td>{{ $district->division->division_en . ' | ' . $district->division->division_bn }}
+                                            <th class="d-none d-md-table-cell text-center" scope="row">
+                                                {{ ++$key }}</th>
+                                            <td  class="fs-2 fs-md-4">{{ $district->district_en }}</td>
+                                            <td class="d-none d-md-table-cell fs-2 fs-md-4">{{ $district->district_bn }}</td>
+                                            {{-- <td>{{ $district->division->division_en . ' | ' . $district->division->division_bn }} --}}
+                                            <td class="fs-2 fs-md-4">
+                                                <span
+                                                    class="d-inline d-md-none">{{ $district->division->division_en }}</span>
+                                                <span class="d-none d-md-inline">
+                                                    {{ $district->division->division_en }} |
+                                                    {{ $district->division->division_bn }}
+                                                </span>
+                                            </td>
                                             </td>
                                             <td>
                                                 <div class="d-flex  justify-content-around align-items-center">
@@ -140,12 +150,21 @@
                                                     </form> --}}
                                                 </div>
                                             </td>
-                                            <td class="text-center">
+                                            <td class="text-center fs-2 fs-md-4">
                                                 @if ($district->status == 1)
-                                                    <p class="badge bg-success">Active</p>
+                                                    <span class="d-inline d-md-none text-success"
+                                                        style="font-size: 1.5rem;">●</span>
                                                 @else
-                                                    <p class="badge bg-danger">Deactive</p>
+                                                    <span class="d-inline d-md-none text-danger"
+                                                        style="font-size: 1.5rem;">●</span>
                                                 @endif
+                                                <span class="d-none d-md-inline">
+                                                    @if ($district->status == 1)
+                                                        <p class="badge bg-success">Active</p>
+                                                    @else
+                                                        <p class="badge bg-danger">Deactive</p>
+                                                    @endif
+                                                </span>
                                             </td>
                                         </tr>
                                     @empty

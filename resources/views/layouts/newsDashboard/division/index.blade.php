@@ -87,11 +87,11 @@
                             <span>All divisions</span>
                             <span>Total division : {{ $divisions->count() }}</span>
                         </h5>
-                        <div class="card-body" style="height: 400px; overflow-y: auto; overflow-x: hidden;">
+                        <div class="card-body  p-0 p-md-5" style="height: 400px; overflow-y: auto; overflow-x: hidden;">
                             <table class="table table-striped table-bordered">
                                 <thead class="text-center">
                                     <tr>
-                                        <th scope="col">SL</th>
+                                        <th scope="col"  class="d-none d-md-table-cell">SL</th>
                                         <th scope="col">Division EN</th>
                                         <th scope="col">Division BN</th>
                                         <th scope="col">Actions</th>
@@ -101,7 +101,7 @@
                                 <tbody>
                                     @forelse($divisions as $key => $division)
                                         <tr>
-                                            <th class="text-center" scope="row">{{ ++$key }}</th>
+                                            <th  class="d-none d-md-table-cell text-center" scope="row">{{ ++$key }}</th>
                                             <td>{{ $division->division_en }}</td>
                                             <td>{{ $division->division_bn }}</td>
                                             <td >
@@ -113,10 +113,19 @@
                                             </td>
                                             <td class="text-center">
                                                 @if ($division->status == 1)
-                                                    <p class="badge bg-success">Active</p>
+                                                    <span class="d-inline d-md-none text-success"
+                                                        style="font-size: 1.5rem;">●</span>
                                                 @else
-                                                    <p class="badge bg-danger">Deactive</p>
+                                                    <span class="d-inline d-md-none text-danger"
+                                                        style="font-size: 1.5rem;">●</span>
                                                 @endif
+                                                <span class="d-none d-md-inline">
+                                                    @if ($division->status == 1)
+                                                        <p class="badge bg-success">Active</p>
+                                                    @else
+                                                        <p class="badge bg-danger">Deactive</p>
+                                                    @endif
+                                                </span>
                                             </td>
                                         </tr>
                                     @empty

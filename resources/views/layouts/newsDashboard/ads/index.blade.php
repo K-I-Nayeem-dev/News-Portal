@@ -48,21 +48,24 @@
                         aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Add Photo To Ads</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
+
+                                @hasanyrole('superadmin|admin|advertiser|moderator')
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Add Photo To Ads</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                @endhasrole
                                 <div class="modal-body">
-                                    <form method="POST" action="{{ route('ads.store') }}"
-                                        enctype="multipart/form-data">
+                                    <form method="POST" action="{{ route('ads.store') }}" enctype="multipart/form-data">
                                         @csrf
 
                                         {{-- Image Upload for photos Gallery --}}
                                         <div class="mt-3">
 
                                             <div>
-                                                <label class='form-label' for="url">Ads Url<sup><code style="font-size: 12px">*</code></sup></label>
+                                                <label class='form-label' for="url">Ads Url<sup><code
+                                                            style="font-size: 12px">*</code></sup></label>
                                                 <input id="url" class="form-control" type="text" name="url"
                                                     autocomplete="off" value="{{ old('url') }}">
 
@@ -128,8 +131,7 @@
 
                                             <!-- Delete Button Form -->
                                             <div class="w-50 ps-1">
-                                                <form method="POST"
-                                                    action="{{ route('ads.destroy', $row->id) }}"
+                                                <form method="POST" action="{{ route('ads.destroy', $row->id) }}"
                                                     onsubmit="return confirm('Are you sure you want to delete: {{ addslashes($row->title_en) }}?');">
                                                     @csrf
                                                     @method('DELETE')

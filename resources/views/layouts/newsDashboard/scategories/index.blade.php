@@ -62,7 +62,8 @@
                                     <select class="form-select" name="category_id" id="category_id" autocomplete="off">
                                         <option value="">Select Category</option>
                                         @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->category_en . ' | ' . $category->category_bn }}</option>
+                                            <option value="{{ $category->id }}">
+                                                {{ $category->category_en . ' | ' . $category->category_bn }}</option>
                                         @endforeach
                                     </select>
 
@@ -103,13 +104,13 @@
                             <span>All Sub Categories</span>
                             <span>Total Sub Categories : {{ $sub_cates->count() }}</span>
                         </h5>
-                        <div class="card-body" style="height: 400px; overflow-y: auto; overflow-x: hidden;">
+                        <div class="card-body  p-0 p-md-5" style="height: 400px; overflow-y: auto; overflow-x: hidden;">
                             <table class="table table-striped table-bordered">
                                 <thead class="text-center">
                                     <tr>
-                                        <th scope="col">SL</th>
+                                        <th scope="col" class="d-none d-md-table-cell">SL</th>
                                         <th scope="col">Sub Category English</th>
-                                        <th scope="col">Sub Category Bangla</th>
+                                        <th scope="col" class="d-none d-md-table-cell">Sub Category Bangla</th>
                                         <th scope="col">Category</th>
                                         <th scope="col">Actions</th>
                                         <th scope="col">Status</th>
@@ -118,10 +119,12 @@
                                 <tbody>
                                     @forelse($sub_cates as $key => $sub_cate)
                                         <tr>
-                                            <th class="text-center" scope="row">{{ ++$key }}</th>
+                                            <th class="d-none d-md-table-cell text-center" scope="row">
+                                                {{ ++$key }}</th>
                                             <td>{{ $sub_cate->sub_cate_en }}</td>
-                                            <td>{{ $sub_cate->sub_cate_bn }}</td>
-                                            <td>{{ $sub_cate->category->category_en . ' | ' . $sub_cate->category->category_bn }}</td>
+                                            <td class="d-none d-md-table-cell">{{ $sub_cate->sub_cate_bn }}</td>
+                                            <td>{{ $sub_cate->category->category_en . ' | ' . $sub_cate->category->category_bn }}
+                                            </td>
                                             <td>
                                                 <div class="d-flex  justify-content-between align-items-center">
                                                     <a
@@ -139,11 +142,21 @@
                                             </td>
                                             <td class="text-center">
                                                 @if ($sub_cate->status == 1)
-                                                    <p class="badge bg-success">Active</p>
+                                                    <span class="d-inline d-md-none text-success"
+                                                        style="font-size: 1.5rem;">●</span>
                                                 @else
-                                                    <p class="badge bg-danger">Deactive</p>
+                                                    <span class="d-inline d-md-none text-danger"
+                                                        style="font-size: 1.5rem;">●</span>
                                                 @endif
+                                                <span class="d-none d-md-inline">
+                                                    @if ($sub_cate->status == 1)
+                                                        <p class="badge bg-success">Active</p>
+                                                    @else
+                                                        <p class="badge bg-danger">Deactive</p>
+                                                    @endif
+                                                </span>
                                             </td>
+
                                         </tr>
                                     @empty
                                         <tr>

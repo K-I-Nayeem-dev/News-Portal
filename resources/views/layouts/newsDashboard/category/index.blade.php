@@ -87,11 +87,11 @@
                             <span>All Categories</span>
                             <span>Total Categories : {{ $categories->count() }}</span>
                         </h5>
-                        <div class="card-body" style="height: 400px; overflow-y: auto; overflow-x: hidden;">
+                        <div class="card-body  p-0 p-md-5" style="height: 400px; overflow-y: auto; overflow-x: hidden;">
                             <table class="table table-striped table-bordered">
                                 <thead class="text-center">
                                     <tr>
-                                        <th scope="col">SL</th>
+                                        <th scope="col" class="d-none d-md-table-cell">SL</th>
                                         <th scope="col">Category English</th>
                                         <th scope="col">Category Bangla</th>
                                         <th scope="col">Actions</th>
@@ -101,10 +101,11 @@
                                 <tbody>
                                     @forelse($categories as $key => $category)
                                         <tr>
-                                            <th class="text-center" scope="row">{{ ++$key }}</th>
+                                            <th class="d-none d-md-table-cell text-center" scope="row">
+                                                {{ ++$key }}</th>
                                             <td>{{ $category->category_en }}</td>
                                             <td>{{ $category->category_bn }}</td>
-                                            <td >
+                                            <td>
                                                 <div class="d-flex  justify-content-around align-items-center">
                                                     <a class="btn btn-sm btn-primary me-2"
                                                         href="{{ route('categories.edit', $category->id) }}"><i
@@ -121,10 +122,19 @@
                                             </td>
                                             <td class="text-center">
                                                 @if ($category->status == 1)
-                                                    <p class="badge bg-success">Active</p>
+                                                    <span class="d-inline d-md-none text-success"
+                                                        style="font-size: 1.5rem;">●</span>
                                                 @else
-                                                    <p class="badge bg-danger">Deactive</p>
+                                                    <span class="d-inline d-md-none text-danger"
+                                                        style="font-size: 1.5rem;">●</span>
                                                 @endif
+                                                <span class="d-none d-md-inline">
+                                                    @if ($category->status == 1)
+                                                        <p class="badge bg-success">Active</p>
+                                                    @else
+                                                        <p class="badge bg-danger">Deactive</p>
+                                                    @endif
+                                                </span>
                                             </td>
                                         </tr>
                                     @empty

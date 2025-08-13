@@ -31,18 +31,18 @@
             <!-- Row -->
             <div class="row justify-content-center">
                 <div class="col-lg col-lg-8 px-1">
-                    <div class="card">
+                    <div class="card ">
                         <h5 class="card-header text-white d-flex justify-content-between" style="background-color: #1B84FF">
                             <span>All Permissions</span>
                             <a href="{{ route('permission.create') }}" class="btn btn-success">Create</a>
                         </h5>
-                        <div class="card-body">
+                        <div class="card-body  p-0 p-md-3">
                             <table class="table table-striped table-bordered">
                                 <thead class="text-center">
                                     <tr>
                                         <th scope="col" width="60">SL</th>
                                         <th scope="col" style="text-align: left">Name</th>
-                                        <th scope="col" width="150">Created</th>
+                                        <th scope="col" width="150" class="d-none d-md-table-cell">Created</th>
                                         <th scope="col" width="120">Actions</th>
                                     </tr>
                                 </thead>
@@ -53,7 +53,7 @@
                                                 <th class="text-center" scope="row" width="60">{{ ++$key }}
                                                 </th>
                                                 <td>{{ $permission->name }}</td>
-                                                <td width="150">{{ $permission->created_at->format('d M, Y') }}</td>
+                                                <td width="150" class="d-none d-md-table-cell">{{ $permission->created_at->format('d M, Y') }}</td>
                                                 <td class="text-center" width="120">
                                                     <div class="d-flex justify-content-around align-items-center">
                                                         <a href="{{ route('permission.edit', $permission->id) }}"

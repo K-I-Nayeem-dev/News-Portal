@@ -15,6 +15,7 @@
                                         </a>
                                     </li>
                                     <li class="breadcrumb-item text-muted" aria-current="page">User Profile</li>
+                                    <li class="breadcrumb-item text-muted" aria-current="page">{{ Auth::user()->name }}</li>
                                 </ol>
                             </nav>
                         </div>

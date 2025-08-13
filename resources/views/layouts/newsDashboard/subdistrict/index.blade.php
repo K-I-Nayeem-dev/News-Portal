@@ -105,29 +105,37 @@
                             <span>All Sub Districts</span>
                             <span>Total Sub District : {{ $subdistricts->count() }}</span>
                         </h5>
-                        <div class="card-body" style="height: 450px; overflow-y: auto; overflow-x: hidden;">
+                        <div class="card-body p-0 p-md-5" style="height: 450px; overflow-y: auto; overflow-x: hidden;">
                             <div>
                                 <table class="table table-striped table-bordered">
                                     <thead class="text-center">
                                         <tr>
-                                            <th scope="col">SL</th>
-                                            <th scope="col">Sub District EN</th>
-                                            <th scope="col">Sub District BN</th>
-                                            <th scope="col">District</th>
-                                            <th scope="col">Actions</th>
-                                            <th scope="col">Status</th>
+                                            <th scope="col" class="d-none d-md-table-cell fs-2 fs-md-4">SL</th>
+                                            <th scope="col" class="fs-2 fs-md-4">Sub District EN</th>
+                                            <th scope="col" class="d-none d-md-table-cell fs-2 fs-md-4">Sub District BN
+                                            </th>
+                                            <th scope="col" class="fs-2 fs-md-4">District</th>
+                                            <th scope="col" class="fs-2 fs-md-4">Actions</th>
+                                            <th scope="col" class="fs-2 fs-md-4">Status</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @forelse($subdistricts as $key => $subdistrict)
                                             <tr onclick="window.location='{{ route('subdistrict.edit', $subdistrict->id) }}'"
                                                 style="cursor: pointer;">
-                                                <th class="text-center" scope="row">{{ ++$key }}</th>
-                                                <td>{{ $subdistrict->sub_district_en }}</td>
-                                                <td>{{ $subdistrict->sub_district_bn }}</td>
-                                                <td>{{ $subdistrict->district->district_en . ' | ' . $subdistrict->district->district_bn }}
+                                                <th class="d-none d-md-table-cell text-center fs-2 fs-md-4" scope="row">
+                                                    {{ ++$key }}</th>
+                                                <td class="fs-2 fs-md-4">{{ $subdistrict->sub_district_en }}</td>
+                                                <td class="d-none d-md-table-cell">{{ $subdistrict->sub_district_bn }}</td>
+                                                <td class="fs-2 fs-md-4">
+                                                    <span
+                                                        class="d-inline d-md-none">{{ $subdistrict->district->district_en }}</span>
+                                                    <span class="d-none d-md-inline">
+                                                        {{ $subdistrict->district->district_en }} |
+                                                        {{ $subdistrict->district->district_bn }}
+                                                    </span>
                                                 </td>
-                                                <td>
+                                                <td class="fs-2 fs-md-4">
                                                     <div class="d-flex  justify-content-between align-items-center">
                                                         <a class="btn btn-sm btn-primary me-1 w-100"
                                                             href="{{ route('subdistrict.edit', $subdistrict->id) }}"><i
@@ -142,12 +150,21 @@
                                                     </form> --}}
                                                     </div>
                                                 </td>
-                                                <td class="text-center">
+                                                <td class="text-center fs-2 fs-md-4">
                                                     @if ($subdistrict->status == 1)
-                                                        <p class="badge bg-success">Active</p>
+                                                        <span class="d-inline d-md-none text-success"
+                                                            style="font-size: 1.5rem;">●</span>
                                                     @else
-                                                        <p class="badge bg-danger">Deactive</p>
+                                                        <span class="d-inline d-md-none text-danger"
+                                                            style="font-size: 1.5rem;">●</span>
                                                     @endif
+                                                    <span class="d-none d-md-inline">
+                                                        @if ($subdistrict->status == 1)
+                                                            <p class="badge bg-success">Active</p>
+                                                        @else
+                                                            <p class="badge bg-danger">Deactive</p>
+                                                        @endif
+                                                    </span>
                                                 </td>
                                             </tr>
                                         @empty

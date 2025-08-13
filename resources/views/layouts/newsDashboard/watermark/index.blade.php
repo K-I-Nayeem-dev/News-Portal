@@ -109,11 +109,11 @@
                     <div class="card">
                         <h5 class="card-header text-white" style="background-color: #1B84FF">All Watermarks</h5>
 
-                        <div class="card-body">
+                        <div class="card-body  p-0 p-md-3">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th scope="col">SL</th>
+                                        <th scope="col" class="d-none d-md-table-cell">SL</th>
                                         <th scope="col">Watermark Image</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Action</th>
@@ -122,14 +122,19 @@
                                 <tbody>
                                     @forelse ($watermarks as $key => $watermark)
                                         <tr>
-                                            <th scope="row">{{ ++$key }}</th>
-                                            <td><img width="300" height="20" src="{{ asset($watermark->watermark) }} "
-                                                    alt="{{ $watermark->watermark }}"></td>
+                                            <th scope="row" class="d-none d-md-table-cell">{{ ++$key }}</th>
                                             <td>
-                                                <form method="POST" action="{{ route('watermark.update', $watermark->id) }}">
+                                                <img src="{{ asset($watermark->watermark) }}"
+                                                    alt="{{ $watermark->watermark }}" class="img-fluid"
+                                                    style="max-width: 150px; height: auto;">
+                                            </td>
+                                            <td>
+                                                <form method="POST"
+                                                    action="{{ route('watermark.update', $watermark->id) }}">
                                                     @csrf
-                                                    @method("PUT")
-                                                    <select name="status" class="form-select" id="watermark" onchange="this.form.submit()">
+                                                    @method('PUT')
+                                                    <select name="status" class="form-select" id="watermark"
+                                                        onchange="this.form.submit()">
                                                         <option value="">Select Status</option>
                                                         <option {{ $watermark->status == 1 ? 'selected' : '' }}
                                                             value="1">

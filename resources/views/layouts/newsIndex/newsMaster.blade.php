@@ -483,38 +483,6 @@
             </div>
         </footer>
     </div>
-    <div id="stickySocial" class="sticky--right">
-        <ul class="nav">
-            <li>
-                <a href="{{ $social->facebook }}">
-                    <i class="fa fa-facebook"></i> <span>Follow Us On Facebook</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ $social->twitter }}">
-                    <i class="fa-brands fa-x-twitter"></i> <span style="color: white; background-color: black"">Follow
-                        Us On Twitter</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ $social->instagram }}">
-                    <i class="fa fa-instagram"></i>
-                    <span>Follow Us On Instagram</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ $social->youtube }}">
-                    <i class="fa fa-youtube-play"></i>
-                    <span>Follow Us On Youtube Play</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ $social->linkedin }}">
-                    <i class="fa fa-linkedin"></i> <span>Follow Us On LinkedIn</span>
-                </a>
-            </li>
-        </ul>
-    </div>
 
     <div id="backToTop">
         <a href="#"><i class="fa fa-angle-double-up"></i></a>

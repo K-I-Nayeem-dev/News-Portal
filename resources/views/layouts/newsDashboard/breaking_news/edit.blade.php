@@ -17,7 +17,7 @@
                                         <a class="text-muted text-decoration-none" href="">Home
                                         </a>
                                     </li>
-                                    <li class="breadcrumb-item text-muted" aria-current="page">Breaking Edit</li>
+                                    <li class="breadcrumb-item text-muted" aria-current="page">Headline Edit</li>
                                 </ol>
                             </nav>
                         </div>
@@ -33,7 +33,7 @@
                 <div class="d-flex justify-content-center">
                     <div class="col-lg-8 px-1">
                         <div class="card">
-                            <h5 class="card-header text-white" style="background-color: #1B84FF">Edit Breaking News</h5>
+                            <h5 class="card-header text-white" style="background-color: #1B84FF">Edit Headline News</h5>
                             <div class="card-body">
                                 <form method="POST" action="{{ route('breaking_news.update', $breakings->id) }}">
                                     @csrf

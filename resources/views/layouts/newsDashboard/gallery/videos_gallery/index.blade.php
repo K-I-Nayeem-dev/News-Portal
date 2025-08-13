@@ -118,12 +118,10 @@
 
                 </div>
 
-                <div class="row g-3 justify-content-start">
+                <div class="row g-3">
                     @forelse ($videos as $video)
-                        <div class="col-6 col-sm-4 col-md-3"">
-
-                            {{-- this iframe youtube video with fancybox and with thumbnail --}}
-                            <div class="card" style="width: 18rem;">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <div class="card h-100">
                                 @php
                                     // Extract iframe src
                                     preg_match('/src="([^"]+)"/', $video->embed_code, $matches);
@@ -138,81 +136,65 @@
                                 @endphp
 
                                 @if ($iframeSrc)
-                                    <a data-fancybox href="{{ $iframeSrc }}" class="position-relative d-inline-block"
-                                        style="display: inline-block;">
+                                    <a data-fancybox href="{{ $iframeSrc }}" class="position-relative d-block">
                                         @if ($videoId)
-                                            <img src="https://img.youtube.com/vi/{{ $videoId }}/hqdefault.jpg"
-                                                class="img-fluid" style="cursor: pointer; border-radius: 10px 10px 0 0;" />
+                                            <div class="video-thumb-wrapper position-relative"
+                                                style="padding-top: 56.25%; overflow: hidden; border-radius: 10px 10px 0 0;">
+                                                <img src="https://img.youtube.com/vi/{{ $videoId }}/hqdefault.jpg"
+                                                    class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover"
+                                                    alt="{{ $video->title_en }}" style="cursor: pointer;">
+                                                <!-- Play button overlay -->
+                                                <div class="position-absolute top-50 start-50 translate-middle bg-dark bg-opacity-50 rounded-circle d-flex align-items-center justify-content-center"
+                                                    style="width: 60px; height: 60px;">
+                                                    <i class="fa fa-play text-white fs-4"></i>
+                                                </div>
+                                            </div>
                                         @else
-                                            <img src="{{ asset('default-thumb.jpg') }}" class="img-fluid rounded" />
+                                            <img src="{{ asset('default-thumb.jpg') }}" class="img-fluid rounded"
+                                                alt="{{ $video->title_en }}">
                                         @endif
-
-                                        <!-- Play button overlay -->
-                                        <div
-                                            style="
-                                                position: absolute;
-                                                top: 50%;
-                                                left: 50%;
-                                                transform: translate(-50%, -50%);
-                                                background: rgba(0, 0, 0, 0.6);
-                                                border-radius: 50%;
-                                                width: 60px;
-                                                height: 60px;
-                                                display: flex;
-                                                align-items: center;
-                                                justify-content: center;
-                                            ">
-                                            <i class="fa fa-play text-white" style="font-size: 24px;"></i>
-                                        </div>
                                     </a>
                                 @endif
 
-                                <div class="card-body">
-                                    <p class="card-text">{{ $video->title_en }}</p>
-                                    @if ($video->type == 1)
-                                        <p class="badge bg-info">Big Video</p>
-                                    @else
-                                        <p class="badge bg-primary">Small Video</p>
-                                    @endif
-                                    <div class="row">
-                                        <div class="d-flex">
-                                            <!-- Edit Button -->
-                                            <div class="w-50 pe-1">
-                                                <a class="btn btn-primary btn-sm w-100"
-                                                    href="{{ route('videogallery.edit', $video->id) }}">
-                                                    <i class="fa fa-edit" aria-hidden="true"></i>
-                                                </a>
-                                            </div>
+                                <div class="card-body d-flex flex-column">
+                                    <p class="card-text text-truncate mb-2">{{ $video->title_en }}</p>
+                                    <p class="badge {{ $video->type == 1 ? 'bg-info' : 'bg-primary' }}">
+                                        {{ $video->type == 1 ? 'Big Video' : 'Small Video' }}
+                                    </p>
 
-                                            <!-- Delete Button Form -->
-                                            <div class="w-50 ps-1">
-                                                <form method="POST"
-                                                    action="{{ route('videogallery.destroy', $video->id) }}"
-                                                    onsubmit="return confirm('Are you sure you want to delete: {{ addslashes($video->title_en) }}?');">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm w-100">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </div>
+                                    <div class="mt-auto d-flex gap-2">
+                                        <!-- Edit Button -->
+                                        <a class="btn btn-primary btn-sm flex-fill"
+                                            href="{{ route('videogallery.edit', $video->id) }}">
+                                            <i class="fa fa-edit"></i> Edit
+                                        </a>
+
+                                        <!-- Delete Button Form -->
+                                        <form method="POST" action="{{ route('videogallery.destroy', $video->id) }}"
+                                            onsubmit="return confirm('Are you sure you want to delete: {{ addslashes($video->title_en) }}?');"
+                                            class="flex-fill">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm w-100">
+                                                <i class="fa fa-trash"></i> Delete
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     @empty
-                        <div class="w-100 text-center">
+                        <div class="col-12 text-center">
                             <p class="alert alert-danger">No Video Found</p>
                         </div>
                     @endforelse
-
-                    <!-- Pagination links -->
-                    <div class="d-flex justify-content-start">
-                        {{ $videos->links('pagination::bootstrap-5') }}
-                    </div>
-
                 </div>
+
+                <!-- Pagination links -->
+                <div class="mt-3">
+                    {{ $videos->links('pagination::bootstrap-5') }}
+                </div>
+
                 @if (session('video_uploaded'))
                     <div class=" alert alert-success mt-3 ">{{ session('video_uploaded') }}</div>
                 @endif

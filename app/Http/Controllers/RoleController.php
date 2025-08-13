@@ -90,7 +90,7 @@ class RoleController extends Controller implements HasMiddleware
     {
         $role = Role::findOrFail($id);
         $hasPermissions = $role->permissions->pluck('name');
-        $permissions = Permission::orderBy('name', 'ASC')->get();
+        $permissions = Permission::get();
 
         return view('layouts.newsDashboard.role.edit', [
             'role' => $role,

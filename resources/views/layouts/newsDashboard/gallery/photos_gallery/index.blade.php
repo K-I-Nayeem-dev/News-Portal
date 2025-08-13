@@ -62,7 +62,8 @@
                                         <div class="mt-3">
 
                                             <div>
-                                                <label class='form-label' for="title_en">Title English<sup><code style="font-size: 12px">*</code></sup></label>
+                                                <label class='form-label' for="title_en">Title English<sup><code
+                                                            style="font-size: 12px">*</code></sup></label>
                                                 <input id="title_en" class="form-control" type="text" name="title_en"
                                                     autocomplete="off" value="{{ old('title_en') }}">
 
@@ -72,7 +73,8 @@
                                             </div>
 
                                             <div class="mt-3">
-                                                <label class='form-label' for="title_bn">Title Bangla<sup><code style="font-size: 12px">*</code></sup></label>
+                                                <label class='form-label' for="title_bn">Title Bangla<sup><code
+                                                            style="font-size: 12px">*</code></sup></label>
                                                 <input id="title_bn" class="form-control" type="text" name="title_bn"
                                                     autocomplete="off" value="{{ old('title_bn') }}">
 
@@ -117,54 +119,46 @@
 
                 </div>
 
-                <div class="row g-3 justify-content-start">
+                <div class="row g-3">
                     @forelse ($photos as $photo)
-                        <div class="col-6 col-sm-4 col-md-3">
-                            <div class="card" style="width: 18rem;">
+                        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                            <div class="card h-100">
                                 <a data-fancybox="gallery" href="{{ asset($photo->image) }}">
-                                    <img src="{{ asset($photo->image) }}" class="card-img-top" alt="{{ $photo->title_en }}">
+                                    <img src="{{ asset($photo->image) }}" class="card-img-top img-fluid"
+                                        alt="{{ $photo->title_en }}" style="object-fit: cover; height: 200px;">
                                 </a>
-                                <div class="card-body">
-                                    <p class="card-text">{{ $photo->title_en }}</p>
-                                    <div class="row">
-                                        <div class="d-flex">
-                                            <!-- Edit Button -->
-                                            <div class="w-50 pe-1">
-                                                <a class="btn btn-primary btn-sm w-100"
-                                                    href="{{ route('photogallery.edit', $photo->id) }}">
-                                                    <i class="fa fa-edit" aria-hidden="true"></i>
-                                                </a>
-                                            </div>
-
-                                            <!-- Delete Button Form -->
-                                            <div class="w-50 ps-1">
-                                                <form method="POST"
-                                                    action="{{ route('photogallery.destroy', $photo->id) }}"
-                                                    onsubmit="return confirm('Are you sure you want to delete: {{ addslashes($photo->title_en) }}?');">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-danger btn-sm w-100">
-                                                        <i class="fa fa-trash" aria-hidden="true"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </div>
+                                <div class="card-body d-flex flex-column">
+                                    <p class="card-text text-truncate mb-2">{{ $photo->title_en }}</p>
+                                    <div class="mt-auto d-flex gap-2">
+                                        <a class="btn btn-primary btn-sm flex-fill"
+                                            href="{{ route('photogallery.edit', $photo->id) }}">
+                                            <i class="fa fa-edit"></i> Edit
+                                        </a>
+                                        <form method="POST" action="{{ route('photogallery.destroy', $photo->id) }}"
+                                            onsubmit="return confirm('Are you sure you want to delete: {{ addslashes($photo->title_en) }}?');"
+                                            class="flex-fill">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm w-100">
+                                                <i class="fa fa-trash"></i> Delete
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     @empty
-                        <div class="w-100 text-center">
+                        <div class="col-12 text-center">
                             <p class="alert alert-danger">No Photo Found</p>
                         </div>
                     @endforelse
-
-                    <!-- Pagination links -->
-                    <div class="d-flex justify-content-start">
-                        {{ $photos->links('pagination::bootstrap-5') }}
-                    </div>
-
                 </div>
+
+                <!-- Pagination links -->
+                <div class="mt-3">
+                    {{ $photos->links('pagination::bootstrap-5') }}
+                </div>
+
                 @if (session('photo_uploaded'))
                     <div class=" alert alert-success mt-3 ">{{ session('photo_uploaded') }}</div>
                 @endif

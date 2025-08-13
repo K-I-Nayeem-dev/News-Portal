@@ -101,7 +101,7 @@
                             <a href="javascript:void(0)"
                                 class="dropdown-toggle u-dropdown w-100 text-white d-block position-relative id="dropdownMenuLink"
                                 data-bs-toggle="dropdown" aria-expanded="false">{{ auth()->user()->name }}
-                                {{ Auth::user()->role ? ' (' . Auth::user()->role . ') ' : ' ' }}</a>
+                               <span style="font-size: 12px">({{ ucfirst(Auth::user()->roles->pluck('name')->implode(', ')) }})</span></a>
                             <div class="dropdown-menu animated flipInY" aria-labelledby="dropdownMenuLink">
 
                                 <a class="dropdown-item d-flex gap-2" href="{{ route('profile.index') }}"> <i
@@ -162,135 +162,147 @@
                         <!-- Ads Pages -->
                         <!-- ---------------------------------- -->
 
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="{{ route('ads.index') }}">
-                                <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
-                                <span class="hide-menu">Ads</span>
-                            </a>
-                        </li>
 
+                        @hasanyrole('superadmin|admin|editor|advertiser|moderator')
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('ads.index') }}">
+                                    <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
+                                    <span class="hide-menu">Ads</span>
+                                </a>
+                            </li>
+                        @endhasanyrole
+
+                        @hasanyrole('superadmin|admin|editor|contributor|moderator|writer')
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('breaking_news.index') }}">
+                                    <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
+                                    <span class="hide-menu">Headline</span>
+                                </a>
+                            </li>
+                        @endhasanyrole
                         <!-- ---------------------------------- -->
                         <!-- Front Pages -->
                         <!-- ---------------------------------- -->
-                        <li class="sidebar-item">
-                            <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
-                                <iconify-icon icon="solar:home-angle-linear" class="aside-icon"></iconify-icon>
-                                <span class="hide-menu">News</span>
-                            </a>
-                            <ul aria-expanded="false" class="collapse first-level">
-                                <li class="sidebar-item">
-                                    <a href="{{ route('dashboard_news.index') }}" class="sidebar-link sublink">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
-                                        </div>
-                                        <span class="hide-menu">All News</span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="{{ route('dashboard_news.create') }}" class="sidebar-link sublink">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
-                                        </div>
-                                        <span class="hide-menu">Create News</span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="{{ route('breaking_news.index') }}" class="sidebar-link sublink">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
-                                        </div>
-                                        <span class="hide-menu">Breaking News</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                        @hasanyrole('superadmin|admin|editor|contributor|moderator|writer')
+                            <li class="sidebar-item">
+                                <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                                    <iconify-icon icon="solar:home-angle-linear" class="aside-icon"></iconify-icon>
+                                    <span class="hide-menu">News</span>
+                                </a>
+                                <ul aria-expanded="false" class="collapse first-level">
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('dashboard_news.index') }}" class="sidebar-link sublink">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                            </div>
+                                            <span class="hide-menu">All News</span>
+                                        </a>
+                                    </li>
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('dashboard_news.create') }}" class="sidebar-link sublink">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                            </div>
+                                            <span class="hide-menu">Create News</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endhasrole
 
                         <!-- ---------------------------------- -->
                         {{-- Categoris LInks --}}
                         <!-- ---------------------------------- -->
-                        <li class="sidebar-item">
-                            <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
-                                <iconify-icon icon="solar:home-angle-linear" class="aside-icon"></iconify-icon>
-                                <span class="hide-menu">Categories</span>
-                            </a>
-                            <ul aria-expanded="false" class="collapse first-level">
-                                <li class="sidebar-item">
-                                    <a href="{{ route('categories.index') }}" class="sidebar-link sublink">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
-                                        </div>
-                                        <span class="hide-menu">Category</span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="{{ route('sub_categories.index') }}" class="sidebar-link sublink">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
-                                        </div>
-                                        <span class="hide-menu">Sub Category</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                        @hasanyrole('superadmin|admin')
+                            <li class="sidebar-item">
+                                <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                                    <iconify-icon icon="solar:home-angle-linear" class="aside-icon"></iconify-icon>
+                                    <span class="hide-menu">Categories</span>
+                                </a>
+                                <ul aria-expanded="false" class="collapse first-level">
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('categories.index') }}" class="sidebar-link sublink">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                            </div>
+                                            <span class="hide-menu">Category</span>
+                                        </a>
+                                    </li>
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('sub_categories.index') }}" class="sidebar-link sublink">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                            </div>
+                                            <span class="hide-menu">Sub Category</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endhasrole
 
-                        <li class="sidebar-item">
-                            <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
-                                <iconify-icon icon="solar:home-angle-linear" class="aside-icon"></iconify-icon>
-                                <span class="hide-menu">Divisions & Districts</span>
-                            </a>
-                            <ul aria-expanded="false" class="collapse first-level">
-                                <li class="sidebar-item">
-                                    <a href="{{ route('division.index') }}" class="sidebar-link sublink">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
-                                        </div>
-                                        <span class="hide-menu">Division</span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="{{ route('district.index') }}" class="sidebar-link sublink">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
-                                        </div>
-                                        <span class="hide-menu">District</span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="{{ route('subdistrict.index') }}" class="sidebar-link sublink">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
-                                        </div>
-                                        <span class="hide-menu">Sub District</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
-                                <iconify-icon icon="solar:home-angle-linear" class="aside-icon"></iconify-icon>
-                                <span class="hide-menu">Gallery</span>
-                            </a>
-                            <ul aria-expanded="false" class="collapse first-level">
-                                <li class="sidebar-item">
-                                    <a href="{{ route('photogallery.index') }}" class="sidebar-link sublink">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
-                                        </div>
-                                        <span class="hide-menu">Photo Gallery</span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="{{ route('videogallery.index') }}" class="sidebar-link sublink">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
-                                        </div>
-                                        <span class="hide-menu">Video Gallery</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                        @hasanyrole('superadmin|admin')
+                            <li class="sidebar-item">
+                                <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                                    <iconify-icon icon="solar:home-angle-linear" class="aside-icon"></iconify-icon>
+                                    <span class="hide-menu">Divisions & Districts</span>
+                                </a>
+                                <ul aria-expanded="false" class="collapse first-level">
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('division.index') }}" class="sidebar-link sublink">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                            </div>
+                                            <span class="hide-menu">Division</span>
+                                        </a>
+                                    </li>
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('district.index') }}" class="sidebar-link sublink">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                            </div>
+                                            <span class="hide-menu">District</span>
+                                        </a>
+                                    </li>
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('subdistrict.index') }}" class="sidebar-link sublink">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                            </div>
+                                            <span class="hide-menu">Sub District</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endhasrole
 
-                        @if (Auth::user()->role == 'admin' || Auth::user()->role == 'editor')
+                        @hasanyrole('superadmin|admin|editor|moderator|writer')
+                            <li class="sidebar-item">
+                                <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                                    <iconify-icon icon="solar:home-angle-linear" class="aside-icon"></iconify-icon>
+                                    <span class="hide-menu">Gallery</span>
+                                </a>
+                                <ul aria-expanded="false" class="collapse first-level">
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('photogallery.index') }}" class="sidebar-link sublink">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                            </div>
+                                            <span class="hide-menu">Photo Gallery</span>
+                                        </a>
+                                    </li>
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('videogallery.index') }}" class="sidebar-link sublink">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                            </div>
+                                            <span class="hide-menu">Video Gallery</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endhasrole
+
+                        @hasanyrole('superadmin|admin')
                             <li class="sidebar-item">
                                 <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
                                     <iconify-icon icon="solar:home-angle-linear" class="aside-icon"></iconify-icon>
@@ -339,51 +351,63 @@
                                     </li>
                                 </ul>
                             </li>
+                        @endhasrole
+
+                        @hasanyrole('superadmin|admin')
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="{{ route('watermark.index') }}">
                                     <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
                                     <span class="hide-menu">Watermart</span>
                                 </a>
                             </li>
+                        @endhasrole
+
+                        @hasanyrole('superadmin|admin')
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="{{ route('website_setting.index') }}">
                                     <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
                                     <span class="hide-menu">Website Setting</span>
                                 </a>
                             </li>
+                        @endhasrole
+
+                        @hasanyrole('superadmin|admin')
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="{{ route('user.index') }}">
                                     <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
-                                    <span class="hide-menu">Invite Member</span>
+                                    <span class="hide-menu">Users</span>
                                 </a>
                             </li>
+                        @endhasrole
 
-                        <li class="sidebar-item">
-                            <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
-                                <iconify-icon icon="solar:home-angle-linear" class="aside-icon"></iconify-icon>
-                                <span class="hide-menu">Role & Permission</span>
-                            </a>
-                            <ul aria-expanded="false" class="collapse first-level">
-                                <li class="sidebar-item">
-                                    <a href="{{ route('permission.index') }}" class="sidebar-link sublink">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
-                                        </div>
-                                        <span class="hide-menu">Permission</span>
-                                    </a>
-                                </li>
-                                <li class="sidebar-item">
-                                    <a href="{{ route('role.index') }}" class="sidebar-link sublink">
-                                        <div class="round-16 d-flex align-items-center justify-content-center">
-                                            <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
-                                        </div>
-                                        <span class="hide-menu">Role</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                        @hasanyrole('superadmin|admin')
+                            <li class="sidebar-item">
+                                <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
+                                    <iconify-icon icon="solar:home-angle-linear" class="aside-icon"></iconify-icon>
+                                    <span class="hide-menu">Role & Permission</span>
+                                </a>
+                                <ul aria-expanded="false" class="collapse first-level">
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('permission.index') }}" class="sidebar-link sublink">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                            </div>
+                                            <span class="hide-menu">Permission</span>
+                                        </a>
+                                    </li>
+                                    <li class="sidebar-item">
+                                        <a href="{{ route('role.index') }}" class="sidebar-link sublink">
+                                            <div class="round-16 d-flex align-items-center justify-content-center">
+                                                <iconify-icon icon="solar:stop-circle-line-duotone"></iconify-icon>
+                                            </div>
+                                            <span class="hide-menu">Role</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        @endhasrole
 
-                        @endif
+
                     </ul>
 
 
@@ -485,7 +509,7 @@
                             </li>
                         </ul>
                         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                            <div class="d-flex align-items-center justify-content-between py-2 py-lg-0">
+                            <div class="d-flex align-items-center justify-content-center py-2 py-lg-0">
                                 <ul
                                     class="navbar-nav flex-row  align-items-center justify-content-center d-flex d-lg-none">
                                     <li class="nav-item hover-dd dropdown nav-icon-hover-bg rounded-circle">
@@ -502,7 +526,7 @@
 
                                             <div class="py-3 px-4 bg-primary">
                                                 <div class="mb-0 fs-6 fw-medium text-white">Notifications</div>
-                                                <div class="mb-0 fs-2 fw-medium text-white">You have 4 Notifications
+                                                <div class="mb-0 fs-2 fw-medium text-white">You have 0 otifications
                                                 </div>
                                             </div>
                                             <div class="p-3">
@@ -976,7 +1000,7 @@
 
                                             <div class="py-3 px-4 bg-primary">
                                                 <div class="mb-0 fs-6 fw-medium text-white">Notifications</div>
-                                                <div class="mb-0 fs-2 fw-medium text-white">You have 4 Notifications
+                                                <div class="mb-0 fs-2 fw-medium text-white">You have 0 Notifications
                                                 </div>
                                             </div>
                                             <div class="message-body" data-simplebar="">
@@ -1421,8 +1445,8 @@
                             </div>
                         </label>
 
-                        <input type="radio" class="btn-check" name="color-theme-layout" id="green-theme-layout"
-                            autocomplete="off">
+                        <input type="radio" class="btn-check" name="color-theme-layout"
+                            id="green-theme-layout" autocomplete="off">
                         <label
                             class="btn p-9 btn-outline-primary d-flex align-items-center justify-content-center rounded"
                             onclick="handleColorTheme('Green_Theme')" for="green-theme-layout"
@@ -1437,16 +1461,16 @@
                             autocomplete="off">
                         <label
                             class="btn p-9 btn-outline-primary d-flex align-items-center justify-content-center rounded"
-                            onclick="handleColorTheme('Cyan_Theme')" for="cyan-theme-layout" data-bs-toggle="tooltip"
-                            data-bs-placement="top" data-bs-title="CYAN_THEME">
+                            onclick="handleColorTheme('Cyan_Theme')" for="cyan-theme-layout"
+                            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="CYAN_THEME">
                             <div
                                 class="color-box rounded-circle d-flex align-items-center justify-content-center skin-5">
                                 <i class="fa fa-check text-white d-flex icon fs-5"></i>
                             </div>
                         </label>
 
-                        <input type="radio" class="btn-check" name="color-theme-layout" id="orange-theme-layout"
-                            autocomplete="off">
+                        <input type="radio" class="btn-check" name="color-theme-layout"
+                            id="orange-theme-layout" autocomplete="off">
                         <label
                             class="btn p-9 btn-outline-primary d-flex align-items-center justify-content-center rounded"
                             onclick="handleColorTheme('Orange_Theme')" for="orange-theme-layout"
@@ -1550,7 +1574,7 @@
     <script src="{{ asset('dashboard_assets') }}/js/theme/feather.min.js"></script>
 
     <!-- Fancybox JS -->
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
 
     <!-- solar icons -->
     <script src="{{ asset('dashboard_assets') }}/npm/iconify-icon%401.0.8/dist/iconify-icon.min.js"></script>

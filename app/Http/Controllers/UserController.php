@@ -13,16 +13,17 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Spatie\Permission\Models\Role;
 
-class UserController extends Controller implements HasMiddleware
+class UserController extends Controller  implements HasMiddleware
 {
 
     public static function middleware(): array
     {
         return [
             new Middleware('permission:view members', only: ['index']),
-            new Middleware('permission:invite membe', only: ['create']),
-            new Middleware('permission:view members', only: ['edit']),
+            new Middleware('permission:invite members', only: ['create']),
+            new Middleware('permission:edit members', only: ['edit']),
             new Middleware('permission:remove member', only: ['destroy']),
         ];
     }
@@ -33,8 +34,10 @@ class UserController extends Controller implements HasMiddleware
     public function index()
     {
         $users = User::orderBy('name', 'ASC')->latest()->paginate(15);
+        $roles = Role::orderBy('name', 'ASC')->get();
         return view('layouts.newsDashboard.users.index', [
             'users' => $users,
+            'roles' => $roles
         ]);
     }
 
@@ -77,6 +80,8 @@ class UserController extends Controller implements HasMiddleware
                 'updated_at' => null
             ]);
 
+            $user->syncRoles($request->role);
+
             invitation::create([
                 'invited_by' => Auth::id(),
                 'name' => $request->name,
@@ -117,8 +122,12 @@ class UserController extends Controller implements HasMiddleware
     public function edit(string $id)
     {
         $user = User::findOrFail($id);
+        $roles = Role::orderBy('name', 'ASC')->get();
+        $hasRoles = $user->roles->pluck('id');
         return view('layouts.newsDashboard.users.edit', [
-            'user' => $user
+            'user' => $user,
+            'roles' => $roles,
+            'hasRoles' => $hasRoles
         ]);
     }
 
@@ -127,13 +136,14 @@ class UserController extends Controller implements HasMiddleware
      */
     public function update(Request $request, string $id)
     {
+        $user = User::findOrFail($id);
+
         $request->validate([
             'name' => 'required',
             'email' => 'required|unique:users,email,' . $id . ',id',
 
         ]);
 
-        $user = User::findOrFail($id);
 
         if ($request->has('reset_phone')) {
 
@@ -151,7 +161,7 @@ class UserController extends Controller implements HasMiddleware
 
             $user->name = $request->name;
             $user->email = $request->email;
-            $user->role = $request->role;
+            $user->syncRoles($request->role);
             $user->save();
 
             return back()->with('user_update', 'User Update Successfully');

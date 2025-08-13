@@ -51,6 +51,7 @@
                                 </div>
 
                                 <button style="background-color: #1B84FF" class="btn text-white mt-3">Update</button>
+                                <a style="background-color: #1B84FF" href="{{ route('permission.index') }}" class="btn text-white mt-3">Back</a>
                             </form>
                         </div>
                     </div>

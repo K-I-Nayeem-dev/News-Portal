@@ -36,14 +36,14 @@
                             <span>All Role</span>
                             <a href="{{ route('role.create') }}" class="btn btn-success">Create</a>
                         </h5>
-                        <div class="card-body">
+                        <div class="card-body  p-0 p-md-3">
                             <table class="table table-striped table-bordered">
                                 <thead class="bg-gray-50 rounded">
                                     <tr class="border-b">
-                                        <th class="px-6 py-3 text-left" width="60">#</th>
+                                        <th class="px-6 py-3 text-left d-none d-md-table-cell" width="60">#</th>
                                         <th class="px-6 py-3 text-left">Name</th>
                                         <th class="px-6 py-3 text-left">Permissions</th>
-                                        <th class="px-6 py-3 text-left" width="150">Created</th>
+                                        <th class="px-6 py-3 text-left d-none d-md-table-cell" width="150" >Created</th>
                                         <th class="px-6 py-3 text-center" width="120">Actions</th>
                                     </tr>
                                 </thead>
@@ -51,7 +51,7 @@
                                     @if ($roles->isNotEmpty())
                                         @forelse ($roles as $role)
                                             <tr class="border-b">
-                                                <td class="px-6 py-3 text-left" width="60">
+                                                <td class="px-6 py-3 d-none d-md-table-cell" width="60">
                                                     {{ $role->id }}
                                                 </td>
                                                 <td class="px-6 py-3 text-left">
@@ -60,7 +60,7 @@
                                                 <td class="px-6 py-3 text-left">
                                                     {{ $role->permissions->pluck('name')->implode(' , ') }}
                                                 </td>
-                                                <td class="px-6 py-3 text-left" width="150">
+                                                <td class="px-6 py-3 text-left d-none d-md-table-cell" width="150">
                                                     {{ $role->created_at->format('d M, Y') }}
                                                 </td>
                                                 <td class="text-center" width="120">
@@ -69,8 +69,7 @@
                                                             class="btn btn-sm btn-primary me-1">
                                                             <i class="fa-solid fa-pen-to-square"></i>
                                                         </a>
-                                                        <form method="POST"
-                                                            action="{{ route('role.destroy', $role->id) }}"
+                                                        <form method="POST" action="{{ route('role.destroy', $role->id) }}"
                                                             onsubmit="return confirm('Are you sure you want to delete this?')">
                                                             @csrf
                                                             @method('DELETE')

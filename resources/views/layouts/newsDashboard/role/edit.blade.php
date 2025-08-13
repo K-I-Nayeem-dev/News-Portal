@@ -19,7 +19,7 @@
                                     </li>
                                     <li class="breadcrumb-item text-muted" aria-current="page">Role</li>
                                     <li class="breadcrumb-item text-muted" aria-current="page">Edit</li>
-                                    <li class="breadcrumb-item text-muted" aria-current="page">{{ $role->id }}</li>
+                                    <li class="breadcrumb-item text-muted" aria-current="page">{{ $role->name }}</li>
                                 </ol>
                             </nav>
                         </div>
@@ -82,6 +82,7 @@
                                 </div>
 
                                 <button style="background-color: #1B84FF" class="btn text-white mt-3">Update</button>
+                                <a style="background-color: #1B84FF" href="{{ route('permission.index') }}" class="btn text-white mt-3">Back</a>
                             </form>
                         </div>
                     </div>

@@ -5,9 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\District;
 use App\Models\SubDistrict;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class SubDistrictController extends Controller
+class SubDistrictController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('permission:view subcategory', only: ['index']),
+            new Middleware('permission:edit subcategory', only: ['edit']),
+            new Middleware('permission:create subcategory', only: ['create']),
+            new Middleware('permission:delete subcategory', only: ['destroy']),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */

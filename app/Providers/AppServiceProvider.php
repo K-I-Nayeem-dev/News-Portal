@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Stevebauman\Location\Facades\Location;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -62,6 +63,10 @@ class AppServiceProvider extends ServiceProvider
                 'getCates' => Category::latest()->take(8)->get(),
                 'webSite_setting' => Website_Setting::latest()->first(),
             ]);
+        });
+
+        Gate::before(function ($user, $ability) {
+            return $user->hasRole('superadmin') ? true : null;
         });
     }
 }

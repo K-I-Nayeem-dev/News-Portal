@@ -44,7 +44,7 @@
                             <span>Total News: {{ $news->count() }}<a href="{{ route('dashboard_news.create') }}"
                                     class="btn rounded ms-2 bg-success text-white hover-btn">Create News</a></span>
                         </h5>
-                        <div class="card-body">
+                        <div class="card-body  p-0 p-md-5">
                             @if (session('news_delete'))
                                 <div class="alert alert-danger mt-3 text-center">{{ session('news_delete') }}</div>
                             @endif
@@ -55,11 +55,11 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">ID</th>
-                                        <th scope="col">Posted BY</th>
+                                        <th scope="col"  class="d-none d-md-table-cell">Posted BY</th>
                                         <th scope="col">Thumbnail</th>
                                         <th scope="col">Actions</th>
                                         <th scope="col">Status</th>
-                                        <th scope="col">Created At</th>
+                                        <th scope="col"  class="d-none d-md-table-cell">Created At</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -67,7 +67,7 @@
                                         <tr>
                                             <a href="{{ route('dashboard_news.show', $new->id) }}">
                                                 <td>{{ $new->id }}</td>
-                                                <td>{{ $new->newsUser->name }} {!! Auth::id() == $new->newsUser->id ? '<sup><code style="font-size: 12px">*</code></sup>' : '' !!}</td>
+                                                <td class="d-none d-md-table-cell">{{ $new->newsUser->name }} {!! Auth::id() == $new->newsUser->id ? '<sup><code style="font-size: 12px">*</code></sup>' : '' !!}</td>
                                                 <td class="text-center"><img src="{{ $new->thumbnail }}" width="120"
                                                         height="80" alt=""></td>
                                                 <td>
@@ -78,14 +78,17 @@
                                                         <a class="btn btn-sm btn-primary rounded"
                                                             href="{{ route('dashboard_news.edit', $new->id) }}"><i
                                                                 class="fa-solid fa-pen-to-square"></i></a>
-                                                        <form method="POST" action="{{ route('dashboard_news.destroy', $new->id) }}"
-                                                            onsubmit="return confirm('Are you sure you want to delete this?')">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button class="btn btn-sm btn-danger rounded"><i
-                                                                    style="color: white"
-                                                                    class="fa-solid fa-trash"></i></button>
-                                                        </form>
+                                                        @hasanyrole('superadmin|admin|editor')
+                                                            <form method="POST" action="{{ route('dashboard_news.destroy', $new->id) }}"
+                                                                onsubmit="return confirm('Are you sure you want to delete this?')">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button class="btn btn-sm btn-danger rounded"><i
+                                                                        style="color: white"
+                                                                        class="fa-solid fa-trash"></i></button>
+                                                            </form>
+                                                        @endhasrole
+
                                                     </div>
                                                 </td>
                                                 <td>
@@ -102,7 +105,7 @@
                                                         </select>
                                                     </form>
                                                 </td>
-                                                <td>
+                                                <td  class="d-none d-md-table-cell">
                                                     <p>{{ $new->created_at->diffForHumans() }}</p>
                                                 </td>
                                             </a>

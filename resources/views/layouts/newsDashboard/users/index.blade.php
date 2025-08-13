@@ -64,6 +64,31 @@
 
                                 </div>
 
+                                <div class="row">
+                                    <div class="mt-3">
+                                        <label class="form-label">Roles</label>
+                                    </div>
+                                    {{-- For Permissions select --}}
+                                    @if ($roles->isNotEmpty())
+                                        @foreach ($roles as $role)
+                                            <div class="col-md-4 mt-3">
+                                                <input type="checkbox" id="perm_{{ $role->id }}" name="role[]"
+                                                    autocomplete="off" class="form-check-input" value="{{ $role->name }}">
+                                                <label for="perm_{{ $role->id }}" class="form-check-label">
+                                                    {{ $role->name }}
+                                                </label>
+                                            </div>
+                                        @endforeach
+                                    @endif
+
+                                    @error('permission')
+                                        <div class="col-12">
+                                            <p class="text-danger text-sm mt-2">{{ $message }}</p>
+                                        </div>
+                                    @enderror
+                                </div>
+
+
                                 <button class="btn btn-primary mt-3">Invite Member</button>
 
                             </form>
@@ -77,15 +102,14 @@
                 <div class="col-lg-7">
                     <div class="card">
                         <h5 class="card-header text-white" style="background-color: #1B84FF">All Users</h5>
-                        <div class="card-body">
+                        <div class="card-body  p-0 p-md-3">
                             <table class="table table-striped text-left">
                                 <thead>
                                     <tr style="font-size: 12px">
-                                        <th scope="col">SL</th>
+                                        <th scope="col" class="d-none d-md-table-cell">SL</th>
                                         <th scope="col">Name</th>
-                                        <th scope="col">Email</th>
+                                        <th scope="col" class="d-none d-md-table-cell">Email</th>
                                         <th scope="col">Role</th>
-                                        <th scope="col">Invited By Admin</th>
                                         <th scope="col" class="text-center">Actions</th>
                                     </tr>
                                     @if (session('user_delete'))
@@ -98,14 +122,11 @@
                                 <tbody>
                                     @foreach ($users as $key => $user)
                                         <tr style="font-size: 12px">
-                                            <th>{{ ++$key }}</th>
+                                            <th class="d-none d-md-table-cell">{{ ++$key }}</th>
                                             <td>{{ $user->name }}</td>
-                                            <td>{{ $user->email }}</td>
-                                            <td>{{ $user->role ? $user->role : 'Not Define' }}</td>
-                                            <td class="text-center">
-                                                {!! $user->invited_user !== null
-                                                    ? '<i class="fa-solid fa-check text-green-500"></i>'
-                                                    : '<i class="fa-solid fa-xmark text-red-500"></i>' !!}
+                                            <td class="d-none d-md-table-cell">{{ $user->email }}</td>
+                                            <td>
+                                                {{ $user->roles->pluck('name')->implode(', ') ?: 'No Role' }}
                                             </td>
                                             <td width='100px'>
                                                 <div class="d-flex justify-content-between align-items-center">

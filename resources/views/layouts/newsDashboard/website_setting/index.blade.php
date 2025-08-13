@@ -35,30 +35,30 @@
                         <div class="card">
                             <h5 class="card-header text-white" style="background-color: #1B84FF">Website Setting Update</h5>
                             <div class="card-body">
-                                <form method="POST" action="{{ route('website_setting.update', $web_settings->id) }}" enctype="multipart/form-data">
+                                <form method="POST" action="{{ route('website_setting.update', $web_settings->id) }}"
+                                    enctype="multipart/form-data">
                                     @csrf
                                     @method('PUT')
 
                                     {{-- For Website Logo --}}
-                                    <div class="mt-3 d-flex align-items-center">
-
-                                        <div class="{{ $web_settings->logo == null ? 'col-md-12' : 'col-md-6' }}">
-
-                                            <label class='form-label' for="logo">Website Logo (Max 1 MB Size)</label>
+                                    <div class="mt-3 row align-items-center">
+                                        {{-- File Input --}}
+                                        <div class="{{ $web_settings->logo == null ? 'col-12' : 'col-12 col-md-6' }}">
+                                            <label class="form-label" for="logo">Website Logo (Max 1 MB Size)</label>
                                             <input type="file" name="logo" id="logo" class="form-control"
                                                 autocomplete="off" value="{{ old('logo') }}">
-
                                             @error('logo')
                                                 <p class="text-danger mt-2">{{ $message }}</p>
                                             @enderror
                                         </div>
 
+                                        {{-- Display Image --}}
                                         @if ($web_settings->logo)
-                                            <div class="w-100 text-center mt-4">
-                                                <img src="{{ asset($web_settings->logo) }}">
+                                            <div class="col-12 col-md-6 text-center mt-3 mt-md-0">
+                                                <img src="{{ asset($web_settings->logo) }}" class="img-fluid"
+                                                    alt="Website Logo" style="max-height: 150px;">
                                             </div>
                                         @endif
-
                                     </div>
 
 
@@ -66,7 +66,7 @@
                                     <div class="mt-3">
 
                                         <label class='form-label' for="about_us">About Us</label>
-                                        <textarea name="about_us" id="about_us" cols="30" rows="5">{{ old('about_us' ,$web_settings->about_us) }}</textarea>
+                                        <textarea name="about_us" id="about_us" cols="30" rows="5">{{ old('about_us', $web_settings->about_us) }}</textarea>
 
                                         @error('about_us')
                                             <p class="text-danger mt-2">{{ $message }}</p>
@@ -77,7 +77,7 @@
                                     <div class="mt-3">
 
                                         <label class='form-label' for="address">Address</label>
-                                        <textarea name="address" id="address" cols="30" rows="5">{{ old('address' ,$web_settings->address) }}</textarea>
+                                        <textarea name="address" id="address" cols="30" rows="5">{{ old('address', $web_settings->address) }}</textarea>
 
                                         @error('address')
                                             <p class="text-danger mt-2">{{ $message }}</p>
@@ -88,7 +88,7 @@
                                     <div class="mt-3">
 
                                         <label class='form-label' for="editor_details">Editor Details</label>
-                                        <textarea name="editor_details" id="editor_details" cols="30" rows="5">{{ old('editor_details' ,$web_settings->editor_details) }}</textarea>
+                                        <textarea name="editor_details" id="editor_details" cols="30" rows="5">{{ old('editor_details', $web_settings->editor_details) }}</textarea>
 
                                         @error('editor_details')
                                             <p class="text-danger mt-2">{{ $message }}</p>
@@ -98,7 +98,9 @@
                                     <div class="mt-3">
 
                                         <label class='form-label' for="advertise_link">Advertise links</label>
-                                        <input name="advertise_link" class="form-control" id="advertise_link" value="{{ old('advertise_link' ,$web_settings->advertise_link) }}" placeholder="Your social link for advertising contact" />
+                                        <input name="advertise_link" class="form-control" id="advertise_link"
+                                            value="{{ old('advertise_link', $web_settings->advertise_link) }}"
+                                            placeholder="Your social link for advertising contact" />
 
                                         @error('advertise_link')
                                             <p class="text-danger mt-2">{{ $message }}</p>
@@ -114,7 +116,8 @@
                         </div>
 
                         @if (session('website_setting_update'))
-                            <div class=" alert alert-success mt-3 text-center">{{ session('website_setting_update') }}</div>
+                            <div class=" alert alert-success mt-3 text-center">{{ session('website_setting_update') }}
+                            </div>
                         @endif
 
                     </div>
