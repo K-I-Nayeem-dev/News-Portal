@@ -18,7 +18,8 @@
                                         </a>
                                     </li>
                                     <li class="breadcrumb-item">
-                                        <a class="text-muted text-decoration-none" href="{{ route('dashboard_news.index') }}">All News
+                                        <a class="text-muted text-decoration-none"
+                                            href="{{ route('dashboard_news.index') }}">All News
                                         </a>
                                     </li>
                                     <li class="breadcrumb-item " aria-current="page">
@@ -294,42 +295,52 @@
 
                                 </div>
 
-                                {{-- Image Caption for thumbnail --}}
-                                <div class="mt-3">
-                                    <label class='form-label' for="news_source">News Source<sup><code
-                                                style="font-size: 12px">*</code></sup></label>
-                                    <input id="news_source" class="form-control" type="text" name="news_source"
-                                        autocomplete="off" value="{{ old('news_source', $news->news_source) }}">
-                                    @error('news_source')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
-                                </div>
 
-                                {{-- paste youtube video id for news --}}
-                                <div class="mt-3">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        {{-- News Status Set --}}
+                                        <div class="mt-3">
+                                            <label class='form-label' for="status">Status<sup><code
+                                                        style="font-size: 12px">*</code></sup></label>
 
-                                    <label class='form-label' for="url">Only Youtube Video Url ID
-                                        <code>(Optional)</code></label>
-                                    <input name="url" id="url" class="form-control" autocomplete="off"
-                                        value="{{ old('url', $news->url) }}">
-                                </div>
+                                            <select class="form-select " name="status" id="status"
+                                                autocomplete="off">
 
-                                {{-- News Status Set --}}
-                                <div class="mt-3">
-                                    <label class='form-label' for="status">Status<sup><code
-                                                style="font-size: 12px">*</code></sup></label>
+                                                <option value="">Select Status</option>
+                                                <option {{ $news->status == 1 ? 'selected' : '' }} value="1">Active
+                                                </option>
+                                                <option {{ $news->status == 0 ? 'selected' : '' }} value="0">Deactive
+                                                </option>
+                                            </select>
 
-                                    <select class="form-select " name="status" id="status" autocomplete="off">
+                                            @error('status')
+                                                <p class="text-danger mt-2">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        {{-- Image Caption for thumbnail --}}
+                                        <div class="mt-3">
+                                            <label class='form-label' for="news_source">News Source<sup><code
+                                                        style="font-size: 12px">*</code></sup></label>
+                                            <input id="news_source" class="form-control" type="text"
+                                                name="news_source" autocomplete="off"
+                                                value="{{ old('news_source', $news->news_source) }}">
+                                            @error('news_source')
+                                                <p class="text-danger mt-2">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        {{-- paste youtube video id for news --}}
+                                        <div class="mt-3">
 
-                                        <option value="">Select Status</option>
-                                        <option {{ $news->status == 1 ? 'selected' : '' }} value="1">Active</option>
-                                        <option {{ $news->status == 0 ? 'selected' : '' }} value="0">Deactive
-                                        </option>
-                                    </select>
-
-                                    @error('status')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
+                                            <label class='form-label' for="url">Only Youtube Video Url ID
+                                                <code>(Optional)</code></label>
+                                            <input name="url" id="url" class="form-control" autocomplete="off"
+                                                value="{{ old('url', $news->url) }}">
+                                        </div>
+                                    </div>
                                 </div>
 
                                 {{-- News Field set for first Section --}}
@@ -363,10 +374,10 @@
                                         <div class="col-lg-3">
                                             <input type="hidden" name="trendyNews" value="off">
                                             <input class="form-input me-2" type="checkbox"
-                                                {{ $news->trendyNews == 'on' ? 'checked' : '' }}
-                                                name="trendyNews" id="trendyNews" value="on">
+                                                {{ $news->trendyNews == 'on' ? 'checked' : '' }} name="trendyNews"
+                                                id="trendyNews" value="on">
                                             <label class='form-label mt-2' for="trendyNews"
-                                                style="font-size: 14px;">Genarel Big Thumbnail</label>
+                                                style="font-size: 14px;">Trending News</label>
                                         </div>
                                     </div>
                                 </div>
@@ -374,7 +385,8 @@
 
                                 <div>
                                     <button class="btn btn-primary mt-3">Update News</button>
-                                    <a class="btn btn-primary mt-3 ms-2" href="{{ route('dashboard_news.index') }}">Back</a>
+                                    <a class="btn btn-primary mt-3 ms-2"
+                                        href="{{ route('dashboard_news.index') }}">Back</a>
                                 </div>
 
                             </form>

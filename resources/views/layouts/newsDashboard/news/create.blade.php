@@ -145,49 +145,51 @@
                                     </div>
                                 </div>
 
-                                {{-- Thumbnail for news --}}
-                                <div class="mt-3">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        {{-- Thumbnail for news --}}
+                                        <div class="mt-3">
 
-                                    <label class='form-label' for="thumbnail">Thumbnail<sup><code
-                                                style="font-size: 12px">*</code></sup> (Max 1 MB Size)</label>
-                                    <input type="file" name="thumbnail" id="thumbnail" class="form-control"
-                                        autocomplete="off" value="{{ old('thumbnail') }}">
+                                            <label class='form-label' for="thumbnail">Thumbnail<sup><code
+                                                        style="font-size: 12px">*</code></sup> (Max 1 MB Size)</label>
+                                            <input type="file" name="thumbnail" id="thumbnail" class="form-control"
+                                                autocomplete="off" value="{{ old('thumbnail') }}">
 
-                                    @error('thumbnail')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
-                                </div>
+                                            @error('thumbnail')
+                                                <p class="text-danger mt-2">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                        {{-- Add More Photos For News --}}
+                                        <div class="mt-3">
+                                            <p class="d-inline-flex gap-1">
+                                                <a class="btn btn-success" data-bs-toggle="collapse"
+                                                    href="#collapseExample" role="button" aria-expanded="false"
+                                                    aria-controls="collapseExample">
+                                                    Add More Photos +
+                                                </a>
+                                            </p>
 
-                                {{-- Image Caption for thumbnail --}}
-                                <div class="mt-3">
-                                    <label class='form-label' for="image_title">Image Caption<sup><code
-                                                style="font-size: 12px">*</code></sup></label>
-                                    <input id="image_title" class="form-control" type="text" name="image_title"
-                                        autocomplete="off">
-                                    @error('image_title')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                {{-- Add More Photos For News --}}
-                                <div class="mt-3">
-
-                                    <p class="d-inline-flex gap-1">
-                                        <a class="btn btn-success" data-bs-toggle="collapse" href="#collapseExample"
-                                            role="button" aria-expanded="false" aria-controls="collapseExample">
-                                            Add More Photos +
-                                        </a>
-                                    </p>
-
-                                    <div class="collapse" id="collapseExample">
-                                        <div class="card card-body">
-                                            <label class='form-label' for="news_photos">More Photos</label>
-                                            <input multiple id="news_photos" class="form-control" type="file"
-                                                name="news_photos[]" autocomplete="off">
+                                            <div class="collapse" id="collapseExample">
+                                                <div class="card card-body">
+                                                    <label class='form-label' for="news_photos">More Photos</label>
+                                                    <input multiple id="news_photos" class="form-control" type="file"
+                                                        name="news_photos[]" autocomplete="off">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-
-
+                                    <div class="col-md-6">
+                                        {{-- Image Caption for thumbnail --}}
+                                        <div class="mt-3">
+                                            <label class='form-label' for="image_title">Image Caption<sup><code
+                                                        style="font-size: 12px">*</code></sup></label>
+                                            <input id="image_title" class="form-control" type="text"
+                                                name="image_title" autocomplete="off">
+                                            @error('image_title')
+                                                <p class="text-danger mt-2">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 </div>
 
                                 {{-- Tags Row --}}
@@ -249,62 +251,76 @@
 
                                 </div>
 
-                                {{-- Image Caption for thumbnail --}}
-                                <div class="mt-3">
-                                    <label class='form-label' for="news_source">News Source<sup><code
-                                                style="font-size: 12px">*</code></sup></label>
-                                    <input id="news_source" class="form-control" type="text" name="news_source"
-                                        autocomplete="off">
-                                    @error('news_source')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
-                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        {{-- News Status Set --}}
+                                        <div class="mt-3">
+                                            <label class='form-label' for="status">Status<sup><code
+                                                        style="font-size: 12px">*</code></sup></label>
 
-                                {{-- paste youtube video id for news --}}
-                                <div class="mt-3">
+                                            <select class="form-select " name="status" id="status"
+                                                autocomplete="off">
 
-                                    <label class='form-label' for="url">Only Youtube Video Url ID
-                                        <code>(Optional)</code></label>
-                                    <input name="url" id="url" class="form-control" autocomplete="off"
-                                        value="{{ old('url') }}">
-                                </div>
+                                                <option value="">Select Status</option>
+                                                <option value="1">Active</option>
+                                                <option value="0">Deactive</option>
+                                            </select>
 
-                                {{-- News Status Set --}}
-                                <div class="mt-3">
-                                    <label class='form-label' for="status">Status<sup><code
-                                                style="font-size: 12px">*</code></sup></label>
+                                            @error('status')
+                                                <p class="text-danger mt-2">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        {{-- Image Caption for thumbnail --}}
+                                        <div class="mt-3">
+                                            <label class='form-label' for="news_source">News Source<sup><code
+                                                        style="font-size: 12px">*</code></sup></label>
+                                            <input id="news_source" class="form-control" type="text"
+                                                name="news_source" autocomplete="off">
+                                            @error('news_source')
+                                                <p class="text-danger mt-2">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        {{-- paste youtube video id for news --}}
+                                        <div class="mt-3">
 
-                                    <select class="form-select " name="status" id="status" autocomplete="off">
-
-                                        <option value="">Select Status</option>
-                                        <option value="1">Active</option>
-                                        <option value="0">Deactive</option>
-                                    </select>
-
-                                    @error('status')
-                                        <p class="text-danger mt-2">{{ $message }}</p>
-                                    @enderror
+                                            <label class='form-label' for="url">Only Youtube Video Url ID
+                                                <code>(Optional)</code></label>
+                                            <input name="url" id="url" class="form-control" autocomplete="off"
+                                                value="{{ old('url') }}">
+                                        </div>
+                                    </div>
                                 </div>
 
                                 {{-- News Field set for first Section --}}
                                 <div class="mt-3">
 
                                     <div>
-                                        <label class='form-label' for="status">--Extra Options For Headline News Section--</label>
+                                        <label class='form-label' for="status">--Extra Options For Headline News
+                                            Section--</label>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-lg-3">
-                                            <input class="form-input me-2" type="checkbox" name="firstSection_bigThumbnail" id="firstSection_bigThumbnail">
-                                            <label class='form-label mt-2' for="firstSection_bigThumbnail" style="font-size: 14px;">First Section Big Thumbnail</label>
+                                            <input class="form-input me-2" type="checkbox"
+                                                name="firstSection_bigThumbnail" id="firstSection_bigThumbnail">
+                                            <label class='form-label mt-2' for="firstSection_bigThumbnail"
+                                                style="font-size: 14px;">First Section Big Thumbnail</label>
                                         </div>
                                         <div class="col-lg-3">
-                                            <input class="form-input me-2" type="checkbox" name="firstSection" id="firstSection">
-                                            <label class='form-label mt-2' for="firstSection" style="font-size: 14px;">First Section</label>
+                                            <input class="form-input me-2" type="checkbox" name="firstSection"
+                                                id="firstSection">
+                                            <label class='form-label mt-2' for="firstSection"
+                                                style="font-size: 14px;">First Section</label>
                                         </div>
                                         <div class="col-lg-3">
-                                            <input class="form-input me-2" type="checkbox" name="trendyNews" id="trendyNews">
-                                            <label class='form-label mt-2' for="trendyNews" style="font-size: 14px;">Genarel Big Thumbnail</label>
+                                            <input class="form-input me-2" type="checkbox" name="trendyNews"
+                                                id="trendyNews">
+                                            <label class='form-label mt-2' for="trendyNews"
+                                                style="font-size: 14px;">Trending News</label>
                                         </div>
                                     </div>
 
@@ -403,5 +419,4 @@
             }
         });
     </script>
-
 @endsection

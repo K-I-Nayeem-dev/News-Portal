@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Division;
 use App\Models\LiveTv;
 use App\Models\News;
 use App\Models\news_photo;
@@ -145,6 +146,8 @@ class HomeController extends Controller
         $pgnbt = PhotoGallery::where('type', 1)->latest()->first();
         $pgn3 =  PhotoGallery::where('type', 0)->latest()->take(3)->get();
 
+        $divisions = Division::orderBy('division_en', 'ASC')->get();
+
         // For Category News Counts
         $categoriesCount = Category::withCount('news')->get();
 
@@ -187,6 +190,7 @@ class HomeController extends Controller
             'pn3' => $pn3,
             'fnbt' => $fnbt,
             'fn3' => $fn3,
+            'divisions' => $divisions,
         ]);
     }
 

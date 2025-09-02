@@ -242,8 +242,6 @@
             max-width: 200px;
             /* optional */
         }
-
-
     </style>
     {{-- Custom CSS Code section End --}}
 
@@ -1059,98 +1057,105 @@
             </div>
 
             <style>
+                /* Select styling */
+                select {
+                    width: 100%;
+                    padding: 10px 15px;
+                    border: 2px solid #ccc;
+                    border-radius: 8px;
+                    background-color: #fff;
+                    font-size: 16px;
+                    color: #333;
+                    appearance: none;
+                    /* Remove default arrow */
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'><path fill='%23333' d='M7 10l5 5 5-5z'/></svg>");
+                    background-repeat: no-repeat;
+                    background-position: right 12px center;
+                    background-size: 12px;
+                }
 
+                select:focus {
+                    border-color: #1B84FF;
+                    box-shadow: 0 0 5px rgba(27, 132, 255, 0.5);
+                    outline: none;
+                }
 
-/* Select styling */
-select {
-    width: 100%;
-    padding: 10px 15px;
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    background-color: #fff;
-    font-size: 16px;
-    color: #333;
-    appearance: none; /* Remove default arrow */
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background-image: url("data:image/svg+xml;charset=US-ASCII,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24'><path fill='%23333' d='M7 10l5 5 5-5z'/></svg>");
-    background-repeat: no-repeat;
-    background-position: right 12px center;
-    background-size: 12px;
-}
+                /* Button styling */
+                .button {
+                    width: 100%;
+                    padding: 12px;
+                    font-size: 16px;
+                    font-weight: bold;
+                    color: #fff;
+                    background: linear-gradient(45deg, #ff4b2b, #ff416c);
+                    border: none;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 8px;
+                }
 
-select:focus {
-    border-color: #1B84FF;
-    box-shadow: 0 0 5px rgba(27, 132, 255, 0.5);
-    outline: none;
-}
+                .button:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(255, 65, 108, 0.4);
+                }
 
-/* Button styling */
-.button {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #fff;
-    background: linear-gradient(45deg, #ff4b2b, #ff416c);
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-}
+                /* Responsive tweaks */
+                @media (max-width: 768px) {
+                    .col-md-3 {
+                        flex: 1 1 48%;
+                        margin-top: 15px;
+                    }
+                }
 
-.button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(255, 65, 108, 0.4);
-}
-
-/* Responsive tweaks */
-@media (max-width: 768px) {
-    .col-md-3 {
-        flex: 1 1 48%;
-        margin-top: 15px;
-    }
-}
-
-@media (max-width: 480px) {
-    .col-md-3 {
-        flex: 1 1 100%;
-        margin-top: 15px;
-    }
-}
-
+                @media (max-width: 480px) {
+                    .col-md-3 {
+                        flex: 1 1 100%;
+                        margin-top: 15px;
+                    }
+                }
             </style>
 
+            {{-- Category And Subcategory Row --}}
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <select class="form-select select2" name="division_id" id="division_id" autocomplete="off">
+                        <option value="">{{ session()->get('lang') == 'english' ? 'Division' : 'বিভাগ' }}</option>
+                        @foreach ($divisions as $division)
+                            <option value="{{ $division->id }}">{{ session()->get('lang') == 'english' ? $division->division_en : $division->division_bn }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
-            <div class="row">
                 <div class="col-md-3">
-                    <select style="width: 100%">
-                        <option selected>Open this select menu</option>
-                        <option value="1">Option 1</option>
-                        <option value="2">Option 2</option>
+                    <select class="form-select select2" name="dist_id" id="dist_id" autocomplete="off">
+                        <option value="">{{ session()->get('lang') == 'english' ? 'District' : 'জেলা' }}</option>
+                    </select>
+
+                    @error('dist_id')
+                        <p class="text-danger mt-2">{{ $message }}</p>
+                    @enderror
+
+                </div>
+                <div class="col-md-3">
+
+                    <select class="form-select select2" name="sub_dist_id" id="sub_dist_id" autocomplete="off">
+                        <option value="">{{ session()->get('lang') == 'english' ? 'Subdistrict' : 'উপজেলা' }}
+                        </option>
                     </select>
                 </div>
+
                 <div class="col-md-3">
-                    <select style="width: 100%">
-                        <option selected>Open this select menu</option>
-                        <option value="1">Option 1</option>
-                        <option value="2">Option 2</option>
-                    </select>
+                    <button class="button"
+                        style="width: 100%">{{ session()->get('lang') == 'english' ? 'Search' : 'খুঁজুন' }} <i
+                            class="fa fa-search"></i></button>
                 </div>
-                <div class="col-md-3">
-                    <select style="width: 100%">
-                        <option selected>Open this select menu</option>
-                        <option value="1">Option 1</option>
-                        <option value="2">Option 2</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <button class="button" style="width: 100%">{{ session()->get('lang') == 'english' ? 'Search' : 'খুঁজুন' }} <i class="fa fa-search"></i></button>
-                </div>
+
             </div>
 
             <div class="main--content">
@@ -2747,6 +2752,9 @@ select:focus {
     </div>
     </div>
 
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     {{-- Salat Time will Update Dynamically with api --}}
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -2897,6 +2905,68 @@ select:focus {
         yearSelect.addEventListener('change', renderCalendar);
 
         renderCalendar();
+    </script>
+
+    <script>
+          // Always set CSRF token for AJAX
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+    </script>
+
+    {{-- Select Districts while dropdown to Division --}}
+    <script>
+        $('#division_id').on('change', function() {
+            var division_id = $(this).val();
+
+            if (division_id) {
+                $.ajax({
+                    url: '/get/dist/' + division_id,
+                    type: 'GET',
+                    success: function(data) {
+                        $('#dist_id').empty();
+                        $('#dist_id').append(
+                            '<option selected disabled>== Select District ==</option>');
+                        $.each(data, function(key, value) {
+                            $('#dist_id').append('<option value="' + value.id + '">' + value
+                                .district_en + ' | ' + value.district_bn +
+                                '</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#dist_id').empty();
+            }
+        });
+    </script>
+
+    {{-- Select Subdistricts while dropdown to Districts --}}
+
+    <script>
+        $('#dist_id').on('change', function() {
+            var distID = $(this).val();
+
+            if (distID) {
+                $.ajax({
+                    url: '/get/subdist/' + distID,
+                    type: 'GET',
+                    success: function(data) {
+                        $('#sub_dist_id').empty();
+                        $('#sub_dist_id').append(
+                            '<option selected disabled>== Select Sub Category ==</option>');
+                        $.each(data, function(key, value) {
+                            $('#sub_dist_id').append('<option value="' + value.id + '">' + value
+                                .sub_district_en + ' | ' + value.sub_district_bn +
+                                '</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#sub_dist_id').empty();
+            }
+        });
     </script>
 
 
