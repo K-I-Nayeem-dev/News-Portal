@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('website__settings', function (Blueprint $table) {
             $table->id();
             $table->string('logo')->nullable();
-            $table->string('about_us')->nullable();
+            $table->text('about_us')->nullable();
             $table->string('address')->nullable();
             $table->string('editor_details')->nullable();
             $table->string('advertise_link')->nullable();

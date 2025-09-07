@@ -35,7 +35,6 @@
                         <h5 class="card-header text-white" style="background-color: #1B84FF">Create User</h5>
                         <div class="card-body">
                             <form method="POST" action="{{ route('user.store') }}">
-
                                 @csrf
 
                                 <div class="mt-3">
@@ -121,6 +120,9 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($users as $key => $user)
+                                        @if ($user->id == Auth::id())
+                                            @continue
+                                        @endif
                                         <tr style="font-size: 12px">
                                             <th class="d-none d-md-table-cell">{{ ++$key }}</th>
                                             <td>{{ $user->name }}</td>
@@ -131,20 +133,23 @@
                                             <td width='100px'>
                                                 <div class="d-flex justify-content-between align-items-center">
                                                     <a href="{{ route('user.edit', $user->id) }}"
-                                                        class="btn btn-sm btn-primary rounded"><i class="fa fa-edit"
-                                                            aria-hidden="true"></i></a>
+                                                        class="btn btn-sm btn-primary rounded">
+                                                        <i class="fa fa-edit" aria-hidden="true"></i>
+                                                    </a>
 
                                                     <form method="POST" action="{{ route('user.destroy', $user->id) }}"
-                                                        onsubmit="confirm('Are you sure you want to delete {{ $user->name }}?')">
+                                                        onsubmit="return confirm('Are you sure you want to delete {{ $user->name }}?')">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button class="btn btn-sm btn-danger"><i style="color: white"
-                                                                class="fa-solid fa-trash"></i></button>
+                                                        <button class="btn btn-sm btn-danger">
+                                                            <i style="color: white" class="fa-solid fa-trash"></i>
+                                                        </button>
                                                     </form>
                                                 </div>
                                             </td>
                                         </tr>
                                     @endforeach
+
                                 </tbody>
                             </table>
                         </div>

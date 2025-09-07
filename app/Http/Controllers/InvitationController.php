@@ -2,71 +2,72 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\InviteUser;
-use App\Models\invitation;
-use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Invitation;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 class InvitationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    // Show password setup form
+    public function accept($token)
     {
-        $users = User::orderBy('name', 'ASC')->latest()->paginate(15);
-        return view('layouts.newsDashboard.invite.index', [
-            'users' => $users,
+        // Find the invitation by the token
+        $invitation = Invitation::where('token', $token)->first();
+
+        // If the token does not exist, redirect to login with an error
+        if (!$invitation) {
+            return redirect()->route('login')->with('error', 'Invalid token.');
+        }
+
+        // If the invitation has already been used, prevent access
+        if ($invitation->status == 1) {
+            return redirect()->route('login')->with('error', 'This invitation has already been used.');
+        }
+
+        // If the invitation has an expiration date and it has passed, prevent access
+        if ($invitation->expires_at && now()->greaterThan($invitation->expires_at)) {
+            return redirect()->route('login')->with('error', 'This invitation has expired.');
+        }
+
+        // If all checks pass, show the set password view
+        return view('layouts.inviteUserMail.invite-set-password', ['token' => $token]);
+    }
+
+
+    // Complete registration (set password)
+    public function complete(Request $request)
+    {
+        $request->validate([
+            'token' => 'required|exists:invitations,token',
+            'password' => 'required|confirmed|min:6',
         ]);
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+        $invitation = Invitation::where('token', $request->token)->firstOrFail();
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request) {}
+        $user = User::where('email', $invitation->email)->firstOrFail();
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(invitation $invitation)
-    {
-        //
-    }
+        // Set the user password
+        $user->password = Hash::make($request->password);
+        $user->save();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(invitation $invitation)
-    {
-        dd($invitation->all());
-    }
+        // Assign role if invitation has one
+        if ($invitation->role) {
+            $user->syncRoles($invitation->role);
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, invitation $invitation)
-    {
-        //
-    }
+        // Mark invitation as used
+        $invitation->update([
+            'status' => 1,
+            'used_at' => now(),
+            'token' => null,
+        ]);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(invitation $invitation)
-    {
-        //
+
+        // Log in the user
+        Auth::login($user);
+
+        return redirect()->route('dashboard')->with('success', 'Your account is ready!');
     }
 }

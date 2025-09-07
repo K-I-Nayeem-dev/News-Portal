@@ -54,59 +54,78 @@ class UserController extends Controller  implements HasMiddleware
      */
     public function store(Request $request)
     {
+        // Validate request
         $validator = Validator::make(
             $request->all(),
             [
                 'name' => 'required|min:3',
-                'email' => 'required|unique:users,email,',
+                'email' => 'required|email|unique:users,email',
+                'role' => 'nullable|array',       // The role input can be an array or null
+                'role.*' => 'exists:roles,name', // Each item in the array must exist in roles table
+
             ],
             [
-                'name' => 'Name field is required.',
+                'name.required' => 'Name field is required.',
             ]
         );
 
-        // password genarated for invited User
-        $password = Str::random(5) . rand(0, 999) . Str::random(5) . rand(0, 999);
-
-
-        if ($validator->passes()) {
-
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'invited_user' => 0,
-                'password' => Hash::make($password),
-                'created_at' => now(),
-                'updated_at' => null
-            ]);
-
-            $user->syncRoles($request->role);
-
-            invitation::create([
-                'invited_by' => Auth::id(),
-                'name' => $request->name,
-                'email' => $request->email,
-                'status' => 0,
-                'created_at' => now(),
-                'updated_at' => null
-            ]);
-
-
-            $maildata = [
-                'id' => $user->id,
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => $password
-            ];
-
-            // dd($maildata);
-            Mail::to($request->email)->send(new InviteUser($maildata));
-
-            return back()->with('invite_send', 'Invite Request Send To ' . $request->name . ' ');
-        } else {
+        if ($validator->fails()) {
             return back()->withInput()->withErrors($validator);
         }
+
+        // Generate random password for invited user
+        $password = Str::random(5) . rand(0, 999) . Str::random(5) . rand(0, 999);
+
+        // Create the user
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make(Str::random(10)), // temporary random password
+            'created_at' => now(),
+            'updated_at' => null
+        ]);
+
+        // Assign role if provided
+        if ($request->filled('role')) {
+            $user->syncRoles($request->role);
+        }
+
+
+        // Convert roles array to JSON for storage
+        $expirationMinutes = 60 * 24; // 24 hours
+        $invitation = Invitation::create([
+            'invited_by' => Auth::id(),
+            'name'       => $request->name,
+            'email'      => $request->email,
+            'role'       => $request->role ? json_encode($request->role) : null,
+            'token'      => Str::random(64),
+            'status'     => 0,
+            'used_at'    => null,
+            'expires_at' => now()->addMinutes($expirationMinutes),
+            'created_at' => now(),
+            'updated_at' => null
+        ]);
+
+
+
+
+        // Prepare mail data
+        $maildata = [
+            'id'        => $user->id,
+            'name'      => $user->name,
+            'email'     => $user->email,
+            'token'     => $invitation->token,
+            'role'      => $request->role ? implode(', ', $request->role) : 'No Role', // convert array to string for email
+            'expires_at' => $invitation->expires_at, // Add this line to show expiry in email
+        ];
+
+
+        // Send invitation email
+        Mail::to($request->email)->send(new InviteUser($maildata));
+
+        return back()->with('invite_send', 'Invite Request Sent To ' . $request->name);
     }
+
 
     /**
      * Display the specified resource.

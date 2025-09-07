@@ -30,7 +30,10 @@
     {{-- <link rel="stylesheet" href="{{ asset('frontend_assets') }}/css?family=Source+Sans+Pro:400,600,700" /> --}}
     <link rel="stylesheet" href="{{ asset('frontend_assets') }}/css/font-awesome.min.css" />
     <link rel="stylesheet" href="{{ asset('frontend_assets') }}/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="{{ asset('frontend_assets') }}/css/fontawesome-stars-o.min.css" />
+    {{-- <link rel="stylesheet" href="{{ asset('frontend_assets') }}/css/fontawesome-stars-o.min.css" /> --}}
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" /> --}}
+    <!-- Add this in <head> -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('frontend_assets') }}/css/style.css" />
     <link rel="stylesheet" href="{{ asset('frontend_assets') }}/css/responsive-style.css" />
     <link rel="stylesheet" href="{{ asset('frontend_assets') }}/css/colors/theme-color-1.css" id="changeColorScheme" />
@@ -134,7 +137,8 @@
 
                                 @if (session('lang') != 'english')
                             <li>
-                                <i class="fa fm fa-mixcloud"></i><span id="date-today"></span>
+                                <i class="fa-solid fa-cloud-sun"></i><span style="margin-left: 2px"
+                                    id="date-today"></span>
                             </li>
                             @endif
                         </ul>
@@ -143,29 +147,29 @@
                         <ul class="header--topbar-social nav hidden-sm hidden-xxs">
                             <li>
                                 <a href="{{ $social->facebook }}">
-                                    <i class="fa fa-facebook"></i>
+                                    <i class="fa-brands fa-facebook-f"></i>
                                 </a>
                             </li>
                             <li>
                                 <a href="{{ $social->twitter }}">
+                                    <!-- Then use -->
                                     <i class="fa-brands fa-x-twitter"></i>
                                 </a>
                             </li>
                             <li>
                                 <a href="{{ $social->instagram }}">
-                                    <i class="fa fa-instagram"></i>
-
+                                    <i class="fa-brands fa-instagram"></i>
                                 </a>
                             </li>
                             <li>
                                 <a href="{{ $social->youtube }}">
-                                    <i class="fa fa-youtube-play"></i>
+                                    <i class="fa-brands fa-youtube"></i>
 
                                 </a>
                             </li>
                             <li>
                                 <a href="{{ $social->linkedin }}">
-                                    <i class="fa fa-linkedin"></i>
+                                    <i class="fa-brands fa-linkedin"></i>
                                 </a>
                             </li>
                         </ul>
@@ -318,122 +322,96 @@
             <div class="footer--widgets pd--30-0 bg--color-2">
                 <div class="container">
                     <div class="row AdjustRow">
-                        <div class="col-md-3 col-xs-6 col-xxs-12 ptop--30 pbottom--30">
-                            <div class="widget">
-                                <div class="widget--title">
-                                    <h2 class="h4">About Us</h2>
-                                    <i class="icon fa fa-exclamation"></i>
+                        <div class="col-md-4 col-xs-6 col-xxs-12 ptop--30 pbottom--30">
+                            <div style="width: 100%; padding: 20px 0;">
+
+                                <!-- Logo -->
+                                <div style="margin-bottom: 15px;">
+                                    <a href="{{ route('home') }}">
+                                        <img src="{{ asset($logo) }}" alt="{{ config('app.name') }}"
+                                            style="max-height: 150px;">
+                                    </a>
                                 </div>
+
+                                <!-- About Us -->
+                                <div style="margin-bottom: 15px;">
+                                    @if (session('lang') != 'english')
+                                        <p>{!! $footer_details['about_us_bangla'] ?? 'বাংলা তথ্য পাওয়া যায়নি' !!}</p>
+                                    @else
+                                        <p>{!! $footer_details['about_us'] ?? 'About us text not available' !!}</p>
+                                    @endif
+                                </div>
+
+                                <!-- Bottom Links -->
+                                <div style="margin-bottom: 10px; text-align: center;">
+                                    <a style="color: #fff;" href="#">Privacy Policy</a> |
+                                    <a style="color: #fff;" href="#">Terms of Use</a> |
+                                    <a style="color: #fff;" href="#">Advertisement</a>
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+                        <div class="col-md-5 col-xs-6 col-xxs-12 ptop--30 pbottom--30">
+                            <div class="widget">
                                 <div class="about--widget">
-                                    <div class="content">
+                                    {{-- <div class="content">
                                         <p>
-                                            At vero eos et accusamus et iusto odio dignissimos
-                                            ducimus qui blanditiis praesentium laborum et dolorum
-                                            fuga.
+                                            {{ $footer_details['about_us'] ?? 'About us text not available' }}
                                         </p>
-                                    </div>
-                                    <div class="action">
-                                        <a href="#" class="btn-link">Read More<i
-                                                class="fa flm fa-angle-double-right"></i></a>
-                                    </div>
-                                    <ul class="nav">
+                                    </div> --}}
+
+                                    <ul class="nav" style="text-decoration: none">
                                         <li>
-                                            <i class="fa fa-map"></i>
-                                            <span>143/C, Fake Street, Melborne, Australia</span>
+                                            @if (session('lang') != 'english')
+                                                <span style="font-size: 24px !important">
+                                                    {!! $footer_details['editor_details_bangla'] ?? 'বাংলা সম্পাদক তথ্য নেই' !!}</span>
+                                            @else
+                                                <span style="font-size: 24px !important">Chief Editor :
+                                                    {!! $footer_details['editor_details'] ?? 'Editor not available' !!}</span>
+                                            @endif
                                         </li>
-                                        <li>
-                                            <i class="fa fa-envelope-o"></i>
-                                            <a href="mailto:example@example.com">example@example.com</a>
+
+                                        <li style="font-size: 15.6px !important; margin-top: 20px">
+                                            @if (session('lang') != 'english')
+                                                <span>{!! $footer_details['address_bangla'] ?? 'বাংলা ঠিকানা নেই' !!}</span>
+                                            @else
+                                                <span>{!! $footer_details['address'] ?? 'Address not available' !!}</span>
+                                            @endif
                                         </li>
-                                        <li>
+
+                                        <li style="font-size: 15.6px !important; margin-top: -20px">
+
+                                            @if (session('lang') != 'english')
+                                                ইমেইল : <a href="mailto:{{ $footer_details['email'] }}">
+                                                    {{ $footer_details['email'] }}</a>
+                                            @else
+                                                Email : <a href="mailto:{{ $footer_details['email'] }}">
+                                                    {{ $footer_details['email'] }}</a>
+                                            @endif
+                                        </li>
+
+                                        <li style="font-size: 15.6px !important; margin-top: 15px">
                                             <i class="fa fa-phone"></i>
-                                            <a href="tel:+123456789">+123 456 (789)</a>
+                                            @if (!empty($footer_details['phone']))
+                                                <a href="tel:{{ $footer_details['phone'] }}">
+                                                    {{ $footer_details['phone'] }}
+                                                </a>
+                                            @else
+                                                <span>+123 456 789</span>
+                                            @endif
                                         </li>
                                     </ul>
                                 </div>
+
+
                             </div>
                         </div>
                         <div class="col-md-3 col-xs-6 col-xxs-12 ptop--30 pbottom--30">
                             <div class="widget">
-                                <div class="widget--title">
-                                    <h2 class="h4">Usefull Info Links</h2>
-                                    <i class="icon fa fa-expand"></i>
-                                </div>
-                                <div class="links--widget">
-                                    <ul class="nav">
-                                        <li><a href="#" class="fa-angle-right">Gadgets</a></li>
-                                        <li><a href="#" class="fa-angle-right">Shop</a></li>
-                                        <li>
-                                            <a href="#" class="fa-angle-right">Term and Conditions</a>
-                                        </li>
-                                        <li><a href="#" class="fa-angle-right">Forums</a></li>
-                                        <li>
-                                            <a href="#" class="fa-angle-right">Top News of This Week</a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="fa-angle-right">Special Recipes</a>
-                                        </li>
-                                        <li><a href="#" class="fa-angle-right">Sign Up</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-xs-6 col-xxs-12 ptop--30 pbottom--30">
-                            <div class="widget">
-                                <div class="widget--title">
-                                    <h2 class="h4">Advertisements</h2>
-                                    <i class="icon fa fa-bullhorn"></i>
-                                </div>
-                                <div class="links--widget">
-                                    <ul class="nav">
-                                        <li>
-                                            <a href="#" class="fa-angle-right">Post an Add</a>
-                                        </li>
-                                        <li><a href="#" class="fa-angle-right">Adds Renew</a></li>
-                                        <li>
-                                            <a href="#" class="fa-angle-right">Price of Advertisements</a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="fa-angle-right">Adds Closed</a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="fa-angle-right">Monthly or Yearly</a>
-                                        </li>
-                                        <li><a href="#" class="fa-angle-right">Trial Adds</a></li>
-                                        <li><a href="#" class="fa-angle-right">Add Making</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-xs-6 col-xxs-12 ptop--30 pbottom--30">
-                            <div class="widget">
-                                <div class="widget--title">
-                                    <h2 class="h4">Career</h2>
-                                    <i class="icon fa fa-user-o"></i>
-                                </div>
-                                <div class="links--widget">
-                                    <ul class="nav">
-                                        <li>
-                                            <a href="#" class="fa-angle-right">Available Post</a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="fa-angle-right">Career Details</a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="fa-angle-right">How to Apply?</a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="fa-angle-right">Freelence Job</a>
-                                        </li>
-                                        <li>
-                                            <a href="#" class="fa-angle-right">Be a Member</a>
-                                        </li>
-                                        <li><a href="#" class="fa-angle-right">Apply Now</a></li>
-                                        <li>
-                                            <a href="#" class="fa-angle-right">Send Your Resume</a>
-                                        </li>
-                                    </ul>
-                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -443,41 +421,41 @@
                 <div class="social--bg bg--color-1"></div>
                 <div class="container">
                     <p class="text float--left">
-                        &copy; 2017 <a href="#">USNEWS</a>. All Rights Reserved.
+                        &copy; {{ date('Y') }} <a href="#">USNEWS</a>. All Rights Reserved.
                     </p>
                     <ul class="nav social float--right">
                         <li>
-                            <a href="#">
-                                <i class="fa fa-facebook"></i>
+                            <a href="{{ $social->facebook }}">
+                                <i class="fa-brands fa-facebook-f"></i>
                             </a>
                         </li>
                         <li>
-                            <a href="#">
+                            <a href="{{ $social->twitter }}">
+                                <!-- Then use -->
                                 <i class="fa-brands fa-x-twitter"></i>
                             </a>
                         </li>
                         <li>
-                            <a href="#">
-                                <i class="fa fa-instagram"></i>
+                            <a href="{{ $social->instagram }}">
+                                <i class="fa-brands fa-instagram"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ $social->youtube }}">
+                                <i class="fa-brands fa-youtube"></i>
 
                             </a>
                         </li>
                         <li>
-                            <a href="#">
-                                <i class="fa fa-youtube-play"></i>
-
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fa fa-linkedin"></i>
+                            <a href="{{ $social->linkedin }}">
+                                <i class="fa-brands fa-linkedin"></i>
                             </a>
                         </li>
                     </ul>
                     <ul class="nav links float--right">
                         <li><a href="#">Home</a></li>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Support</a></li>
+                        {{-- <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Support</a></li> --}}
                     </ul>
                 </div>
             </div>

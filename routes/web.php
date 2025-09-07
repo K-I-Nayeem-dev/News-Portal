@@ -54,6 +54,14 @@ Route::controller(HomeController::class)->group(function () {
 });
 
 
+// Accept invitation (click from email)
+Route::get('/accept-invite/{token}', [InvitationController::class, 'accept'])->name('invitations.accept');
+
+// Complete invitation (set password)
+Route::post('/complete-invite', [InvitationController::class, 'complete'])->name('invitations.complete');
+
+
+
 // Only Authoraization User can Access Backend Dashboard
 Route::middleware(['web', 'auth', 'verified'])->group(function () {
 

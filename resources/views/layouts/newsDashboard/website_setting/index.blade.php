@@ -31,9 +31,10 @@
             <!-- Row -->
             <div class="row">
                 <div class="d-flex justify-content-between">
-                    <div class="col-lg-6 offset-lg-3 mt-3 pe-2">
+                    <div class="col-lg-12 mt-3 pe-2">
                         <div class="card">
-                            <h5 class="card-header text-white" style="background-color: #1B84FF">Website Setting Update</h5>
+                            <h5 class="card-header text-white" style="background-color: #1B84FF">Website Setting Update
+                                Footer & Logo</h5>
                             <div class="card-body">
                                 <form method="POST" action="{{ route('website_setting.update', $web_settings->id) }}"
                                     enctype="multipart/form-data">
@@ -62,55 +63,145 @@
                                     </div>
 
 
-                                    {{-- For Website About us --}}
-                                    <div class="mt-3">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            {{-- For Website About us --}}
+                                            <div class="mt-3">
 
-                                        <label class='form-label' for="about_us">About Us</label>
-                                        <textarea name="about_us" id="about_us" cols="30" rows="5">{{ old('about_us', $web_settings->about_us) }}</textarea>
+                                                <label class='form-label' for="about_us">About Us English</label>
+                                                <textarea name="about_us" id="about_us" cols="30" rows="5">{{ old('about_us', $web_settings->about_us) }}</textarea>
 
-                                        @error('about_us')
-                                            <p class="text-danger mt-2">{{ $message }}</p>
-                                        @enderror
+                                                @error('about_us')
+                                                    <p class="text-danger mt-2">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            {{-- For Website About us --}}
+                                            <div class="mt-3">
+
+                                                <label class='form-label' for="about_us_bangla">About Us Bangla</label>
+                                                <textarea name="about_us_bangla" id="about_us_bangla" cols="30" rows="5">{{ old('about_us_bangla', $web_settings->about_us_bangla) }}</textarea>
+
+                                                @error('about_us_bangla')
+                                                    <p class="text-danger mt-2">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    {{-- For Website Address --}}
-                                    <div class="mt-3">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            {{-- For Website Address --}}
+                                            <div class="mt-3">
+                                                <label class='form-label' for="address">Address</label>
+                                                <textarea name="address" id="address" cols="30" rows="5">{{ old('address', $web_settings->address) }}</textarea>
 
-                                        <label class='form-label' for="address">Address</label>
-                                        <textarea name="address" id="address" cols="30" rows="5">{{ old('address', $web_settings->address) }}</textarea>
+                                                @error('address')
+                                                    <p class="text-danger mt-2">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            {{-- For Website Address --}}
+                                            <div class="mt-3">
+                                                <label class='form-label' for="address_bangla">Address Bangla</label>
+                                                <textarea name="address_bangla" id="address_bangla" cols="30" rows="5">{{ old('address_bangla', $web_settings->address_bangla) }}</textarea>
 
-                                        @error('address')
-                                            <p class="text-danger mt-2">{{ $message }}</p>
-                                        @enderror
+                                                @error('address_bangla')
+                                                    <p class="text-danger mt-2">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    {{-- For Website Editor Details --}}
-                                    <div class="mt-3">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            {{-- For Website Editor Details --}}
+                                            <div class="mt-3">
 
-                                        <label class='form-label' for="editor_details">Editor Details</label>
-                                        <textarea name="editor_details" id="editor_details" cols="30" rows="5">{{ old('editor_details', $web_settings->editor_details) }}</textarea>
+                                                <label class='form-label' for="editor_details">Editor Details</label>
+                                                <textarea name="editor_details" id="editor_details" cols="30" rows="5">{{ old('editor_details', $web_settings->editor_details) }}</textarea>
 
-                                        @error('editor_details')
-                                            <p class="text-danger mt-2">{{ $message }}</p>
-                                        @enderror
+                                                @error('editor_details')
+                                                    <p class="text-danger mt-2">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="mt-3">
+
+                                                <label class='form-label' for="editor_details_bangla">Editor Details
+                                                    Bangla</label>
+                                                <textarea name="editor_details_bangla" id="editor_details_bangla" cols="30" rows="5">{{ old('editor_details_bangla', $web_settings->editor_details_bangla) }}</textarea>
+
+                                                @error('editor_details_bangla')
+                                                    <p class="text-danger mt-2">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    <div class="mt-3">
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="mt-3">
 
-                                        <label class='form-label' for="advertise_link">Advertise links</label>
-                                        <input name="advertise_link" class="form-control" id="advertise_link"
-                                            value="{{ old('advertise_link', $web_settings->advertise_link) }}"
-                                            placeholder="Your social link for advertising contact" />
+                                                <label class='form-label' for="advertise_link">Advertise links</label>
+                                                <input name="advertise_link" class="form-control" id="advertise_link"
+                                                    value="{{ old('advertise_link', $web_settings->advertise_link) }}"
+                                                    placeholder="Your social link for advertising contact" />
 
-                                        @error('advertise_link')
-                                            <p class="text-danger mt-2">{{ $message }}</p>
-                                        @enderror
+                                                @error('advertise_link')
+                                                    <p class="text-danger mt-2">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="mt-3">
+
+                                                <label class='form-label' for="email">Email</label>
+                                                <input name="email" type="email" class="form-control" id="email"
+                                                    value="{{ old('email', $web_settings->email) }}"
+                                                    placeholder="Email for Contact" />
+
+                                                @error('email')
+                                                    <p class="text-danger mt-2">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="mt-3">
+                                                <label class='form-label' for="phone">Phone</label>
+                                                <input name="phone" class="form-control" id="phone"
+                                                    value="{{ old('phone', $web_settings->phone) }}"
+                                                    placeholder="Phone for Contact" />
+
+                                                @error('phone')
+                                                    <p class="text-danger mt-2">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="mt-3">
+                                                <label class='form-label' for="phone_bangla">Phone Bangla</label>
+                                                <input name="phone_bangla" class="form-control" id="phone_bangla"
+                                                    value="{{ old('phone_bangla', $web_settings->phone_bangla) }}"
+                                                    placeholder="Phone for Contact" />
+
+                                                @error('phone_bangla')
+                                                    <p class="text-danger mt-2">{{ $message }}</p>
+                                                @enderror
+                                            </div>
+                                        </div>
                                     </div>
 
+                                    <div class="d-flex justify-content-center">
+                                        <button style="background-color: #1B84FF"
+                                            class="btn text-white mt-4 w-25">Update</button>
+                                    </div>
 
-
-                                    <button style="background-color: #1B84FF"
-                                        class="btn text-white mt-3 w-100">Update</button>
                                 </form>
                             </div>
                         </div>
@@ -127,22 +218,12 @@
     </div>
     <script>
         $(document).ready(function() {
-            $('#about_us').summernote({
-                height: 150, // Set editor height
-                placeholder: 'Write something here...'
-            });
-        });
-        $(document).ready(function() {
-            $('#address').summernote({
-                height: 150, // Set editor height
-                placeholder: 'Write something here...'
-            });
-        });
-        $(document).ready(function() {
-            $('#editor_details').summernote({
-                height: 150, // Set editor height
-                placeholder: 'Write something here...'
-            });
+            // Select all IDs at once
+            $('#about_us, #address, #editor_details, #about_us_bangla, #address_bangla, #editor_details_bangla')
+                .summernote({
+                    height: 150, // Set editor height
+                    placeholder: 'Write something here...'
+                });
         });
     </script>
 @endsection

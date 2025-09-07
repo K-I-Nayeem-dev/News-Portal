@@ -73,8 +73,18 @@ class WebsiteSettingController extends Controller implements HasMiddleware
             'about_us' => $request->about_us,
             'address' => $request->address,
             'editor_details' => $request->editor_details,
-            'advertise_link' => $request->advertise_link
+            'advertise_link' => $request->advertise_link,
+            'phone' => $request->phone,
+            'email' => $request->email,
+
+            // Bangla fields
+            'about_us_bangla' => $request->about_us_bangla,
+            'address_bangla' => $request->address_bangla,
+            'editor_details_bangla' => $request->editor_details_bangla,
+            'phone_bangla' => $request->phone_bangla,
+            // 'email_bangla' => $request->email_bangla ?? null, // optional
         ];
+
 
         $logo = Website_Setting::findOrFail($id);
 
