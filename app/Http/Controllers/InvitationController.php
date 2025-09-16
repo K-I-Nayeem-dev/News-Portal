@@ -13,27 +13,35 @@ class InvitationController extends Controller
     // Show password setup form
     public function accept($token)
     {
-        // Find the invitation by the token
+        // Find the invitation by token
         $invitation = Invitation::where('token', $token)->first();
 
-        // If the token does not exist, redirect to login with an error
+        // If the token does not exist
         if (!$invitation) {
-            return redirect()->route('login')->with('error', 'Invalid token.');
+            flash()->addError('Invalid invitation token.', ['position' => 'bottom-center']);
+            return redirect('/invitation-invalid'); // triggers fallback page
         }
 
-        // If the invitation has already been used, prevent access
+        // If the invitation has already been used
         if ($invitation->status == 1) {
-            return redirect()->route('login')->with('error', 'This invitation has already been used.');
+            flash()->addError('This invitation has already been used.', ['position' => 'bottom-center']);
+            return redirect('/invitation-invalid'); // triggers fallback page
         }
 
-        // If the invitation has an expiration date and it has passed, prevent access
+        // If the invitation has expired
         if ($invitation->expires_at && now()->greaterThan($invitation->expires_at)) {
-            return redirect()->route('login')->with('error', 'This invitation has expired.');
+            flash()->addError('This invitation has expired.', ['position' => 'bottom-center']);
+            return redirect('/invitation-invalid'); // triggers fallback page
         }
 
-        // If all checks pass, show the set password view
-        return view('layouts.inviteUserMail.invite-set-password', ['token' => $token]);
+        // If all checks pass, show the set password page
+        return view('layouts.inviteUserMail.invite-set-password', [
+            'token' => $token
+        ]);
     }
+
+
+
 
 
     // Complete registration (set password)
@@ -45,16 +53,17 @@ class InvitationController extends Controller
         ]);
 
         $invitation = Invitation::where('token', $request->token)->firstOrFail();
-
         $user = User::where('email', $invitation->email)->firstOrFail();
 
-        // Set the user password
+        // Set user password
         $user->password = Hash::make($request->password);
+        $user->invited_user = 0;
         $user->save();
 
-        // Assign role if invitation has one
+        // Assign roles correctly
         if ($invitation->role) {
-            $user->syncRoles($invitation->role);
+            $roles = json_decode($invitation->role, true); // decode JSON
+            $user->syncRoles($roles);
         }
 
         // Mark invitation as used
@@ -64,10 +73,15 @@ class InvitationController extends Controller
             'token' => null,
         ]);
 
-
-        // Log in the user
+        // Log in user
         Auth::login($user);
 
-        return redirect()->route('dashboard')->with('success', 'Your account is ready!');
+        // Flash success message with flasher
+        flash()
+            ->addSuccess('Your account is ready!', [
+                'position' => 'bottom-center', // 👈 correct way
+            ]);
+
+        return redirect()->route('dashboard');
     }
 }

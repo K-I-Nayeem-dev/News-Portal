@@ -24,16 +24,29 @@
                 <div class="row justify-content-center w-100">
                     <div class="col-lg-4">
                         <div class="text-center">
-                            <img src="{{ asset('dashboard_assets') }}/images/backgrounds/errorimg.svg" alt="" class="img-fluid" width="500">
-                            <h1 class="fw-semibold mb-7 fs-9">Opps!!!</h1>
-                            <h4 class="fw-semibold mb-7">This page you are looking for could not be found.</h4>
-                            <a class="btn btn-primary" href="{{ route('dashboard') }}" role="button">Go Back to Home</a>
+                            <img src="{{ asset('dashboard_assets/images/backgrounds/errorimg.svg') }}" alt="Error Image"
+                                class="img-fluid" width="500">
+
+                            <h1 class="fw-semibold mb-3">Oops!!!</h1>
+
+                            @if (Request::is('invitation-invalid'))
+                                <h4 class="fw-semibold mb-4">This invitation link is invalid, expired, or already used.
+                                </h4>
+                            @else
+                                <h4 class="fw-semibold mb-4">This page you are looking for could not be found.</h4>
+
+                                {{-- Show button only for fallback / 404 --}}
+                                <a class="btn btn-primary mt-3" href="{{ route('dashboard') }}" role="button">
+                                    Go Back to Home
+                                </a>
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     {{-- <div class="dark-transparent sidebartoggler"></div> --}}
     <!-- Import Js Files -->
     {{-- <script src="{{ asset('dashboard_assets') }}/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

@@ -586,8 +586,11 @@
                                                         </a>
                                                         <div class="post--info">
                                                             <ul class="nav meta" style="margin-top: 5px;">
-                                                                <li><a
-                                                                        href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}">{{ $row->newsUser->name }}</a>
+                                                                <li>
+                                                                    <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}">
+                                                                        {{-- {{ $row->newsUser->name }} --}}
+                                                                        {{ $row->newsUser->name ?? 'No User' }}
+                                                                    </a>
                                                                 </li>
                                                                 <li>
                                                                     <a

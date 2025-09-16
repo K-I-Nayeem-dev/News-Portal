@@ -180,4 +180,10 @@ Route::fallback(function () {
     return view('layouts.newsDashboard.dashboardErrors');
 });
 
+// 404 page not found error for user invitation
+Route::get('/invitation-invalid', function () {
+    return view('layouts.newsDashboard.dashboardErrors');
+});
+
+
 require __DIR__ . '/auth.php';

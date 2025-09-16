@@ -73,14 +73,15 @@ class UserController extends Controller  implements HasMiddleware
             return back()->withInput()->withErrors($validator);
         }
 
-        // Generate random password for invited user
-        $password = Str::random(5) . rand(0, 999) . Str::random(5) . rand(0, 999);
+        // // Generate random password for invited user
+        // $password = Str::random(5) . rand(0, 999) . Str::random(5) . rand(0, 999);
 
         // Create the user
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make(Str::random(10)), // temporary random password
+            'invited_user' => 1,
             'created_at' => now(),
             'updated_at' => null
         ]);
@@ -194,6 +195,12 @@ class UserController extends Controller  implements HasMiddleware
     {
         $user = User::findOrFail($id);
         $user->delete();
-        return back()->with('user_delete', 'User Deleted');
+
+        flash()
+            ->addSuccess('User Deleted', [
+                'position' => 'bottom-center', // 👈 correct way
+            ]);
+
+        return back();
     }
 }

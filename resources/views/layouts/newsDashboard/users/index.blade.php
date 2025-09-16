@@ -120,33 +120,38 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($users as $key => $user)
-                                        @if ($user->id == Auth::id())
-                                            @continue
-                                        @endif
                                         <tr style="font-size: 12px">
                                             <th class="d-none d-md-table-cell">{{ ++$key }}</th>
-                                            <td>{{ $user->name }}</td>
+                                            <td>
+                                                <span>{{ $user->name . ' '}}</span>
+                                                <span><code>{{ $user->invited_user == 0 ? ' ' : '(Pending)' }}</code></span>
+                                            </td>
                                             <td class="d-none d-md-table-cell">{{ $user->email }}</td>
                                             <td>
                                                 {{ $user->roles->pluck('name')->implode(', ') ?: 'No Role' }}
                                             </td>
-                                            <td width='100px'>
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <a href="{{ route('user.edit', $user->id) }}"
-                                                        class="btn btn-sm btn-primary rounded">
-                                                        <i class="fa fa-edit" aria-hidden="true"></i>
-                                                    </a>
+                                            @if ($user->id == Auth::id())
+                                                <td class="text-center"><code>( You )</code></td>
+                                            @else
+                                                <td width='100px'>
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <a href="{{ route('user.edit', $user->id) }}"
+                                                            class="btn btn-sm btn-primary rounded">
+                                                            <i class="fa fa-edit" aria-hidden="true"></i>
+                                                        </a>
 
-                                                    <form method="POST" action="{{ route('user.destroy', $user->id) }}"
-                                                        onsubmit="return confirm('Are you sure you want to delete {{ $user->name }}?')">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button class="btn btn-sm btn-danger">
-                                                            <i style="color: white" class="fa-solid fa-trash"></i>
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </td>
+                                                        <form method="POST"
+                                                            action="{{ route('user.destroy', $user->id) }}"
+                                                            onsubmit="return confirm('Are you sure you want to delete {{ $user->name }}?')">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button class="btn btn-sm btn-danger">
+                                                                <i style="color: white" class="fa-solid fa-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </td>
+                                            @endif
                                         </tr>
                                     @endforeach
 
