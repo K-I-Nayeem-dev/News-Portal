@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdsController;
 use App\Http\Controllers\BreakingNewsController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DistrictController;
 use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\HomeController;
@@ -25,6 +26,7 @@ use App\Http\Controllers\WatermarkController;
 use App\Http\Controllers\WebsiteListController;
 use App\Http\Controllers\WebsiteSettingController;
 use Illuminate\Support\Facades\Route;
+
 
 // News Home page Route for Visitor Or Users
 Route::controller(HomeController::class)->group(function () {
@@ -66,9 +68,8 @@ Route::post('/complete-invite', [InvitationController::class, 'complete'])->name
 Route::middleware(['web', 'auth', 'verified'])->group(function () {
 
 
-    Route::get('/newsDashboard', function () {
-        return view('layouts.newsDashboard.dashboard');
-    })->name('dashboard');
+    // Dashboard Controller
+    Route::get('/newsDashboard',[DashboardController::class, 'dashboard'])->name('dashboard');
 
     // Profile Routes
     Route::controller(ProfileController::class)->prefix('edit/profile')->middleware('auth')->group(function () {

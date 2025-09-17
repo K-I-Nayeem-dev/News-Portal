@@ -14,10 +14,11 @@
                                     <b class="logo-icon">
                                         <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                                         <!-- Dark Logo icon -->
-                                        <img src="{{ asset('dashboard_assets') }}/images/logos/logo-icon.svg" alt="homepage" class="dark-logo">
+                                        <img src="{{ asset('dashboard_assets') }}/images/logos/logo-icon.svg" alt="homepage"
+                                            class="dark-logo">
                                         <!-- Light Logo icon -->
-                                        <img src="{{ asset('dashboard_assets') }}/images/logos/logo-light-icon.svg" alt="homepage"
-                                            class="light-logo">
+                                        <img src="{{ asset('dashboard_assets') }}/images/logos/logo-light-icon.svg"
+                                            alt="homepage" class="light-logo">
                                     </b>
                                     <!--End Logo icon -->
                                     <!-- Logo text -->
@@ -26,8 +27,8 @@
                                         <img src="{{ asset('dashboard_assets') }}/images/logos/logo-text.svg" alt="homepage"
                                             class="dark-logo ps-2">
                                         <!-- Light Logo text -->
-                                        <img src="{{ asset('dashboard_assets') }}/images/logos/logo-light-text.svg" class="light-logo ps-2"
-                                            alt="homepage">
+                                        <img src="{{ asset('dashboard_assets') }}/images/logos/logo-light-text.svg"
+                                            class="light-logo ps-2" alt="homepage">
                                     </span>
                                 </a>
                                 <div class="mb-5 text-center">
@@ -36,14 +37,24 @@
                                         link to reset your password.
                                     </p>
                                 </div>
-                                <form>
+                                <form method="POST" action="{{ route('password.email') }}">
+
+                                    @csrf
+
                                     <div class="mb-3">
-                                        <label for="exampleInputEmail1" class="form-label">Email address</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1"
+                                        <label for="email" class="form-label">Email address</label>
+                                        <input type="email" name="email" class="form-control" id="email"
                                             aria-describedby="emailHelp">
                                     </div>
-                                    <a href="javascript:void(0)" class="btn btn-primary w-100 py-8 mb-3">Forgot Password</a>
+
+                                    @error('email')
+                                        <p class="text-danger mt-2">{{ $message }}</p>
+                                    @enderror
+
+                                    <button class="btn btn-primary w-100 py-8 mb-3">Email Password Reset Link</button>
+
                                     <a href="{{ route('login') }}"class="btn bg-primary-subtle text-primary w-100 py-8">Back to Login</a>
+
                                 </form>
                             </div>
                         </div>

@@ -54,11 +54,11 @@
                                     <div class="d-flex align-items-center justify-content-end mb-4">
                                         <a class="text-primary fw-medium" href="{{ route('password.request') }}">Forgot Password ?</a>
                                     </div>
-                                    <button type="submit" class="btn btn-primary w-100 py-8 mb-4">Sign In</button>
-                                    <div class="d-flex align-items-center justify-content-center">
+                                    <button type="submit" class="btn btn-primary w-100 py-8">Sign In</button>
+                                    {{-- <div class="d-flex align-items-center justify-content-center">
                                         <p class="fs-4 mb-0 fw-medium">Don't Have Account ?</p>
                                         <a class="text-primary fw-medium ms-2" href="{{ route('register') }}">Create anaccount</a>
-                                    </div>
+                                    </div> --}}
                                 </form>
                             </div>
                         </div>
