@@ -16,13 +16,17 @@ use App\Models\Notice;
 use App\Models\PhotoGallery;
 use App\Models\SubCategory;
 use App\Models\SubDistrict;
+use App\Models\User;
 use App\Models\VideoGallery;
+use App\Models\Visitor;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Stevebauman\Location\Facades\Location;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
-
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
+use Jenssegers\Agent\Agent;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -81,6 +85,34 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('layouts.newsDashboard.dashboard', function ($view) {
 
+            // For User device Detect Start
+            $agent = new Agent();
+
+            // Fetch all user agents from visitor table
+            $allAgents = Visitor::pluck('user_agent');
+
+            $visitorCounts = [
+                'Mobile' => 0,
+                'Tablet' => 0,
+                'Desktop' => 0,
+                'Other' => 0,
+            ];
+
+            foreach ($allAgents as $uaString) {
+                $agent->setUserAgent($uaString);
+
+                if ($agent->isMobile() && !$agent->isTablet()) {
+                    $visitorCounts['Mobile']++;
+                } elseif ($agent->isTablet()) {
+                    $visitorCounts['Tablet']++;
+                } elseif ($agent->isDesktop()) {
+                    $visitorCounts['Desktop']++;
+                } else {
+                    $visitorCounts['Other']++;
+                }
+            }
+            // For User device Detect End
+
             $ads = Ads::all();
             $headlines = breaking_news::all();
             $headlines_active = breaking_news::where('status', 1)->get();
@@ -102,6 +134,12 @@ class AppServiceProvider extends ServiceProvider
             $seos = Seo::first();
             $live_tv = LiveTv::first();
             $notice = Notice::first();
+            $users = User::all();
+            $roles = Role::all();
+            $permissions = Permission::all();
+            $todayVisitors = Visitor::whereDate('visit_date', today())->count();
+            $totalVisitors = Visitor::count();
+
 
 
             $view->with([
@@ -126,6 +164,12 @@ class AppServiceProvider extends ServiceProvider
                 'seos' => $seos,
                 'live_tv' => $live_tv,
                 'notice' => $notice,
+                'users' => $users,
+                'roles' => $roles,
+                'permissions' => $permissions,
+                'todayVisitors' => $todayVisitors,
+                'totalVisitors' => $totalVisitors,
+                'visitorData' => $visitorCounts,
             ]);
         });
 

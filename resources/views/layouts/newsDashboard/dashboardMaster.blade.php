@@ -103,7 +103,7 @@
                             <a href="javascript:void(0)"
                                 class="dropdown-toggle u-dropdown w-100 text-white d-block position-relative id="dropdownMenuLink"
                                 data-bs-toggle="dropdown" aria-expanded="false">{{ auth()->user()->name }}
-                               <span style="font-size: 12px">({{ ucfirst(Auth::user()->roles->pluck('name')->implode(', ')) }})</span></a>
+                                <span style="font-size: 12px">({{ ucfirst(Auth::user()->roles->pluck('name')->implode(', ')) }})</span></a>
                             <div class="dropdown-menu animated flipInY" aria-labelledby="dropdownMenuLink">
 
                                 <a class="dropdown-item d-flex gap-2" href="{{ route('profile.index') }}"> <i
@@ -1564,8 +1564,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
     <!-- Import Js Files -->
-    {{-- <script src="{{ asset('dashboard_assets') }}/js/breadcrumb/breadcrumbChart.js"></script> --}}
-    {{-- <script src="{{ asset('dashboard_assets') }}/libs/apexcharts/dist/apexcharts.min.js"></script> --}}
+    <script src="{{ asset('dashboard_assets') }}/js/breadcrumb/breadcrumbChart.js"></script>
+    <script src="{{ asset('dashboard_assets') }}/libs/apexcharts/dist/apexcharts.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script src="{{ asset('dashboard_assets') }}/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('dashboard_assets') }}/libs/simplebar/dist/simplebar.min.js"></script>
@@ -1591,7 +1591,7 @@
             codeBlock.textContent = codeBlock.innerHTML;
         });
     </script>
-    {{-- <script src="{{ asset('dashboard_assets') }}/js/dashboards/dashboard1.js"></script> --}}
+    <script src="{{ asset('dashboard_assets') }}/js/dashboards/dashboard1.js"></script>
     <!-- ✅ Summernote Initialization Script -->
     <script>
         $(document).ready(function() {

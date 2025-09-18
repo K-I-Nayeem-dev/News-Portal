@@ -31,7 +31,7 @@ use Illuminate\Support\Facades\Route;
 // News Home page Route for Visitor Or Users
 Route::controller(HomeController::class)->group(function () {
     // Route for Home Page
-    Route::get('/', 'index')->name('home');
+    Route::get('/', 'index')->name('home')->middleware('track.visitors');;
 
     // Route For Dynamic Localizaiton or Multilangual (English & Bangla)
     Route::get('/lang/english', 'english')->name('news.english');

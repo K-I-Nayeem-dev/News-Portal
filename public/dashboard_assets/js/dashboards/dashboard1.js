@@ -161,71 +161,157 @@ document.addEventListener("DOMContentLoaded", function () {
   // Our visitor
   // -----------------------------------------------------------------------
 
-  var option_Our_Visitors = {
-    series: [50, 40, 30, 10],
-    labels: ["Mobile", "Tablet", "Other", "Desktop"],
-    chart: {
-      type: "donut",
-      height: 250,
-      fontFamily: "inherit",
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    stroke: {
-      width: 0,
-    },
+// 1️⃣ Resolve CSS variables first
+function getCssVariableColor(varName) {
+    // getComputedStyle returns the actual color
+    return getComputedStyle(document.documentElement)
+        .getPropertyValue(varName)
+        .trim();
+}
+
+// Build the colors array
+const colors = [
+    getCssVariableColor('--bs-primary'),    // Mobile
+    getCssVariableColor('--bs-secondary'),  // Tablet
+    '#eceff180',                             // Other
+    getCssVariableColor('--bs-purple'),     // Desktop
+];
+
+
+// 2️⃣ Prepare series and labels dynamically
+const labels = Object.keys(visitorsData); // from your backend
+const series = Object.values(visitorsData);
+
+// 3️⃣ ApexCharts options
+var option_Our_Visitors = {
+    series: series,     // e.g., [50, 40, 10, 5]
+    labels: labels,     // e.g., ["Mobile", "Tablet", "Other", "Desktop"]
+    chart: { type: "donut", height: 250, fontFamily: "inherit" },
+    colors: colors,      // ✅ use the resolved colors here
+    dataLabels: { enabled: false },
+    stroke: { width: 0 },
     plotOptions: {
-      pie: {
-        expandOnClick: true,
-        donut: {
-          size: "83",
-          labels: {
-            show: true,
-            name: {
-              show: true,
-              offsetY: 7,
+        pie: {
+            expandOnClick: true,
+            donut: {
+                size: "83",
+                labels: {
+                    show: true,
+                    name: { show: true, offsetY: 7 },
+                    value: { show: false },
+                    total: { show: true, color: "#a1aab2", fontSize: "13px", label: "Our Visitor" },
+                },
             },
-            value: {
-              show: false,
-            },
-            total: {
-              show: true,
-              color: "#a1aab2",
-              fontSize: "13px",
-              label: "Our Visitor",
-            },
-          },
         },
-      },
     },
-    colors: ["var(--bs-primary)", "var(--bs-secondary)", "#eceff180", "var(--bs-purple)"],
-    tooltip: {
-      show: true,
-      fillSeriesColor: false,
-    },
-    legend: {
-      show: false,
-    },
-    responsive: [
-      {
-        breakpoint: 1025,
-        options: {
-          chart: {
-            height: 270,
-          },
-        },
-      },
-      {
-        breakpoint: 426,
-        options: {
-          chart: {
-            height: 250,
-          },
-        },
-      },
-    ],
-  };
+    tooltip: { show: true, fillSeriesColor: false },
+    legend: { show: false },
+};
+
+
+
+// 4️⃣ Render chart
+var chart = new ApexCharts(document.querySelector("#our-visitors"), option_Our_Visitors);
+chart.render();
+
+// 5️⃣ Build dynamic legend with the same colors
+const legendContainer = document.getElementById("our-visitors-legend");
+labels.forEach((label, idx) => {
+    const color = colors[idx % colors.length];
+    const li = document.createElement("li");
+    li.className = "list-inline-item px-2 me-0";
+    li.innerHTML = `
+        <div class="d-flex align-items-center gap-2 fs-3" style="color:${color}">
+            <iconify-icon icon="ri:circle-fill" class="fs-2"></iconify-icon>${label}
+        </div>
+    `;
+    legendContainer.appendChild(li);
+});
+
+
+//   document.addEventListener('DOMContentLoaded', function () {
+
+//   // 1) Basic checks
+//   if (typeof ApexCharts === 'undefined') {
+//     console.error('ApexCharts not found. Make sure apexcharts script is loaded before dashboard1.js.');
+//     return;
+//   }
+
+//   const container = document.querySelector('#our-visitors');
+//   if (!container) {
+//     console.error('#our-visitors element not found in DOM.');
+//     return;
+//   }
+
+//   // 2) If you pass dynamic data from Blade, optionally override option_Our_Visitors.series
+//   // Example in blade: <script>window.visitorData = @json($data);</script>
+//   if (window.visitorData) {
+//     // adapt property names to your backend variable names
+//     // e.g. window.visitorData = { mobile: 120, tablet: 80, other: 40, desktop: 10 }
+//     option_Our_Visitors.series = [
+//       Number(window.visitorData.mobile || option_Our_Visitors.series[0] || 0),
+//       Number(window.visitorData.tablet || option_Our_Visitors.series[1] || 0),
+//       Number(window.visitorData.other  || option_Our_Visitors.series[2] || 0),
+//       Number(window.visitorData.desktop|| option_Our_Visitors.series[3] || 0)
+//     ];
+//     // If backend order differs, adjust above mapping.
+//   }
+
+//   // 3) Destroy existing chart if present (prevents duplicate SVG if re-running)
+//   if (window.chartVisitors && typeof window.chartVisitors.destroy === 'function') {
+//     try { window.chartVisitors.destroy(); } catch (e) { console.warn('destroy error', e); }
+//     window.chartVisitors = null;
+//   }
+
+//   // 4) Ensure series are numbers
+//   option_Our_Visitors.series = (option_Our_Visitors.series || []).map(v => Number(v) || 0);
+//   option_Our_Visitors.labels = option_Our_Visitors.labels || ['A','B','C','D'];
+
+//   // 5) Create and render chart
+//   window.chartVisitors = new ApexCharts(container, option_Our_Visitors);
+//   window.chartVisitors.render().then(() => {
+//     // 6) After render -> populate a single legend UL if present
+//     const series = option_Our_Visitors.series;
+//     const labels = option_Our_Visitors.labels;
+//     const colors = option_Our_Visitors.colors || ['#0d6efd','#6c757d','#eceff1','#6f42c1'];
+
+//     const ul = document.getElementById('our-visitors-legend');
+//     if (ul) {
+//       ul.innerHTML = ''; // clear
+//       labels.forEach((label, i) => {
+//         const li = document.createElement('li');
+//         li.className = 'list-inline-item px-2 me-0';
+//         li.innerHTML = `
+//           <div class="d-flex align-items-center gap-2 fs-6">
+//             <span style="display:inline-block;width:12px;height:12px;background:${colors[i] || '#ccc'};border-radius:50%;"></span>
+//             <span class="text-muted">${label}: <strong>${series[i] ?? 0}</strong></span>
+//           </div>`;
+//         ul.appendChild(li);
+//       });
+//       return;
+//     }
+
+//     // 7) Fallback: update individual placeholders if present
+//     const fallbackMap = [
+//       { sel: '.legend-mobile', idx: 0 },
+//       { sel: '.legend-tablet', idx: 1 },
+//       { sel: '.legend-other', idx: 2 },
+//       { sel: '.legend-desktop', idx: 3 },
+//     ];
+//     fallbackMap.forEach(m => {
+//       const node = document.querySelector(m.sel);
+//       if (node) {
+//         const i = m.idx;
+//         node.innerHTML = `<iconify-icon icon="ri:circle-fill" class="fs-5"></iconify-icon> ${labels[i] || ''}: <b>${series[i] ?? 0}</b>`;
+//       }
+//     });
+
+//   }).catch(err => {
+//     console.error('ApexCharts render error:', err);
+//   });
+
+// });
+
 
   var chart_pie_donut = new ApexCharts(
     document.querySelector("#our-visitors"),
