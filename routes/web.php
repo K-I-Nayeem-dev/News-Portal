@@ -10,7 +10,6 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\LiveTvController;
 use App\Http\Controllers\NewsController;
-use App\Http\Controllers\NewsFetchController;
 use App\Http\Controllers\NoticeController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PhotoGalleryController;
@@ -25,13 +24,15 @@ use App\Http\Controllers\VideoGalleryController;
 use App\Http\Controllers\WatermarkController;
 use App\Http\Controllers\WebsiteListController;
 use App\Http\Controllers\WebsiteSettingController;
+use App\Models\BandwidthUsage;
 use Illuminate\Support\Facades\Route;
 
 
 // News Home page Route for Visitor Or Users
 Route::controller(HomeController::class)->group(function () {
+
     // Route for Home Page
-    Route::get('/', 'index')->name('home')->middleware('track.visitors');;
+    Route::get('/', 'index')->name('home')->middleware(['track.visitors', 'track.bandwidth']);
 
     // Route For Dynamic Localizaiton or Multilangual (English & Bangla)
     Route::get('/lang/english', 'english')->name('news.english');
@@ -69,7 +70,7 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
 
 
     // Dashboard Controller
-    Route::get('/newsDashboard',[DashboardController::class, 'dashboard'])->name('dashboard');
+    Route::get('/newsDashboard', [DashboardController::class, 'dashboard'])->name('dashboard')->middleware('track.bandwidth');;
 
     // Profile Routes
     Route::controller(ProfileController::class)->prefix('edit/profile')->middleware('auth')->group(function () {
@@ -82,6 +83,12 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
         Route::post('/updateNumber', 'update_number')->name('update.number');
         Route::post('/photoUpload', 'photo_upload')->name('photo.upload');
     });
+
+    // Route for Bandwidth cards without controller
+    Route::get('/bandwidth', function () {
+        $bandwidths = BandwidthUsage::orderBy('id', 'desc')->get();
+        return view('layouts.newsDashboard.bandwidth.index', compact('bandwidths'));
+    })->name('bandwidth.index');
 
     // user Profile Show Route
 
@@ -176,6 +183,8 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
     });
 });
 
+
+
 // 404 page not found error
 Route::fallback(function () {
     return view('layouts.newsDashboard.dashboardErrors');
@@ -185,6 +194,7 @@ Route::fallback(function () {
 Route::get('/invitation-invalid', function () {
     return view('layouts.newsDashboard.dashboardErrors');
 });
+
 
 
 require __DIR__ . '/auth.php';

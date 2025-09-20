@@ -85,6 +85,88 @@
                                                 @enderror
                                             </div>
 
+
+                                            <div class="mt-4">
+                                                <label><strong>Ad Positions:</strong></label>
+
+                                                <div class="row g-3 mt-3"> <!-- g-3 adds gap between columns -->
+                                                    <!-- Front Page Ads (728x90) -->
+                                                    <div class="col-md-6">
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="front_top_banner" id="front_top_banner"
+                                                                value="1">
+                                                            <label class="form-check-label" for="front_top_banner">
+                                                                Front Top Banner <span class="fs-1">(728x90)</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="front_bottom" id="front_bottom" value="1">
+                                                            <label class="form-check-label" for="front_bottom">
+                                                                Front Bottom <span class="fs-1">(728x90)</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Full News Page Ads -->
+                                                    <div class="col-md-6">
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="news_left_banner" id="news_left_banner"
+                                                                value="1">
+                                                            <label class="form-check-label" for="news_left_banner">
+                                                                News Left Banner <span class="fs-1">(300x250)</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="news_3_sidebar" id="news_3_sidebar" value="1">
+                                                            <label class="form-check-label" for="news_3_sidebar">
+                                                                News 3 Sidebar <span class="fs-1">(300x250)</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="news_bottom" id="news_bottom" value="1">
+                                                            <label class="form-check-label" for="news_bottom">
+                                                                News Bottom <span class="fs-1">(728x90)</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Category/Subcategory Ads -->
+                                                    <div class="col-md-6">
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="category_sidebar" id="category_sidebar"
+                                                                value="1">
+                                                            <label class="form-check-label" for="category_sidebar">
+                                                                Category Sidebar <span class="fs-1">(300x250)</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="subcategory_sidebar" id="subcategory_sidebar"
+                                                                value="1">
+                                                            <label class="form-check-label" for="subcategory_sidebar">
+                                                                Subcategory Sidebar <span class="fs-1">(300x250)</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
                                             <div class="mt-3">
                                                 <label class='form-label' for="type">Ads Type<sup><code
                                                             style="font-size: 12px">*</code></sup></label>

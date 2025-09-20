@@ -19,6 +19,8 @@ use App\Models\SubDistrict;
 use App\Models\User;
 use App\Models\VideoGallery;
 use App\Models\Visitor;
+use App\Models\BandwidthUsage;
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Stevebauman\Location\Facades\Location;
@@ -27,6 +29,8 @@ use Illuminate\Support\Facades\Gate;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Jenssegers\Agent\Agent;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -41,11 +45,22 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    public function boot(Router $router): void
     {
+
+        // Register alias for bandwidth tracking middleware
+        $router->aliasMiddleware('track.bandwidth', \App\Http\Middleware\TrackBandwidth::class);
+
 
         // Frontend Global Variables
         View::composer('layouts.newsIndex.newsMaster', function ($view) {
+
+            // Footer Logo //
+            $logo = Website_Setting::value('logo');
+
+            // footer details //
+            $footer_details = Website_Setting::latest()->first();
+
             $ip = request()->ip();
 
             // For local testing, override IP if needed:
@@ -78,6 +93,8 @@ class AppServiceProvider extends ServiceProvider
                 'position_bn' => $cityBn,
                 'getCates' => Category::latest()->take(8)->get(),
                 'webSite_setting' => Website_Setting::latest()->first(),
+                'logo' => $logo,
+                'footer_details' => $footer_details,
             ]);
         });
 
@@ -113,6 +130,122 @@ class AppServiceProvider extends ServiceProvider
             }
             // For User device Detect End
 
+            // -------------------------
+            // ✅ Weather Section
+            // -------------------------
+
+            $city = "Dhaka"; // আপনি চাইলে visitor location থেকেও আনতে পারেন
+            $apiKey = env('OPENWEATHER_API_KEY');
+            $weather = null;
+
+            if ($apiKey) {
+                $weatherApiUrl = "https://api.openweathermap.org/data/2.5/weather";
+
+                $response = Http::get($weatherApiUrl, [
+                    'q'     => $city,
+                    'appid' => $apiKey,
+                    'units' => 'metric',
+                ]);
+
+                if ($response->successful()) {
+                    $weather = $response->json();
+                } else {
+                    // Debug এর জন্য error message রাখি
+                    $weather = [
+                        'error' => $response->json('message') ?? 'Weather data not available'
+                    ];
+                }
+            }
+
+            // -------------------------
+            // ✅ Weather Section
+            // -------------------------
+
+            // -------------------------
+            // Bandwidth Usage Data
+            // -------------------------
+
+            // ---------- BANDWIDTH: fetch & prepare chart series ----------
+            $bandwidths = BandwidthUsage::orderBy('id', 'desc')->get(); // all months, newest first
+            $latestBandwidth = $bandwidths->first(); // latest month (or null)
+            $totalBandwidthBytes = $bandwidths->sum('used_bytes'); // total across months
+
+            // Build per-month series for sparkline charts (MB units, two decimals)
+            $allChartsData = []; // [ id => [mbValues day1..dayN] ]
+
+            foreach ($bandwidths as $bw) {
+                $daily = json_decode($bw->daily_data, true) ?? [];
+
+                $series = [];
+
+                // Try to build a full-month series (filling missing days with 0)
+                try {
+                    $dt = Carbon::createFromFormat('F Y', $bw->month); // month string format expected
+                    $daysInMonth = $dt->daysInMonth;
+
+                    for ($d = 1; $d <= $daysInMonth; $d++) {
+                        $dateKey = $dt->copy()->day($d)->format('Y-m-d');
+                        $bytes = isset($daily[$dateKey]) ? (int)$daily[$dateKey] : 0;
+                        // convert bytes -> MB (for chart)
+                        $series[] = round($bytes / 1024 / 1024, 2);
+                    }
+                } catch (\Exception $e) {
+                    // Fallback: use whatever keys exist (sorted) — good for partial months or older format
+                    ksort($daily);
+                    foreach ($daily as $bytes) {
+                        $series[] = round((int)$bytes / 1024 / 1024, 2);
+                    }
+                }
+
+                $allChartsData[$bw->id] = $series;
+            }
+
+            // latest chart series (for dashboard single card)
+            $latestChartData = $latestBandwidth ? ($allChartsData[$latestBandwidth->id] ?? []) : [];
+
+            // -------------------------
+            // Bandwidth Usage Data
+            // -------------------------
+
+
+            // -------------------------
+            // Browser Stats
+            // -------------------------
+
+
+            $visitors = DB::table('visitors')->select('user_agent')->get();
+
+            $browserCounts = [];
+            foreach ($visitors as $visitor) {
+                $agent = new Agent();
+                $agent->setUserAgent($visitor->user_agent);
+                $browser = $agent->browser(); // যেমন Chrome, Firefox, Safari
+
+                if (!isset($browserCounts[$browser])) {
+                    $browserCounts[$browser] = 0;
+                }
+                $browserCounts[$browser]++;
+            }
+
+            $totalVisitors = array_sum($browserCounts);
+
+            $browserLogos = [
+                'Chrome' => ['logo' => 'chrome-logo.svg', 'color' => 'info'],
+                'Firefox' => ['logo' => 'firefox-logo.svg', 'color' => 'danger'],
+                'Safari' => ['logo' => 'safari-logo.svg', 'color' => 'warning'],
+                'Internet Explorer' => ['logo' => 'internet-logo.png', 'color' => 'success'],
+                'Opera' => ['logo' => 'opera-logo.svg', 'color' => 'primary'],
+                'Edge' => ['logo' => 'edge-logo.svg', 'color' => 'info'],
+                'Netscape' => ['logo' => 'netscape-logo.png', 'color' => 'danger'],
+            ];
+
+            // -------------------------
+            // Browser Stats
+            // -------------------------
+
+
+
+
             $ads = Ads::all();
             $headlines = breaking_news::all();
             $headlines_active = breaking_news::where('status', 1)->get();
@@ -138,7 +271,6 @@ class AppServiceProvider extends ServiceProvider
             $roles = Role::all();
             $permissions = Permission::all();
             $todayVisitors = Visitor::whereDate('visit_date', today())->count();
-            $totalVisitors = Visitor::count();
 
 
 
@@ -170,6 +302,16 @@ class AppServiceProvider extends ServiceProvider
                 'todayVisitors' => $todayVisitors,
                 'totalVisitors' => $totalVisitors,
                 'visitorData' => $visitorCounts,
+                'weather' => $weather,
+                'browserCounts' => $browserCounts,
+                'browserLogos' => $browserLogos,
+
+                // bandwidth
+                'bandwidths' => $bandwidths,
+                'latestBandwidth' => $latestBandwidth,
+                'totalBandwidthBytes' => $totalBandwidthBytes,
+                'latestChartData' => $latestChartData,   // array (MB)
+                'allChartsData' => $allChartsData,       // associative array id => series
             ]);
         });
 

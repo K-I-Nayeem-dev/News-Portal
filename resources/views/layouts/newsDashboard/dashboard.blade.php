@@ -105,51 +105,138 @@
             <!-- Row -->
             <div class="row">
 
-                <div class="row">
+                <div class="row g-4">
 
-                    {{-- <div class="col-lg-4 col-md-6 dashboard-card" data-title="Our Visitors">
-                        <div class="card shadow-sm" style="border-radius: 12px;">
-                            <div class="card-body">
-                                <h4 class="card-title">Our Visitors</h4>
-                                <p class="card-subtitle text-muted">Different Devices Used to Visit</p>
-                                <div id="our-visitors" style="min-height: 250px;"></div>
-                            </div>
-
-                            <!-- dynamic legend container -->
-                            <div class="card-body d-flex align-items-center justify-content-center border-top mt-1">
-                                <ul id="our-visitors-legend" class="list-inline mb-0 hstack justify-content-center"></ul>
-                            </div>
-                        </div>
-                    </div> --}}
-
+                    {{-- Visitor Card --}}
                     <div class="col-lg-4 col-md-6 dashboard-card" data-title="Our Visitors">
-                        <div class="card shadow-sm" style="border-radius: 12px;">
+                        <div class="card shadow-sm rounded-3">
                             <div class="card-body">
                                 <h4 class="card-title">Our Visitors</h4>
                                 <p class="card-subtitle text-muted">Different Devices Used to Visit</p>
                                 <div id="our-visitors" style="min-height: 250px;"></div>
                             </div>
-                            <div class="card-body d-flex align-items-center justify-content-center border-top mt-1">
-                                <ul class="list-inline mb-0 hstack justify-content-center">
-                                    <li class="list-inline-item px-2 me-0">
-                                        <div class="text-primary d-flex align-items-center gap-2 fs-3">
-                                            <iconify-icon icon="ri:circle-fill" class="fs-2"></iconify-icon>Mobile
-                                        </div>
+                            <div class="card-footer d-flex justify-content-center border-top">
+                                <ul class="list-inline mb-0 d-flex gap-3">
+                                    <li class="list-inline-item d-flex align-items-center gap-2 text-primary">
+                                        <iconify-icon icon="ri:circle-fill" class="fs-2"></iconify-icon> Mobile
                                     </li>
-                                    <li class="list-inline-item px-2 me-0">
-                                        <div class="text-purple d-flex align-items-center gap-2 fs-3">
-                                            <iconify-icon icon="ri:circle-fill" class="fs-2"></iconify-icon>Desktop
-                                        </div>
+                                    <li class="list-inline-item d-flex align-items-center gap-2 text-purple">
+                                        <iconify-icon icon="ri:circle-fill" class="fs-2"></iconify-icon> Desktop
                                     </li>
-                                    <li class="list-inline-item px-2 me-0">
-                                        <div class="text-secondary d-flex align-items-center gap-2 fs-3">
-                                            <iconify-icon icon="ri:circle-fill" class="fs-2"></iconify-icon>Tablet
-                                        </div>
+                                    <li class="list-inline-item d-flex align-items-center gap-2 text-secondary">
+                                        <iconify-icon icon="ri:circle-fill" class="fs-2"></iconify-icon> Tablet
                                     </li>
                                 </ul>
                             </div>
                         </div>
                     </div>
+
+                    {{-- Weather Card --}}
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card mb-3">
+                            <div class="card-body p-3">
+                                <div
+                                    class="d-flex justify-content-between align-items-center bg-primary-subtle rounded-3 px-3 py-2 mb-3">
+                                    <h4 class="mb-0">{{ $weather['name'] ?? 'Dhaka' }}</h4>
+                                    <p class="mb-0">{{ now()->format('l d F') }}</p>
+                                </div>
+
+                                @if (isset($weather['main']))
+                                    <div class="d-flex gap-4 align-items-center">
+                                        <div
+                                            class="bg-primary-subtle rounded-circle p-2 d-flex align-items-center justify-content-center">
+                                            @php
+                                                $iconCode = $weather['weather'][0]['icon'] ?? '01d';
+                                                $iconUrl = "https://openweathermap.org/img/wn/{$iconCode}.png";
+                                            @endphp
+                                            <img src="{{ $iconUrl }}" alt="Weather Icon" class="icon-center">
+                                        </div>
+                                        <div>
+                                            <h3 class="text-primary mb-1">{{ round($weather['main']['temp']) ?? '--' }}°C
+                                            </h3>
+                                            <p class="mb-0">{{ ucfirst($weather['weather'][0]['description'] ?? '') }}</p>
+                                        </div>
+                                        <div>
+                                            <h3 class="mb-1">{{ round($weather['main']['temp_min']) ?? '--' }}°C</h3>
+                                            <p class="mb-0">Tonight</p>
+                                        </div>
+                                    </div>
+                                @else
+                                    <p class="text-danger">{{ $weather['error'] ?? 'Weather data not available' }}</p>
+                                @endif
+                            </div>
+                        </div>
+
+                        {{-- Total Bandwidth --}}
+                        <a href="{{ route('bandwidth.index') }}" class="text-decoration-none">
+                            <div class="card overflow-hidden">
+                                <div class="card-body bg-purple">
+                                    <div class="hstack gap-6 mb-7">
+                                        <div
+                                            class="bg-black bg-opacity-10 round-48 rounded-circle d-flex align-items-center justify-content-center">
+                                            <iconify-icon icon="solar:server-square-linear"
+                                                class="fs-7 icon-center text-white"></iconify-icon>
+                                        </div>
+                                        <div>
+                                            <h4 class="card-title text-white">Bandwidth usage</h4>
+                                            <p class="card-subtitle text-white opacity-70">
+                                                {{ $latestBandwidth->month ?? now()->format('F Y') }}</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row align-items-center">
+                                        <div class="col-6">
+                                            <h2 class="mb-0 text-white text-nowrap">
+                                                {{ function_exists('formatBytes') ? formatBytes($latestBandwidth->used_bytes ?? 0) : number_format(($latestBandwidth->used_bytes ?? 0) / (1024 * 1024), 2) . ' MB' }}
+                                            </h2>
+                                        </div>
+
+                                        <div class="col-6">
+                                            <!-- dashboard sparkline -->
+                                            <div id="bandwidth-sparkline-latest" style="min-height:50px"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+
+
+                    </div>
+
+                    {{-- Browser Stats --}}
+                    <div class="col-lg-4 col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Browser Stats</h4>
+                                <table class="table table-borderless mt-3 mb-0">
+                                    <tbody>
+                                        @foreach ($browserCounts as $browser => $count)
+                                            @php
+                                                $logo = $browserLogos[$browser]['logo'] ?? 'default.png';
+                                                $color = $browserLogos[$browser]['color'] ?? 'secondary';
+                                                $percent =
+                                                    $totalVisitors > 0
+                                                        ? round(($count / $totalVisitors) * 100) . '%'
+                                                        : '0%';
+                                            @endphp
+                                            <tr>
+                                                <td class="ps-0 w35">
+                                                    <img src="{{ asset('dashboard_assets/images/browser/' . $logo) }}"
+                                                        class="img-fluid" alt="{{ $browser }}">
+                                                </td>
+                                                <td class="ps-0">{{ $browser }}</td>
+                                                <td class="ps-0 text-end">
+                                                    <span
+                                                        class="badge bg-{{ $color }}-subtle text-{{ $color }}">{{ $percent }}</span>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
 
                 </div>
 
@@ -765,6 +852,46 @@
 
         </div>
 
+        <!-- ApexCharts CDN (include once, e.g. in footer) -->
+        <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // latest chart data (MB)
+                var latest = {!! json_encode($latestChartData ?? []) !!};
+
+                var options = {
+                    chart: {
+                        type: 'line',
+                        height: 50,
+                        sparkline: {
+                            enabled: true
+                        }
+                    },
+                    series: [{
+                        data: latest
+                    }],
+                    stroke: {
+                        curve: 'smooth',
+                        width: 2
+                    },
+                    colors: ['#ffffff'],
+                    tooltip: {
+                        theme: 'dark',
+                        y: {
+                            formatter: function(val) {
+                                return val + ' MB';
+                            }
+                        }
+                    }
+                };
+
+                if (document.querySelector('#bandwidth-sparkline-latest')) {
+                    new ApexCharts(document.querySelector("#bandwidth-sparkline-latest"), options).render();
+                }
+            });
+        </script>
+
 
         <script>
             const visitorsData = @json($visitorData);
@@ -804,6 +931,35 @@
                 setTimeout(() => {
                     card.classList.remove('highlight-card');
                 }, 1200);
+            });
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Data for card 1
+                const options1 = {
+                    chart: {
+                        type: 'line',
+                        height: 50,
+                        sparkline: {
+                            enabled: true
+                        }
+                    },
+                    stroke: {
+                        curve: 'smooth',
+                        width: 2
+                    },
+                    series: [{
+                        name: 'Bandwidth',
+                        data: [40, 50, 45, 60, 50, 55, 50] // example data
+                    }],
+                    colors: ['#ffffff'],
+                    tooltip: {
+                        enabled: false
+                    }
+                };
+                const chart1 = new ApexCharts(document.querySelector("#bandwidth-usage-1"), options1);
+                chart1.render();
             });
         </script>
 

@@ -148,11 +148,6 @@ class HomeController extends Controller
 
         $divisions = Division::orderBy('division_en', 'ASC')->get();
 
-        // Footer Logo //
-        $logo = Website_Setting::value('logo');
-
-        // footer details //
-        $footer_details = Website_Setting::latest()->first();
 
         // For Category News Counts
         $categoriesCount = Category::withCount('news')->get();
@@ -196,8 +191,7 @@ class HomeController extends Controller
             'fnbt' => $fnbt,
             'fn3' => $fn3,
             'divisions' => $divisions,
-            'logo' => $logo,
-            'footer_details' => $footer_details,
+
         ]);
     }
 

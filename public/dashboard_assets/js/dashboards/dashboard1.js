@@ -163,31 +163,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // 1️⃣ Resolve CSS variables first
 function getCssVariableColor(varName) {
-    // getComputedStyle returns the actual color
     return getComputedStyle(document.documentElement)
         .getPropertyValue(varName)
         .trim();
 }
 
-// Build the colors array
-const colors = [
-    getCssVariableColor('--bs-primary'),    // Mobile
-    getCssVariableColor('--bs-secondary'),  // Tablet
-    '#eceff180',                             // Other
-    getCssVariableColor('--bs-purple'),     // Desktop
-];
+const deviceColors = {
+    "Mobile": getCssVariableColor('--bs-primary'),
+    "Tablet": getCssVariableColor('--bs-secondary'),
+    "Desktop": getCssVariableColor('--bs-purple'),
+    "Other": "#eceff1"
+};
 
-
-// 2️⃣ Prepare series and labels dynamically
-const labels = Object.keys(visitorsData); // from your backend
+const labels = Object.keys(visitorsData);   // backend থেকে আসা
 const series = Object.values(visitorsData);
 
-// 3️⃣ ApexCharts options
+// labels অনুযায়ী সঠিক রঙ বসানো
+const colors = labels.map(label => deviceColors[label] || "#ccc");
+
 var option_Our_Visitors = {
-    series: series,     // e.g., [50, 40, 10, 5]
-    labels: labels,     // e.g., ["Mobile", "Tablet", "Other", "Desktop"]
+    series: series,
+    labels: labels,
     chart: { type: "donut", height: 250, fontFamily: "inherit" },
-    colors: colors,      // ✅ use the resolved colors here
+    colors: colors,
     dataLabels: { enabled: false },
     stroke: { width: 0 },
     plotOptions: {
@@ -207,6 +205,7 @@ var option_Our_Visitors = {
     tooltip: { show: true, fillSeriesColor: false },
     legend: { show: false },
 };
+
 
 
 

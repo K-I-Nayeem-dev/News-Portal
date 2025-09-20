@@ -159,6 +159,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="main--sidebar col-md-4 col-sm-5 ptop--30 pbottom--30" data-sticky-content="true">
                 <div class="sticky-content-inner"
                     style="padding-top: 0px; padding-bottom: 1px; position: static; transform: none;">
@@ -172,6 +173,7 @@
                     </div>
                 </div>
             </div>
+            
         </div>
         {{-- fisrt Section 9 News with widget  End --}}
 
@@ -185,22 +187,16 @@
                                 <div>
                                     <div class="post--img">
                                         <a href="news-single-v1.html" class="thumb">
-                                            <a href="news-single-v1.html" class="thumb">
-                                                @php
-                                                    $isPlaceholder = Str::contains(
-                                                        $row->thumbnail,
-                                                        'via.placeholder.com',
-                                                    );
-                                                    $imageToShow =
-                                                        !$isPlaceholder && !empty($row->thumbnail)
-                                                            ? asset($row->thumbnail)
-                                                            : asset('uploads/default_images/deafult_thumbnail.jpg');
-                                                @endphp
+                                            @php
+                                                $isPlaceholder = Str::contains($row->thumbnail, 'via.placeholder.com');
+                                                $imageToShow =
+                                                    !$isPlaceholder && !empty($row->thumbnail)
+                                                        ? asset($row->thumbnail)
+                                                        : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                            @endphp
 
-                                                <img src="{{ $imageToShow }}"
-                                                    alt="{{ $row->title_en }}"class="img-fluid">
+                                            <img src="{{ $imageToShow }}" alt="{{ $row->title_en }}"class="img-fluid">
 
-                                            </a>
                                         </a>
                                         {{-- <a href="#" class="cat">
                                             @if (session()->get('lang') == 'english')

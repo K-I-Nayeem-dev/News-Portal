@@ -52,6 +52,18 @@ class AdsController extends Controller implements HasMiddleware
             'image' => 'required|image|mimes:jpg,jpeg,png,gif|max:1024',
         ]);
 
+        // Prepare checkbox fields
+        $positionFields = [
+            'front_top_banner',
+            'front_bottom',
+            'news_left_banner',
+            'news_3_sidebar',
+            'news_bottom',
+            'category_sidebar',
+            'subcategory_sidebar'
+        ];
+
+        // Prepare data array
         $data = [
             'url' => $request->url,
             'type' => $request->type,
@@ -59,7 +71,12 @@ class AdsController extends Controller implements HasMiddleware
             'updated_at' => null
         ];
 
+        // Set checkbox values
+        foreach ($positionFields as $field) {
+            $data[$field] = $request->has($field) ? 1 : 0;
+        }
 
+        // Handle image upload and resize
         if ($request->hasFile('image')) {
             $imageManager = new ImageManager(new Driver());
 
@@ -77,20 +94,24 @@ class AdsController extends Controller implements HasMiddleware
                 $height = 90;
             }
 
-            // Resize
+            // Resize and save image
             $fullImage = $imageManager->read($request->image)->resize($width, $height);
-
-            // Save image
             $fullImage->save(public_path('uploads/ads_photos/' . $news_name), quality: 70);
 
             $data['image'] = 'uploads/ads_photos/' . $news_name;
         }
 
-
+        // Insert into DB
         Ads::create($data);
 
-        return back()->with('ads_photo_uploaded', 'Ads Photo Uploaded Successfully');
+        flash()
+            ->addSuccess('Ads Photo Uploaded Successfully', [
+                'position' => 'bottom-center', // 👈 correct way
+            ]);
+
+        return back();
     }
+
 
     /**
      * Display the specified resource.
@@ -124,21 +145,29 @@ class AdsController extends Controller implements HasMiddleware
 
         $ads = Ads::findOrFail($id);
 
+        // Prepare data array
         $data = [
             'url'        => $request->url,
             'type'       => $request->type,
-            'updated_at' => now()
+            'updated_at' => now(),
+
+            // Checkbox positions: if not checked, set 0
+            'front_top_banner'    => $request->has('front_top_banner') ? 1 : 0,
+            'front_bottom'        => $request->has('front_bottom') ? 1 : 0,
+            'news_left_banner'    => $request->has('news_left_banner') ? 1 : 0,
+            'news_3_sidebar'      => $request->has('news_3_sidebar') ? 1 : 0,
+            'news_bottom'         => $request->has('news_bottom') ? 1 : 0,
+            'category_sidebar'    => $request->has('category_sidebar') ? 1 : 0,
+            'subcategory_sidebar' => $request->has('subcategory_sidebar') ? 1 : 0,
         ];
 
         $imageManager = new ImageManager(new Driver());
 
         // Determine dimensions based on type
         if ($request->type == 1) {
-            // Square
             $width = 300;
             $height = 250;
         } else {
-            // Horizontal
             $width = 728;
             $height = 90;
         }
@@ -163,10 +192,17 @@ class AdsController extends Controller implements HasMiddleware
             $existingImage->save(public_path($ads->image), quality: 70);
         }
 
+        // Update the ad
         $ads->update($data);
 
-        return back()->with('ads_updated', 'Ad Updated Successfully');
+        flash()
+            ->addSuccess('Ad Updated Successfully', [
+                'position' => 'bottom-center', // 👈 correct way
+            ]);
+
+        return back();
     }
+
 
 
 

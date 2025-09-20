@@ -70,13 +70,7 @@
                                 <img src="{{ $imageToShow }}" alt="{{ $scnbt->title_en }}"class="img-fluid">
 
                             </a>
-                            {{-- <a href="#" class="cat">
-                                @if (session()->get('lang') == 'english')
-                                    {{ $cnbt->newsCategory->category_en }}
-                                @else
-                                    {{ $cnbt->newsCategory->category_bn }}
-                                @endif
-                            </a> --}}
+
                             <div class="post--info">
                                 <div class="title">
                                     <h2 class="h4">
@@ -101,21 +95,16 @@
                                 <div>
                                     <div class="post--img">
                                         <a href="news-single-v1.html" class="thumb">
-                                            <a href="news-single-v1.html" class="thumb">
-                                                @php
-                                                    $isPlaceholder = Str::contains(
-                                                        $row->thumbnail,
-                                                        'via.placeholder.com',
-                                                    );
-                                                    $imageToShow =
-                                                        !$isPlaceholder && !empty($row->thumbnail)
-                                                            ? asset($row->thumbnail)
-                                                            : asset('uploads/default_images/deafult_thumbnail.jpg');
-                                                @endphp
+                                            @php
+                                                $isPlaceholder = Str::contains($row->thumbnail, 'via.placeholder.com');
+                                                $imageToShow =
+                                                    !$isPlaceholder && !empty($row->thumbnail)
+                                                        ? asset($row->thumbnail)
+                                                        : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                            @endphp
 
-                                                <img src="{{ $imageToShow }}" alt="{{ $row->title_en }}"class="img-fluid">
+                                            <img src="{{ $imageToShow }}" alt="{{ $row->title_en }}"class="img-fluid">
 
-                                            </a>
                                         </a>
                                         {{-- <a href="#" class="cat">
                                             @if (session()->get('lang') == 'english')
@@ -155,6 +144,12 @@
                                     alt=""data-rjs="2">
                             </a>
                         </div>
+                        {{-- <div class="ad--widget">
+                            <a href="#">
+                                <img src="{{ asset('frontend_assets/img/ads-img/ad-300x250-1.jpg') }}"
+                                    alt=""data-rjs="2">
+                            </a>
+                        </div> --}}
                     </div>
                 </div>
             </div>

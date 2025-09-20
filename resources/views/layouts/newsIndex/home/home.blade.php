@@ -371,7 +371,7 @@
                                 {{-- <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}" class="thumb"><img src="{{ asset('uploads/news_photos/'. $fsbt->news_photo) }}"alt="{{ $fsbt->title }}" /></a> --}}
                                 <a href="{{ route('showFull.news', array_filter(['category' => $categorySlug, 'subcategory' => $subcategorySlug, 'id' => $fsbt->id])) }}"
                                     class="thumb"><img src="{{ $fsbt->thumbnail }}"alt="{{ $fsbt->title }}" /></a>
-                                <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                <a href="{{ route('showFull.news', ['category' => $fsbt->newsCategory->slug, 'subcategory' => $fsbt->newsSubcategory->slug, 'id' => $fsbt->id]) }}"
                                     class="cat">
                                     @if (session()->get('lang') == 'english')
                                         {{ $fsbt->newsCategory->category_en }}
@@ -382,7 +382,7 @@
                                 <div class="post--info">
                                     <div class="title">
                                         <h2 class="h4">
-                                            <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                            <a href="{{ route('showFull.news', ['category' => $fsbt->newsCategory->slug, 'subcategory' => $fsbt->newsSubcategory->slug, 'id' => $fsbt->id]) }}"
                                                 class="btn-link">
                                                 @if (session()->get('lang') == 'english')
                                                     <h2>{{ $fsbt->title_en }}</h2>

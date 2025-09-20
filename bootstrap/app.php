@@ -22,6 +22,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'track.visitors' => \App\Http\Middleware\TrackVisitors::class,
         ]);
     })
+    ->withMiddleware(function ($middleware) {
+        $middleware->alias([
+            'track.bandwidth' =>  \App\Http\Middleware\TrackBandwidth::class,
+        ]);
+    })
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
