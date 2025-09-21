@@ -8,6 +8,7 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Intervention\Image\Drivers\Imagick\Driver;
 use Intervention\Image\ImageManager;
 use Illuminate\Routing\Controllers\Middleware;
+use App\Models\AdClick;
 
 class AdsController extends Controller implements HasMiddleware
 {
@@ -28,8 +29,19 @@ class AdsController extends Controller implements HasMiddleware
     public function index()
     {
         $ads = Ads::latest()->paginate(30);
+        $positions = [
+            'front_top_banner'    => 'Front Top Banner',
+            'front_bottom'        => 'Front Bottom',
+            'news_left_banner'    => 'News Left Banner',
+            'news_3_sidebar'      => 'News 3 Sidebar',
+            'news_bottom'         => 'News Bottom',
+            'news_details_middle'         => 'News Middle',
+            'category_sidebar'    => 'Category Sidebar',
+            'subcategory_sidebar' => 'Subcategory Sidebar',
+        ];
         return view('layouts.newsDashboard.ads.index', [
-            'ads' => $ads
+            'ads' => $ads,
+            'positions' => $positions
         ]);
     }
 
@@ -59,6 +71,7 @@ class AdsController extends Controller implements HasMiddleware
             'news_left_banner',
             'news_3_sidebar',
             'news_bottom',
+            'news_details_middle',
             'category_sidebar',
             'subcategory_sidebar'
         ];
@@ -96,10 +109,11 @@ class AdsController extends Controller implements HasMiddleware
 
             // Resize and save image
             $fullImage = $imageManager->read($request->image)->resize($width, $height);
-            $fullImage->save(public_path('uploads/ads_photos/' . $news_name), quality: 70);
+            $fullImage->save(public_path('uploads/ads_photos/' . $news_name), quality: 95);
 
             $data['image'] = 'uploads/ads_photos/' . $news_name;
         }
+
 
         // Insert into DB
         Ads::create($data);
@@ -157,6 +171,7 @@ class AdsController extends Controller implements HasMiddleware
             'news_left_banner'    => $request->has('news_left_banner') ? 1 : 0,
             'news_3_sidebar'      => $request->has('news_3_sidebar') ? 1 : 0,
             'news_bottom'         => $request->has('news_bottom') ? 1 : 0,
+            'news_details_middle'         => $request->has('news_details_middle') ? 1 : 0,
             'category_sidebar'    => $request->has('category_sidebar') ? 1 : 0,
             'subcategory_sidebar' => $request->has('subcategory_sidebar') ? 1 : 0,
         ];
@@ -183,20 +198,20 @@ class AdsController extends Controller implements HasMiddleware
 
             // Resize & save new image
             $fullImage = $imageManager->read($request->image)->resize($width, $height);
-            $fullImage->save(public_path('uploads/ads_photos/' . $news_name), quality: 70);
+            $fullImage->save(public_path('uploads/ads_photos/' . $news_name), quality: 95);
 
             $data['image'] = 'uploads/ads_photos/' . $news_name;
         } elseif ($ads->type != $request->type && !empty($ads->image) && file_exists(public_path($ads->image))) {
             // Type changed but no new image → reprocess the old image
             $existingImage = $imageManager->read(public_path($ads->image))->resize($width, $height);
-            $existingImage->save(public_path($ads->image), quality: 70);
+            $existingImage->save(public_path($ads->image), quality: 95);
         }
 
         // Update the ad
         $ads->update($data);
 
         flash()
-            ->addSuccess('Ad Updated Successfully', [
+            ->addSuccess('Ads Updated Successfully', [
                 'position' => 'bottom-center', // 👈 correct way
             ]);
 
@@ -221,6 +236,40 @@ class AdsController extends Controller implements HasMiddleware
         // Delete record from DB
         $ad->delete();
 
-        return back()->with('ad_delete', 'Ad Photo Deleted');
+        flash()
+            ->addSuccess('Ads Photo Deleted', [
+                'position' => 'bottom-center', // 👈 correct way
+            ]);
+
+        return back();
+    }
+
+    public function trackClick($id)
+    {
+        $ad = Ads::findOrFail($id);
+
+        // Log the click
+        AdClick::create([
+            'ad_id' => $ad->id,
+            'ip' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+        ]);
+
+        // Redirect to ad URL
+        return redirect($ad->url ?? '#');
+    }
+
+    public function performance()
+    {
+        // Get all ads with click counts
+        $ads = Ads::withCount('clicks')->get();
+
+        return view('layouts.newsDashboard.ads.show', compact('ads'));
+    }
+
+    public function viewClicks(Ads $ad)
+    {
+        $clicks = $ad->clicks()->latest()->get();
+        return view('layouts.newsDashboard.ads.view_clicks', compact('ad', 'clicks'));
     }
 }

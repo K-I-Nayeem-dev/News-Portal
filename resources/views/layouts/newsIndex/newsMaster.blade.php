@@ -195,11 +195,13 @@
                                 </h1>
                             </div>
                             <div class="col-lg-8 col-md-6 col-sm-12">
-                                <a href="#">
-                                    <img src="{{ asset('frontend_assets') }}/img/ads-img/ad-728x90-01.jpg"
-                                        alt="Advertisement" class="img-fluid" />
-                                    <!-- Added img-fluid for better responsiveness -->
+                                <a href="{{ route('ads.trackClick', $ftp->id) }}" target="_blank">
+                                    <img src="{{ $ftp && file_exists(public_path($ftp->image))
+                                        ? asset($ftp->image)
+                                        : asset('frontend_assets/img/ads-img/ad-728x90-01.jpg') }}"
+                                        alt="{{ $ftp->title_en ?? 'Advertisement' }}" class="img-fluid" />
                                 </a>
+
                             </div>
                         </div>
                         <div class="col-lg-3 col-3">

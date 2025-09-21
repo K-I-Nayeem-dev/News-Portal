@@ -31,13 +31,19 @@
             <!-- Row -->
             <div class="row">
                 <div class="mb-3">
-                    <div class="d-flex justify-content-end">
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#photosGallery">
-                            Add Photo
-                        </button>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="text-muted">Total Ads : {{ $ads->count() }}</h5>
+                        </div>
+                        @hasanyrole('superadmin|admin|advertiser|moderator')
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#photosGallery">
+                                Add Photo
+                            </button>
+                        @endhasrole
                     </div>
+
 
                     @if (session('photo_delete'))
                         <div class=" alert alert-danger mt-3 text-center">{{ session('photo_delete') }}</div>
@@ -49,13 +55,11 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
 
-                                @hasanyrole('superadmin|admin|advertiser|moderator')
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Add Photo To Ads</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                @endhasrole
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Add Photo To Ads</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
                                 <div class="modal-body">
                                     <form method="POST" action="{{ route('ads.store') }}" enctype="multipart/form-data">
                                         @csrf
@@ -135,6 +139,16 @@
                                                     <div class="col-md-6">
                                                         <div class="form-check mb-2">
                                                             <input class="form-check-input" type="checkbox"
+                                                                name="news_details_middle" id="news_details_middle" value="1">
+                                                            <label class="form-check-label" for="news_details_middle">
+                                                                News Middle <span class="fs-1">(728x90)</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input" type="checkbox"
                                                                 name="news_bottom" id="news_bottom" value="1">
                                                             <label class="form-check-label" for="news_bottom">
                                                                 News Bottom <span class="fs-1">(728x90)</span>
@@ -199,9 +213,30 @@
                                 <a data-fancybox="gallery" href="{{ asset($row->image) }}">
                                     <img src="{{ asset($row->image) }}" class="card-img-top" alt="{{ $row->title_en }}">
                                 </a>
-                                <div class="card-body">
-                                    <p class="card-text">{{ $row->title_en }}</p>
+                                <div class="card-body px-3">
                                     <div class="row">
+                                        @php
+                                            $active = [];
+                                            foreach ($positions as $col => $label) {
+                                                if ((int) $row->$col === 1) {
+                                                    $active[] = $label;
+                                                }
+                                            }
+                                        @endphp
+
+                                        <h6 class="text-muted">Ads Positions :</h6>
+                                        <ul class="mb-2">
+                                            @forelse ($active as $pos)
+                                                <li class="mb-2">-{{ $pos }}</li>
+                                            @empty
+                                                <li>None</li>
+                                            @endforelse
+                                        </ul>
+                                        <div class="mb-3">
+                                            <code> (Ad #{{ $row->id }})</code>
+                                        </div>
+
+
                                         <div class="d-flex">
                                             <!-- Edit Button -->
                                             <div class="w-50 pe-1">
@@ -237,8 +272,8 @@
                     <div class="d-flex justify-content-start">
                         {{ $ads->links('pagination::bootstrap-5') }}
                     </div>
-
                 </div>
+
                 @if (session('ads_photo_uploaded'))
                     <div class=" alert alert-success mt-3 ">{{ session('ads_photo_uploaded') }}</div>
                 @endif

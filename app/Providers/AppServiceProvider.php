@@ -30,6 +30,7 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Jenssegers\Agent\Agent;
 use Carbon\Carbon;
+use App\Models\AdClick;
 use Illuminate\Support\Facades\Http;
 
 class AppServiceProvider extends ServiceProvider
@@ -84,6 +85,9 @@ class AppServiceProvider extends ServiceProvider
 
             $cityBn = $cityBnMap[$cityEn] ?? $cityEn; // fallback to English if not found
 
+            // Top Header Ads Photo
+            $ftp = Ads::where('front_top_banner', 1)->first();
+
             $view->with([
                 'meta' => Seo::first(),
                 'social' => Social::first(),
@@ -95,6 +99,7 @@ class AppServiceProvider extends ServiceProvider
                 'webSite_setting' => Website_Setting::latest()->first(),
                 'logo' => $logo,
                 'footer_details' => $footer_details,
+                'ftp' => $ftp,
             ]);
         });
 
@@ -271,6 +276,7 @@ class AppServiceProvider extends ServiceProvider
             $roles = Role::all();
             $permissions = Permission::all();
             $todayVisitors = Visitor::whereDate('visit_date', today())->count();
+            $totalClicks = AdClick::count(); // total clicks
 
 
 
@@ -306,6 +312,8 @@ class AppServiceProvider extends ServiceProvider
                 'browserCounts' => $browserCounts,
                 'browserLogos' => $browserLogos,
 
+                // Adclick
+                'totalClicks' => $totalClicks,
                 // bandwidth
                 'bandwidths' => $bandwidths,
                 'latestBandwidth' => $latestBandwidth,

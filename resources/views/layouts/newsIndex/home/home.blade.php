@@ -508,10 +508,11 @@
 
                         <div class="col-md-12 ptop--30 pbottom--30">
                             <div class="ad--space">
-                                <a
-                                    href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}">
-                                    <img src="{{ asset('frontend_assets') }}/img/ads-img/ad-728x90-01.jpg" alt=""
-                                        class="center-block" />
+                                <a href="{{ route('ads.trackClick', $fbp->id) }}" target="_blank">
+                                    <img src="{{ $fbp && file_exists(public_path($fbp->image))
+                                        ? asset($fbp->image)
+                                        : asset('frontend_assets/img/ads-img/ad-728x90-01.jpg') }}"
+                                        alt="{{ $fbp->title_en ?? 'Advertisement' }}" class="img-fluid" />
                                 </a>
                             </div>
                         </div>
@@ -587,7 +588,8 @@
                                                         <div class="post--info">
                                                             <ul class="nav meta" style="margin-top: 5px;">
                                                                 <li>
-                                                                    <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}">
+                                                                    <a
+                                                                        href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}">
                                                                         {{-- {{ $row->newsUser->name }} --}}
                                                                         {{ $row->newsUser->name ?? 'No User' }}
                                                                     </a>
@@ -1130,7 +1132,9 @@
                     <select class="form-select select2" name="division_id" id="division_id" autocomplete="off">
                         <option value="">{{ session()->get('lang') == 'english' ? 'Division' : 'বিভাগ' }}</option>
                         @foreach ($divisions as $division)
-                            <option value="{{ $division->id }}">{{ session()->get('lang') == 'english' ? $division->division_en : $division->division_bn }}</option>
+                            <option value="{{ $division->id }}">
+                                {{ session()->get('lang') == 'english' ? $division->division_en : $division->division_bn }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
@@ -2911,7 +2915,7 @@
     </script>
 
     <script>
-          // Always set CSRF token for AJAX
+        // Always set CSRF token for AJAX
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

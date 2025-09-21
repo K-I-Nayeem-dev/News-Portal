@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Ads extends Model
+class Tags extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
 
-    public function clicks()
+    public function news()
     {
-        return $this->hasMany(AdClick::class, 'ad_id'); // link to ad_clicks table
+        return $this->belongsToMany(News::class, 'news_tag');
     }
 }

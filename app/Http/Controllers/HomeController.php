@@ -18,6 +18,7 @@ use App\Models\PhotoGallery;
 use App\Models\Website_Setting;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Response;
+use App\Models\Ads;
 
 class HomeController extends Controller
 {
@@ -148,6 +149,8 @@ class HomeController extends Controller
 
         $divisions = Division::orderBy('division_en', 'ASC')->get();
 
+        $fbp = Ads::where('front_bottom', 1)->first();
+
 
         // For Category News Counts
         $categoriesCount = Category::withCount('news')->get();
@@ -191,6 +194,7 @@ class HomeController extends Controller
             'fnbt' => $fnbt,
             'fn3' => $fn3,
             'divisions' => $divisions,
+            'fbp' => $fbp,
 
         ]);
     }
@@ -214,6 +218,10 @@ class HomeController extends Controller
             return Response::json(['view' => $view, 'nextPageUrl' => $acn->nextPageUrl()]);
         }
 
+        $cs = Ads::where('category_sidebar', 1)->first();
+
+
+
 
         // Retrun view with compact variable
         return view('layouts.newsIndex.category_news.index', [
@@ -223,6 +231,7 @@ class HomeController extends Controller
             'cn2' => $cn2,
             'cn4' => $cn4,
             'acn' => $acn,
+            'cs' => $cs,
         ]);
     }
 
@@ -268,12 +277,30 @@ class HomeController extends Controller
         // If news Have more Photos then show
         $randomNews = News::latest()->take(100)->get()->random(12);
 
+        $nlb = Ads::where('news_left_banner', 1)->first();
+        $n3s_1 = Ads::where('news_3_sidebar', 1)->first();
+        $n3s_2 = Ads::where('news_3_sidebar', 1)->skip(1)->first();
+        $n3s_3 = Ads::where('news_3_sidebar', 1)->skip(2)->first();
+        $fbp = Ads::where('front_bottom', 1)->first();
+        $nb = Ads::where('news_bottom', 1)->first();
+        $nm = Ads::where('news_details_middle', 1)->first();
+
+
+
+
         return view('layouts.newsIndex.home.show', [
             'news' => $news,
             'tags' => $tags,
             'relatedNews' => $relatedNews,
             'morePhotos' => $morePhotos,
             'randomNews' => $randomNews,
+            'nlb' => $nlb,
+            'n3s_1' => $n3s_1,
+            'n3s_2' => $n3s_2,
+            'n3s_3' => $n3s_3,
+            'fbp' => $fbp,
+            'nb' => $nb,
+            'nm' => $nm,
         ]);
     }
 
@@ -299,6 +326,9 @@ class HomeController extends Controller
             return response()->json(['view' => $view, 'nextPageUrl' => $ascn->nextPageUrl()]);
         }
 
+        $scs = Ads::where('subcategory_sidebar', 1)->first();
+
+
         return view('layouts.newsIndex.subcategory_news.index', [
             'category' => $category,
             'subCategory' => $subCategory,
@@ -306,6 +336,7 @@ class HomeController extends Controller
             'scn2' => $scn2,
             'scn4' => $scn4,
             'ascn' => $ascn,
+            'scs' => $scs,
 
         ]);
     }

@@ -433,7 +433,7 @@
                 </div>
 
                 <!-- Total Ads Count -->
-                <div class="col-lg-4 col-md-6 dashboard-card" data-title="Ads">
+                <div class="col-lg-6 col-md-6 dashboard-card" data-title="Ads">
                     <a href="{{ route('ads.index') }}" style="text-decoration: none;">
                         <div class="card" style="border-radius:12px; padding:20px; background-color:#fff;">
                             <div class="d-flex align-items-center gap-4">
@@ -462,8 +462,38 @@
                     </a>
                 </div>
 
+                <div class="col-lg-6 col-md-6 dashboard-card" data-title="Ads">
+                    <a href="{{ route('ads.performance') }}" style="text-decoration: none;">
+                        <div class="card" style="border-radius:12px; padding:20px; background-color:#fff;">
+                            <div class="d-flex align-items-center gap-4">
+
+                                <!-- Icon Circle -->
+                                <div class="d-flex align-items-center justify-content-center rounded-circle text-white bg-primary"
+                                    style="width:50px; height:50px; font-size:22px;">
+                                    <i class="fa-solid fa-computer-mouse"></i>
+                                </div>
+
+                                <!-- Text & Numbers -->
+                                <div>
+                                    <span class="text-muted" style="font-size:14px; letter-spacing:0.5px;">Total Ads
+                                        Click</span>
+
+                                    <div class="d-flex gap-3 align-items-baseline" style="margin-top:5px;">
+                                        <!-- Total Headlines -->
+                                        <h3 style="margin:0; font-size:32px; font-weight:800; color:#17a2b8;">
+                                            {{ $totalClicks }}
+                                        </h3>
+                                        <span class="text-muted" style="font-size:14px;">Total</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
                 {{-- Total Headline Count --}}
-                <div class="col-lg-4 col-md-6 dashboard-card" data-title="Headlines">
+                <div class="col-lg-6 col-md-6 dashboard-card" data-title="Headlines">
                     <a href="{{ route('breaking_news.index') }}" style="text-decoration: none;">
                         <div class="card" style="border-radius:12px; padding:20px; background-color:#fff;">
                             <div class="d-flex align-items-center gap-4">
@@ -500,7 +530,7 @@
                 </div>
 
                 {{-- Total News Count --}}
-                <div class="col-lg-4 col-md-6 dashboard-card" data-title="News">
+                <div class="col-lg-6 col-md-6 dashboard-card" data-title="News">
                     <a href="{{ route('dashboard_news.index') }}" style="text-decoration: none;">
                         <div class="card" style="border-radius:12px; padding:20px; background-color:#fff;">
                             <div class="d-flex align-items-center gap-4">

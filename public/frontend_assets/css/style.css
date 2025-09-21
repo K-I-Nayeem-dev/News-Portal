@@ -1445,6 +1445,7 @@ body.boxed > .wrapper {
     padding: 30px 30px 15px;
     background-color: #f8f8f8;
     text-align: center;
+    border-radius: 5px;
 }
 .ad--widget > .row {
     margin: -10px -20px;

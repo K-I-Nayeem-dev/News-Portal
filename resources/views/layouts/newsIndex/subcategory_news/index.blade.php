@@ -139,9 +139,11 @@
                     style="padding-top: 0px; padding-bottom: 1px; position: static; transform: none;">
                     <div class="widget">
                         <div class="ad--widget">
-                            <a href="#">
-                                <img src="{{ asset('frontend_assets/img/ads-img/ad-300x250-1.jpg') }}"
-                                    alt=""data-rjs="2">
+                            <a href="{{ route('ads.trackClick', $scs->id) }}" target="_blank">
+                                <img src="{{ $scs && file_exists(public_path($scs->image))
+                                    ? asset($scs->image)
+                                    : asset('frontend_assets/img/ads-img/ad-300x250-1.jpg') }}"
+                                    alt="{{ $scs->title_en ?? 'Advertisement' }}" data-rjs="2" class="img-fluid" />
                             </a>
                         </div>
                         {{-- <div class="ad--widget">

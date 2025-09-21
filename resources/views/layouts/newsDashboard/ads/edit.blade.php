@@ -120,6 +120,17 @@
 
                                             <div class="col-md-6">
                                                 <div class="form-check mb-2">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        name="news_details_middle" id="news_details_middle" value="1"
+                                                        {{ old('news_details_middle', $ad->news_details_middle) ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="news_details_middle">
+                                                        News Middle <span class="fs-1">(728x90)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-check mb-2">
                                                     <input class="form-check-input" type="checkbox" name="news_bottom"
                                                         id="news_bottom" value="1"
                                                         {{ old('news_bottom', $ad->news_bottom) ? 'checked' : '' }}>

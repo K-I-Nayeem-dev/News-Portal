@@ -164,16 +164,21 @@
                 <div class="sticky-content-inner"
                     style="padding-top: 0px; padding-bottom: 1px; position: static; transform: none;">
                     <div class="widget">
-                        <div class="ad--widget">
-                            <a href="#">
-                                <img src="{{ asset('frontend_assets/img/ads-img/ad-300x250-1.jpg') }}"
-                                    alt=""data-rjs="2">
-                            </a>
-                        </div>
+                        <a href="{{ route('ads.trackClick', $cs->id) }}" target="_blank">
+                            <div class="ad--widget">
+                                <img src="{{ $cs && file_exists(public_path($cs->image))
+                                    ? asset($cs->image)
+                                    : asset('frontend_assets/img/ads-img/ad-300x250-1.jpg') }}"
+                                    alt="{{ $cs->title_en ?? 'Advertisement' }}" data-rjs="2" class="img-fluid" />
+                            </div>
+                        </a>
+
+
+
                     </div>
                 </div>
             </div>
-            
+
         </div>
         {{-- fisrt Section 9 News with widget  End --}}
 

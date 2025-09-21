@@ -144,9 +144,11 @@
                                 @endif
                             </div>
                             <div class="ad--space pd--20-0-40">
-                                <a href="#">
-                                    <img src="{{ asset('frontend_assets/img/ads-img/ad-728x90-02.jpg') }}" alt=""
-                                        class="center-block" />
+                                <a href="{{ route('ads.trackClick', $nm->id) }}" target="_blank">
+                                    <img src="{{ $nm && file_exists(public_path($nm->image))
+                                        ? asset($nm->image)
+                                        : asset('frontend_assets/img/ads-img/ad-728x90-01.jpg') }}"
+                                        alt="{{ $nm->title_en ?? 'Advertisement' }}" class="img-fluid" />
                                 </a>
                             </div>
 
@@ -172,9 +174,14 @@
                     <div class="sticky-content-inner"
                         style="padding-top: 0px; padding-bottom: 1px; position: static; transform: none;">
                         <div class="widget">
-                            <div class="ad--widget"> <a href="#"> <img
-                                        src="{{ asset('frontend_assets/img/ads-img/ad-300x250-1.jpg') }}" alt=""
-                                        data-rjs="2"> </a> </div>
+                            <div class="ad--widget">
+                                <a href="{{ route('ads.trackClick', $nlb->id) }}" target="_blank">
+                                    <img src="{{ $nlb && file_exists(public_path($nlb->image))
+                                        ? asset($nlb->image)
+                                        : asset('frontend_assets/img/ads-img/ad-300x250-1.jpg') }}"
+                                        alt="{{ $nlb->title_en ?? 'Advertisement' }}" data-rjs="2" class="img-fluid" />
+                                </a>
+                            </div>
                         </div>
                         <div>
                             <div style="margin-top: 30px;">
@@ -220,7 +227,8 @@
                             </div>
                             <div class="resize-sensor-shrink"
                                 style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; overflow: hidden; z-index: -1; visibility: hidden;">
-                                <div style="position: absolute; left: 0; top: 0; transition: 0s; width: 200%; height: 200%">
+                                <div
+                                    style="position: absolute; left: 0; top: 0; transition: 0s; width: 200%; height: 200%">
                                 </div>
                             </div>
                         </div>
@@ -283,9 +291,11 @@
 
                             <div class="col-md-12 ptop--30 pbottom--30">
                                 <div class="ad--space">
-                                    <a href="#">
-                                        <img src="{{ asset('frontend_assets') }}/img/ads-img/ad-728x90-01.jpg"
-                                            alt="" class="center-block" />
+                                    <a href="{{ route('ads.trackClick', $nb->id) }}" target="_blank">
+                                        <img src="{{ $nb && file_exists(public_path($nb->image))
+                                            ? asset($nb->image)
+                                            : asset('frontend_assets/img/ads-img/ad-728x90-01.jpg') }}"
+                                            alt="{{ $nb->title_en ?? 'Advertisement' }}" class="img-fluid" />
                                     </a>
                                 </div>
                             </div>
@@ -298,21 +308,30 @@
                         style="padding-top: 0px; padding-bottom: 1px; position: static; transform: none;">
                         <div class="widget">
                             <div class="ad--widget">
-                                <a href="#">
-                                    <img src="{{ asset('frontend_assets/img/ads-img/ad-300x250-1.jpg') }}"
-                                        alt=""data-rjs="2">
+                                <a href="{{ route('ads.trackClick', $n3s_1->id) }}" target="_blank">
+                                    <img src="{{ $n3s_1 && file_exists(public_path($n3s_1->image))
+                                        ? asset($n3s_1->image)
+                                        : asset('frontend_assets/img/ads-img/ad-300x250-1.jpg') }}"
+                                        alt="{{ $n3s_1->title_en ?? 'Advertisement' }}" data-rjs="2"
+                                        class="img-fluid" />
                                 </a>
                             </div>
                             <div class="ad--widget" style="margin-top: 30px">
-                                <a href="#">
-                                    <img src="{{ asset('frontend_assets/img/ads-img/ad-300x250-1.jpg') }}"
-                                        alt=""data-rjs="2">
+                                <a href="{{ route('ads.trackClick', $n3s_2->id) }}" target="_blank">
+                                    <img src="{{ $n3s_2 && file_exists(public_path($n3s_2->image))
+                                        ? asset($n3s_2->image)
+                                        : asset('frontend_assets/img/ads-img/ad-300x250-1.jpg') }}"
+                                        alt="{{ $n3s_2->title_en ?? 'Advertisement' }}" data-rjs="2"
+                                        class="img-fluid" />
                                 </a>
                             </div>
                             <div class="ad--widget" style="margin-top: 30px">
-                                <a href="#">
-                                    <img src="{{ asset('frontend_assets/img/ads-img/ad-300x250-1.jpg') }}"
-                                        alt=""data-rjs="2">
+                                <a href="{{ route('ads.trackClick', $n3s_3->id) }}" target="_blank">
+                                    <img src="{{ $n3s_3 && file_exists(public_path($n3s_3->image))
+                                        ? asset($n3s_3->image)
+                                        : asset('frontend_assets/img/ads-img/ad-300x250-1.jpg') }}"
+                                        alt="{{ $n3s_3->title_en ?? 'Advertisement' }}" data-rjs="2"
+                                        class="img-fluid" />
                                 </a>
                             </div>
                         </div>

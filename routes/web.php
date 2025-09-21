@@ -54,6 +54,11 @@ Route::controller(HomeController::class)->group(function () {
         // For SubCategory Wise news Show
         Route::get('/{category}/{subcategory}', 'sub_cate_news')->name('news.sub_cates');
     });
+
+    // For track Ads click
+    Route::get('/ads/click/{ad}', [AdsController::class, 'trackClick'])->name('ads.trackClick');
+    Route::get('/admin/ads/performance', [AdsController::class, 'performance'])->name('ads.performance');
+    Route::get('/admin/ads/{ad}/clicks', [AdsController::class, 'viewClicks'])->name('ads.view');
 });
 
 
