@@ -76,8 +76,6 @@ class NewsController extends Controller implements HasMiddleware
             'category_id' => 'required',
             'division_id' => 'required',
             'dist_id' => 'required',
-            'tags_en' => 'required',
-            'tags_bn' => 'required',
             'thumbnail' => 'required|image|mimes:jpg,jpeg,png,gif|max:1024',
             'image_title' => 'required',
             'status' => 'required'
@@ -128,8 +126,8 @@ class NewsController extends Controller implements HasMiddleware
             'division_id' => $request->division_id,
             'dist_id' => $request->dist_id,
             'sub_dist_id' => $request->sub_dist_id,
-            'tags_en' => $request->tags_en,
-            'tags_bn' => $request->tags_bn,
+            // 'tags_en' => $request->tags_en,
+            // 'tags_bn' => $request->tags_bn,
             'image_title' => $request->image_title,
             'news_photo' => $news_name,
             'url' => $request->url,
@@ -288,8 +286,6 @@ class NewsController extends Controller implements HasMiddleware
             'division_id' => 'required',
             'dist_id' => 'required',
             'sub_dist_id' => 'required',
-            'tags_en' => 'required',
-            'tags_bn' => 'required',
             'image_title' => 'required',
             'status' => 'required'
         ]);
@@ -306,8 +302,6 @@ class NewsController extends Controller implements HasMiddleware
             'division_id',
             'dist_id',
             'sub_dist_id',
-            'tags_en',
-            'tags_bn',
             'image_title',
             'url',
             'status',

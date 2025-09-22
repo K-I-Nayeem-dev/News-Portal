@@ -57,8 +57,9 @@ class InvitationController extends Controller
 
         // Set user password
         $user->password = Hash::make($request->password);
-        $user->invited_user = 0;
+        $user->invited_user = null; // instead of 0
         $user->save();
+
 
         // Assign roles correctly
         if ($invitation->role) {

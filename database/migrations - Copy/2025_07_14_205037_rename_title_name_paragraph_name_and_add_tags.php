@@ -16,8 +16,6 @@ return new class extends Migration
             $table->string('title_bn');
             $table->renameColumn('paragraph', 'details_en');
             $table->string('details_bn');
-            $table->string('tags_en');
-            $table->string('tags_bn');
             $table->string('dist_id');
             $table->string('sub_dist_id');
         });
@@ -35,8 +33,6 @@ return new class extends Migration
             $table->dropColumn([
                 'title_bn',
                 'details_bn',
-                'tags_en',
-                'tags_bn',
                 'dist_id',
                 'sub_dist_id',
             ]);

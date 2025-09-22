@@ -237,7 +237,7 @@
                                 </div>
 
                                 {{-- Tags Row --}}
-                                <div class="row mt-3">
+                                {{-- <div class="row mt-3">
                                     <div class="col-md-6">
 
                                         <label class="form-label" for="tags_en">Tags English<sup><code
@@ -260,7 +260,7 @@
                                             <p class="text-danger mt-2">{{ $message }}</p>
                                         @enderror
                                     </div>
-                                </div>
+                                </div> --}}
 
                                 {{-- News Details In Bangla --}}
                                 <div class="mt-3">

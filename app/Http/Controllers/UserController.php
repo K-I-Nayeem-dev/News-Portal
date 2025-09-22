@@ -15,18 +15,18 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Spatie\Permission\Models\Role;
 
-class UserController extends Controller  implements HasMiddleware
+class UserController extends Controller  //implements HasMiddleware
 {
 
-    public static function middleware(): array
-    {
-        return [
-            new Middleware('permission:view members', only: ['index']),
-            new Middleware('permission:invite members', only: ['create']),
-            new Middleware('permission:edit members', only: ['edit']),
-            new Middleware('permission:remove member', only: ['destroy']),
-        ];
-    }
+    // public static function middleware(): array
+    // {
+    //     return [
+    //         new Middleware('permission:view members', only: ['index']),
+    //         new Middleware('permission:invite members', only: ['create']),
+    //         new Middleware('permission:edit members', only: ['edit']),
+    //         new Middleware('permission:remove member', only: ['destroy']),
+    //     ];
+    // }
 
     /**
      * Display a listing of the resource.

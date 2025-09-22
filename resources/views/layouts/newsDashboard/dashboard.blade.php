@@ -780,7 +780,10 @@
                                     <div class="d-flex gap-3 align-items-baseline" style="margin-top:5px;">
                                         <!-- Total Headlines -->
                                         <h3 style="margin:0; font-size:32px; font-weight:800; color:#17a2b8;">
-                                            {{ count(collect($social_links->getAttributes())->except(['id', 'created_at', 'updated_at'])) }}
+                                            {{ optional($social_links)->getAttributes()
+                                                ? collect($social_links->getAttributes())->except(['id', 'created_at', 'updated_at'])->count()
+                                                : 0 }}
+
                                         </h3>
                                         <span class="text-muted" style="font-size:14px;">Total</span>
                                     </div>
@@ -810,7 +813,10 @@
                                     <div class="d-flex gap-3 align-items-baseline" style="margin-top:5px;">
                                         <!-- Total Headlines -->
                                         <h3 style="margin:0; font-size:32px; font-weight:800; color:#17a2b8;">
-                                            {{ count(collect($seos->getAttributes())->except(['id', 'created_at', 'updated_at'])) }}
+                                            {{ optional($seos)->getAttributes()
+                                                ? collect($seos->getAttributes())->except(['id', 'created_at', 'updated_at'])->count()
+                                                : 0 }}
+
                                         </h3>
                                         <span class="text-muted" style="font-size:14px;">Total</span>
                                     </div>
@@ -841,7 +847,7 @@
                                     <div class="d-flex gap-3 align-items-baseline" style="margin-top:5px;">
                                         <!-- Total Headlines -->
                                         <h3 style="margin:0; font-size:32px; font-weight:800; color:#17a2b8;">
-                                            {{ $live_tv->status == 1 ? 'Active' : 'Deactive' }}
+                                            {{ optional($live_tv)->status == 1 ? 'Active' : 'Deactive' }}
                                         </h3>
                                     </div>
                                 </div>
@@ -869,7 +875,7 @@
                                     <div class="d-flex gap-3 align-items-baseline" style="margin-top:5px;">
                                         <!-- Total Headlines -->
                                         <h3 style="margin:0; font-size:32px; font-weight:800; color:#17a2b8;">
-                                            {{ $notice->status == 1 ? 'Active' : 'Deactive' }}
+                                            {{ optional($notice)->status == 1 ? 'Active' : 'Deactive' }}
                                         </h3>
                                     </div>
                                 </div>
