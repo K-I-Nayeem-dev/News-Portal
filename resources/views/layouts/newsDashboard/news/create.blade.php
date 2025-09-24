@@ -1,6 +1,21 @@
 @extends('layouts.newsDashboard.dashboard')
 
 @section('dashboard')
+    <style>
+        .selected-tag-item {
+            background-color: #007bff !important;
+            color: white !important;
+        }
+
+        .min-height-50 {
+            min-height: 50px;
+        }
+
+        .tags-scroll-container {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+    </style>
     <div class="body-wrapper">
         <div class="container-fluid">
             <!-- -------------------------------------------------------------- -->
@@ -73,7 +88,8 @@
                                             autocomplete="off">
                                             <option value="">== Select Category ==</option>
                                             @foreach ($categories as $cate)
-                                                <option value="{{ $cate->id }}">{{ $cate->category_en }}</option>
+                                                <option value="{{ $cate->id }}">
+                                                    {{ $cate->category_en . ' | ' . $cate->category_bn }}</option>
                                             @endforeach
                                         </select>
 
@@ -192,31 +208,61 @@
                                     </div>
                                 </div>
 
-                                {{-- Tags Row --}}
-                                {{-- <div class="row mt-3">
+                                <!-- Tag Input Fields -->
+                                <div class="row mt-3">
                                     <div class="col-md-6">
-
-                                        <label class="form-label" for="tags_en">Tags English<sup><code
+                                        <label class="form-label" for="tag_en">Tags English<sup><code
                                                     style="font-size: 12px">*</code></sup></label>
-                                        <input name="tags_en" id="tags_en" class="form-control" autocomplete="off"
-                                            value="{{ old('tags_en') }}">
-
-                                        @error('tags_en')
-                                            <p class="text-danger mt-2">{{ $message }}</p>
-                                        @enderror
-
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label" for="tags_bn">Tags Bangla<sup><code
-                                                    style="font-size: 12px">*</code></sup></label>
-                                        <input name="tags_bn" id="tags_bn" class="form-control" autocomplete="off"
-                                            value="{{ old('tags_bn') }}">
-
-                                        @error('tags_bn')
+                                        <textarea name="tag_en" id="tag_en" class="form-control scrollable-input" autocomplete="off"
+                                            value="{{ old('tag_en') }}" readonly></textarea>
+                                        @error('tag_en')
                                             <p class="text-danger mt-2">{{ $message }}</p>
                                         @enderror
                                     </div>
-                                </div> --}}
+                                    <div class="col-md-6">
+                                        <label class="form-label" for="tag_bn">Tags Bangla<sup><code
+                                                    style="font-size: 12px">*</code></sup></label>
+                                        <textarea name="tag_bn" id="tag_bn" class="form-control scrollable-input" autocomplete="off"
+                                            value="{{ old('tag_bn') }}" readonly></textarea>
+                                        @error('tag_bn')
+                                            <p class="text-danger mt-2">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <!-- Tags Dropdown Section -->
+                                <div class="row mt-3">
+                                    <div class="col-lg-12">
+                                        <label class="form-label">Select Tags<sup><code
+                                                    style="font-size: 12px">*</code></sup></label>
+                                        <div class="dropdown mt-2">
+                                            <button class="btn btn-outline-secondary dropdown-toggle w-100" type="button"
+                                                id="tagsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Select Tags
+                                            </button>
+                                            <div class="dropdown-menu w-100" aria-labelledby="tagsDropdown"
+                                                id="tags-dropdown-menu">
+                                                <div id="tags-en-suggestions" class="tags-scroll-container">
+                                                    @foreach ($tags as $tag)
+                                                        <span
+                                                            class="tag-suggestion cursor-pointer bg-gray-200 px-2 py-1 m-1 rounded dropdown-item-custom"
+                                                            data-id="{{ $tag->id }}" data-en="{{ $tag->tag_en }}"
+                                                            data-bn="{{ $tag->tag_bn }}">
+                                                            {{ $tag->tag_en }}
+                                                        </span>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Selected tags container -->
+                                <div class="mt-3">
+                                    <label class="form-label">Selected Tags:</label>
+                                    <div id="selected-tags" class="mt-2 p-2 border rounded min-height-50"></div>
+                                </div>
+
 
                                 {{-- News Details In Bangla --}}
                                 <div class="mt-3">
@@ -340,6 +386,122 @@
             </div>
         </div>
     </div>
+
+    {{-- For Tags --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tagEnInput = document.getElementById('tag_en');
+            const tagBnInput = document.getElementById('tag_bn');
+            const suggestions = document.getElementById('tags-en-suggestions');
+            const selectedContainer = document.getElementById('selected-tags');
+            const dropdownMenu = document.getElementById('tags-dropdown-menu');
+            let selectedTags = []; // Array of {id, en, bn}
+
+            // Click on suggestion
+            suggestions.addEventListener('click', function(e) {
+                if (e.target.classList.contains('tag-suggestion')) {
+                    const id = e.target.dataset.id;
+                    const en = e.target.dataset.en;
+                    const bn = e.target.dataset.bn;
+
+                    console.log('Clicked tag:', {
+                        id,
+                        en,
+                        bn
+                    }); // Debug log
+
+                    // Prevent duplicates
+                    if (!selectedTags.some(t => t.id == id)) {
+                        selectedTags.push({
+                            id,
+                            en,
+                            bn
+                        });
+                        renderSelectedTags();
+
+                        // Remove from suggestions with animation
+                        e.target.style.opacity = '0';
+                        setTimeout(() => {
+                            if (e.target.parentNode) {
+                                e.target.remove();
+                            }
+                        }, 200);
+                    }
+
+                    // Prevent dropdown from closing
+                    e.stopPropagation();
+                }
+            });
+
+            // Prevent dropdown from closing when clicking inside
+            dropdownMenu.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+
+            function renderSelectedTags() {
+                selectedContainer.innerHTML = '';
+
+                if (selectedTags.length === 0) {
+                    selectedContainer.innerHTML = '<span class="text-muted">No tags selected</span>';
+                } else {
+                    selectedTags.forEach(tag => {
+                        const span = document.createElement('span');
+                        span.classList.add('selected-tag', 'bg-blue-200', 'px-2', 'py-1', 'm-1', 'rounded',
+                            'cursor-pointer');
+                        span.textContent = `${tag.en} ×`;
+                        span.dataset.id = tag.id;
+
+                        // Click to remove
+                        span.addEventListener('click', function() {
+                            removeTag(tag.id);
+                        });
+
+                        selectedContainer.appendChild(span);
+                    });
+                }
+
+                // Update inputs
+                tagEnInput.value = selectedTags.map(t => t.en).join(', ');
+                tagBnInput.value = selectedTags.map(t => t.bn).join(', ');
+
+                console.log('Updated inputs:', {
+                    en: tagEnInput.value,
+                    bn: tagBnInput.value
+                }); // Debug log
+            }
+
+            function removeTag(id) {
+                const tag = selectedTags.find(t => t.id == id);
+                if (!tag) return;
+
+                selectedTags = selectedTags.filter(t => t.id != id);
+
+                // Add back to suggestions
+                const span = document.createElement('span');
+                span.classList.add('tag-suggestion', 'bg-gray-200', 'px-2', 'py-1', 'm-1', 'rounded',
+                    'cursor-pointer', 'dropdown-item-custom');
+                span.dataset.id = tag.id;
+                span.dataset.en = tag.en;
+                span.dataset.bn = tag.bn;
+                span.textContent = tag.en;
+
+                // Add with animation
+                span.style.opacity = '0';
+                suggestions.appendChild(span);
+                setTimeout(() => {
+                    span.style.opacity = '1';
+                }, 10);
+
+                renderSelectedTags();
+
+                console.log('Removed tag:', tag); // Debug log
+            }
+
+            // Initialize
+            renderSelectedTags();
+        });
+    </script>
+
 
     {{-- Select Subcategories while dropdown to categories --}}
     <script>

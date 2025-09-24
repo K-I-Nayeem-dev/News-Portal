@@ -31,28 +31,30 @@ class HomeController extends Controller
         $notice = DB::table('notices')->where('status', 1)->first();
 
         // for First section News fsbt = firstSection_bigThumbnail
-        $fsbt = News::where('firstSection_bigThumbnail', 'on')->where('status', 1)->latest()->first();
+        $fsbt = News::where('firstSection_bigThumbnail', 1)->where('status', 1)->latest()->first();
+
 
         // for First section News fs = firstSection 1
-        $fs1 = News::where('firstSection', 'on')->where('status', 1)->latest()->take(2)->get();
+        $fs1 = News::where('firstSection', 1)->where('status', 1)->latest()->take(2)->get();
 
         // for First section News fs = firstSection 1
-        $fs2 = News::where('firstSection', 'on')->where('status', 1)->latest()->skip(2)->take(2)->get();
+        $fs2 = News::where('firstSection', 1)->where('status', 1)->latest()->skip(2)->take(2)->get();
 
         // for First section News fs = firstSection Select 9 News
-        $fs9 = News::where('firstSection', 'on')->where('status', 1)->latest()->skip(4)->take(9)->get();
+        $fs9 = News::where('firstSection', 1)->where('status', 1)->latest()->skip(4)->take(9)->get();
 
         // for First section News Trending News
-        $tn = News::where('trendyNews', 'on')->where('status', 1)->latest()->take(10)->get();
+        $tn = News::where('trendyNews', 1)->where('status', 1)->latest()->take(10)->get();
 
         // for First section News Special Report
-        $sn = videogallery::where('special_news', 'on')->latest()->take(9)->get();
+        $sn = videogallery::where('special_news', 1)->latest()->take(9)->get();
 
         // Get News for Category national
         $nationalCategory = Category::where('category_en', 'national')->first();
 
         // News for Category national Big_thumbnail
         $nnbt = News::where('category_id', $nationalCategory->id)->where('status', 1)->latest()->first();
+
         // News for Category national left side 2 news
         $nnln = News::where('category_id', $nationalCategory->id)->where('status', 1)->latest()->skip(1)->take(2)->get();
         // News for Category national right side 4 news

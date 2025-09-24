@@ -1,25 +1,12 @@
 @extends('layouts.newsIndex.newsMaster')
 
 @section('content')
-    {{-- @php
-    $variables = ['fsbt', 'fs1', 'fs2', 'fs9', 'tn', 'sn', 'nnbt', 'nnln', 'nnrn', 'enbt', 'enrn', 'cnbt', 'cn1', 'cn2', 'innbt', 'inn2', 'inn4', 'snbt', 'sn2', 'sn4', 'lsnbt', 'lsnb', 'lsnr', 'lonbt', 'lonrn3', 'lon4', 'vgnbt', 'vgn3', 'pgnbt', 'pgn3', 'pnbt', 'pn3', 'fnbt', 'fn3'];
-
-    $slugs = [];
-
-    foreach ($variables as $var) {
-        if (isset($$var)) { // $$var accesses variable by name
-            $slugs[$var] = generateSlugs($$var);
-        } else {
-            $slugs[$var] = ['categorySlug' => null, 'subcategorySlug' => null];
-        }
-    }
-@endphp --}}
-
     @php
         use Illuminate\Support\Str;
 
         $categorySlug = Str::slug($fsbt->newsCategory->category_en);
         $subcategorySlug = $fsbt->newsSubcategory ? Str::slug($fsbt->newsSubcategory->sub_cate_en) : null;
+
     @endphp
 
     {{-- Custom CSS Code section Start --}}
@@ -508,12 +495,18 @@
 
                         <div class="col-md-12 ptop--30 pbottom--30">
                             <div class="ad--space">
-                                <a href="{{ route('ads.trackClick', $fbp->id) }}" target="_blank">
-                                    <img src="{{ $fbp && file_exists(public_path($fbp->image))
-                                        ? asset($fbp->image)
-                                        : asset('frontend_assets/img/ads-img/ad-728x90-01.jpg') }}"
-                                        alt="{{ $fbp->title_en ?? 'Advertisement' }}" class="img-fluid" />
-                                </a>
+                                @if ($fbp)
+                                    <a href="{{ route('ads.trackClick', $fbp->id) }}" target="_blank">
+                                        <img src="{{ $fbp->image && file_exists(public_path($fbp->image))
+                                            ? asset($fbp->image)
+                                            : asset('frontend_assets/img/ads-img/ad-728x90-01.jpg') }}"
+                                            alt="{{ $fbp->title_en ?? 'Advertisement' }}" class="img-fluid" />
+                                    </a>
+                                @else
+                                    <img src="{{ asset('frontend_assets/img/ads-img/ad-728x90-01.jpg') }}"
+                                        alt="Advertisement" class="img-fluid" />
+                                @endif
+
                             </div>
                         </div>
 
@@ -2070,15 +2063,24 @@
                                     </div>
                                     <div>
                                         @php
-                                            preg_match('/src="([^"]+)"/', $vgnbt->embed_code, $matches);
-                                            $iframeSrc = $matches[1] ?? null;
+                                            $iframeSrc = null;
                                             $videoId = null;
-                                            if ($iframeSrc && Str::contains($iframeSrc, 'youtube.com')) {
-                                                preg_match('/embed\/([^\?&"]+)/', $iframeSrc, $idMatch);
-                                                $videoId = $idMatch[1] ?? null;
+
+                                            if (!empty($vgnbt->embed_code)) {
+                                                // Extract src attribute from embed code
+                                                if (preg_match('/src="([^"]+)"/', $vgnbt->embed_code, $matches)) {
+                                                    $iframeSrc = $matches[1] ?? null;
+
+                                                    // Check if it's a YouTube embed
+                                                    if ($iframeSrc && str_contains($iframeSrc, 'youtube.com')) {
+                                                        // Extract video ID from embed URL
+                                                        if (preg_match('/embed\/([^\?&"]+)/', $iframeSrc, $idMatch)) {
+                                                            $videoId = $idMatch[1] ?? null;
+                                                        }
+                                                    }
+                                                }
                                             }
                                         @endphp
-
                                         <div class="video-container">
                                             <a data-fancybox data-type="iframe" href="{{ $iframeSrc }}"
                                                 class="video-wrapperg">

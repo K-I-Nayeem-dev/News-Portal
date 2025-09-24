@@ -10,6 +10,11 @@ class SubCategorySeeder extends Seeder
 {
     public function run(): void
     {
+
+
+        // Step 1: Fetch all category IDs
+        $categoryIds = DB::table('categories')->pluck('id')->toArray();
+
         $sub_categories = [
             ['en' => 'National News',      'bn' => 'জাতীয় সংবাদ'],
             ['en' => 'Cricket',            'bn' => 'ক্রিকেট'],
@@ -33,13 +38,15 @@ class SubCategorySeeder extends Seeder
             ['en' => 'Parenting',          'bn' => 'প্যারেন্টিং'],
         ];
 
+        // Step 2: Insert subcategories safely
         foreach ($sub_categories as $index => $sub) {
             DB::table('sub_categories')->insert([
-                'id' => $index + 1,
-                'category_id' => rand(1, 10),
+                'category_id' => $categoryIds[array_rand($categoryIds)], // pick a valid category ID
                 'sub_cate_en' => $sub['en'],
                 'sub_cate_bn' => $sub['bn'],
-                'status' => rand(0,1),
+                'slug' => Str::slug($sub['en']),
+                'order' => $index + 1,
+                'status' => rand(0, 1),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

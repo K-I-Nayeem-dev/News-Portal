@@ -29,4 +29,18 @@ class Category extends Model
     {
         return $this->hasMany(News::class, 'category_id');
     }
+
+    public function subCategories()
+    {
+        return $this->hasMany(SubCategory::class)->orderBy('order', 'asc');
+    }
+
+    public static function updateOrder($categoryId, $newOrder)
+    {
+        $category = self::find($categoryId);
+        if ($category) {
+            $category->order = $newOrder;
+            $category->save();
+        }
+    }
 }

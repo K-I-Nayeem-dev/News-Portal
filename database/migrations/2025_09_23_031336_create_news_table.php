@@ -24,16 +24,16 @@ return new class extends Migration
 
             // Location
             $table->foreignId('division_id')->constrained('divisions')->onDelete('cascade');
-            $table->foreignId('district_id')->nullable()->constrained('districts')->onDelete('set null');
-            $table->foreignId('sub_district_id')->nullable()->constrained('sub_districts')->onDelete('set null');
+            $table->foreignId('dist_id')->nullable()->constrained('districts')->onDelete('set null');
+            $table->foreignId('sub_dist_id')->nullable()->constrained('sub_districts')->onDelete('set null');
 
             // Titles
             $table->string('title_en');
             $table->string('title_bn')->nullable();
 
             // Content
-            $table->longText('paragraph_en');
-            $table->longText('paragraph_bn')->nullable();
+            $table->longText('details_en');
+            $table->longText('details_bn')->nullable();
 
             // Images
             $table->string('thumbnail')->nullable();
@@ -44,9 +44,9 @@ return new class extends Migration
 
             // Status & flags
             $table->tinyInteger('status')->default(1);
-            $table->tinyInteger('firstSection_bigThumbnail')->default(0);
-            $table->tinyInteger('firstSection')->default(0);
-            $table->tinyInteger('trendyNews')->default(0);
+            $table->tinyInteger('trendyNews')->nullable()->default(0);
+            $table->tinyInteger('firstSection_bigThumbnail')->nullable()->default(0);
+            $table->tinyInteger('firstSection')->nullable()->default(0);
 
             $table->timestamps();
         });

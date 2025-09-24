@@ -58,8 +58,9 @@ class News extends Model
         return $this->belongsTo(Category::class, 'category_id');
     }
 
+    // In your News model
     public function tags()
     {
-        return $this->belongsToMany(Tags::class, 'news_tag');
+        return $this->belongsToMany(Tags::class, 'news_tags', 'news_id', 'tag_id');
     }
 }

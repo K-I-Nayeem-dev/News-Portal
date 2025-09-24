@@ -9,18 +9,25 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('news_tag', function (Blueprint $table) {
+        Schema::create('news_tags', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('news_id')->constrained('news')->onDelete('cascade');
-            $table->foreignId('tag_id')->constrained('tags')->onDelete('cascade');
+            $table->unsignedBigInteger('news_id');
+            $table->unsignedBigInteger('tag_id');
             $table->timestamps();
+
+            // Foreign key constraints
+            $table->foreign('news_id')->references('id')->on('news')->onDelete('cascade');
+            $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
+
+            // Prevent duplicate entries
+            $table->unique(['news_id', 'tag_id']);
         });
     }
 
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('news_tag');
+        Schema::dropIfExists('news_tags'); // Fixed: should match the created table
     }
 };

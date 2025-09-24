@@ -25,14 +25,21 @@ class CategorySeeder extends Seeder
             ['en' => 'Finance',       'bn' => 'অর্থনীতি'],
             ['en' => 'Environment',   'bn' => 'পরিবেশ'],
             ['en' => 'Lifestyle',     'bn' => 'জীবনধারা'],
+            ['en' => 'National',      'bn' => 'জাতীয়'],
+            ['en' => 'Country',       'bn' => 'দেশ'],
+            ['en' => 'International', 'bn' => 'আন্তর্জাতিক'] // <-- Added International
         ];
+
+
 
         foreach ($categories as $index => $cat) {
             DB::table('categories')->insert([
                 'id' => $index + 1,
                 'category_en' => $cat['en'],
                 'category_bn' => $cat['bn'],
-                'status' => rand(0,1),
+                'slug' => Str::slug($cat['en']), // auto slug from English name
+                'order' => $index + 1, // keep insertion order
+                'status' => rand(0, 1),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);

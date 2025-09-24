@@ -19,11 +19,13 @@ use App\Http\Controllers\SeoController;
 use App\Http\Controllers\SocailController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\SubDistrictController;
+use App\Http\Controllers\TagsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoGalleryController;
 use App\Http\Controllers\WatermarkController;
 use App\Http\Controllers\WebsiteListController;
 use App\Http\Controllers\WebsiteSettingController;
+use App\Http\Controllers\MenuController;
 use App\Models\BandwidthUsage;
 use Illuminate\Support\Facades\Route;
 
@@ -117,6 +119,7 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
         'videogallery' => VideoGalleryController::class,
         'ads' => AdsController::class,
         'website_setting' => WebsiteSettingController::class,
+        'tags' => TagsController::class,
     ]);
 
     // Specific Version (Bangla/English) News Show Routes
@@ -185,6 +188,14 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
         Route::get('/{id}/edit', 'edit')->name('role.edit');
         Route::put('/{id}/update', 'update')->name('role.update');
         Route::delete('/{id}/destroy', 'destroy')->name('role.destroy');
+    });
+
+    // Menu builder routes
+    Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
+        Route::get('/menu', [MenuController::class, 'index'])->name('admin.menu.index');
+        Route::post('/menu/update-category-order', [MenuController::class, 'updateCategoryOrder'])->name('admin.menu.update-category-order');
+        Route::post('/menu/update-subcategory-order', [MenuController::class, 'updateSubCategoryOrder'])->name('admin.menu.update-subcategory-order');
+        Route::post('/menu/reorder-all', [MenuController::class, 'reorderAll'])->name('admin.menu.reorder-all');
     });
 });
 

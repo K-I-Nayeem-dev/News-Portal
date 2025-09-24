@@ -12,11 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('categories', function (Blueprint $table) {
-            $table->id(); // auto-increment big integer
+            $table->id(); // Auto increment ID
             $table->string('category_en');
             $table->string('category_bn')->nullable();
-            $table->string('slug')->nullable()->unique();
+            $table->string('slug')->unique()->nullable();
             $table->tinyInteger('status')->default(1); // 1 = active, 0 = inactive
+            $table->integer('order')->default(0); // 👈 Sorting for menu
             $table->timestamps();
         });
     }

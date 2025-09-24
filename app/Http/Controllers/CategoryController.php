@@ -60,6 +60,7 @@ class CategoryController extends Controller implements HasMiddleware
             'category_bn' => $request->category_bn,
             'slug' => Str::slug($request->category_en),
             'status' => $request->status,
+            'order' => DB::table('categories')->max('order') + 1, // set next order
             'created_at' => now(),
             'updated_at' => null,
         ];
@@ -92,10 +93,17 @@ class CategoryController extends Controller implements HasMiddleware
             'status' => 'required'
         ]);
 
-        $category->category_en = $request->input('category_en');
-        $category->category_bn = $request->input('category_bn');
-        $category->slug =  Str::slug($category->category_en);
-        $category->status = $request->input('status');
+        $category->category_en = $request->category_en;
+        $category->category_bn = $request->category_bn;
+        $category->slug = Str::slug($request->category_en);
+        $category->status = $request->status;
+
+        // Dynamic order: if you want to update order automatically, you can calculate the next max order
+        if (!$category->order) { // if order is null, assign next
+            $maxOrder = DB::table('categories')->max('order');
+            $category->order = $maxOrder + 1;
+        }
+
         $category->updated_at = now();
         $category->save();
 

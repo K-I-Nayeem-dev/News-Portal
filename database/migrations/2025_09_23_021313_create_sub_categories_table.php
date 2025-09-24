@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('sub_categories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->constrained('categories')->onDelete('cascade'); // link to categories
+            $table->foreignId('category_id')
+                ->constrained('categories')
+                ->onDelete('cascade'); // If category is deleted → delete subcategories
             $table->string('sub_cate_en');
             $table->string('sub_cate_bn')->nullable();
-            $table->string('slug')->nullable()->unique();
+            $table->string('slug')->unique()->nullable();
             $table->tinyInteger('status')->default(1); // 1 = active, 0 = inactive
+            $table->integer('order')->default(0); // 👈 Sorting inside category
             $table->timestamps();
         });
     }

@@ -11,8 +11,9 @@ class Tags extends Model
 
     protected $guarded = [];
 
+    // In your Tags model
     public function news()
     {
-        return $this->belongsToMany(News::class, 'news_tag');
+        return $this->belongsToMany(News::class, 'news_tags', 'tag_id', 'news_id');
     }
 }

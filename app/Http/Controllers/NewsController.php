@@ -18,6 +18,7 @@ use App\Models\Division;
 use App\Models\news_photo;
 use App\Models\SubDistrict;
 use App\Models\watermark;
+use App\Models\Tags;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
@@ -51,13 +52,21 @@ class NewsController extends Controller implements HasMiddleware
     public function create()
     {
 
-        $categories = Category::all();
+
+        $categories = Category::with(['subCategories' => function ($query) {
+            $query->orderBy('order', 'asc'); // order subcategories
+        }])
+            ->orderBy('order', 'asc') // order categories
+            ->get();
+
         $divisions = Division::orderBy('division_en', 'ASC')->get();
         $districts = District::orderBy('district_en', 'ASC')->get();
+        $tags = Tags::orderBy('tag_en', 'ASC')->get();
         return view('layouts.newsDashboard.news.create', [
             'categories' => $categories,
             'divisions' => $divisions,
             'districts' => $districts,
+            'tags' => $tags,
         ]);
     }
 
@@ -73,6 +82,8 @@ class NewsController extends Controller implements HasMiddleware
             'news_source' => 'required',
             'details_en' => 'required',
             'details_bn' => 'required',
+            'tags_en' => 'nullable|string',
+            'tags_bn' => 'nullable|string',
             'category_id' => 'required',
             'division_id' => 'required',
             'dist_id' => 'required',
@@ -126,15 +137,13 @@ class NewsController extends Controller implements HasMiddleware
             'division_id' => $request->division_id,
             'dist_id' => $request->dist_id,
             'sub_dist_id' => $request->sub_dist_id,
-            // 'tags_en' => $request->tags_en,
-            // 'tags_bn' => $request->tags_bn,
             'image_title' => $request->image_title,
             'news_photo' => $news_name,
             'url' => $request->url,
-            'trendyNews' => $request->trendyNews,
-            'firstSection_bigThumbnail' => $request->firstSection_bigThumbnail,
-            'firstSection' => $request->firstSection,
-            'status' => $request->status,
+            'trendyNews' => $request->trendyNews ? 1 : 0,
+            'firstSection_bigThumbnail' => $request->firstSection_bigThumbnail ? 1 : 0,
+            'firstSection' => $request->firstSection ? 1 : 0,
+            'status' => $request->status ? 1 : 0,
             'created_at' => now(),
             'updated_at' => null
         ];
@@ -142,8 +151,9 @@ class NewsController extends Controller implements HasMiddleware
         // upload image thumbnail
         $data['thumbnail'] = $job->handle();
 
-        // Store data and get news_id for upload multiple image in database
-        $news_id = DB::table('news')->insertGetId($data);
+        // Store data using Eloquent model
+        $news = News::create($data);
+        $news_id = $news->id;
 
 
         if ($request->has('news_photos')) {
@@ -167,6 +177,38 @@ class NewsController extends Controller implements HasMiddleware
             }
         }
 
+        // Split and clean incoming tags
+        $tagsEn = array_filter(array_map('trim', explode(',', $request->tag_en)));
+        $tagsBn = array_filter(array_map('trim', explode(',', $request->tag_bn)));
+
+        $tagIds = [];
+
+        foreach ($tagsEn as $index => $enName) {
+            $bnName = $tagsBn[$index] ?? null;
+
+            // Insert new tag if not exists, or get existing tag
+            $tag = Tags::firstOrCreate(
+                ['tag_en' => $enName], // unique column
+                ['tag_bn' => $bnName]  // additional data
+            );
+
+            $tagIds[] = $tag->id;
+        }
+
+        // After the existing tag creation loop
+        if (!empty($tagIds)) {
+            $pivotData = [];
+            foreach ($tagIds as $tagId) {
+                $pivotData[] = [
+                    'news_id' => $news_id,
+                    'tag_id' => $tagId,
+                    'created_at' => now(),
+                    'updated_at' => null
+                ];
+            }
+
+            DB::table('news_tags')->insert($pivotData); // Make sure table name matches your migration
+        }
 
         // return back to news created page
         return back()->with('news_created', 'News Created Successfully');
@@ -228,17 +270,24 @@ class NewsController extends Controller implements HasMiddleware
      */
     public function edit($id)
     {
+        $news = News::with('tags')->findOrFail($id); // Load news with its tags
 
-        $news = News::findOrFail($id);
-
-        // Get Categories and Sub Categories get
+        // Get Categories and Sub Categories
         $categories = Category::all();
         $sub_cates = SubCategory::where('category_id', $news->category_id)->get();
 
-        // Get Division ?? District and Sub Districts get
+        // Get Division, District and Sub Districts
         $divisions = Division::all();
         $districts = District::where('division_id', $news->division_id)->get();
         $sub_dists = SubDistrict::where('district_id', $news->dist_id)->get();
+
+        // Get all tags and selected tag IDs
+        $all_tags = Tags::all();
+        $selected_tag_ids = $news->tags->pluck('id')->toArray(); // Get selected tag IDs as array
+
+        // Get selected tags for display (if you need them separately)
+        $selected_tags = $news->tags;
+
         return view('layouts.newsDashboard.news.edit', [
             'news' => $news,
             'categories' => $categories,
@@ -246,6 +295,9 @@ class NewsController extends Controller implements HasMiddleware
             'divisions' => $divisions,
             'districts' => $districts,
             'sub_dists' => $sub_dists,
+            'all_tags' => $all_tags,
+            'selected_tag_ids' => $selected_tag_ids,
+            'selected_tags' => $selected_tags,
         ]);
     }
 
@@ -267,13 +319,19 @@ class NewsController extends Controller implements HasMiddleware
                 $news->update_by_user = Auth::id();
                 $news->save();
 
-                return back()->with('status_update', 'Status updated successfully.');
+                flash()
+                    ->addSuccess('Status updated successfully', [
+                        'position' => 'bottom-center', // 👈 correct way
+                    ]);
+                return back();
             } else {
-                return back()->with('error', 'Invalid status value.');
+                flash()
+                    ->addError('Invalid status value.', [
+                        'position' => 'bottom-center', // 👈 correct way
+                    ]);
+                return back();
             }
         }
-
-
 
         // ✅ Full form update (title, paragraph, thumbnail, etc.)
         $request->validate([
@@ -282,6 +340,8 @@ class NewsController extends Controller implements HasMiddleware
             'news_source' => 'required',
             'details_en' => 'required',
             'details_bn' => 'required',
+            'tag_en' => 'nullable|string',
+            'tag_bn' => 'nullable|string',
             'category_id' => 'required',
             'division_id' => 'required',
             'dist_id' => 'required',
@@ -307,10 +367,10 @@ class NewsController extends Controller implements HasMiddleware
             'status',
         ]));
 
-        // for news section update
-        $news->firstSection_bigThumbnail = $request->firstSection_bigThumbnail; // 'on' or 'off'
-        $news->firstSection = $request->firstSection; // 'on' or 'off'
-        $news->trendyNews = $request->trendyNews; // 'on' or 'off'
+        // ✅ Convert checkbox values to integers (0 or 1)
+        $news->firstSection_bigThumbnail = $request->firstSection_bigThumbnail == '1' ? 1 : 0;
+        $news->firstSection = $request->firstSection == '1' ? 1 : 0;
+        $news->trendyNews = $request->trendyNews == '1' ? 1 : 0;
 
         if ($request->hasFile('thumbnail')) {
             // Delete old images
@@ -345,15 +405,52 @@ class NewsController extends Controller implements HasMiddleware
                 1200,
                 830,
                 50,
-                $watermark->watermark // ✅ fixed typo
+                $watermark->watermark
             );
-            $news->thumbnail = $job->handle(); // must return filename
+            $news->thumbnail = $job->handle();
         }
 
         $news->update_by_user = Auth::id();
         $news->save();
 
-        return back()->with('news_update', 'News updated successfully.');
+        // ✅ Handle Tags Update
+        if ($request->has('tag_en') || $request->has('tag_bn')) {
+            // Split and clean incoming tags
+            $tagsEn = array_filter(array_map('trim', explode(',', $request->tag_en ?? '')));
+            $tagsBn = array_filter(array_map('trim', explode(',', $request->tag_bn ?? '')));
+
+            $tagIds = [];
+
+            // Process each English tag with corresponding Bengali tag
+            foreach ($tagsEn as $index => $enName) {
+                if (!empty($enName)) {
+                    $bnName = $tagsBn[$index] ?? null;
+
+                    // Insert new tag if not exists, or get existing tag
+                    $tag = Tags::firstOrCreate(
+                        ['tag_en' => $enName], // unique column
+                        ['tag_bn' => $bnName]  // additional data
+                    );
+
+                    $tagIds[] = $tag->id;
+                }
+            }
+
+            // Update tags relationship (sync will remove old tags and add new ones)
+            if (!empty($tagIds)) {
+                $news->tags()->sync($tagIds);
+            } else {
+                // If no tags provided, remove all existing tags
+                $news->tags()->detach();
+            }
+        }
+
+        flash()
+            ->addSuccess('News Update', [
+                'position' => 'bottom-center', // 👈 correct way
+            ]);
+
+        return back();
     }
 
 

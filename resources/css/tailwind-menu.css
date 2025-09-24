@@ -1,0 +1,9 @@
+/* resources/css/tailwind-menu.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* optional: limit Tailwind to menu builder container only */
+.menu-builder {
+    @apply bg-white p-6 rounded-lg shadow-lg;
+}

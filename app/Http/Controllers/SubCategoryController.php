@@ -54,15 +54,23 @@ class SubCategoryController extends Controller implements HasMiddleware
             'status' => 'required'
         ]);
 
+        // Get the max order in the selected category
+        $maxOrder = DB::table('sub_categories')
+            ->where('category_id', $request->category_id)
+            ->max('order');
+
         $data = [
             'category_id' => $request->category_id,
             'sub_cate_en' => $request->sub_cate_en,
             'sub_cate_bn' => $request->sub_cate_bn,
             'slug' => Str::slug($request->sub_cate_en),
+            'order' => $maxOrder + 1, // automatically next order
             'status' => $request->status,
             'created_at' => now(),
             'updated_at' => null,
         ];
+
+
 
         DB::table('sub_categories')->insert($data);
 
@@ -106,10 +114,20 @@ class SubCategoryController extends Controller implements HasMiddleware
         $subCategory->sub_cate_en = $request->input('sub_cate_en');
         $subCategory->sub_cate_bn = $request->input('sub_cate_bn');
         $subCategory->category_id = $request->input('category_id');
-        $subCategory->slug =  Str::slug($subCategory->sub_cate_en);
+        $subCategory->slug = Str::slug($subCategory->sub_cate_en);
         $subCategory->status = $request->input('status');
+
+        // Dynamic order: if order is null, assign next highest order within the same category
+        if (!$subCategory->order) {
+            $maxOrder = DB::table('sub_categories')
+                ->where('category_id', $subCategory->category_id)
+                ->max('order');
+            $subCategory->order = $maxOrder + 1;
+        }
+
         $subCategory->updated_at = now();
         $subCategory->save();
+
 
         return back()->with('sub_cate_update', $subCategory->sub_cate_name . ' ' . 'Sub Category updated successfully.');
     }

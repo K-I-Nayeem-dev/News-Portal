@@ -12,14 +12,15 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
-    Route::get('newsRegister', [RegisteredUserController::class, 'create'])
-        ->name('register');
 
-    Route::post('newsRegister', [RegisteredUserController::class, 'store']);
+    // Route::get('newsRegister', [RegisteredUserController::class, 'create'])
+    //     ->name('register');
 
-    // Route::any('/newsRegister', function () {
-    //     return redirect('/newsLogin');
-    // });
+    // Route::post('newsRegister', [RegisteredUserController::class, 'store']);
+
+    Route::any('/newsRegister', function () {
+        return redirect('/newsLogin');
+    });
 
     Route::get('newsLogin', [AuthenticatedSessionController::class, 'create'])
         ->name('login');

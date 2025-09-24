@@ -8,13 +8,13 @@
 
     {{-- For Seo with dynamic name Start  --}}
 
-    <meta name="meta_author" content="{{ $meta->meta_author }}" />
-    <meta name="meta_title" content="{{ $meta->meta_title }}" />
-    <meta name="meta_keyword" content="{{ $meta->meta_keyword }}" />
-    <meta name="meta_description" content="{{ $meta->meta_description }}" />
-    <meta name="google_analytics" content="{{ $meta->google_analytics }}" />
-    <meta name="goolge_verificatoins" content="{{ $meta->goolge_verificatoins }}" />
-    <meta name="alexa_analytics" content="{{ $meta->alexa_analytics }}" />
+    <meta name="meta_author" content="{{ $meta?->meta_author }}" />
+    <meta name="meta_title" content="{{ $meta?->meta_title }}" />
+    <meta name="meta_keyword" content="{{ $meta?->meta_keyword }}" />
+    <meta name="meta_description" content="{{ $meta?->meta_description }}" />
+    <meta name="google_analytics" content="{{ $meta?->google_analytics }}" />
+    <meta name="google_verifications" content="{{ $meta?->google_verifications }}" />
+    <meta name="alexa_analytics" content="{{ $meta?->alexa_analytics }}" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @yield('meta')
     {{-- For Seo with dynamic name End  --}}
