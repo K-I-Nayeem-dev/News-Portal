@@ -9,6 +9,7 @@ class SubCategory extends Model
 {
     use HasFactory;
 
+    protected $table = 'sub_categories';
     protected $guarded = [];
 
     // for category table one to one relation

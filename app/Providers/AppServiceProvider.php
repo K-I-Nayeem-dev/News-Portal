@@ -88,10 +88,18 @@ class AppServiceProvider extends ServiceProvider
             // Top Header Ads Photo
             $ftp = Ads::where('front_top_banner', 1)->first();
 
+            $categories = Category::where('status', 1)
+                ->orderBy('order', 'asc')
+                ->with(['subCategories' => function ($q) {
+                    $q->where('status', 1)
+                        ->orderBy('order', 'asc');
+                }])
+                ->get();
+
             $view->with([
                 'meta' => Seo::first(),
                 'social' => Social::first(),
-                'categories' => Category::where('status', 1)->orderBy('category_bn')->get(),
+                'categories' => $categories,
                 'time' => DB::table('breaking_news')->latest()->get(),
                 'position_en' => $cityEn,
                 'position_bn' => $cityBn,

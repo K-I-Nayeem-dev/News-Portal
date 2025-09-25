@@ -32,8 +32,11 @@ class Category extends Model
 
     public function subCategories()
     {
-        return $this->hasMany(SubCategory::class)->orderBy('order', 'asc');
+        return $this->hasMany(SubCategory::class, 'category_id', 'id')
+            ->where('status', 1)
+            ->orderBy('order', 'asc');
     }
+
 
     public static function updateOrder($categoryId, $newOrder)
     {

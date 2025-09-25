@@ -249,9 +249,22 @@
                                 <span class="icon-bar"></span>
                             </button>
                         </div>
+
+
                         <div id="headerNav" class="navbar-collapse collapse float--left">
-                            <ul class="header--menu-links nav navbar-nav" data-trigger="hoverIntent">
-                                @foreach ($categories as $category)
+                            <ul style="font-size: 14.5px !important;" class="header--menu-links nav navbar-nav"
+                                data-trigger="hoverIntent">
+
+                                @php
+                                    $lang = session()->get('lang');
+                                    $limit = $lang == 'bangla' ? 10 : 8;
+                                    $mainCategories = $categories->take($limit);
+                                    $moreCategories = $categories->slice($limit);
+                                    $allCategories = $categories;
+                                @endphp
+
+                                {{-- Main Categories --}}
+                                @foreach ($mainCategories as $category)
                                     @php
                                         $sub_cates = DB::table('sub_categories')
                                             ->where('category_id', $category->id)
@@ -260,41 +273,516 @@
                                     @endphp
                                     <li class="dropdown @if (request()->is('news/' . $category->slug)) active @endif">
                                         <a href="{{ route('getCate.news', $category->slug) }}"
-                                            class="dropdown-toggle category-link" data-toggle="dropdown">
-                                            {{ session()->get('lang') == 'english' ? $category->category_en : $category->category_bn }}
+                                            class="dropdown-toggle category-link">
+                                            {{ $lang == 'english' ? $category->category_en : $category->category_bn }}
                                             @if ($sub_cates->count())
                                                 <i class="fa flm fa-angle-down"></i>
                                             @endif
                                         </a>
 
+                                        {{-- Subcategories dropdown --}}
                                         @if ($sub_cates->count())
-                                            <ul class="dropdown-menu">
+                                            <ul class="dropdown-menu fast-menu">
                                                 @foreach ($sub_cates as $sub_cate)
                                                     <li
                                                         class="{{ request()->is('news/' . $category->slug . '/' . $sub_cate->slug) ? 'active' : '' }}">
                                                         <a
-                                                            href="{{ route('news.sub_cates', [
-                                                                'category' => trim($category->slug),
-                                                                'subcategory' => trim($sub_cate->slug),
-                                                            ]) }}">
-                                                            {{ session()->get('lang') == 'english' ? $sub_cate->sub_cate_en : $sub_cate->sub_cate_bn }}
+                                                            href="{{ route('news.sub_cates', ['category' => trim($category->slug), 'subcategory' => trim($sub_cate->slug)]) }}">
+                                                            {{ $lang == 'english' ? $sub_cate->sub_cate_en : $sub_cate->sub_cate_bn }}
                                                         </a>
-
                                                     </li>
                                                 @endforeach
                                             </ul>
                                         @endif
                                     </li>
                                 @endforeach
+
+                                {{-- Desktop: Mega Menu for remaining categories --}}
+                                @if ($moreCategories->count())
+                                    <li class="dropdown megamenu desktop-only">
+                                        <a href="#" class="dropdown-toggle category-link"
+                                            data-toggle="dropdown">
+                                            {{ $lang == 'english' ? 'More' : 'আরও' }} <i
+                                                class="fa flm fa-angle-down"></i>
+                                        </a>
+
+                                        <div class="dropdown-menu mega-menu">
+                                            <div class="container-fluid">
+                                                <div class="row">
+                                                    @foreach ($moreCategories as $category)
+                                                        @php
+                                                            $sub_cates = DB::table('sub_categories')
+                                                                ->where('category_id', $category->id)
+                                                                ->where('status', 1)
+                                                                ->get();
+                                                        @endphp
+                                                        <div class="col-lg-3 col-md-4 col-sm-6">
+                                                            <div class="mega-menu-category">
+                                                                <h5 class="mega-menu-title">
+                                                                    <a href="{{ route('getCate.news', $category->slug) }}"
+                                                                        class="category-main-link">
+                                                                        <i class="fa fa-folder-o mr-2"></i>
+                                                                        {{ $lang == 'english' ? $category->category_en : $category->category_bn }}
+                                                                    </a>
+                                                                </h5>
+
+                                                                @if ($sub_cates->count())
+                                                                    <ul class="mega-submenu-list">
+                                                                        @foreach ($sub_cates as $sub_cate)
+                                                                            <li class="mega-submenu-item">
+                                                                                <a class="mega-submenu-link"
+                                                                                    href="{{ route('news.sub_cates', ['category' => trim($category->slug), 'subcategory' => trim($sub_cate->slug)]) }}">
+                                                                                    <i
+                                                                                        class="fa fa-angle-right mr-2"></i>
+                                                                                    {{ $lang == 'english' ? $sub_cate->sub_cate_en : $sub_cate->sub_cate_bn }}
+                                                                                </a>
+                                                                            </li>
+                                                                        @endforeach
+                                                                    </ul>
+                                                                @endif
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                @endif
+
+                                {{-- Mobile: Show remaining categories as simple dropdown items --}}
+                                @if ($moreCategories->count())
+                                    @foreach ($moreCategories as $category)
+                                        @php
+                                            $sub_cates = DB::table('sub_categories')
+                                                ->where('category_id', $category->id)
+                                                ->where('status', 1)
+                                                ->get();
+                                        @endphp
+                                        <li
+                                            class="dropdown mobile-only @if (request()->is('news/' . $category->slug)) active @endif">
+                                            <a href="{{ route('getCate.news', $category->slug) }}"
+                                                class="dropdown-toggle category-link">
+                                                {{ $lang == 'english' ? $category->category_en : $category->category_bn }}
+                                                @if ($sub_cates->count())
+                                                    <i class="fa flm fa-angle-down"></i>
+                                                @endif
+                                            </a>
+
+                                            {{-- Subcategories dropdown --}}
+                                            @if ($sub_cates->count())
+                                                <ul class="dropdown-menu fast-menu">
+                                                    @foreach ($sub_cates as $sub_cate)
+                                                        <li
+                                                            class="{{ request()->is('news/' . $category->slug . '/' . $sub_cate->slug) ? 'active' : '' }}">
+                                                            <a
+                                                                href="{{ route('news.sub_cates', ['category' => trim($category->slug), 'subcategory' => trim($sub_cate->slug)]) }}">
+                                                                {{ $lang == 'english' ? $sub_cate->sub_cate_en : $sub_cate->sub_cate_bn }}
+                                                            </a>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            @endif
+                                        </li>
+                                    @endforeach
+                                @endif
+
+                                <style>
+                                    /* Hide mobile-only items on desktop */
+                                    @media (min-width: 992px) {
+                                        .mobile-only {
+                                            display: none !important;
+                                        }
+                                    }
+
+                                    /* Hide desktop-only items on mobile */
+                                    @media (max-width: 991px) {
+                                        .desktop-only {
+                                            display: none !important;
+                                        }
+                                    }
+
+                                    /* Your existing mega menu styles */
+                                    .megamenu {
+                                        position: static !important;
+                                    }
+
+                                    .mega-menu {
+                                        position: absolute !important;
+                                        left: 0 !important;
+                                        top: 100% !important;
+                                        width: 100% !important;
+                                        display: none;
+                                        padding: 30px 0;
+                                        background: #ffffff;
+                                        z-index: 9999;
+                                        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+                                        border: none;
+                                        border-top: 3px solid #e74c3c;
+                                        border-radius: 0 0 8px 8px;
+                                        animation: fadeInDown 0.3s ease;
+                                    }
+
+                                    @keyframes fadeInDown {
+                                        from {
+                                            opacity: 0;
+                                            transform: translateY(-10px);
+                                        }
+
+                                        to {
+                                            opacity: 1;
+                                            transform: translateY(0);
+                                        }
+                                    }
+
+                                    .megamenu:hover .mega-menu {
+                                        display: block !important;
+                                    }
+
+                                    .mega-menu-title {
+                                        margin-bottom: 15px;
+                                        padding-bottom: 10px;
+                                        border-bottom: 2px solid #f8f9fa;
+                                    }
+
+                                    .mega-menu-title a.category-main-link {
+                                        color: #2c3e50 !important;
+                                        font-weight: 600;
+                                        font-size: 16px;
+                                        text-decoration: none;
+                                        transition: all 0.3s ease;
+                                        display: block;
+                                        padding: 5px 0;
+                                    }
+
+                                    .mega-menu-title a.category-main-link:hover {
+                                        color: #e74c3c !important;
+                                        transform: translateX(5px);
+                                    }
+
+                                    .mega-menu-title i {
+                                        color: #e74c3c;
+                                        font-size: 14px;
+                                    }
+
+                                    .mega-submenu-list {
+                                        list-style: none;
+                                        padding: 0;
+                                        margin: 0;
+                                    }
+
+                                    .mega-submenu-item {
+                                        margin-bottom: 8px;
+                                    }
+
+                                    .mega-submenu-link {
+                                        color: #5a6c7d !important;
+                                        text-decoration: none;
+                                        font-size: 14px;
+                                        padding: 6px 0;
+                                        display: block;
+                                        transition: all 0.3s ease;
+                                        border-left: 3px solid transparent;
+                                        padding-left: 10px;
+                                    }
+
+                                    .mega-submenu-link:hover {
+                                        color: #e74c3c !important;
+                                        background: #f8f9fa;
+                                        border-left: 3px solid #e74c3c;
+                                        transform: translateX(5px);
+                                        padding-left: 15px;
+                                    }
+
+                                    .mega-submenu-link i {
+                                        color: #95a5a6;
+                                        font-size: 12px;
+                                        transition: all 0.3s ease;
+                                    }
+
+                                    .mega-submenu-link:hover i {
+                                        color: #e74c3c;
+                                    }
+
+                                    .mega-menu-category {
+                                        padding: 15px;
+                                        margin-bottom: 10px;
+                                        border-radius: 6px;
+                                        transition: all 0.3s ease;
+                                    }
+
+                                    .mega-menu-category:hover {
+                                        background: #f8f9fa;
+                                    }
+
+                                    @media (max-width: 991px) {
+                                        .mega-menu {
+                                            position: static !important;
+                                            width: 100% !important;
+                                            box-shadow: none;
+                                            border: 1px solid #ddd;
+                                        }
+
+                                        .mega-menu .container-fluid {
+                                            padding: 0 15px;
+                                        }
+
+                                        .col-lg-3 {
+                                            margin-bottom: 20px;
+                                        }
+                                    }
+
+                                    .megamenu>.mega-menu::before {
+                                        content: '';
+                                        position: absolute;
+                                        top: -10px;
+                                        left: 0;
+                                        width: 100%;
+                                        height: 10px;
+                                        background: transparent;
+                                    }
+
+                                    .navbar-nav {
+                                        position: static;
+                                    }
+
+                                    .navbar-collapse {
+                                        overflow: visible !important;
+                                    }
+                                </style>
+
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        const megaMenu = document.querySelector('.megamenu');
+                                        const megaDropdown = document.querySelector('.mega-menu');
+
+                                        if (megaMenu && megaDropdown) {
+                                            let menuTimeout;
+
+                                            megaMenu.addEventListener('mouseenter', function() {
+                                                clearTimeout(menuTimeout);
+                                                megaDropdown.style.display = 'block';
+                                            });
+
+                                            megaMenu.addEventListener('mouseleave', function(e) {
+                                                menuTimeout = setTimeout(function() {
+                                                    if (!megaDropdown.matches(':hover')) {
+                                                        megaDropdown.style.display = 'none';
+                                                    }
+                                                }, 200);
+                                            });
+
+                                            megaDropdown.addEventListener('mouseenter', function() {
+                                                clearTimeout(menuTimeout);
+                                                this.style.display = 'block';
+                                            });
+
+                                            megaDropdown.addEventListener('mouseleave', function() {
+                                                menuTimeout = setTimeout(function() {
+                                                    this.style.display = 'none';
+                                                }.bind(this), 200);
+                                            });
+                                        }
+                                    });
+                                </script>
+
                             </ul>
                         </div>
-                        <form action="#" class="header--search-form float--right" data-form="validate">
-                            <input type="search" name="search" placeholder="Search..."
-                                class="header--search-control form-control" required="" />
+
+
+                        <!-- 🔍 Navbar Search Icon -->
+                        <form action="javascript:void(0)" class="header--search-form float--right" id="openSearch">
                             <button type="submit" class="header--search-btn btn">
-                                <i class="header--search-icon fa fa-search"></i>
+                                <i class="fa fa-search"></i>
                             </button>
                         </form>
+
+                        <!-- 🔍 Search Mega Menu -->
+                        <div class="search-megamenu" id="searchMegaMenu">
+                            <div class="container">
+                                <div class="search-box">
+                                    <input type="text" placeholder="খুঁজুন..." id="searchInput" />
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-search"><i
+                                                class="fa fa-search"></i></button>
+                                        <button type="button" class="btn btn-close" id="closeSearch"><i
+                                                class="fa fa-times"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <style>
+                            /* Mega menu search wrapper */
+                            .search-megamenu {
+                                position: absolute;
+                                top: 100%;
+                                left: 0;
+                                width: 100%;
+                                background: #fff;
+                                padding: 20px 0;
+                                border-top: 2px solid #3498db;
+                                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                                display: none;
+                                z-index: 9999;
+                            }
+
+                            .search-megamenu.active {
+                                display: block;
+                                animation: fadeInDown 0.3s ease;
+                            }
+
+                            /* Container */
+                            .search-megamenu .container {
+                                max-width: 1140px;
+                                margin: 0 auto;
+                                padding: 0 20px;
+                            }
+
+                            /* Search box */
+                            .search-box {
+                                display: flex;
+                                align-items: center;
+                                background: #f9f9f9;
+                                border: 1px solid #ddd;
+                                border-radius: 50px;
+                                padding: 8px 12px;
+                            }
+
+                            .search-box input {
+                                flex: 1;
+                                border: none;
+                                background: transparent;
+                                font-size: 16px;
+                                padding: 10px;
+                                outline: none;
+                                color: #333;
+                            }
+
+                            .search-box input::placeholder {
+                                color: #999;
+                                opacity: 1;
+                            }
+
+                            .btn-group {
+                                display: flex;
+                                gap: 8px;
+                            }
+
+                            .btn {
+                                border: none;
+                                border-radius: 50%;
+                                padding: 12px 14px;
+                                font-size: 16px;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                            }
+
+                            /* Search button */
+                            .btn-search {
+                                background: linear-gradient(135deg, #3498db, #2980b9);
+                                color: #fff;
+                            }
+
+                            .btn-search:hover {
+                                background: linear-gradient(135deg, #2980b9, #1f6391);
+                                transform: scale(1.05);
+                            }
+
+                            /* Close button */
+                            .btn-close {
+                                background: linear-gradient(135deg, #e74c3c, #c0392b);
+                                color: #fff;
+                            }
+
+                            .btn-close:hover {
+                                background: linear-gradient(135deg, #c0392b, #962d22);
+                                transform: scale(1.05);
+                            }
+
+                            /* Animation */
+                            @keyframes fadeInDown {
+                                from {
+                                    opacity: 0;
+                                    transform: translateY(-10px);
+                                }
+
+                                to {
+                                    opacity: 1;
+                                    transform: translateY(0);
+                                }
+                            }
+
+                            /* Responsive */
+                            @media (max-width: 768px) {
+                                .search-box {
+                                    flex-direction: column;
+                                    border-radius: 12px;
+                                    padding: 12px;
+                                }
+
+                                .search-box input {
+                                    width: 100%;
+                                    margin-bottom: 10px;
+                                }
+                            }
+                        </style>
+
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                const openSearchBtn = document.querySelector("#openSearch .header--search-btn");
+                                const searchMegaMenu = document.getElementById("searchMegaMenu");
+                                const closeSearch = document.getElementById("closeSearch");
+                                const searchInput = document.getElementById("searchInput");
+
+                                // Select all mega menus
+                                const megaMenus = document.querySelectorAll(".megamenu");
+
+                                // Store original hover events if needed
+                                megaMenus.forEach(menu => {
+                                    menu.originalPointerEvents = menu.style.pointerEvents || "";
+                                });
+
+                                // Function to toggle mega menu hover
+                                function toggleMegaMenuHover(disable) {
+                                    megaMenus.forEach(menu => {
+                                        if (disable) {
+                                            menu.style.pointerEvents = "none"; // disables hover interaction
+                                        } else {
+                                            menu.style.pointerEvents = menu.originalPointerEvents || "auto";
+                                        }
+                                    });
+                                }
+
+                                // Open search
+                                openSearchBtn.addEventListener("click", function() {
+                                    searchMegaMenu.classList.add("active");
+                                    toggleMegaMenuHover(true);
+                                    setTimeout(() => searchInput.focus(), 200);
+                                });
+
+                                // Close search function
+                                function closeSearchMenu() {
+                                    searchMegaMenu.classList.remove("active");
+                                    toggleMegaMenuHover(false);
+                                }
+
+                                // Close search on button click
+                                closeSearch.addEventListener("click", closeSearchMenu);
+
+                                // Close search on click outside
+                                document.addEventListener("click", function(e) {
+                                    if (!searchMegaMenu.contains(e.target) && !openSearchBtn.contains(e.target)) {
+                                        closeSearchMenu();
+                                    }
+                                });
+                            });
+                        </script>
+
+
                     </div>
                 </div>
             </div>
