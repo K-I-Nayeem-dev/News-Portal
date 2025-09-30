@@ -1,6 +1,5 @@
 @extends('layouts.newsIndex.newsMaster')
 
-
 @section('content')
     {{-- Code for Responsive iframe livetv --}}
     <style>
@@ -8,7 +7,6 @@
             position: relative;
             width: 100%;
             padding-bottom: 78.95%;
-            /* (600 / 760) * 100 */
             height: 0;
             overflow: hidden;
         }
@@ -40,15 +38,13 @@
             animation: pulse-animation 1.5s infinite;
         }
 
-        @keyframes pulsee-animation {
+        @keyframes pulse-animation {
             0% {
                 box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
             }
-
             70% {
                 box-shadow: 0 0 0 8px rgba(255, 0, 0, 0);
             }
-
             100% {
                 box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
             }
@@ -69,43 +65,59 @@
                                 @endif
                             </div>
                             <div style="border-bottom: 2px solid #1B84FF; margin-bottom: 15px"></div>
-                            <div class="responsive-iframe-container">
-                                {!! $liveTv->embed_code !!}
-                            </div>
+
+                            @if(!empty($liveTv?->embed_code))
+                                <div class="responsive-iframe-container">
+                                    {!! $liveTv->embed_code !!}
+                                </div>
+                            @else
+                                <p style="color: red;">No Live TV available currently.</p>
+                            @endif
                         </div>
                     </div>
                 </div>
 
-                {{-- this section is for Add --}}
+                {{-- Sidebar Ads --}}
                 <div class="main--sidebar col-md-4 col-sm-5 ptop--30 pbottom--30" style="margin-top: 21px;">
-                    <div class="sticky-content-inner">
-                        <div class="widget">
-                            <div class="ad--widget">
-                                <a href="#">
-                                    <img src="{{ asset('frontend_assets') }}/img/ads-img/ad-300x250-1.jpg" alt="" />
-                                </a>
+                    @foreach ([$ls1, $ls2] as $ad)
+                        @if(!empty($ad?->id) && file_exists(public_path($ad?->image ?? '')))
+                            <div class="sticky-content-inner" style="margin-top: 20px !important">
+                                <div class="widget">
+                                    <a href="{{ route('ads.trackClick', $ad->id) }}" target="_blank">
+                                        <div class="ad--widget">
+                                            <img src="{{ asset($ad->image) }}" alt="{{ $ad->title_en ?? 'Advertisement' }}" />
+                                        </div>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="sticky-content-inner">
-                        <div class="widget">
-                            <div class="ad--widget">
-                                <a href="#">
-                                    <img src="{{ asset('frontend_assets') }}/img/ads-img/ad-300x250-1.jpg" alt="" />
-                                </a>
+                        @else
+                            <div class="sticky-content-inner" style="margin-top: 20px !important">
+                                <div class="widget">
+                                    <div class="ad--widget">
+                                        <img src="{{ asset('frontend_assets/img/ads-img/ad-300x250-1.jpg') }}" alt="Advertisement" />
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        @endif
+                    @endforeach
                 </div>
             </div>
+
+            {{-- Bottom Ad --}}
             <div class="row">
-                <div class="col-md-12  pbottom--30">
-                    <div class="ad--space">
-                        <a
-                            href="#">
-                            <img src="{{ asset('frontend_assets') }}/img/ads-img/ad-728x90-01.jpg" alt=""
-                                class="center-block" />
-                        </a>
+                <div class="col-md-12 pbottom--30">
+                    <div class="widget">
+                        @if(!empty($lb?->id) && file_exists(public_path($lb?->image ?? '')))
+                            <a href="{{ route('ads.trackClick', $lb->id) }}" target="_blank">
+                                <div class="ad--widget">
+                                    <img src="{{ asset($lb->image) }}" alt="{{ $lb->title_en ?? 'Advertisement' }}" />
+                                </div>
+                            </a>
+                        @else
+                            <div class="ad--widget">
+                                <img src="{{ asset('frontend_assets/img/ads-img/ad-300x250-1.jpg') }}" alt="Advertisement" />
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>

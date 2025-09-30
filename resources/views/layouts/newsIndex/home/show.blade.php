@@ -61,13 +61,43 @@
                         <div class="post--item post--single post--title-largest">
                             <div style="display: flex; justify-content: space-between; align-items: center;">
                                 <div class="post--tags">
-                                    <ul class="nav">
-                                        <li>
-                                            <span><i class="fa fa-tags"></i></span>
+                                    <ul class="nav" style="display: flex; list-style: none; padding: 0; margin: 0;">
+                                        <li style="margin-right: 10px;">
+                                            <span><i class="fa fa-folder"></i></span>
                                         </li>
-                                        @foreach ($tags as $tag)
-                                            <li><a href="#">{{ $tag }}</a></li>
-                                        @endforeach
+
+                                        {{-- Category --}}
+                                        @if ($news->newsCategory)
+                                            <li style="margin-right: 10px; display: inline-block;">
+                                                <a href="{{ route('getCate.news', $news->newsCategory->slug) }}"
+                                                    style="text-decoration: none; padding: 5px 10px; background: #3498db; color: white; border-radius: 3px;">
+                                                    @if (session()->get('lang') == 'english')
+                                                        {{ $news->newsCategory->category_en ?? 'Category' }}
+                                                    @else
+                                                        {{ $news->newsCategory->category_bn ?? 'ক্যাটেগরি' }}
+                                                    @endif
+                                                </a>
+                                            </li>
+                                        @endif
+
+                                        {{-- Subcategory --}}
+                                        @if ($news->newsSubCategory)
+                                            <li style="margin-right: 10px; display: inline-block;">
+                                                <a href="{{ route('news.sub_cates', [$news->newsCategory->slug, $news->newsSubCategory->slug]) }}"
+                                                    style="text-decoration: none; padding: 5px 10px; background: #e74c3c; color: white; border-radius: 3px;">
+                                                    @if (session()->get('lang') == 'english')
+                                                        {{ $news->newsSubCategory->subcategory_en ?? 'Subcategory' }}
+                                                    @else
+                                                        {{ $news->newsSubCategory->subcategory_bn ?? 'সাবক্যাটেগরি' }}
+                                                    @endif
+                                                </a>
+                                            </li>
+                                        @endif
+
+                                        {{-- If no category or subcategory exists --}}
+                                        @if (!$news->newsCategory && !$news->newsSubCategory)
+                                            <li style="color: #666;">No category found</li>
+                                        @endif
                                     </ul>
                                 </div>
                                 <div class="post--social" style="margin-bottom: 15px">
@@ -142,6 +172,39 @@
                                         </iframe>
                                     </div>
                                 @endif
+
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: flex-start; margin: 20px 0;">
+                                    <div class="post--tags"
+                                        style="flex: 1; max-width: 100%; display: flex; align-items: flex-start; gap: 10px;">
+                                        <div style="color: #666; padding-top: 6px; flex-shrink: 0;">
+                                            <i class="fa fa-tags" style="font-size: 16px;"></i>
+                                        </div>
+                                        <ul class="nav"
+                                            style="display: flex; flex-wrap: wrap; list-style: none; padding: 0; margin: 0; align-items: flex-start; row-gap: 8px; column-gap: 8px; flex: 1;">
+                                            @if ($news->tags && $news->tags->count() > 0)
+                                                @foreach ($news->tags as $tag)
+                                                    <li style="display: inline-flex;">
+                                                        <a href="{{ route('tag.news', $tag->slug) }}"
+
+                                                            style="text-decoration: none; padding: 5px 12px; background: #f0f0f0; border-radius: 20px; display: inline-block; font-size: 13px; color: #333;"
+                                                            onmouseover="this.style.background='#e74c3c'; this.style.color='white';"
+                                                            onmouseout="this.style.background='#f0f0f0'; this.style.color='#333';">
+                                                            @if (session()->get('lang') == 'english')
+                                                                {{ $tag->tag_en }}
+                                                            @else
+                                                                {{ $tag->tag_bn }}
+                                                            @endif
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            @else
+                                                <li style="color: #999; font-size: 13px;">No tags found</li>
+                                            @endif
+                                        </ul>
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="ad--space pd--20-0-40">
                                 <a href="{{ route('ads.trackClick', $nm->id) }}" target="_blank">
@@ -179,44 +242,166 @@
                                     <img src="{{ $nlb && file_exists(public_path($nlb->image))
                                         ? asset($nlb->image)
                                         : asset('frontend_assets/img/ads-img/ad-300x250-1.jpg') }}"
-                                        alt="{{ $nlb->title_en ?? 'Advertisement' }}" data-rjs="2" class="img-fluid" />
+                                        alt="{{ $nlb->title_en ?? 'Advertisement' }}" data-rjs="2"
+                                        class="img-fluid" />
                                 </a>
                             </div>
                         </div>
-                        <div>
+
+                        <div class="news-peoples-choice-section">
                             <div style="margin-top: 30px;">
                                 <h3
                                     style="font-size: 18px; font-weight: bold; display: inline; border-bottom: 2px solid #DA0000; padding-bottom: 10px">
                                     {!! session()->get('lang') == 'english'
                                         ? $news->newsCategory->category_en . '<span> Peoples Choice </span>'
-                                        : $news->newsCategory->category_bn . '<span> এর পাঠক প্রিয় </span>' !!}
+                                        : $news->newsCategory->category_bn . '<span> এর পাঠক প্রিয় </span>' !!}
                                 </h3>
                             </div>
-                            @foreach ($relatedNews as $row)
-                                <div>
-                                    <h3 style="font-size: 19.2px;">{{ $row->title_en }}</h3>
-                                    <div style="display: flex; align-items: center; margin-top: 20px">
-                                        <p>{!! session()->get('lang') == 'english'
-                                            ? \Illuminate\Support\Str::limit($row->details_en, 60)
-                                            : \Illuminate\Support\Str::limit($row->details_bn, 60) !!}</p>
 
-                                        <a href="news-single-v1.html" class="thumb">
-                                            @php
-                                                $isPlaceholder = Str::contains($row->thumbnail, 'via.placeholder.com');
-                                                $imageToShow =
-                                                    !$isPlaceholder && !empty($row->thumbnail)
-                                                        ? asset($row->thumbnail)
-                                                        : asset('uploads/default_images/deafult_thumbnail.jpg');
-                                            @endphp
+                            <div class="news-items-container">
+                                @foreach ($relatedNews as $row)
+                                    <div class="news-item-wrapper">
+                                        <a href="{{ route('showFull.news', [
+                                            'category' => $row->newsCategory->slug ?? '',
+                                            'subcategory' => $row->newsSubcategory->slug ?? '',
+                                            'id' => $row->id,
+                                        ]) }}"
+                                            class="news-content-link">
 
-                                            <img style="width: 300px; height: 80px; padding: 0px 0px 0px 20px"
-                                                src="{{ $imageToShow }}" alt="{{ $row->title_en }}" class="img-fluid">
+                                            <div class="news-text-content">
+                                                <h3 class="news-item-title">{{ $row->title_en }}</h3>
+                                                <p class="news-item-excerpt">
+                                                    {!! session()->get('lang') == 'english'
+                                                        ? \Illuminate\Support\Str::limit($row->details_en, 60)
+                                                        : \Illuminate\Support\Str::limit($row->details_bn, 60) !!}
+                                                </p>
+                                            </div>
 
+                                            <div class="news-thumbnail-wrapper">
+                                                @php
+                                                    $isPlaceholder = Str::contains(
+                                                        $row->thumbnail,
+                                                        'via.placeholder.com',
+                                                    );
+                                                    $imageToShow =
+                                                        !$isPlaceholder && !empty($row->thumbnail)
+                                                            ? asset($row->thumbnail)
+                                                            : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                                @endphp
+                                                <img src="{{ $imageToShow }}" alt="{{ $row->title_en }}"
+                                                    class="news-thumbnail-img">
+                                            </div>
                                         </a>
                                     </div>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            </div>
                         </div>
+
+                        <style>
+                            /* Scoped styles for news peoples choice section */
+                            .news-peoples-choice-section .news-items-container {
+                                margin-top: 20px;
+                            }
+
+                            .news-peoples-choice-section .news-item-wrapper {
+                                margin-bottom: 20px;
+                                border-bottom: 1px solid #e0e0e0;
+                                padding-bottom: 15px;
+                            }
+
+                            .news-peoples-choice-section .news-item-wrapper:last-child {
+                                border-bottom: none;
+                            }
+
+                            .news-peoples-choice-section .news-content-link {
+                                display: flex;
+                                align-items: center;
+                                gap: 15px;
+                                text-decoration: none;
+                                color: inherit;
+                            }
+
+                            .news-peoples-choice-section .news-text-content {
+                                flex: 1;
+                                min-width: 0;
+                                /* Allows text to shrink properly */
+                            }
+
+                            .news-peoples-choice-section .news-item-title {
+                                font-size: 19.2px;
+                                margin: 0 0 10px 0;
+                                line-height: 1.4;
+                                color: #333;
+                            }
+
+                            .news-peoples-choice-section .news-item-excerpt {
+                                margin: 0;
+                                color: #666;
+                                font-size: 14px;
+                                line-height: 1.5;
+                            }
+
+                            .news-peoples-choice-section .news-thumbnail-wrapper {
+                                flex-shrink: 0;
+                                width: 120px;
+                                height: 80px;
+                            }
+
+                            .news-peoples-choice-section .news-thumbnail-img {
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                                display: block;
+                                border-radius: 4px;
+                            }
+
+                            /* Responsive styles */
+                            @media (max-width: 768px) {
+                                .news-peoples-choice-section .news-thumbnail-wrapper {
+                                    width: 100px;
+                                    height: 70px;
+                                }
+
+                                .news-peoples-choice-section .news-item-title {
+                                    font-size: 16px;
+                                }
+
+                                .news-peoples-choice-section .news-item-excerpt {
+                                    font-size: 13px;
+                                }
+                            }
+
+                            @media (max-width: 480px) {
+                                .news-peoples-choice-section .news-content-link {
+                                    gap: 10px;
+                                }
+
+                                .news-peoples-choice-section .news-thumbnail-wrapper {
+                                    width: 90px;
+                                    height: 60px;
+                                }
+
+                                .news-peoples-choice-section .news-item-title {
+                                    font-size: 15px;
+                                }
+
+                                .news-peoples-choice-section .news-item-excerpt {
+                                    font-size: 12px;
+                                }
+                            }
+
+                            /* Hover effect */
+                            .news-peoples-choice-section .news-content-link:hover .news-item-title {
+                                color: #DA0000;
+                            }
+
+                            .news-peoples-choice-section .news-content-link:hover .news-thumbnail-img {
+                                opacity: 0.9;
+                                transform: scale(1.02);
+                                transition: all 0.3s ease;
+                            }
+                        </style>
+
                         <div class="resize-sensor"
                             style="position: absolute; inset: 0px; overflow: hidden; z-index: -1; visibility: hidden;">
                             <div class="resize-sensor-expand"
@@ -247,7 +432,12 @@
                                 <div class="col-6 col-sm-6 col-md-4 mt-3" style="margin-top: 20px">
                                     <div>
                                         <div class="post--img">
-                                            <a href="news-single-v1.html" class="thumb">
+                                            <a href="{{ route('showFull.news', [
+                                                'category' => $row->newsCategory->slug ?? '',
+                                                'subcategory' => $row->newsSubcategory->slug ?? '',
+                                                'id' => $row->id,
+                                            ]) }}"
+                                                class="thumb">
                                                 @php
                                                     $isPlaceholder = Str::contains(
                                                         $row->thumbnail,
@@ -263,7 +453,7 @@
                                                     class="img-fluid">
 
                                             </a>
-                                            <a href="#" class="cat">
+                                            <a class="cat">
                                                 @if (session()->get('lang') == 'english')
                                                     {{ $row->newsCategory->category_en }}
                                                 @else
@@ -274,7 +464,12 @@
 
                                                 <div class="title">
                                                     <h2 class="h4">
-                                                        <a href="news-single-v1.html" class="btn-link">
+                                                        <a href="{{ route('showFull.news', [
+                                                            'category' => $row->newsCategory->slug ?? '',
+                                                            'subcategory' => $row->newsSubcategory->slug ?? '',
+                                                            'id' => $row->id,
+                                                        ]) }}"
+                                                            class="btn-link">
                                                             @if (session()->get('lang') == 'english')
                                                                 {{ $row->title_en }}
                                                             @else

@@ -144,21 +144,75 @@
                                             <div class="col-md-6">
                                                 <div class="form-check mb-2">
                                                     <input class="form-check-input" type="checkbox"
-                                                        name="category_sidebar" id="category_sidebar" value="1"
-                                                        {{ old('category_sidebar', $ad->category_sidebar) ? 'checked' : '' }}>
-                                                    <label class="form-check-label" for="category_sidebar">
-                                                        Category Sidebar <span class="fs-1">(300x250)</span>
+                                                        name="category_sidebar1" id="category_sidebar" value="1"
+                                                        {{ old('category_sidebar1', $ad->category_sidebar1) ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="category_sidebar1">
+                                                        Category Sidebar 1<span class="fs-1">(300x250)</span>
                                                     </label>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-check mb-2">
                                                     <input class="form-check-input" type="checkbox"
-                                                        name="subcategory_sidebar" id="subcategory_sidebar"
+                                                        name="category_sidebar2" id="category_sidebar" value="1"
+                                                        {{ old('category_sidebar2', $ad->category_sidebar2) ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="category_sidebar2">
+                                                        Category Sidebar 2<span class="fs-1">(300x250)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check mb-2">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        name="subcategory_sidebar1" id="subcategory_sidebar1"
                                                         value="1"
-                                                        {{ old('subcategory_sidebar', $ad->subcategory_sidebar) ? 'checked' : '' }}>
+                                                        {{ old('subcategory_sidebar1', $ad->subcategory_sidebar1) ? 'checked' : '' }}>
                                                     <label class="form-check-label" for="subcategory_sidebar">
-                                                        Subcategory Sidebar <span class="fs-1">(300x250)</span>
+                                                        Subcategory Sidebar 1<span class="fs-1">(300x250)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check mb-2">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        name="subcategory_sidebar2" id="subcategory_sidebar2"
+                                                        value="1"
+                                                        {{ old('subcategory_sidebar2', $ad->subcategory_sidebar2) ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="subcategory_sidebar2">
+                                                        Subcategory Sidebar 2<span class="fs-1">(300x250)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check mb-2">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        name="liveTv_sidebar1" id="liveTv_sidebar1"
+                                                        value="1"
+                                                        {{ old('liveTv_sidebar1', $ad->liveTv_sidebar1) ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="liveTv_sidebar1">
+                                                        LiveTv Sidebar 1<span class="fs-1">(300x250)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check mb-2">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        name="liveTv_sidebar2" id="liveTv_sidebar2"
+                                                        value="1"
+                                                        {{ old('liveTv_sidebar2', $ad->liveTv_sidebar2) ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="liveTv_sidebar2">
+                                                        LiveTv Sidebar 2<span class="fs-1">(300x250)</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check mb-2">
+                                                    <input class="form-check-input" type="checkbox"
+                                                        name="liveTv_bottom" id="liveTv_bottom"
+                                                        value="1"
+                                                        {{ old('liveTv_bottom', $ad->liveTv_bottom) ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="liveTv_bottom">
+                                                        LiveTv Bottom<span class="fs-1">(728x90)</span>
                                                     </label>
                                                 </div>
                                             </div>

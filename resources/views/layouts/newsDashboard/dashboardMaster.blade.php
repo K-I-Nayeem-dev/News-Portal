@@ -231,6 +231,21 @@
                             </li>
                         @endhasanyrole
 
+
+                        <!-- ---------------------------------- -->
+                        <!-- Polls -->
+                        <!-- ---------------------------------- -->
+
+
+                        @hasanyrole('superadmin|admin|editor|advertiser|moderator')
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" href="{{ route('polls.index') }}">
+                                    <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
+                                    <span class="hide-menu">Polls</span>
+                                </a>
+                            </li>
+                        @endhasanyrole
+
                         @hasanyrole('superadmin|admin|editor|contributor|moderator|writer')
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="{{ route('breaking_news.index') }}">

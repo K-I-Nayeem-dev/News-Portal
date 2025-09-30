@@ -33,7 +33,10 @@
                 <div class="mb-3">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
-                            <h5 class="text-muted">Total Ads : {{ $ads->count() }}</h5>
+                            <h5 class="text-muted" data-bs-toggle="tooltip" data-bs-placement="top"
+                                data-bs-custom-class="custom-tooltip" title="Click To Show Ads Performance">
+                                <a href="{{ route('ads.performance') }}">Total Ads : {{ $ads->count() }}</a>
+                            </h5>
                         </div>
                         @hasanyrole('superadmin|admin|advertiser|moderator')
                             <!-- Button trigger modal -->
@@ -139,7 +142,8 @@
                                                     <div class="col-md-6">
                                                         <div class="form-check mb-2">
                                                             <input class="form-check-input" type="checkbox"
-                                                                name="news_details_middle" id="news_details_middle" value="1">
+                                                                name="news_details_middle" id="news_details_middle"
+                                                                value="1">
                                                             <label class="form-check-label" for="news_details_middle">
                                                                 News Middle <span class="fs-1">(728x90)</span>
                                                             </label>
@@ -160,44 +164,92 @@
                                                     <div class="col-md-6">
                                                         <div class="form-check mb-2">
                                                             <input class="form-check-input" type="checkbox"
-                                                                name="category_sidebar" id="category_sidebar"
+                                                                name="category_sidebar1" id="category_sidebar1"
                                                                 value="1">
-                                                            <label class="form-check-label" for="category_sidebar">
-                                                                Category Sidebar <span class="fs-1">(300x250)</span>
+                                                            <label class="form-check-label" for="category_sidebar1">
+                                                                Category Sidebar 1<span class="fs-1">(300x250)</span>
                                                             </label>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
                                                         <div class="form-check mb-2">
                                                             <input class="form-check-input" type="checkbox"
-                                                                name="subcategory_sidebar" id="subcategory_sidebar"
+                                                                name="category_sidebar2" id="category_sidebar2"
                                                                 value="1">
-                                                            <label class="form-check-label" for="subcategory_sidebar">
-                                                                Subcategory Sidebar <span class="fs-1">(300x250)</span>
+                                                            <label class="form-check-label" for="category_sidebar2">
+                                                                Category Sidebar 2<span class="fs-1">(300x250)</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="subcategory_sidebar1" id="subcategory_sidebar1"
+                                                                value="1">
+                                                            <label class="form-check-label" for="subcategory_sidebar1">
+                                                                Subcategory Sidebar 1<span class="fs-1">(300x250)</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="subcategory_sidebar2" id="subcategory_sidebar2"
+                                                                value="1">
+                                                            <label class="form-check-label" for="subcategory_sidebar2">
+                                                                Subcategory Sidebar 2<span class="fs-1">(300x250)</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="liveTv_sidebar1" id="livetv_sidebar1"
+                                                                value="1">
+                                                            <label class="form-check-label" for="livetv_sidebar1">
+                                                                LiveTv Sidebar 1<span class="fs-1">(300x250)</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="liveTv_sidebar2" id="livetv_sidebar2"
+                                                                value="1">
+                                                            <label class="form-check-label" for="livetv_sidebar2">
+                                                                LiveTv Sidebar 2<span class="fs-1">(300x250)</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input" type="checkbox"
+                                                                name="liveTv_bottom" id="livetv_bottom" value="1">
+                                                            <label class="form-check-label" for="livetv_bottom">
+                                                                LiveTV Bottom<span class="fs-1">(728x90)</span>
                                                             </label>
                                                         </div>
                                                     </div>
                                                 </div>
+
+
+                                                <div class="mt-3">
+                                                    <label class='form-label' for="type">Ads Type<sup><code
+                                                                style="font-size: 12px">*</code></sup></label>
+
+                                                    <select class="form-select select2" name="type" id="type"
+                                                        autocomplete="off">
+                                                        <option value="">Select Type</option>
+                                                        <option value="1">Square</option>
+                                                        <option value="0">Horizontal</option>
+                                                    </select>
+                                                </div>
                                             </div>
-
-
-                                            <div class="mt-3">
-                                                <label class='form-label' for="type">Ads Type<sup><code
-                                                            style="font-size: 12px">*</code></sup></label>
-
-                                                <select class="form-select select2" name="type" id="type"
-                                                    autocomplete="off">
-                                                    <option value="">Select Type</option>
-                                                    <option value="1">Square</option>
-                                                    <option value="0">Horizontal</option>
-                                                </select>
+                                            <div class="mt-3 d-flex justify-content-end">
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary ms-2">Upload</button>
                                             </div>
-                                        </div>
-                                        <div class="mt-3 d-flex justify-content-end">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary ms-2">Upload</button>
-                                        </div>
                                     </form>
                                 </div>
                             </div>
@@ -206,12 +258,13 @@
 
                 </div>
 
-                <div class="row g-3 justify-content-start">
+                <div class="row g-3 justify-content-start mt-3">
                     @forelse ($ads as $row)
                         <div class="col-6 col-sm-4 col-md-3">
                             <div class="card" style="width: 18rem;">
                                 <a data-fancybox="gallery" href="{{ asset($row->image) }}">
-                                    <img src="{{ asset($row->image) }}" class="card-img-top" alt="{{ $row->title_en }}">
+                                    <img src="{{ asset($row->image) }}" class="card-img-top"
+                                        alt="{{ $row->title_en }}">
                                 </a>
                                 <div class="card-body px-3">
                                     <div class="row">

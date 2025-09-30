@@ -27,9 +27,16 @@ return new class extends Migration
             $table->boolean('news_bottom')->default(false);
             $table->boolean('news_details_middle')->default(false);
 
+            // Live Tv Positions
+            $table->boolean('liveTv_sidebar1')->default(false);
+            $table->boolean('liveTv_sidebar2')->default(false);
+            $table->boolean('liveTv_bottom')->default(false);
+
             // Category/Subcategory positions
-            $table->boolean('category_sidebar')->default(false);
-            $table->boolean('subcategory_sidebar')->default(false);
+            $table->boolean('category_sidebar1')->default(false);
+            $table->boolean('category_sidebar2')->default(false);
+            $table->boolean('subcategory_sidebar1')->default(false);
+            $table->boolean('subcategory_sidebar2')->default(false);
 
             $table->timestamps();
         });

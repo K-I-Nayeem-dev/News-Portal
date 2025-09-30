@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('tag_en');
             $table->string('tag_bn')->nullable();
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }

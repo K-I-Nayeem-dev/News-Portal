@@ -29,15 +29,21 @@ class AdsController extends Controller implements HasMiddleware
     public function index()
     {
         $ads = Ads::latest()->paginate(30);
+
         $positions = [
             'front_top_banner'    => 'Front Top Banner',
             'front_bottom'        => 'Front Bottom',
             'news_left_banner'    => 'News Left Banner',
             'news_3_sidebar'      => 'News 3 Sidebar',
             'news_bottom'         => 'News Bottom',
-            'news_details_middle'         => 'News Middle',
-            'category_sidebar'    => 'Category Sidebar',
-            'subcategory_sidebar' => 'Subcategory Sidebar',
+            'news_details_middle' => 'News Middle',
+            'category_sidebar1'   => 'Category Sidebar 1',
+            'category_sidebar2'   => 'Category Sidebar 2',
+            'subcategory_sidebar1' => 'Subcategory Sidebar 1',
+            'subcategory_sidebar2' => 'Subcategory Sidebar 2',
+            'liveTv_sidebar1' => 'LiveTV Sidebar 1',
+            'liveTv_sidebar2' => 'LiveTV Sidebar 2',
+            'liveTv_bottom' => 'LiveTV Bottom',
         ];
         return view('layouts.newsDashboard.ads.index', [
             'ads' => $ads,
@@ -58,11 +64,13 @@ class AdsController extends Controller implements HasMiddleware
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'url' => 'required',
-            'type' => 'required',
-            'image' => 'required|image|mimes:jpg,jpeg,png,gif|max:1024',
-        ]);
+
+
+        // $request->validate([
+        //     'url' => 'required',
+        //     'type' => 'required',
+        //     'image' => 'required|image|mimes:jpg,jpeg,png,gif|max:1024',
+        // ]);
 
         // Prepare checkbox fields
         $positionFields = [
@@ -72,8 +80,13 @@ class AdsController extends Controller implements HasMiddleware
             'news_3_sidebar',
             'news_bottom',
             'news_details_middle',
-            'category_sidebar',
-            'subcategory_sidebar'
+            'category_sidebar1',
+            'category_sidebar2',
+            'subcategory_sidebar1',
+            'subcategory_sidebar2',
+            'liveTv_sidebar1',
+            'liveTv_sidebar2',
+            'liveTv_bottom',
         ];
 
         // Prepare data array
@@ -172,8 +185,13 @@ class AdsController extends Controller implements HasMiddleware
             'news_3_sidebar'      => $request->has('news_3_sidebar') ? 1 : 0,
             'news_bottom'         => $request->has('news_bottom') ? 1 : 0,
             'news_details_middle'         => $request->has('news_details_middle') ? 1 : 0,
-            'category_sidebar'    => $request->has('category_sidebar') ? 1 : 0,
-            'subcategory_sidebar' => $request->has('subcategory_sidebar') ? 1 : 0,
+            'category_sidebar1'    => $request->has('category_sidebar1') ? 1 : 0,
+            'category_sidebar2'    => $request->has('category_sidebar2') ? 1 : 0,
+            'subcategory_sidebar1' => $request->has('subcategory_sidebar2') ? 1 : 0,
+            'subcategory_sidebar2' => $request->has('subcategory_sidebar2') ? 1 : 0,
+            'liveTv_sidebar1' => $request->has('liveTv_sidebar1') ? 1 : 0,
+            'liveTv_sidebar2' => $request->has('liveTv_sidebar2') ? 1 : 0,
+            'liveTv_bottom' => $request->has('liveTv_bottom') ? 1 : 0,
         ];
 
         $imageManager = new ImageManager(new Driver());

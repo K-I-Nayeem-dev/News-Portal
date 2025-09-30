@@ -26,6 +26,7 @@ use App\Http\Controllers\WatermarkController;
 use App\Http\Controllers\WebsiteListController;
 use App\Http\Controllers\WebsiteSettingController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\PollController;
 use App\Models\BandwidthUsage;
 use Illuminate\Support\Facades\Route;
 
@@ -47,6 +48,10 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/video-gallery', 'videogallery')->name('video.gallery');
 
     Route::prefix('news')->group(function () {
+
+        // Route to show news by tag
+        Route::get('/tag/{slug}', 'getTagNews')->name('tag.news');
+
         // For Single News View Method
         Route::get('/{category}/{subcategory?}/{id}', 'showFull_news')->name('showFull.news');
 
@@ -61,6 +66,14 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/ads/click/{ad}', [AdsController::class, 'trackClick'])->name('ads.trackClick');
     Route::get('/admin/ads/performance', [AdsController::class, 'performance'])->name('ads.performance');
     Route::get('/admin/ads/{ad}/clicks', [AdsController::class, 'viewClicks'])->name('ads.view');
+
+    // Language Switcher
+    Route::get('/language/{locale}', [PollController::class, 'switchLanguage'])->name('language.switch');
+
+    // Public Poll Routes (No Login Required)
+    Route::get('/polls', [PollController::class, 'index'])->name('polls.index');
+    Route::get('/polls/{id}', [PollController::class, 'show'])->name('polls.show');
+    Route::post('/polls/{id}/vote', [PollController::class, 'vote'])->name('polls.vote');
 });
 
 
@@ -120,6 +133,7 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
         'ads' => AdsController::class,
         'website_setting' => WebsiteSettingController::class,
         'tags' => TagsController::class,
+        'polls' => PollController::class,
     ]);
 
     // Specific Version (Bangla/English) News Show Routes

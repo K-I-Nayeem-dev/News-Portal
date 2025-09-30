@@ -7,18 +7,16 @@ use App\Models\Division;
 use App\Models\LiveTv;
 use App\Models\News;
 use App\Models\news_photo;
-use App\Models\Seo;
-use App\Models\Social;
 use App\Models\SubCategory;
 use App\Models\VideoGallery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Models\PhotoGallery;
-use App\Models\Website_Setting;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Response;
 use App\Models\Ads;
+use App\Models\Tags;
 
 class HomeController extends Controller
 {
@@ -155,7 +153,9 @@ class HomeController extends Controller
 
 
         // For Category News Counts
-        $categoriesCount = Category::withCount('news')->get();
+        $tagsWithNewsCount = Tags::withCount('news')
+            ->having('news_count', '>', 0)
+            ->get();
 
         return view('layouts.newsIndex.home.home', [
             'breaking_news' => $breaking_news,
@@ -186,7 +186,7 @@ class HomeController extends Controller
             'lonbt' => $lonbt,
             'lonrn3' => $lonrn3,
             'lon4' => $lon4,
-            'categoriesCount' => $categoriesCount,
+            'tagsWithNewsCount' => $tagsWithNewsCount,
             'vgnbt' => $vgnbt,
             'vgn3' => $vgn3,
             'pgnbt' => $pgnbt,
@@ -220,7 +220,8 @@ class HomeController extends Controller
             return Response::json(['view' => $view, 'nextPageUrl' => $acn->nextPageUrl()]);
         }
 
-        $cs = Ads::where('category_sidebar', 1)->first();
+        $cs1 = Ads::where('category_sidebar1', 1)->first();
+        $cs2 = Ads::where('category_sidebar2', 1)->first();
 
 
 
@@ -233,7 +234,8 @@ class HomeController extends Controller
             'cn2' => $cn2,
             'cn4' => $cn4,
             'acn' => $acn,
-            'cs' => $cs,
+            'cs1' => $cs1,
+            'cs2' => $cs2,
         ]);
     }
 
@@ -244,7 +246,7 @@ class HomeController extends Controller
     // For Single Page News Show
     public function showFull_news($category, $subcategory = null, $id)
     {
-        $news = News::with(['newsCategory', 'newsSubCategory'])->findOrFail($id);
+        $news = News::with(['newsCategory', 'newsSubCategory', 'tags'])->findOrFail($id);
 
         $expectedCategory = Str::slug($news->newsCategory->category_en);
         $expectedSubcategory = $news->newsSubCategory ? Str::slug($news->newsSubCategory->sub_cate_en) : null;
@@ -263,8 +265,7 @@ class HomeController extends Controller
             }
         }
 
-        $tagsRaw = $news->tags_en; // Only English tags now
-        $tags = array_map('trim', explode(',', $tagsRaw));
+
 
         // show related Category News
         $relatedNews = News::where('category_id', $news->category_id) // Same category
@@ -292,7 +293,6 @@ class HomeController extends Controller
 
         return view('layouts.newsIndex.home.show', [
             'news' => $news,
-            'tags' => $tags,
             'relatedNews' => $relatedNews,
             'morePhotos' => $morePhotos,
             'randomNews' => $randomNews,
@@ -328,7 +328,8 @@ class HomeController extends Controller
             return response()->json(['view' => $view, 'nextPageUrl' => $ascn->nextPageUrl()]);
         }
 
-        $scs = Ads::where('subcategory_sidebar', 1)->first();
+        $scs1 = Ads::where('subcategory_sidebar1', 1)->first();
+        $scs2 = Ads::where('subcategory_sidebar2', 1)->first();
 
 
         return view('layouts.newsIndex.subcategory_news.index', [
@@ -338,10 +339,34 @@ class HomeController extends Controller
             'scn2' => $scn2,
             'scn4' => $scn4,
             'ascn' => $ascn,
-            'scs' => $scs,
+            'scs1' => $scs1,
+            'scs2' => $scs2,
 
         ]);
     }
+
+    // In your NewsController (or appropriate controller)
+
+    public function getTagNews($slug)
+    {
+        // Try to find tag by slug column
+        $tag = Tags::where('slug', $slug)->first();
+
+        // Get news only if tag exists
+        $tagNews = $tag
+            ? News::with(['newsCategory', 'newsSubcategory', 'tags'])
+            ->whereHas('tags', function ($query) use ($tag) {
+                $query->where('tags.id', $tag->id);
+            })
+            ->orderBy('created_at', 'desc')
+            ->paginate(50)
+            : collect(); // empty collection if no tag
+
+        // Pass data to Blade
+        return view('layouts.newsIndex.tags.index', compact('tag', 'tagNews'));
+    }
+
+
 
 
     // Method for english website
@@ -368,8 +393,17 @@ class HomeController extends Controller
 
         $liveTv = LiveTv::where('status', 1)->first();
 
+        $ls1 = Ads::where('liveTv_sidebar1', 1)->first();
+        $ls2 = Ads::where('liveTv_sidebar2', 1)->first();
+        $lb = Ads::where('liveTv_bottom', 1)->first();
+
+
+
         return view('layouts.newsIndex.livetv.index', [
             'liveTv' => $liveTv,
+            'ls1' => $ls1,
+            'ls2' => $ls2,
+            'lb' => $lb,
         ]);
     }
 
