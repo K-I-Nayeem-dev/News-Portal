@@ -136,11 +136,10 @@
         }
     </style>
 
-
-
     <script type='text/javascript'
         src='https://platform-api.sharethis.com/js/sharethis.js#property=6896161ae700c1c978e64e5f&product=sop'
         async='async'></script>
+
 </head>
 
 <body>
@@ -1256,23 +1255,28 @@
                     </div>
 
 
-                    <form action="javascript:void(0)" class="header--search-form float--right" id="openSearch">
-                        <button type="submit" class="header--search-btn btn">
+                    <!-- Search Button (triggers mega menu) -->
+                    <form class="header--search-form float--right" id="openSearch">
+                        <button type="button" class="header--search-btn btn">
                             <i class="fa fa-search"></i>
                         </button>
                     </form>
 
+                    <!-- Search Mega Menu (contains actual search form) -->
                     <div class="search-megamenu" id="searchMegaMenu">
                         <div class="container">
-                            <div class="search-box">
-                                <input type="text" placeholder="খুঁজুন..." id="searchInput" />
+                            <form action="{{ route('news.search') }}" method="GET" class="search-box">
+                                <input type="text" name="q" placeholder="খুঁজুন..." id="searchInput"
+                                    required />
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-search"><i
-                                            class="fa fa-search"></i></button>
-                                    <button type="button" class="btn btn-close" id="closeSearch"><i
-                                            class="fa fa-times"></i></button>
+                                    <button type="submit" class="btn btn-search">
+                                        <i class="fa fa-search"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-close" id="closeSearch">
+                                        <i class="fa fa-times"></i>
+                                    </button>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
 
@@ -1499,14 +1503,12 @@
     <div class="main-content--section">
         @yield('content')
     </div>
-    <!-- Full-width border -->
-    <div style="border-top: 1px solid #727272; border-bottom: 1px solid #727272; width: 100%; margin: 20px 0;">
-
-        <div style="padding: 5px 0; display: flex; justify-content: center;">
-
+    <!-- Category Bar -->
+    <div id="categoryBar">
+        <div class="category-bar-inner">
             @foreach ($getCates as $row)
-                <div style="margin: 0 15px; font-size: 16px; font-weight: bold;">
-                    <a href="{{ route('getCate.news', $row->slug) }}" class="catehover">
+                <div class="category-item">
+                    <a href="{{ route('getCate.news', $row->slug) }}">
                         @if (session()->get('lang') == 'english')
                             {{ $row->category_en }}
                         @else
@@ -1517,153 +1519,524 @@
             @endforeach
         </div>
     </div>
-    <footer class="footer--section">
-        <div class="footer--widgets pd--30-0 bg--color-2">
-            <div class="container">
-                <div class="row AdjustRow">
-                    <div class="col-md-4 col-xs-6 col-xxs-12 ptop--30 pbottom--30">
-                        <div style="width: 100%; padding: 20px 0;">
 
-                            <!-- Logo -->
-                            <div style="margin-bottom: 15px;">
-                                <a href="{{ route('home') }}">
-                                    <img src="{{ asset($logo) }}" alt="{{ config('app.name') }}"
-                                        style="max-height: 150px;">
-                                </a>
-                            </div>
+    <style>
+        /* ---------- Category Bar Styles ---------- */
+        #categoryBar {
+            width: 100%;
+            border-top: 1px solid #727272;
+            border-bottom: 1px solid #727272;
+            margin: 20px 0 0 0;
+            background-color: #fdfdfd;
+            overflow-x: auto;
+            /* Enables horizontal scroll on small screens */
+            scrollbar-width: thin;
+            scrollbar-color: #aaa transparent;
+        }
 
-                            <!-- About Us -->
-                            <div style="margin-bottom: 15px;">
+        /* Hide default scrollbar in WebKit browsers */
+        #categoryBar::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        #categoryBar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        #categoryBar::-webkit-scrollbar-thumb {
+            background: #aaa;
+            border-radius: 3px;
+        }
+
+        /* Inner container */
+        #categoryBar .category-bar-inner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            /* Wraps on smaller screens */
+            padding: 5px 0;
+            gap: 20px;
+            min-width: max-content;
+            /* Allows horizontal scroll if needed */
+        }
+
+        /* Individual category */
+        #categoryBar .category-item a {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s ease, border-bottom 0.3s ease;
+            white-space: nowrap;
+            padding: 3px 5px;
+        }
+
+        #categoryBar .category-item a:hover {
+            color: #007bff;
+            border-bottom: 2px solid #007bff;
+        }
+
+        /* ---------- Responsive Adjustments ---------- */
+        @media (max-width: 992px) {
+            #categoryBar .category-bar-inner {
+                justify-content: flex-start;
+                /* Align left on tablet */
+                padding: 5px 15px;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            #categoryBar .category-item a {
+                font-size: 14px;
+                /* Smaller text for small screens */
+            }
+        }
+
+        @media (max-width: 400px) {
+            #categoryBar .category-item a {
+                font-size: 13px;
+            }
+        }
+    </style>
+
+
+    <style>
+        .modern-footer {
+            background: #1a1a1a;
+            color: #fff;
+            padding: 40px 0 0;
+        }
+
+        .footer-top {
+            padding: 30px 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        /* Left Section - Logo & About */
+        .footer-left {
+            text-align: center;
+        }
+
+        .footer-logo {
+            margin-bottom: 20px;
+        }
+
+        .footer-logo img {
+            max-height: 120px;
+            width: auto;
+        }
+
+        .footer-about {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #007bff;
+        }
+
+        /* Middle Section - Editor & Contact */
+        .footer-middle {
+            padding: 0 20px;
+        }
+
+        .editor-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .contact-info {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .contact-info li {
+            margin-bottom: 12px;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #ccc;
+        }
+
+        .contact-info a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-info a:hover {
+            color: #007bff;
+        }
+
+        .contact-info i {
+            margin-right: 8px;
+            color: #007bff;
+        }
+
+        /* Right Section - App Downloads & Social */
+        .footer-right {
+            text-align: center;
+        }
+
+        .app-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .app-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .app-button {
+            display: inline-block;
+        }
+
+        .app-button img {
+            height: 40px;
+            width: auto;
+            transition: transform 0.3s;
+        }
+
+        .app-button:hover img {
+            transform: scale(1.05);
+        }
+
+        .social-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 18px;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .social-icon.facebook {
+            background: #1877f2;
+        }
+
+        .social-icon.twitter {
+            background: #000;
+        }
+
+        .social-icon.youtube {
+            background: #ff0000;
+        }
+
+        .social-icon.linkedin {
+            background: #0077b5;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Footer Bottom */
+        .footer-bottom {
+            background: #0d0d0d;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .copyright {
+            font-size: 13px;
+            color: #999;
+            margin: 0;
+        }
+
+        .copyright a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .copyright a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .footer-left,
+            .footer-middle,
+            .footer-right {
+                text-align: center;
+            }
+
+            .footer-middle {
+                padding: 0;
+            }
+
+            .contact-info {
+                text-align: left;
+                display: inline-block;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .footer-container {
+                padding: 0 15px;
+            }
+
+            .editor-title {
+                font-size: 18px;
+            }
+
+            .app-buttons {
+                align-items: center;
+            }
+        }
+    </style>
+
+    <footer class="modern-footer">
+        <div class="footer-top">
+            <div class="footer-container">
+                <div class="footer-grid">
+                    <!-- Left Section: Logo & About -->
+                    <div class="footer-left">
+                        <div class="footer-logo">
+                            <a href="{{ route('home') }}">
+                                <img src="{{ asset($logo) }}" alt="{{ config('app.name') }}">
+                            </a>
+                        </div>
+
+                        <div class="footer-about">
+                            @if (session('lang') != 'english')
+                                {!! $footer_details['about_us_bangla'] ?? 'বাংলা তথ্য পাওয়া যায়নি' !!}
+                            @else
+                                {!! $footer_details['about_us'] ?? 'About us text not available' !!}
+                            @endif
+                        </div>
+
+                        <div class="footer-links">
+                            <a
+                                href="#">{{ session('lang') == 'english' ? 'Privacy Policy' : 'গোপনীয়তা নীতি' }}</a>
+                            <span style="color: #666;">|</span>
+                            <a
+                                href="#">{{ session('lang') == 'english' ? 'Terms of Use' : 'ব্যবহারের শর্তাবলী' }}</a>
+                            <span style="color: #666;">|</span>
+                            <a href="#">{{ session('lang') == 'english' ? 'Advertisement' : 'বিজ্ঞাপন' }}</a>
+                        </div>
+                    </div>
+
+                    <!-- Middle Section: Editor & Contact Info -->
+                    <div class="footer-middle">
+                        <div class="editor-title">
+                            @if (session('lang') != 'english')
+                                {!! $footer_details['editor_details_bangla'] ?? 'বাংলা সম্পাদক তথ্য নেই' !!}
+                            @else
+                                প্রধান সম্পাদক: {!! $footer_details['editor_details'] ?? 'Editor not available' !!}
+                            @endif
+                        </div>
+
+                        <ul class="contact-info">
+                            <li>
                                 @if (session('lang') != 'english')
-                                    <p>{!! $footer_details['about_us_bangla'] ?? 'বাংলা তথ্য পাওয়া যায়নি' !!}</p>
+                                    {!! $footer_details['address_bangla'] ?? 'বাংলা ঠিকানা নেই' !!}
                                 @else
-                                    <p>{!! $footer_details['about_us'] ?? 'About us text not available' !!}</p>
+                                    {!! $footer_details['address'] ?? 'Address not available' !!}
                                 @endif
-                            </div>
+                            </li>
 
-                            <!-- Bottom Links -->
-                            <div style="margin-bottom: 10px; text-align: center;">
-                                <a style="color: #fff;" href="#">Privacy Policy</a> |
-                                <a style="color: #fff;" href="#">Terms of Use</a> |
-                                <a style="color: #fff;" href="#">Advertisement</a>
-                            </div>
+                            <li>
+                                <i class="fa fa-phone"></i>
+                                {{ session('lang') == 'english' ? 'Phone' : 'ফোন' }}:
+                                @if (!empty($footer_details['phone']))
+                                    <a href="tel:{{ $footer_details['phone'] }}">{{ $footer_details['phone'] }}</a>
+                                @else
+                                    <span>+123 456 789</span>
+                                @endif
+                            </li>
 
+                            <li>
+                                <i class="fa fa-envelope"></i>
+                                {{ session('lang') == 'english' ? 'Email' : 'ইমেইল' }}:
+                                <a href="mailto:{{ $footer_details['email'] }}">{{ $footer_details['email'] }}</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Right Section: App Download & Social -->
+                    <div class="footer-right">
+                        <div class="social-section-title">
+                            {{ session('lang') == 'english' ? 'Follow Us' : 'অনুসরণ করুন' }}
                         </div>
 
-
-
-                    </div>
-                    <div class="col-md-5 col-xs-6 col-xxs-12 ptop--30 pbottom--30">
-                        <div class="widget">
-                            <div class="about--widget">
-                                {{-- <div class="content">
-                                        <p>
-                                            {{ $footer_details['about_us'] ?? 'About us text not available' }}
-                                        </p>
-                                    </div> --}}
-
-                                <ul class="nav" style="text-decoration: none">
-                                    <li>
-                                        @if (session('lang') != 'english')
-                                            <span style="font-size: 24px !important">
-                                                {!! $footer_details['editor_details_bangla'] ?? 'বাংলা সম্পাদক তথ্য নেই' !!}</span>
-                                        @else
-                                            <span style="font-size: 24px !important">Chief Editor :
-                                                {!! $footer_details['editor_details'] ?? 'Editor not available' !!}</span>
-                                        @endif
-                                    </li>
-
-                                    <li style="font-size: 15.6px !important; margin-top: 20px">
-                                        @if (session('lang') != 'english')
-                                            <span>{!! $footer_details['address_bangla'] ?? 'বাংলা ঠিকানা নেই' !!}</span>
-                                        @else
-                                            <span>{!! $footer_details['address'] ?? 'Address not available' !!}</span>
-                                        @endif
-                                    </li>
-
-                                    <li style="font-size: 15.6px !important; margin-top: -20px">
-
-                                        @if (session('lang') != 'english')
-                                            ইমেইল : <a href="mailto:{{ $footer_details['email'] }}">
-                                                {{ $footer_details['email'] }}</a>
-                                        @else
-                                            Email : <a href="mailto:{{ $footer_details['email'] }}">
-                                                {{ $footer_details['email'] }}</a>
-                                        @endif
-                                    </li>
-
-                                    <li style="font-size: 15.6px !important; margin-top: 15px">
-                                        <i class="fa fa-phone"></i>
-                                        @if (!empty($footer_details['phone']))
-                                            <a href="tel:{{ $footer_details['phone'] }}">
-                                                {{ $footer_details['phone'] }}
-                                            </a>
-                                        @else
-                                            <span>+123 456 789</span>
-                                        @endif
-                                    </li>
-                                </ul>
-                            </div>
-
-
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-xs-6 col-xxs-12 ptop--30 pbottom--30">
-                        <div class="widget">
-
+                        <div class="social-icons">
+                            <a href="{{ $social->facebook }}" class="social-icon facebook" target="_blank">
+                                <i class="fa-brands fa-facebook-f"></i>
+                            </a>
+                            <a href="{{ $social->twitter }}" class="social-icon twitter" target="_blank">
+                                <i class="fa-brands fa-x-twitter"></i>
+                            </a>
+                            <a href="{{ $social->youtube }}" class="social-icon youtube" target="_blank">
+                                <i class="fa-brands fa-youtube"></i>
+                            </a>
+                            <a href="{{ $social->linkedin }}" class="social-icon linkedin" target="_blank">
+                                <i class="fa-brands fa-linkedin"></i>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="footer--copyright bg--color-3">
-            <div class="social--bg bg--color-1"></div>
-            <div class="container">
-                <p class="text float--left">
-                    &copy; {{ date('Y') }} <a href="#">USNEWS</a>. All Rights Reserved.
-                </p>
-                <ul class="nav social float--right">
-                    <li>
-                        <a href="{{ $social->facebook }}">
-                            <i class="fa-brands fa-facebook-f"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ $social->twitter }}">
-                            <!-- Then use -->
-                            <i class="fa-brands fa-x-twitter"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ $social->instagram }}">
-                            <i class="fa-brands fa-instagram"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ $social->youtube }}">
-                            <i class="fa-brands fa-youtube"></i>
 
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ $social->linkedin }}">
-                            <i class="fa-brands fa-linkedin"></i>
-                        </a>
-                    </li>
-                </ul>
-                <ul class="nav links float--right">
-                    <li><a href="#">Home</a></li>
-                    {{-- <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Support</a></li> --}}
-                </ul>
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+            <div class="footer-container">
+                <p class="copyright">
+                    &copy; {{ date('Y') }} <a href="{{ route('home') }}">{{ config('app.name') }}</a>.
+                    {{ session('lang') == 'english' ? 'All Rights Reserved' : 'সর্বস্বত্ব সংরক্ষিত' }}.
+                </p>
             </div>
         </div>
     </footer>
+
     </div>
 
-    <div id="backToTop">
+    <!-- Back To Top Button -->
+    <div id="backToTopBtn">
         <a href="#"><i class="fa fa-angle-double-up"></i></a>
     </div>
+
+    <style>
+        /* Back To Top Button Styles */
+        #backToTopBtn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            display: none;
+            /* Hidden by default */
+            transition: all 0.3s ease-in-out;
+        }
+
+        #backToTopBtn a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #007bff, #00b4d8);
+            color: #fff;
+            font-size: 22px;
+            text-decoration: none;
+            border-radius: 50%;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease-in-out;
+        }
+
+        #backToTopBtn a:hover {
+            background: linear-gradient(135deg, #0056b3, #0096c7);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Icon styling */
+        #backToTopBtn i {
+            transition: transform 0.3s ease;
+        }
+
+        #backToTopBtn a:hover i {
+            transform: translateY(-2px);
+        }
+
+        /* Responsive sizing */
+        @media (max-width: 768px) {
+            #backToTopBtn a {
+                width: 45px;
+                height: 45px;
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            #backToTopBtn a {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+        }
+    </style>
+
+    <script>
+        // Show/hide button on scroll
+        window.addEventListener('scroll', function() {
+            const btn = document.getElementById('backToTopBtn');
+            if (window.scrollY > 300) {
+                btn.style.display = 'block';
+            } else {
+                btn.style.display = 'none';
+            }
+        });
+
+        // Smooth scroll to top
+        document.querySelector('#backToTopBtn a').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+
 
     <div id="fb-root"></div>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v12.0">

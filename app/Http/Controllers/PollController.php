@@ -29,31 +29,22 @@ class PollController extends Controller
     }
 
     // Show single poll
-    public function show($id)
+    public function showModal(Poll $poll)
     {
-        $poll = Poll::with('options')->findOrFail($id);
-        $hasVoted = false;
-        $userVote = null;
+        // Debug: Check what data is available
+        $poll->load(['options' => function ($query) {
+            $query->withCount('votes');
+        }, 'votes']);
 
-        if (Auth::check()) {
-            $hasVoted = $poll->hasUserVoted(Auth::id());
-            if ($hasVoted) {
-                $userVote = PollVote::where('poll_id', $poll->id)
-                    ->where('user_id', Auth::id())
-                    ->first();
-            }
-        }
+        // Uncomment below to debug
+        // dd($poll->toArray());
 
-        return view('polls.show', compact('poll', 'hasVoted', 'userVote'));
+        return view('layouts.newsDashboard.poll.poll-content', compact('poll'));
     }
 
     // Submit vote
     public function vote(Request $request, $id)
     {
-        if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'আপনাকে ভোট দিতে লগইন করতে হবে');
-        }
-
         $request->validate([
             'option_id' => 'required|exists:poll_options,id'
         ]);
@@ -62,11 +53,23 @@ class PollController extends Controller
 
         // Check if poll is expired
         if ($poll->isExpired()) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'এই ভোট সমাপ্ত হয়ে গেছে'
+                ], 400);
+            }
             return back()->with('error', 'এই ভোট সমাপ্ত হয়ে গেছে');
         }
 
-        // Check if user already voted
-        if ($poll->hasUserVoted(Auth::id())) {
+        // Check if IP already voted
+        if ($poll->hasIpVoted($request->ip())) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'আপনি ইতিমধ্যে ভোট দিয়েছেন'
+                ], 400);
+            }
             return back()->with('error', 'আপনি ইতিমধ্যে ভোট দিয়েছেন');
         }
 
@@ -78,12 +81,12 @@ class PollController extends Controller
         try {
             DB::beginTransaction();
 
-            // Create vote
+            // Create vote (without user_id)
             PollVote::create([
                 'poll_id' => $poll->id,
                 'poll_option_id' => $option->id,
-                'user_id' => Auth::id(),
-                'ip_address' => $request->ip()
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent()
             ]);
 
             // Increment vote count
@@ -91,23 +94,24 @@ class PollController extends Controller
 
             DB::commit();
 
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'আপনার ভোট সফলভাবে জমা হয়েছে'
+                ]);
+            }
             return back()->with('success', 'আপনার ভোট সফলভাবে জমা হয়েছে');
         } catch (\Exception $e) {
             DB::rollBack();
+
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'ভোট জমা দিতে সমস্যা হয়েছে'
+                ], 500);
+            }
             return back()->with('error', 'ভোট জমা দিতে সমস্যা হয়েছে');
         }
-    }
-
-    // Show results
-    public function results($id)
-    {
-        $poll = Poll::with(['options' => function ($query) {
-            $query->orderBy('votes_count', 'desc');
-        }])->findOrFail($id);
-
-        $totalVotes = $poll->getTotalVotes();
-
-        return view('polls.results', compact('poll', 'totalVotes'));
     }
 
     // Admin: Store new poll

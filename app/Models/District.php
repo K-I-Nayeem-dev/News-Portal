@@ -7,26 +7,34 @@ use Illuminate\Database\Eloquent\Model;
 
 class District extends Model
 {
-    Use HasFactory;
+    use HasFactory;
 
     protected $guarded = [];
 
 
- // for SubDistrict table one to one relation
-    public function subDist(){
+    // for SubDistrict table one to one relation
+    public function subDist()
+    {
         return $this->hasOne(SubDistrict::class);
     }
 
     // for get Divisoin table one to one relation
-    public function division(){
+
+    public function division()
+    {
         return $this->belongsTo(Division::class);
     }
 
-
-
-     // for news table one to one relation
-    public function newsDist(){
-        return $this->hasOne(News::class);
+    public function subdistricts()
+    {
+        return $this->hasMany(SubDistrict::class);
     }
 
+
+
+    // for news table one to one relation
+    public function newsDist()
+    {
+        return $this->hasOne(News::class);
+    }
 }

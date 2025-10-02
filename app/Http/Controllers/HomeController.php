@@ -17,6 +17,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Response;
 use App\Models\Ads;
 use App\Models\Tags;
+use App\Models\Poll;
 
 class HomeController extends Controller
 {
@@ -138,6 +139,41 @@ class HomeController extends Controller
         // News for Category finance right side 3 news
         $fn3 = News::where('category_id', $financeCategory->id)->where('status', 1)->latest()->skip(1)->take(3)->get();
 
+        // Get News for Category JObs
+        $jobsCategory = Category::where('category_en', 'Jobs')->first();
+
+        // News for Category JObs Big_thumbnail
+        $jnbt = News::where('category_id', $jobsCategory->id)->where('status', 1)->latest()->first();
+        // News for Category finance right side 3 news
+        $jn3 = News::where('category_id', $jobsCategory->id)->where('status', 1)->latest()->skip(1)->take(3)->get();
+
+
+        // Get News for Category Others
+        $othersCategory = Category::where('category_en', 'Others')->first();
+
+        // News for Category Others Big_thumbnail
+        $onbt = News::where('category_id', $othersCategory->id)->where('status', 1)->latest()->first();
+        // News for Category finance right side 3 news
+        $on3 = News::where('category_id', $othersCategory->id)->where('status', 1)->latest()->skip(1)->take(3)->get();
+
+
+        // Get News for Category Crimes
+        $crimesCategory = Category::where('category_en', 'Crimes')->first();
+
+        // News for Category Crimes Big_thumbnail
+        $crnbt = News::where('category_id', $crimesCategory->id)->where('status', 1)->latest()->first();
+        // News for Category finance right side 3 news
+        $crn3 = News::where('category_id', $crimesCategory->id)->where('status', 1)->latest()->skip(1)->take(3)->get();
+
+
+        // Get News for Category Crimes
+        $technologyCategory = Category::where('category_en', 'Technologies')->first();
+
+        // News for Category Crimes Big_thumbnail
+        $tnbt = News::where('category_id', $technologyCategory->id)->where('status', 1)->latest()->first();
+        // News for Category finance right side 3 news
+        $tn3 = News::where('category_id', $technologyCategory->id)->where('status', 1)->latest()->skip(1)->take(3)->get();
+
         // Get News for  Video Gallery Big thumbnail & botton 3 news
         $vgnbt = VideoGallery::where('type', 1)->latest()->first();
         $vgn3 =  VideoGallery::where('type', 0)->latest()->take(3)->get();
@@ -156,6 +192,16 @@ class HomeController extends Controller
         $tagsWithNewsCount = Tags::withCount('news')
             ->having('news_count', '>', 0)
             ->get();
+
+        // For Polls
+        $poll = Poll::where('is_active', 1)
+            ->where('expires_at', '>=', now())
+            ->with('options')
+            ->latest()
+            ->first();
+
+        $totalVotes = $poll ? $poll->options->sum('votes_count') : 0;
+
 
         return view('layouts.newsIndex.home.home', [
             'breaking_news' => $breaking_news,
@@ -195,8 +241,18 @@ class HomeController extends Controller
             'pn3' => $pn3,
             'fnbt' => $fnbt,
             'fn3' => $fn3,
+            'jnbt' => $jnbt,
+            'jn3' => $jn3,
+            'onbt' => $onbt,
+            'on3' => $on3,
+            'crnbt' => $crnbt,
+            'crn3' => $crn3,
+            'tnbt' => $tnbt,
+            'tn3' => $tn3,
             'divisions' => $divisions,
             'fbp' => $fbp,
+            'poll' => $poll,
+            'totalVotes' => $totalVotes,
 
         ]);
     }
@@ -425,5 +481,98 @@ class HomeController extends Controller
         return view('layouts.newsIndex.video_gallery.index', [
             'videos' => $videos
         ]);
+    }
+
+    public function all_polls()
+    {
+
+        // Get the poll that's showing on the homepage
+        $homepagePoll = Poll::where('is_active', 1)
+            ->where('expires_at', '>=', now())
+            ->latest()
+            ->first();
+
+        // Get all polls except the homepage poll
+        $polls = Poll::with('options')
+            ->when($homepagePoll, function ($query) use ($homepagePoll) {
+                $query->where('id', '!=', $homepagePoll->id);
+            })
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('layouts.newsIndex.polls.index', [
+            'polls' => $polls,
+        ]);
+    }
+
+    // For news Search
+    public function search(Request $request)
+    {
+        $query = $request->input('q');
+
+        if (empty($query)) {
+            return redirect()->back()->with('error', 'Please enter a search term');
+        }
+
+        $news = News::with(['newsCategory', 'newsSubCategory', 'tags'])
+            ->where(function ($q) use ($query) {
+                // Search in news title (English and Bengali)
+                $q->where('title_en', 'LIKE', "%{$query}%")
+                    ->orWhere('title_bn', 'LIKE', "%{$query}%")
+
+                    // Search in news content (English and Bengali)
+                    ->orWhere('details_en', 'LIKE', "%{$query}%")
+                    ->orWhere('details_bn', 'LIKE', "%{$query}%")
+
+                    // Search in category (English and Bengali)
+                    ->orWhereHas('newsCategory', function ($q) use ($query) {
+                        $q->where('category_en', 'LIKE', "%{$query}%")
+                            ->orWhere('category_bn', 'LIKE', "%{$query}%");
+                    })
+
+                    // Search in subcategory (English and Bengali)
+                    ->orWhereHas('newsSubCategory', function ($q) use ($query) {
+                        $q->where('sub_cate_en', 'LIKE', "%{$query}%")
+                            ->orWhere('sub_cate_bn', 'LIKE', "%{$query}%");
+                    })
+
+                    // Search in tags (English and Bengali)
+                    ->orWhereHas('tags', function ($q) use ($query) {
+                        $q->where('tag_en', 'LIKE', "%{$query}%")
+                            ->orWhere('tag_bn', 'LIKE', "%{$query}%");
+                    });
+            })
+            ->where('status', 1)
+            ->orderBy('created_at', 'desc')
+            ->paginate(30);
+
+        return view('layouts.newsIndex.search.index', compact('news', 'query'));
+    }
+
+    // Location Search with division->district->subdistrict
+
+    public function country_search(Request $request)
+    {
+        $divisionId    = $request->query('division_id');
+        $districtId    = $request->query('district_id');
+        $subdistrictId = $request->query('subdistrict_id');
+
+        $query = News::query();
+
+        if ($divisionId) {
+            $query->where('division_id', $divisionId);
+        }
+
+        if ($districtId) {
+            $query->where('district_id', $districtId);
+        }
+
+        if ($subdistrictId) {
+            $query->where('subdistrict_id', $subdistrictId);
+        }
+
+        $news = $query->latest()->paginate(15);
+
+        return view('layouts.newsIndex.search.country_search', compact('news'));
     }
 }

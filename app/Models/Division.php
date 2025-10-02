@@ -12,9 +12,13 @@ class Division extends Model
     protected $guarded = [];
 
     // for District table one to one relation
-    public function getDistrict(){
+    public function getDistrict()
+    {
         return $this->hasOne(District::class);
     }
 
-
+    public function districts()
+    {
+        return $this->hasMany(District::class);
+    }
 }

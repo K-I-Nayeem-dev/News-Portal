@@ -58,9 +58,29 @@ class News extends Model
         return $this->belongsTo(Category::class, 'category_id');
     }
 
+    public function subcategory()
+    {
+        return $this->belongsTo(Subcategory::class);
+    }
+
     // In your News model
     public function tags()
     {
         return $this->belongsToMany(Tags::class, 'news_tags', 'news_id', 'tag_id');
+    }
+
+    public function division()
+    {
+        return $this->belongsTo(Division::class);
+    }
+
+    public function district()
+    {
+        return $this->belongsTo(District::class);
+    }
+
+    public function subdistrict()
+    {
+        return $this->belongsTo(SubDistrict::class);
     }
 }

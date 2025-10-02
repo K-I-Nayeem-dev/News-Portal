@@ -49,6 +49,12 @@ Route::controller(HomeController::class)->group(function () {
 
     Route::prefix('news')->group(function () {
 
+        // Location Search with division->district->subdistrict
+        Route::get('/country/search','country_search')->name('country.search');
+
+        // 1. Add route in routes/web.php
+        Route::get('/search', 'search')->name('news.search');
+
         // Route to show news by tag
         Route::get('/tag/{slug}', 'getTagNews')->name('tag.news');
 
@@ -71,9 +77,9 @@ Route::controller(HomeController::class)->group(function () {
     Route::get('/language/{locale}', [PollController::class, 'switchLanguage'])->name('language.switch');
 
     // Public Poll Routes (No Login Required)
-    Route::get('/polls', [PollController::class, 'index'])->name('polls.index');
-    Route::get('/polls/{id}', [PollController::class, 'show'])->name('polls.show');
+    Route::get('/all/polls', 'all_polls')->name('all.polls');
     Route::post('/polls/{id}/vote', [PollController::class, 'vote'])->name('polls.vote');
+    Route::get('/polls/{poll}/modal', [PollController::class, 'showModal'])->name('polls.modal');
 });
 
 

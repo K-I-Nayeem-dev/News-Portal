@@ -110,10 +110,11 @@
                                                 </td>
                                                 <td class="px-4 py-3">
                                                     <div class="d-flex gap-2">
-                                                        <a href="{{ route('polls.show', $poll->id) }}" target="_blank"
-                                                            class="btn btn-sm btn-outline-primary">
+                                                        <button type="button"
+                                                            class="btn btn-sm btn-outline-primary view-poll-btn"
+                                                            data-poll-id="{{ $poll->id }}">
                                                             View
-                                                        </a>
+                                                        </button>
                                                         <a href="{{ route('polls.edit', $poll->id) }}"
                                                             class="btn btn-sm btn-outline-secondary">
                                                             Edit
@@ -154,6 +155,48 @@
                     @endif
                 </div>
             </div>
+
+            <!-- Poll Details Modal -->
+            <div class="modal fade" id="pollModal" tabindex="-1" aria-labelledby="pollModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header py-2">
+                            <h6 class="modal-title" id="pollModalLabel">Poll Details</h6>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body p-4" id="pollModalBody" style="max-height: 85vh; overflow-y: auto;">
+                            <!-- Poll content will be loaded here -->
+                            <div class="text-center py-4">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                #pollModal .modal-dialog {
+                    max-width: 550px;
+                }
+
+                #pollModal .modal-content {
+                    border-radius: 10px;
+                    max-height: 90vh;
+                    /* Increased height */
+                }
+
+                #pollModal .modal-header {
+                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    color: white;
+                    border-radius: 10px 10px 0 0;
+                }
+
+                #pollModal .modal-header .btn-close {
+                    filter: brightness(0) invert(1);
+                }
+            </style>
 
             <!-- Create Poll Modal -->
             <div class="modal fade" id="createPollModal" tabindex="-1" aria-labelledby="createPollModalLabel"
@@ -319,6 +362,49 @@
                     optionCount++;
                 });
             </script>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const pollModal = new bootstrap.Modal(document.getElementById('pollModal'));
+                    const pollModalBody = document.getElementById('pollModalBody');
+
+                    // Handle view button clicks
+                    document.querySelectorAll('.view-poll-btn').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const pollId = this.getAttribute('data-poll-id');
+
+                            // Show loading spinner
+                            pollModalBody.innerHTML = `
+                <div class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            `;
+
+                            // Open modal
+                            pollModal.show();
+
+                            // Fetch poll details
+                            fetch(`/polls/${pollId}/modal`)
+                                .then(response => response.text())
+                                .then(html => {
+                                    pollModalBody.innerHTML = html;
+                                })
+                                .catch(error => {
+                                    pollModalBody.innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="bi bi-exclamation-triangle"></i>
+                            Failed to load poll details. Please try again.
+                        </div>
+                    `;
+                                    console.error('Error:', error);
+                                });
+                        });
+                    });
+                });
+            </script>
+
         </div>
     </div>
 @endsection

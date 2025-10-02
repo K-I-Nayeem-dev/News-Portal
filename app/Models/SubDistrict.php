@@ -11,15 +11,16 @@ class SubDistrict extends Model
 
     protected $guarded = [];
 
-     // for SubDistrict table one to one relation
-    public function district(){
+    // for SubDistrict table one to one relation
+    public function district()
+    {
         return $this->belongsTo(District::class);
     }
 
-      // for NewsSubCate table one to one relation
-    public function newsSubDist(){
+    // for NewsSubCate table one to one relation
+    public function newsSubDist()
+    {
         return $this->hasOne(News::class);
     }
-
 
 }

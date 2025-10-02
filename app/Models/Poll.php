@@ -53,6 +53,12 @@ class Poll extends Model
         return $this->votes()->where('ip_address', $ipAddress)->exists();
     }
 
+    // Update this method to check IP instead of user_id
+    public function hasUserVoted($ipAddress)
+    {
+        return $this->hasIpVoted($ipAddress);
+    }
+
     public function getTotalVotes()
     {
         return $this->votes()->count();
@@ -61,5 +67,10 @@ class Poll extends Model
     public function getQuestion()
     {
         return app()->getLocale() == 'bn' ? $this->question_bn : $this->question_en;
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

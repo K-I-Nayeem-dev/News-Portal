@@ -2310,8 +2310,9 @@
             <div class="country-filter-container">
                 <div class="country-filter-row">
                     <div class="country-filter-inputs">
+                        {{-- Division --}}
                         <div class="country-filter-col">
-                            <select name="division_id" id="division_id">
+                            <select name="division_id" id="division_id" class="form-control">
                                 <option value="">
                                     {{ session()->get('lang') == 'english' ? 'Division' : 'বিভাগ' }}
                                 </option>
@@ -2322,27 +2323,219 @@
                                 @endforeach
                             </select>
                         </div>
+
+                        {{-- District --}}
                         <div class="country-filter-col">
-                            <select name="dist_id" id="dist_id">
+                            <select name="dist_id" id="dist_id" class="form-control">
                                 <option value="">
                                     {{ session()->get('lang') == 'english' ? 'District' : 'জেলা' }}
                                 </option>
                             </select>
                         </div>
+
+                        {{-- Subdistrict --}}
                         <div class="country-filter-col">
-                            <select name="sub_dist_id" id="sub_dist_id">
+                            <select name="sub_dist_id" id="sub_dist_id" class="form-control">
                                 <option value="">
-                                    {{ session()->get('lang') == 'english' ? 'Subdistrict' : 'উপজেলা' }}</option>
+                                    {{ session()->get('lang') == 'english' ? 'Subdistrict' : 'উপজেলা' }}
+                                </option>
                             </select>
                         </div>
                     </div>
+
+                    {{-- Search Button --}}
                     <div class="country-filter-button-col">
-                        <button class="country-filter-button">
+                        <button class="country-filter-button" type="button" id="search-btn" disabled>
                             {{ session()->get('lang') == 'english' ? 'Search' : 'খুঁজুন' }}
                         </button>
                     </div>
                 </div>
             </div>
+
+            {{-- JavaScript --}}
+            <script>
+                (function($) {
+                    'use strict';
+
+                    var currentLang = '{{ session()->get('lang') }}' || 'english';
+
+                    // Division change
+                    $('#division_id').on('change', function() {
+                        var divisionId = $(this).val();
+
+                        // reset district & subdistrict
+                        $('#dist_id').html('<option value="">' + (currentLang === 'english' ? 'District' : 'জেলা') +
+                            '</option>');
+                        $('#sub_dist_id').html('<option value="">' + (currentLang === 'english' ? 'Subdistrict' :
+                            'উপজেলা') + '</option>');
+                        $('#search-btn').prop('disabled', true);
+
+                        if (divisionId) {
+                            $.get('/get/dist/' + divisionId, function(districts) {
+                                var opt = '<option value="">' + (currentLang === 'english' ? 'District' :
+                                    'জেলা') + '</option>';
+                                $.each(districts, function(i, d) {
+                                    var name = currentLang === 'english' ? d.district_en : d
+                                    .district_bn;
+                                    opt += '<option value="' + d.id + '">' + name + '</option>';
+                                });
+                                $('#dist_id').html(opt);
+                            });
+                        }
+                    });
+
+                    // District change
+                    $('#dist_id').on('change', function() {
+                        var divisionId = $('#division_id').val();
+                        var districtId = $(this).val();
+
+                        $('#sub_dist_id').html('<option value="">' + (currentLang === 'english' ? 'Subdistrict' :
+                            'উপজেলা') + '</option>');
+
+                        if (divisionId && districtId) {
+                            $('#search-btn').prop('disabled', false);
+                        } else {
+                            $('#search-btn').prop('disabled', true);
+                        }
+
+                        if (districtId) {
+                            $.get('/get/subdist/' + districtId, function(subs) {
+                                var opt = '<option value="">' + (currentLang === 'english' ? 'Subdistrict' :
+                                    'উপজেলা') + '</option>';
+                                $.each(subs, function(i, s) {
+                                    var name = currentLang === 'english' ? s.subdistrict_en : s
+                                        .subdistrict_bn;
+                                    opt += '<option value="' + s.id + '">' + name + '</option>';
+                                });
+                                $('#sub_dist_id').html(opt);
+                            });
+                        }
+                    });
+
+                    // Subdistrict change → keep button enabled
+                    $('#sub_dist_id').on('change', function() {
+                        var divisionId = $('#division_id').val();
+                        var districtId = $('#dist_id').val();
+                        if (divisionId && districtId) {
+                            $('#search-btn').prop('disabled', false);
+                        }
+                    });
+
+                    // Button click → redirect
+                    $('#search-btn').on('click', function(e) {
+                        e.preventDefault();
+                        var divisionId = $('#division_id').val();
+                        var districtId = $('#dist_id').val();
+                        var subdistrictId = $('#sub_dist_id').val();
+
+                        var url = '/news/search?division_id=' + divisionId + '&district_id=' + districtId;
+                        if (subdistrictId) {
+                            url += '&subdistrict_id=' + subdistrictId;
+                        }
+                        window.location.href = url;
+                    });
+
+                })(jQuery);
+            </script>
+
+            {{-- Styles --}}
+            <style>
+                .country-filter-container {
+                    margin: 20px 0;
+                }
+
+                .country-filter-row {
+                    display: flex;
+                    gap: 15px;
+                    align-items: end;
+                    flex-wrap: wrap;
+                }
+
+                .country-filter-inputs {
+                    display: flex;
+                    gap: 15px;
+                    flex: 1;
+                    flex-wrap: wrap;
+                }
+
+                .country-filter-col {
+                    flex: 1;
+                    min-width: 200px;
+                }
+
+                .country-filter-col select {
+                    width: 100%;
+                    padding: 10px 14px;
+                    font-size: 15px;
+                    border: 1px solid #d1d5db;
+                    border-radius: 6px;
+                    background-color: white;
+                    cursor: pointer;
+                    transition: border-color 0.2s;
+                }
+
+                .country-filter-col select:focus {
+                    outline: none;
+                    border-color: #3b82f6;
+                    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+                }
+
+                .country-filter-button-col {
+                    display: flex;
+                    align-items: end;
+                }
+
+                .country-filter-button {
+                    padding: 10px 24px;
+                    font-size: 16px;
+                    font-weight: 500;
+                    border: none;
+                    border-radius: 6px;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    background-color: #3b82f6;
+                    color: white;
+                    white-space: nowrap;
+                }
+
+                .country-filter-button:hover:not(:disabled) {
+                    background-color: #2563eb;
+                    transform: translateY(-1px);
+                    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+                }
+
+                .country-filter-button:active:not(:disabled) {
+                    transform: translateY(0);
+                }
+
+                .country-filter-button:disabled {
+                    background-color: #d1d5db !important;
+                    color: #9ca3af !important;
+                    cursor: not-allowed !important;
+                    opacity: 0.6 !important;
+                }
+
+                @media (max-width: 768px) {
+                    .country-filter-row {
+                        flex-direction: column;
+                    }
+
+                    .country-filter-inputs {
+                        width: 100%;
+                    }
+
+                    .country-filter-button-col {
+                        width: 100%;
+                    }
+
+                    .country-filter-button {
+                        width: 100%;
+                    }
+                }
+            </style>
+
+
+
 
             {{-- News Columns --}}
             <div class="main--content">
@@ -3383,57 +3576,153 @@
                 </div>
 
                 {{-- Voting Poll --}}
-                <div class="lifestyle-sidebar-poll">
-                    <div class="lifestyle-poll-widget">
-                        <h3 class="lifestyle-poll-title">
-                            {{ session('lang') === 'english' ? '📊 Voting Poll' : '📊 অনলাইন জরিপ' }}
-                        </h3>
-                        <div class="lifestyle-poll-question">
-                            {{ session('lang') === 'english'
-                                ? 'Do you think the cost of sending money to mobile phone should be reduced?'
-                                : 'আপনি কি মনে করেন মোবাইল ফোনে টাকা পাঠানোর খরচ কমানো উচিত?' }}
-                        </div>
-                        <form class="lifestyle-poll-form">
-                            <div class="lifestyle-poll-options">
-                                <div class="lifestyle-poll-option">
-                                    <label>
-                                        <input type="radio" name="poll" value="yes">
-                                        {{ session('lang') === 'english' ? 'Yes' : 'হ্যাঁ' }}
-                                    </label>
-                                    <span class="lifestyle-poll-percentage">65%</span>
-                                </div>
-                                <div class="lifestyle-progress-bar">
-                                    <div class="lifestyle-progress-fill" style="width:65%;"></div>
-                                </div>
-
-                                <div class="lifestyle-poll-option">
-                                    <label>
-                                        <input type="radio" name="poll" value="no">
-                                        {{ session('lang') === 'english' ? 'No' : 'না' }}
-                                    </label>
-                                    <span class="lifestyle-poll-percentage">28%</span>
-                                </div>
-                                <div class="lifestyle-progress-bar">
-                                    <div class="lifestyle-progress-fill" style="width:28%;"></div>
-                                </div>
-
-                                <div class="lifestyle-poll-option">
-                                    <label>
-                                        <input type="radio" name="poll" value="average">
-                                        {{ session('lang') === 'english' ? 'Average' : 'মাঝামাঝি' }}
-                                    </label>
-                                    <span class="lifestyle-poll-percentage">7%</span>
-                                </div>
-                                <div class="lifestyle-progress-bar">
-                                    <div class="lifestyle-progress-fill" style="width:7%;"></div>
-                                </div>
+                @if ($poll)
+                    <div class="lifestyle-sidebar-poll">
+                        <div class="lifestyle-poll-widget">
+                            <div
+                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                <h4 class="lifestyle-poll-title"
+                                    style="margin: 0; font-size: 18px; font-weight: 700; color: #333;">
+                                    {{ session('lang') === 'english' ? '📊 Voting Poll' : '📊 অনলাইন জরিপ' }}
+                                </h4>
+                                <a href="{{ route('all.polls') }}"
+                                    style="font-size: 14px; color: #007bff; font-weight: 700; text-decoration: none; white-space: nowrap; transition: all 0.3s ease;">
+                                    {{ session('lang') === 'english' ? 'All Polls' : 'সকল জরিপ' }}
+                                    <i class="fas fa-caret-right" style="margin-left: 5px; font-size: 12px;"></i>
+                                </a>
                             </div>
-                            <button type="submit" class="lifestyle-vote-btn">
-                                {{ session('lang') === 'english' ? 'Vote Now' : 'ভোট দিন' }}
-                            </button>
-                        </form>
+
+                            {{-- Poll Image --}}
+                            @if ($poll->image)
+                                <div class="lifestyle-poll-image mb-3">
+                                    <img src="{{ asset($poll->image) }}" alt="Poll Image" class="img-fluid">
+                                </div>
+                            @endif
+
+                            {{-- Question --}}
+                            <div class="lifestyle-poll-question">
+                                {{ session('lang') === 'english' ? $poll->question_en : $poll->question_bn }}
+                            </div>
+
+                            {{-- Poll Form --}}
+                            @php
+                                $hasVoted = $poll->hasIpVoted(request()->ip());
+                            @endphp
+
+                            <form id="pollForm" action="{{ route('polls.vote', $poll->id) }}" method="POST"
+                                class="lifestyle-poll-form">
+                                @csrf
+                                <div class="lifestyle-poll-options">
+                                    @if ($poll)
+                                        @foreach ($poll->options as $option)
+                                            @php
+                                                $percentage =
+                                                    $totalVotes > 0
+                                                        ? round(($option->votes_count / $totalVotes) * 100)
+                                                        : 0;
+                                            @endphp
+                                            <div class="lifestyle-poll-option">
+                                                <label>
+                                                    <input type="radio" name="option_id" value="{{ $option->id }}"
+                                                        {{ $hasVoted ? 'disabled' : '' }}>
+                                                    {{ session('lang') === 'english' ? $option->option_text_en : $option->option_text_bn }}
+                                                </label>
+                                                <span class="lifestyle-poll-percentage">{{ $percentage }}%</span>
+                                            </div>
+                                            <div class="lifestyle-progress-bar">
+                                                <div class="lifestyle-progress-fill"
+                                                    style="width:{{ $percentage }}%;"></div>
+                                            </div>
+                                        @endforeach
+                                    @endif
+                                </div>
+
+                                @if ($hasVoted)
+                                    <button type="button" class="lifestyle-vote-btn" disabled
+                                        style="opacity: 0.6; cursor: not-allowed;">
+                                        {{ session('lang') === 'english' ? 'Already Voted' : 'ইতিমধ্যে ভোট দিয়েছেন' }}
+                                    </button>
+                                    <div style="margin-top: 10px; font-size: 14px; color: #28a745;">
+                                        {{ session('lang') === 'english' ? '✓ You have already voted in this poll' : '✓ আপনি ইতিমধ্যে এই পোলে ভোট দিয়েছেন' }}
+                                    </div>
+                                @else
+                                    <button type="submit" class="lifestyle-vote-btn">
+                                        {{ session('lang') === 'english' ? 'Vote Now' : 'ভোট দিন' }}
+                                    </button>
+                                @endif
+
+                                <div id="pollMessage" style="margin-top: 10px; font-size: 14px; display: none;"></div>
+                            </form>
+
+                            <script>
+                                document.getElementById('pollForm').addEventListener('submit', function(e) {
+                                    e.preventDefault();
+
+                                    const form = this;
+                                    const formData = new FormData(form);
+                                    const messageDiv = document.getElementById('pollMessage');
+                                    const submitBtn = form.querySelector('.lifestyle-vote-btn');
+
+                                    // Check if an option is selected
+                                    const selectedOption = form.querySelector('input[name="option_id"]:checked');
+                                    if (!selectedOption) {
+                                        messageDiv.style.display = 'block';
+                                        messageDiv.style.color = '#dc3545';
+                                        messageDiv.textContent =
+                                            '{{ session('lang') === 'english' ? 'Please select an option' : 'একটি অপশন নির্বাচন করুন' }}';
+                                        return;
+                                    }
+
+                                    // Disable submit button
+                                    submitBtn.disabled = true;
+                                    submitBtn.textContent = '{{ session('lang') === 'english' ? 'Submitting...' : 'জমা হচ্ছে...' }}';
+
+                                    fetch(form.action, {
+                                            method: 'POST',
+                                            body: formData,
+                                            headers: {
+                                                'X-Requested-With': 'XMLHttpRequest',
+                                                'Accept': 'application/json',
+                                            }
+                                        })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            messageDiv.style.display = 'block';
+
+                                            if (data.success) {
+                                                messageDiv.style.color = '#28a745';
+                                                messageDiv.textContent = data.message;
+
+                                                // Reload the page after 1.5 seconds to show updated results
+                                                setTimeout(() => {
+                                                    window.location.reload();
+                                                }, 1500);
+                                            } else {
+                                                messageDiv.style.color = '#dc3545';
+                                                messageDiv.textContent = data.message ||
+                                                    '{{ session('lang') === 'english' ? 'An error occurred' : 'একটি সমস্যা হয়েছে' }}';
+                                                submitBtn.disabled = false;
+                                                submitBtn.textContent =
+                                                    '{{ session('lang') === 'english' ? 'Vote Now' : 'ভোট দিন' }}';
+                                            }
+                                        })
+                                        .catch(error => {
+                                            messageDiv.style.display = 'block';
+                                            messageDiv.style.color = '#dc3545';
+                                            messageDiv.textContent =
+                                                '{{ session('lang') === 'english' ? 'An error occurred. Please try again.' : 'একটি সমস্যা হয়েছে। আবার চেষ্টা করুন।' }}';
+                                            submitBtn.disabled = false;
+                                            submitBtn.textContent = '{{ session('lang') === 'english' ? 'Vote Now' : 'ভোট দিন' }}';
+                                            console.error('Error:', error);
+                                        });
+                                });
+                            </script>
+                        </div>
                     </div>
-                </div>
+                @endif
+
+
+
             </div>
         </div>
         {{-- Lifestyle Section End --}}
@@ -3786,6 +4075,42 @@
                 transform: translateY(-2px);
                 box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
             }
+
+            .lifestyle-poll-image img {
+                width: 100%;
+                /* responsive */
+                height: auto;
+                /* keeps aspect ratio */
+                border-radius: 10px;
+                object-fit: contain;
+                /* show full image without crop */
+                max-height: 200px;
+                /* optional: limit height */
+                display: block;
+                background: #f9f9f9;
+                /* background if image doesn’t fill */
+            }
+
+            .lifestyle-poll-question {
+                font-weight: bold;
+                font-size: 1rem;
+                /* scalable size */
+                margin-bottom: 15px;
+                line-height: 1.4;
+                word-break: break-word;
+                /* avoid overflow */
+                text-align: center;
+                /* center align for better look */
+            }
+
+            @media (max-width: 576px) {
+                .lifestyle-poll-question {
+                    font-size: 0.9rem;
+                    /* smaller on mobile */
+                }
+            }
+
+
 
             /* Show 2 news in 1 row on mobile & tablet */
             @media (max-width: 1023px) {
@@ -5271,6 +5596,9 @@
                     display: block !important;
                 }
 
+                .swiper-pagination {
+                    display: none !important;
+                }
             }
         </style>
 
@@ -5499,53 +5827,53 @@
             <div class="news-container">
 
                 {{-- Example Section --}}
-                @if (isset($pnbt) && $pnbt && isset($pnbt->newsCategory))
+                @if (isset($jnbt) && $jnbt && isset($jnbt->newsCategory))
                     <div class="news-block">
                         {{-- Section Title --}}
                         <div class="news-header">
                             <h2>
                                 @if (session()->get('lang') == 'english')
-                                    {{ $pnbt->newsCategory->category_en ?? '' }}
+                                    {{ $jnbt->newsCategory->category_en ?? '' }}
                                 @else
-                                    {{ $pnbt->newsCategory->category_bn ?? '' }}
+                                    {{ $jnbt->newsCategory->category_bn ?? '' }}
                                 @endif
                             </h2>
-                            <a href="{{ route('getCate.news', $pnbt->newsCategory->slug ?? '#') }}">
+                            <a href="{{ route('getCate.news', $jnbt->newsCategory->slug ?? '#') }}">
                                 {{ session()->get('lang') == 'english' ? 'More' : 'আরও' }}
                             </a>
                         </div>
 
                         {{-- Big News --}}
-                        @if (isset($pnbt->id))
+                        @if (isset($jnbt->id))
                             <div class="news-main">
                                 <a
                                     href="{{ route('showFull.news', [
-                                        'category' => $pnbt->newsCategory->slug ?? '',
-                                        'subcategory' => $pnbt->newsSubcategory->slug ?? '',
-                                        'id' => $pnbt->id,
+                                        'category' => $jnbt->newsCategory->slug ?? '',
+                                        'subcategory' => $jnbt->newsSubcategory->slug ?? '',
+                                        'id' => $jnbt->id,
                                     ]) }}">
                                     @php
                                         $isPlaceholder =
-                                            isset($pnbt->thumbnail) &&
-                                            Str::contains($pnbt->thumbnail, 'via.placeholder.com');
+                                            isset($jnbt->thumbnail) &&
+                                            Str::contains($jnbt->thumbnail, 'via.placeholder.com');
                                         $imageToShow =
-                                            isset($pnbt->thumbnail) && !$isPlaceholder && !empty($pnbt->thumbnail)
-                                                ? $pnbt->thumbnail
+                                            isset($jnbt->thumbnail) && !$isPlaceholder && !empty($jnbt->thumbnail)
+                                                ? $jnbt->thumbnail
                                                 : asset('uploads/default_images/deafult_thumbnail.jpg');
                                     @endphp
-                                    <img src="{{ $imageToShow }}" alt="{{ $pnbt->title_en ?? '' }}">
+                                    <img src="{{ $imageToShow }}" alt="{{ $jnbt->title_en ?? '' }}">
                                 </a>
                                 <h3>
                                     <a
                                         href="{{ route('showFull.news', [
-                                            'category' => $pnbt->newsCategory->slug ?? '',
-                                            'subcategory' => $pnbt->newsSubcategory->slug ?? '',
-                                            'id' => $pnbt->id,
+                                            'category' => $jnbt->newsCategory->slug ?? '',
+                                            'subcategory' => $jnbt->newsSubcategory->slug ?? '',
+                                            'id' => $jnbt->id,
                                         ]) }}">
                                         @if (session()->get('lang') == 'english')
-                                            {{ $pnbt->title_en ?? '' }}
+                                            {{ $jnbt->title_en ?? '' }}
                                         @else
-                                            {{ $pnbt->title_bn ?? '' }}
+                                            {{ $jnbt->title_bn ?? '' }}
                                         @endif
                                     </a>
                                 </h3>
@@ -5553,15 +5881,20 @@
                         @endif
 
                         {{-- Small News --}}
-                        @if (isset($pnbt) && !empty($pnbt->title_en))
+                        @if (isset($jn3) && !empty($jn3->title_en))
                             <div class="news-list">
-                                @foreach ([1, 2, 3] as $row)
+                                @foreach ($jn3 as $row)
                                     <h4>
-                                        <a href="#">
+                                        <a
+                                            href="{{ route('showFull.news', [
+                                                'category' => $row->newsCategory->slug ?? '',
+                                                'subcategory' => $row->newsSubcategory->slug ?? '',
+                                                'id' => $row->id,
+                                            ]) }}">
                                             @if (session()->get('lang') == 'english')
-                                                {{ $pnbt->title_en ?? '' }}
+                                                {{ $row->title_en ?? '' }}
                                             @else
-                                                {{ $pnbt->title_bn ?? '' }}
+                                                {{ $row->title_bn ?? '' }}
                                             @endif
                                         </a>
                                     </h4>
@@ -5572,53 +5905,53 @@
                 @endif
 
                 {{-- Example Section --}}
-                @if (isset($pnbt) && $pnbt && isset($pnbt->newsCategory))
+                @if (isset($onbt) && $onbt && isset($onbt->newsCategory))
                     <div class="news-block">
                         {{-- Section Title --}}
                         <div class="news-header">
                             <h2>
                                 @if (session()->get('lang') == 'english')
-                                    {{ $pnbt->newsCategory->category_en ?? '' }}
+                                    {{ $onbt->newsCategory->category_en ?? '' }}
                                 @else
-                                    {{ $pnbt->newsCategory->category_bn ?? '' }}
+                                    {{ $onbt->newsCategory->category_bn ?? '' }}
                                 @endif
                             </h2>
-                            <a href="{{ route('getCate.news', $pnbt->newsCategory->slug ?? '#') }}">
+                            <a href="{{ route('getCate.news', $onbt->newsCategory->slug ?? '#') }}">
                                 {{ session()->get('lang') == 'english' ? 'More' : 'আরও' }}
                             </a>
                         </div>
 
                         {{-- Big News --}}
-                        @if (isset($pnbt->id))
+                        @if (isset($onbt->id))
                             <div class="news-main">
                                 <a
                                     href="{{ route('showFull.news', [
-                                        'category' => $pnbt->newsCategory->slug ?? '',
-                                        'subcategory' => $pnbt->newsSubcategory->slug ?? '',
-                                        'id' => $pnbt->id,
+                                        'category' => $onbt->newsCategory->slug ?? '',
+                                        'subcategory' => $onbt->newsSubcategory->slug ?? '',
+                                        'id' => $onbt->id,
                                     ]) }}">
                                     @php
                                         $isPlaceholder =
-                                            isset($pnbt->thumbnail) &&
-                                            Str::contains($pnbt->thumbnail, 'via.placeholder.com');
+                                            isset($onbt->thumbnail) &&
+                                            Str::contains($onbt->thumbnail, 'via.placeholder.com');
                                         $imageToShow =
-                                            isset($pnbt->thumbnail) && !$isPlaceholder && !empty($pnbt->thumbnail)
-                                                ? $pnbt->thumbnail
+                                            isset($onbt->thumbnail) && !$isPlaceholder && !empty($onbt->thumbnail)
+                                                ? $onbt->thumbnail
                                                 : asset('uploads/default_images/deafult_thumbnail.jpg');
                                     @endphp
-                                    <img src="{{ $imageToShow }}" alt="{{ $pnbt->title_en ?? '' }}">
+                                    <img src="{{ $imageToShow }}" alt="{{ $onbt->title_en ?? '' }}">
                                 </a>
                                 <h3>
                                     <a
                                         href="{{ route('showFull.news', [
-                                            'category' => $pnbt->newsCategory->slug ?? '',
-                                            'subcategory' => $pnbt->newsSubcategory->slug ?? '',
-                                            'id' => $pnbt->id,
+                                            'category' => $onbt->newsCategory->slug ?? '',
+                                            'subcategory' => $onbt->newsSubcategory->slug ?? '',
+                                            'id' => $onbt->id,
                                         ]) }}">
                                         @if (session()->get('lang') == 'english')
-                                            {{ $pnbt->title_en ?? '' }}
+                                            {{ $onbt->title_en ?? '' }}
                                         @else
-                                            {{ $pnbt->title_bn ?? '' }}
+                                            {{ $onbt->title_bn ?? '' }}
                                         @endif
                                     </a>
                                 </h3>
@@ -5626,15 +5959,20 @@
                         @endif
 
                         {{-- Small News --}}
-                        @if (isset($pnbt) && !empty($pnbt->title_en))
+                        @if (isset($on3) && !empty($on3->title_en))
                             <div class="news-list">
-                                @foreach ([1, 2, 3] as $row)
+                                @foreach ($on3 as $row)
                                     <h4>
-                                        <a href="#">
+                                        <a
+                                            href="{{ route('showFull.news', [
+                                                'category' => $on3->newsCategory->slug ?? '',
+                                                'subcategory' => $on3->newsSubcategory->slug ?? '',
+                                                'id' => $on3->id,
+                                            ]) }}">
                                             @if (session()->get('lang') == 'english')
-                                                {{ $pnbt->title_en ?? '' }}
+                                                {{ $on3->title_en ?? '' }}
                                             @else
-                                                {{ $pnbt->title_bn ?? '' }}
+                                                {{ $on3->title_bn ?? '' }}
                                             @endif
                                         </a>
                                     </h4>
@@ -5645,53 +5983,53 @@
                 @endif
 
                 {{-- Example Section --}}
-                @if (isset($pnbt) && $pnbt && isset($pnbt->newsCategory))
+                @if (isset($crnbt) && $crnbt && isset($crnbt->newsCategory))
                     <div class="news-block">
                         {{-- Section Title --}}
                         <div class="news-header">
                             <h2>
                                 @if (session()->get('lang') == 'english')
-                                    {{ $pnbt->newsCategory->category_en ?? '' }}
+                                    {{ $crnbt->newsCategory->category_en ?? '' }}
                                 @else
-                                    {{ $pnbt->newsCategory->category_bn ?? '' }}
+                                    {{ $crnbt->newsCategory->category_bn ?? '' }}
                                 @endif
                             </h2>
-                            <a href="{{ route('getCate.news', $pnbt->newsCategory->slug ?? '#') }}">
+                            <a href="{{ route('getCate.news', $crnbt->newsCategory->slug ?? '#') }}">
                                 {{ session()->get('lang') == 'english' ? 'More' : 'আরও' }}
                             </a>
                         </div>
 
                         {{-- Big News --}}
-                        @if (isset($pnbt->id))
+                        @if (isset($crnbt->id))
                             <div class="news-main">
                                 <a
                                     href="{{ route('showFull.news', [
-                                        'category' => $pnbt->newsCategory->slug ?? '',
-                                        'subcategory' => $pnbt->newsSubcategory->slug ?? '',
-                                        'id' => $pnbt->id,
+                                        'category' => $crnbt->newsCategory->slug ?? '',
+                                        'subcategory' => $crnbt->newsSubcategory->slug ?? '',
+                                        'id' => $crnbt->id,
                                     ]) }}">
                                     @php
                                         $isPlaceholder =
-                                            isset($pnbt->thumbnail) &&
-                                            Str::contains($pnbt->thumbnail, 'via.placeholder.com');
+                                            isset($crnbt->thumbnail) &&
+                                            Str::contains($crnbt->thumbnail, 'via.placeholder.com');
                                         $imageToShow =
-                                            isset($pnbt->thumbnail) && !$isPlaceholder && !empty($pnbt->thumbnail)
-                                                ? $pnbt->thumbnail
+                                            isset($crnbt->thumbnail) && !$isPlaceholder && !empty($crnbt->thumbnail)
+                                                ? $crnbt->thumbnail
                                                 : asset('uploads/default_images/deafult_thumbnail.jpg');
                                     @endphp
-                                    <img src="{{ $imageToShow }}" alt="{{ $pnbt->title_en ?? '' }}">
+                                    <img src="{{ $imageToShow }}" alt="{{ $crnbt->title_en ?? '' }}">
                                 </a>
                                 <h3>
                                     <a
                                         href="{{ route('showFull.news', [
-                                            'category' => $pnbt->newsCategory->slug ?? '',
-                                            'subcategory' => $pnbt->newsSubcategory->slug ?? '',
-                                            'id' => $pnbt->id,
+                                            'category' => $crnbt->newsCategory->slug ?? '',
+                                            'subcategory' => $crnbt->newsSubcategory->slug ?? '',
+                                            'id' => $crnbt->id,
                                         ]) }}">
                                         @if (session()->get('lang') == 'english')
-                                            {{ $pnbt->title_en ?? '' }}
+                                            {{ $crnbt->title_en ?? '' }}
                                         @else
-                                            {{ $pnbt->title_bn ?? '' }}
+                                            {{ $crnbt->title_bn ?? '' }}
                                         @endif
                                     </a>
                                 </h3>
@@ -5699,15 +6037,20 @@
                         @endif
 
                         {{-- Small News --}}
-                        @if (isset($pnbt) && !empty($pnbt->title_en))
+                        @if (isset($crn3) && !empty($crn3->title_en))
                             <div class="news-list">
-                                @foreach ([1, 2, 3] as $row)
+                                @foreach ($crn3 as $row)
                                     <h4>
-                                        <a href="#">
+                                        <a
+                                            href="{{ route('showFull.news', [
+                                                'category' => $crn3->newsCategory->slug ?? '',
+                                                'subcategory' => $crn3->newsSubcategory->slug ?? '',
+                                                'id' => $crn3->id,
+                                            ]) }}">
                                             @if (session()->get('lang') == 'english')
-                                                {{ $pnbt->title_en ?? '' }}
+                                                {{ $crn3->title_en ?? '' }}
                                             @else
-                                                {{ $pnbt->title_bn ?? '' }}
+                                                {{ $crn3->title_bn ?? '' }}
                                             @endif
                                         </a>
                                     </h4>
@@ -5718,53 +6061,53 @@
                 @endif
 
                 {{-- Example Section --}}
-                @if (isset($pnbt) && $pnbt && isset($pnbt->newsCategory))
+                @if (isset($tnbt) && $tnbt && isset($tnbt->newsCategory))
                     <div class="news-block">
                         {{-- Section Title --}}
                         <div class="news-header">
                             <h2>
                                 @if (session()->get('lang') == 'english')
-                                    {{ $pnbt->newsCategory->category_en ?? '' }}
+                                    {{ $tnbt->newsCategory->category_en ?? '' }}
                                 @else
-                                    {{ $pnbt->newsCategory->category_bn ?? '' }}
+                                    {{ $tnbt->newsCategory->category_bn ?? '' }}
                                 @endif
                             </h2>
-                            <a href="{{ route('getCate.news', $pnbt->newsCategory->slug ?? '#') }}">
+                            <a href="{{ route('getCate.news', $tnbt->newsCategory->slug ?? '#') }}">
                                 {{ session()->get('lang') == 'english' ? 'More' : 'আরও' }}
                             </a>
                         </div>
 
                         {{-- Big News --}}
-                        @if (isset($pnbt->id))
+                        @if (isset($tnbt->id))
                             <div class="news-main">
                                 <a
                                     href="{{ route('showFull.news', [
-                                        'category' => $pnbt->newsCategory->slug ?? '',
-                                        'subcategory' => $pnbt->newsSubcategory->slug ?? '',
-                                        'id' => $pnbt->id,
+                                        'category' => $tnbt->newsCategory->slug ?? '',
+                                        'subcategory' => $tnbt->newsSubcategory->slug ?? '',
+                                        'id' => $tnbt->id,
                                     ]) }}">
                                     @php
                                         $isPlaceholder =
-                                            isset($pnbt->thumbnail) &&
-                                            Str::contains($pnbt->thumbnail, 'via.placeholder.com');
+                                            isset($tnbt->thumbnail) &&
+                                            Str::contains($tnbt->thumbnail, 'via.placeholder.com');
                                         $imageToShow =
-                                            isset($pnbt->thumbnail) && !$isPlaceholder && !empty($pnbt->thumbnail)
-                                                ? $pnbt->thumbnail
+                                            isset($tnbt->thumbnail) && !$isPlaceholder && !empty($tnbt->thumbnail)
+                                                ? $tnbt->thumbnail
                                                 : asset('uploads/default_images/deafult_thumbnail.jpg');
                                     @endphp
-                                    <img src="{{ $imageToShow }}" alt="{{ $pnbt->title_en ?? '' }}">
+                                    <img src="{{ $imageToShow }}" alt="{{ $tnbt->title_en ?? '' }}">
                                 </a>
                                 <h3>
                                     <a
                                         href="{{ route('showFull.news', [
-                                            'category' => $pnbt->newsCategory->slug ?? '',
-                                            'subcategory' => $pnbt->newsSubcategory->slug ?? '',
-                                            'id' => $pnbt->id,
+                                            'category' => $tnbt->newsCategory->slug ?? '',
+                                            'subcategory' => $tnbt->newsSubcategory->slug ?? '',
+                                            'id' => $tnbt->id,
                                         ]) }}">
                                         @if (session()->get('lang') == 'english')
-                                            {{ $pnbt->title_en ?? '' }}
+                                            {{ $tnbt->title_en ?? '' }}
                                         @else
-                                            {{ $pnbt->title_bn ?? '' }}
+                                            {{ $tnbt->title_bn ?? '' }}
                                         @endif
                                     </a>
                                 </h3>
@@ -5772,15 +6115,20 @@
                         @endif
 
                         {{-- Small News --}}
-                        @if (isset($pnbt) && !empty($pnbt->title_en))
+                        @if (isset($tn3) && !empty($tn3->title_en))
                             <div class="news-list">
-                                @foreach ([1, 2, 3] as $row)
+                                @foreach ($tn3 as $row)
                                     <h4>
-                                        <a href="#">
+                                        <a
+                                            href="{{ route('showFull.news', [
+                                                'category' => $row->newsCategory->slug ?? '',
+                                                'subcategory' => $row->newsSubcategory->slug ?? '',
+                                                'id' => $row->id,
+                                            ]) }}">
                                             @if (session()->get('lang') == 'english')
-                                                {{ $pnbt->title_en ?? '' }}
+                                                {{ $row->title_en ?? '' }}
                                             @else
-                                                {{ $pnbt->title_bn ?? '' }}
+                                                {{ $jnbt->title_bn ?? '' }}
                                             @endif
                                         </a>
                                     </h4>

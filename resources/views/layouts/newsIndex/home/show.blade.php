@@ -68,29 +68,20 @@
 
                                         {{-- Category --}}
                                         @if ($news->newsCategory)
-                                            <li style="margin-right: 10px; display: inline-block;">
-                                                <a href="{{ route('getCate.news', $news->newsCategory->slug) }}"
-                                                    style="text-decoration: none; padding: 5px 10px; background: #3498db; color: white; border-radius: 3px;">
-                                                    @if (session()->get('lang') == 'english')
-                                                        {{ $news->newsCategory->category_en ?? 'Category' }}
-                                                    @else
-                                                        {{ $news->newsCategory->category_bn ?? 'ক্যাটেগরি' }}
-                                                    @endif
-                                                </a>
+                                            <li style="margin-right: 10px; display: inline-block; font-size: 14px;">
+                                                <span
+                                                    style="padding: 3px 6px; background: #3498db; color: white; border-radius: 3px; font-size: 14px;">
+                                                    {{ session('lang') == 'english' ? $news->newsCategory->category_en ?? 'Category' : $news->newsCategory->category_bn ?? 'ক্যাটেগরি' }}
+                                                </span>
                                             </li>
                                         @endif
 
-                                        {{-- Subcategory --}}
                                         @if ($news->newsSubCategory)
                                             <li style="margin-right: 10px; display: inline-block;">
-                                                <a href="{{ route('news.sub_cates', [$news->newsCategory->slug, $news->newsSubCategory->slug]) }}"
-                                                    style="text-decoration: none; padding: 5px 10px; background: #e74c3c; color: white; border-radius: 3px;">
-                                                    @if (session()->get('lang') == 'english')
-                                                        {{ $news->newsSubCategory->subcategory_en ?? 'Subcategory' }}
-                                                    @else
-                                                        {{ $news->newsSubCategory->subcategory_bn ?? 'সাবক্যাটেগরি' }}
-                                                    @endif
-                                                </a>
+                                                <span
+                                                    style="padding: 3px 6px; background: #e74c3c; color: white; border-radius: 3px; font-size: 14px;">
+                                                    {{ session('lang') == 'english' ? $news->newsSubCategory->sub_cate_en ?? 'Subcategory' : $news->newsSubCategory->sub_cate_bn ?? 'সাবক্যাটেগরি' }}
+                                                </span>
                                             </li>
                                         @endif
 
@@ -186,7 +177,6 @@
                                                 @foreach ($news->tags as $tag)
                                                     <li style="display: inline-flex;">
                                                         <a href="{{ route('tag.news', $tag->slug) }}"
-
                                                             style="text-decoration: none; padding: 5px 12px; background: #f0f0f0; border-radius: 20px; display: inline-block; font-size: 13px; color: #333;"
                                                             onmouseover="this.style.background='#e74c3c'; this.style.color='white';"
                                                             onmouseout="this.style.background='#f0f0f0'; this.style.color='#333';">
