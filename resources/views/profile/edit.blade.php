@@ -29,7 +29,7 @@
                             class="nav-link position-relative rounded-0 active d-flex align-items-center justify-content-center bg-transparent fs-3 py-3"
                             id="pills-account-tab" data-bs-toggle="pill" data-bs-target="#pills-account" type="button"
                             role="tab" aria-controls="pills-account" aria-selected="true">
-                            <i class="ti ti-user-circle me-2 fs-6"></i>
+                            <i class="fa fa-user-circle me-2 fs-6" aria-hidden="true"></i>
                             <span class="d-none d-md-block">Account</span>
                         </button>
                     </li>
@@ -109,7 +109,7 @@
                                             <h4 class="card-title">Change Password</h4>
                                             <p class="card-subtitle mb-4">To change your password please confirm here</p>
 
-                                            <form method="POST" action="{{ route('password.update') }}">
+                                            <form method="POST" action="{{ route('update.password') }}">
 
                                                 @csrf
                                                 @method('put')

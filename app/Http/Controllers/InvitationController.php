@@ -13,57 +13,51 @@ class InvitationController extends Controller
     // Show password setup form
     public function accept($token)
     {
-        // Find the invitation by token
         $invitation = Invitation::where('token', $token)->first();
 
-        // If the token does not exist
+        // Invalid token
         if (!$invitation) {
             flash()->addError('Invalid invitation token.', ['position' => 'bottom-center']);
-            return redirect('/invitation-invalid'); // triggers fallback page
+            return redirect('/invitation-invalid');
         }
 
-        // If the invitation has already been used
+        // Already used
         if ($invitation->status == 1) {
             flash()->addError('This invitation has already been used.', ['position' => 'bottom-center']);
-            return redirect('/invitation-invalid'); // triggers fallback page
+            return redirect('/invitation-invalid');
         }
 
-        // If the invitation has expired
+        // Expired
         if ($invitation->expires_at && now()->greaterThan($invitation->expires_at)) {
             flash()->addError('This invitation has expired.', ['position' => 'bottom-center']);
-            return redirect('/invitation-invalid'); // triggers fallback page
+            return redirect('/invitation-invalid');
         }
 
-        // If all checks pass, show the set password page
+        // Show password setup page
         return view('layouts.inviteUserMail.invite-set-password', [
             'token' => $token
         ]);
     }
-
-
-
-
 
     // Complete registration (set password)
     public function complete(Request $request)
     {
         $request->validate([
             'token' => 'required|exists:invitations,token',
-            'password' => 'required|confirmed|min:6',
+            'password' => 'required|confirmed|min:8', // stronger minimum
         ]);
 
         $invitation = Invitation::where('token', $request->token)->firstOrFail();
         $user = User::where('email', $invitation->email)->firstOrFail();
 
-        // Set user password
+        // Update user password
         $user->password = Hash::make($request->password);
-        $user->invited_user = null; // instead of 0
+        $user->invited_user = null;
         $user->save();
 
-
-        // Assign roles correctly
+        // Assign role if exists
         if ($invitation->role) {
-            $roles = json_decode($invitation->role, true); // decode JSON
+            $roles = json_decode($invitation->role, true);
             $user->syncRoles($roles);
         }
 
@@ -74,15 +68,16 @@ class InvitationController extends Controller
             'token' => null,
         ]);
 
-        // Log in user
+        // Log in the user and regenerate session
         Auth::login($user);
+        $request->session()->regenerate();
 
-        // Flash success message with flasher
-        flash()
-            ->addSuccess('Your account is ready!', [
-                'position' => 'bottom-center', // 👈 correct way
-            ]);
+        // Flash success message
+        flash()->addSuccess('Your account is ready! 🚀', [
+            'position' => 'bottom-center',
+        ]);
 
+        // Redirect to dashboard
         return redirect()->route('dashboard');
     }
 }

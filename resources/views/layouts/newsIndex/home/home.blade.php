@@ -2306,142 +2306,199 @@
                 </div>
             @endif
 
-            {{-- Filter Row --}}
+            {{-- Filter Row with Form --}}
             <div class="country-filter-container">
-                <div class="country-filter-row">
-                    <div class="country-filter-inputs">
-                        {{-- Division --}}
-                        <div class="country-filter-col">
-                            <select name="division_id" id="division_id" class="form-control">
-                                <option value="">
-                                    {{ session()->get('lang') == 'english' ? 'Division' : 'বিভাগ' }}
-                                </option>
-                                @foreach ($divisions as $division)
-                                    <option value="{{ $division->id }}">
-                                        {{ session()->get('lang') == 'english' ? $division->division_en : $division->division_bn }}
+                <form action="{{ route('location.search') }}" method="GET" id="location-search-form">
+                    <div class="country-filter-row">
+                        <div class="country-filter-inputs">
+                            <div class="country-filter-col">
+                                <select name="division_id" id="division_id" required>
+                                    <option value="">
+                                        {{ session()->get('lang') == 'english' ? 'Division' : 'বিভাগ' }}
                                     </option>
-                                @endforeach
-                            </select>
+                                    @foreach ($divisions as $division)
+                                        <option value="{{ $division->id }}"
+                                            {{ request('division_id') == $division->id ? 'selected' : '' }}>
+                                            {{ session()->get('lang') == 'english' ? $division->division_en : $division->division_bn }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="country-filter-col">
+                                <select name="dist_id" id="dist_id" {{ request('division_id') ? '' : 'disabled' }}
+                                    required>
+                                    <option value="">
+                                        {{ session()->get('lang') == 'english' ? 'District' : 'জেলা' }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="country-filter-col">
+                                <select name="sub_dist_id" id="sub_dist_id" {{ request('dist_id') ? '' : 'disabled' }}>
+                                    <option value="">
+                                        {{ session()->get('lang') == 'english' ? 'Subdistrict (Optional)' : 'উপজেলা (ঐচ্ছিক)' }}
+                                    </option>
+                                </select>
+                            </div>
                         </div>
-
-                        {{-- District --}}
-                        <div class="country-filter-col">
-                            <select name="dist_id" id="dist_id" class="form-control">
-                                <option value="">
-                                    {{ session()->get('lang') == 'english' ? 'District' : 'জেলা' }}
-                                </option>
-                            </select>
-                        </div>
-
-                        {{-- Subdistrict --}}
-                        <div class="country-filter-col">
-                            <select name="sub_dist_id" id="sub_dist_id" class="form-control">
-                                <option value="">
-                                    {{ session()->get('lang') == 'english' ? 'Subdistrict' : 'উপজেলা' }}
-                                </option>
-                            </select>
+                        <div class="country-filter-button-col">
+                            <button class="country-filter-button" type="submit"
+                                {{ request('division_id') && request('district_id') ? '' : 'disabled' }}>
+                                {{ session()->get('lang') == 'english' ? 'Search' : 'খুঁজুন' }}
+                            </button>
                         </div>
                     </div>
-
-                    {{-- Search Button --}}
-                    <div class="country-filter-button-col">
-                        <button class="country-filter-button" type="button" id="search-btn" disabled>
-                            {{ session()->get('lang') == 'english' ? 'Search' : 'খুঁজুন' }}
-                        </button>
-                    </div>
-                </div>
+                </form>
             </div>
 
-            {{-- JavaScript --}}
-            <script>
-                (function($) {
-                    'use strict';
+            @push('scripts')
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const form = document.getElementById('location-search-form');
+                        const divisionSelect = document.getElementById('division_id');
+                        const districtSelect = document.getElementById('dist_id');
+                        const subdistrictSelect = document.getElementById('sub_dist_id');
+                        const submitButton = form.querySelector('button[type="submit"]');
+                        const currentLang = '{{ session()->get('lang') }}' || 'english';
 
-                    var currentLang = '{{ session()->get('lang') }}' || 'english';
+                        // Load previously selected values
+                        const selectedDivisionId = '{{ request('division_id') }}';
+                        const selectedDistrictId = '{{ request('dist_id') }}';
+                        const selectedSubdistrictId = '{{ request('sub_dist_id') }}';
 
-                    // Division change
-                    $('#division_id').on('change', function() {
-                        var divisionId = $(this).val();
+                        if (selectedDivisionId) {
+                            loadDistricts(selectedDivisionId, selectedDistrictId);
+                        }
 
-                        // reset district & subdistrict
-                        $('#dist_id').html('<option value="">' + (currentLang === 'english' ? 'District' : 'জেলা') +
-                            '</option>');
-                        $('#sub_dist_id').html('<option value="">' + (currentLang === 'english' ? 'Subdistrict' :
-                            'উপজেলা') + '</option>');
-                        $('#search-btn').prop('disabled', true);
+                        function checkSelections() {
+                            const divisionSelected = divisionSelect.value !== '';
+                            const districtSelected = districtSelect.value !== '';
+                            submitButton.disabled = !(divisionSelected && districtSelected);
+                        }
 
-                        if (divisionId) {
-                            $.get('/get/dist/' + divisionId, function(districts) {
-                                var opt = '<option value="">' + (currentLang === 'english' ? 'District' :
-                                    'জেলা') + '</option>';
-                                $.each(districts, function(i, d) {
-                                    var name = currentLang === 'english' ? d.district_en : d
-                                    .district_bn;
-                                    opt += '<option value="' + d.id + '">' + name + '</option>';
+                        function loadDistricts(divisionId, selectDistrictId = null) {
+                            districtSelect.innerHTML =
+                                `<option value="">${currentLang === 'english' ? 'Loading...' : 'লোড হচ্ছে...'}</option>`;
+                            districtSelect.disabled = true;
+
+                            fetch('/get/dist/' + divisionId)
+                                .then(response => response.json())
+                                .then(data => {
+                                    districtSelect.innerHTML =
+                                        `<option value="">${currentLang === 'english' ? 'Select District' : 'জেলা নির্বাচন করুন'}</option>`;
+
+                                    if (data && data.length > 0) {
+                                        data.forEach(district => {
+                                            const districtName = currentLang === 'english' ? district.district_en :
+                                                district.district_bn;
+                                            const option = document.createElement('option');
+                                            option.value = district.id;
+                                            option.textContent = districtName;
+                                            if (selectDistrictId && district.id == selectDistrictId) {
+                                                option.selected = true;
+                                            }
+                                            districtSelect.appendChild(option);
+                                        });
+                                        districtSelect.disabled = false;
+                                        checkSelections();
+
+                                        if (selectDistrictId) {
+                                            loadSubdistricts(selectDistrictId, selectedSubdistrictId);
+                                        }
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    districtSelect.innerHTML =
+                                        `<option value="">${currentLang === 'english' ? 'District' : 'জেলা'}</option>`;
                                 });
-                                $('#dist_id').html(opt);
-                            });
-                        }
-                    });
-
-                    // District change
-                    $('#dist_id').on('change', function() {
-                        var divisionId = $('#division_id').val();
-                        var districtId = $(this).val();
-
-                        $('#sub_dist_id').html('<option value="">' + (currentLang === 'english' ? 'Subdistrict' :
-                            'উপজেলা') + '</option>');
-
-                        if (divisionId && districtId) {
-                            $('#search-btn').prop('disabled', false);
-                        } else {
-                            $('#search-btn').prop('disabled', true);
                         }
 
-                        if (districtId) {
-                            $.get('/get/subdist/' + districtId, function(subs) {
-                                var opt = '<option value="">' + (currentLang === 'english' ? 'Subdistrict' :
-                                    'উপজেলা') + '</option>';
-                                $.each(subs, function(i, s) {
-                                    var name = currentLang === 'english' ? s.subdistrict_en : s
-                                        .subdistrict_bn;
-                                    opt += '<option value="' + s.id + '">' + name + '</option>';
+                        function loadSubdistricts(districtId, selectSubdistrictId = null) {
+                            subdistrictSelect.innerHTML =
+                                `<option value="">${currentLang === 'english' ? 'Loading...' : 'লোড হচ্ছে...'}</option>`;
+                            subdistrictSelect.disabled = true;
+
+                            fetch('/get/subdist/' + districtId)
+                                .then(response => response.json())
+                                .then(data => {
+                                    subdistrictSelect.innerHTML =
+                                        `<option value="">${currentLang === 'english' ? 'Subdistrict (Optional)' : 'উপজেলা (ঐচ্ছিক)'}</option>`;
+
+                                    if (data && data.length > 0) {
+                                        data.forEach(subdistrict => {
+                                            const subdistrictName = currentLang === 'english' ? subdistrict
+                                                .sub_district_en : subdistrict.sub_district_bn;
+                                            const option = document.createElement('option');
+                                            option.value = subdistrict.id;
+                                            option.textContent = subdistrictName;
+                                            if (selectSubdistrictId && subdistrict.id == selectSubdistrictId) {
+                                                option.selected = true;
+                                            }
+                                            subdistrictSelect.appendChild(option);
+                                        });
+                                        subdistrictSelect.disabled = false;
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Error:', error);
+                                    subdistrictSelect.innerHTML =
+                                        `<option value="">${currentLang === 'english' ? 'Subdistrict (Optional)' : 'উপজেলা (ঐচ্ছিক)'}</option>`;
                                 });
-                                $('#sub_dist_id').html(opt);
-                            });
                         }
+
+                        divisionSelect.addEventListener('change', function() {
+                            const divisionId = this.value;
+
+                            districtSelect.innerHTML =
+                                `<option value="">${currentLang === 'english' ? 'District' : 'জেলা'}</option>`;
+                            districtSelect.disabled = true;
+
+                            subdistrictSelect.innerHTML =
+                                `<option value="">${currentLang === 'english' ? 'Subdistrict (Optional)' : 'উপজেলা (ঐচ্ছিক)'}</option>`;
+                            subdistrictSelect.disabled = true;
+
+                            checkSelections();
+
+                            if (divisionId) {
+                                loadDistricts(divisionId);
+                            }
+                        });
+
+                        districtSelect.addEventListener('change', function() {
+                            const districtId = this.value;
+
+                            subdistrictSelect.innerHTML =
+                                `<option value="">${currentLang === 'english' ? 'Subdistrict (Optional)' : 'উপজেলা (ঐচ্ছিক)'}</option>`;
+                            subdistrictSelect.disabled = true;
+
+                            checkSelections();
+
+                            if (districtId) {
+                                loadSubdistricts(districtId);
+                            }
+                        });
+
+                        // Prevent form submission if required fields are empty
+                        form.addEventListener('submit', function(e) {
+                            if (!divisionSelect.value || !districtSelect.value) {
+                                e.preventDefault();
+                                alert(currentLang === 'english' ?
+                                    'Please select both Division and District' :
+                                    'অনুগ্রহ করে বিভাগ এবং জেলা উভয়ই নির্বাচন করুন'
+                                );
+                            }
+                        });
                     });
+                </script>
+            @endpush
 
-                    // Subdistrict change → keep button enabled
-                    $('#sub_dist_id').on('change', function() {
-                        var divisionId = $('#division_id').val();
-                        var districtId = $('#dist_id').val();
-                        if (divisionId && districtId) {
-                            $('#search-btn').prop('disabled', false);
-                        }
-                    });
-
-                    // Button click → redirect
-                    $('#search-btn').on('click', function(e) {
-                        e.preventDefault();
-                        var divisionId = $('#division_id').val();
-                        var districtId = $('#dist_id').val();
-                        var subdistrictId = $('#sub_dist_id').val();
-
-                        var url = '/news/search?division_id=' + divisionId + '&district_id=' + districtId;
-                        if (subdistrictId) {
-                            url += '&subdistrict_id=' + subdistrictId;
-                        }
-                        window.location.href = url;
-                    });
-
-                })(jQuery);
-            </script>
-
-            {{-- Styles --}}
             <style>
                 .country-filter-container {
                     margin: 20px 0;
+                    background: white;
+                    padding: 20px;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                 }
 
                 .country-filter-row {
@@ -2480,6 +2537,12 @@
                     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
                 }
 
+                .country-filter-col select:disabled {
+                    background-color: #f3f4f6;
+                    cursor: not-allowed;
+                    opacity: 0.6;
+                }
+
                 .country-filter-button-col {
                     display: flex;
                     align-items: end;
@@ -2509,10 +2572,10 @@
                 }
 
                 .country-filter-button:disabled {
-                    background-color: #d1d5db !important;
-                    color: #9ca3af !important;
-                    cursor: not-allowed !important;
-                    opacity: 0.6 !important;
+                    background-color: #d1d5db;
+                    color: #9ca3af;
+                    cursor: not-allowed;
+                    opacity: 0.6;
                 }
 
                 @media (max-width: 768px) {
@@ -2533,8 +2596,6 @@
                     }
                 }
             </style>
-
-
 
 
             {{-- News Columns --}}
@@ -4165,6 +4226,11 @@
                 .lifestyle-poll-question {
                     font-size: 14px;
                 }
+
+                .lifestyle-featured-img {
+                    height: auto;
+                    /* remove 200px */
+                }
             }
 
             @media(max-width:480px) {
@@ -4181,6 +4247,11 @@
 
                 .lifestyle-news-grid {
                     padding: 15px;
+                }
+
+                .lifestyle-featured-img {
+                    height: auto;
+                    /* remove 180px */
                 }
             }
         </style>
@@ -4574,7 +4645,7 @@
                         <div class="custom-content-area">
 
                             {{-- Check if we have any news data --}}
-                            @if (!empty($lonbt) || (!empty($lonrn3) && count($lonrn3) > 0) || (!empty($lon4) && count($lon4) > 0))
+                            @if (!empty($lonbt) || (!empty($lonrn3) && count($lonrn3) > 0) || (!empty($lon6) && count($lon6) > 0))
 
                                 {{-- Top News Section --}}
                                 <div class="custom-top-section">
@@ -4691,8 +4762,8 @@
 
                                 {{-- Bottom 4 News Grid --}}
                                 <div class="custom-bottom-grid">
-                                    @forelse ($lon4 ?? [] as $row)
-                                        <div class="custom-bottom-item">
+                                    @forelse ($lon6 ?? [] as $row)
+                                        <div class="custom-bottom-item" style="margin-bottom: 20px">
                                             <div class="custom-bottom-content">
                                                 <h4>
                                                     <a href="{{ route('showFull.news', [
@@ -4779,7 +4850,7 @@
                                     </div>
                                 @endif
 
-                                {{-- Calendar Widget - Always Visible --}}
+                                {{-- Calendar Widget --}}
                                 <div class="calendar-container">
                                     <div class="calendar-box">
                                         <div style="background-color: #F0F0F0; margin-top: -10px; padding: 0;">
@@ -4790,6 +4861,8 @@
                                                 <select id="yearSelect"></select>
                                                 <select id="monthSelect"></select>
                                             </div>
+
+                                            {{-- Days --}}
                                             <div class="calendar-days" style="border-bottom: 1px solid black;">
                                                 <div>রবি</div>
                                                 <div>সোম</div>
@@ -4803,6 +4876,149 @@
                                         <div class="calendar-dates" id="calendarDates"></div>
                                     </div>
                                 </div>
+
+                                {{-- Hidden Form for Archive --}}
+                                <form id="archiveForm" method="GET" style="display:none;">
+                                    @csrf
+                                    <input type="hidden" name="date" id="selectedDateInput">
+                                </form>
+
+
+                                {{-- Styles --}}
+                                <style>
+                                    .calendar-container {
+                                        margin: 20px 0;
+                                    }
+
+                                    .calendar-dates {
+                                        display: grid;
+                                        grid-template-columns: repeat(7, 1fr);
+                                        gap: 2px;
+                                        padding: 10px;
+                                    }
+
+                                    .calendar-dates div {
+                                        text-align: center;
+                                        padding: 8px 0;
+                                        cursor: pointer;
+                                        border-radius: 4px;
+                                    }
+
+                                    .calendar-dates div.disabled {
+                                        color: #bbb;
+                                        background: #f4f4f4;
+                                        cursor: not-allowed;
+                                    }
+
+                                    .calendar-dates div.active:hover {
+                                        background: #007bff;
+                                        color: white;
+                                    }
+
+                                    .calendar-dates div.today {
+                                        border: 1px solid #007bff;
+                                        font-weight: bold;
+                                    }
+                                </style>
+
+                                {{-- JavaScript --}}
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        const yearSelect = document.getElementById('yearSelect');
+                                        const monthSelect = document.getElementById('monthSelect');
+                                        const calendarDates = document.getElementById('calendarDates');
+                                        const form = document.getElementById('archiveForm');
+
+                                        const today = new Date();
+                                        const currentYear = today.getFullYear();
+                                        const currentMonth = today.getMonth(); // 0-based
+                                        const currentDay = today.getDate();
+
+                                        // Populate years (last 5 years)
+                                        for (let y = currentYear; y >= currentYear - 5; y--) {
+                                            const opt = document.createElement('option');
+                                            opt.value = y;
+                                            opt.textContent = y;
+                                            yearSelect.appendChild(opt);
+                                        }
+                                        yearSelect.value = currentYear;
+
+                                        // Populate months
+                                        const months = [
+                                            'January', 'February', 'March', 'April', 'May', 'June',
+                                            'July', 'August', 'September', 'October', 'November', 'December'
+                                        ];
+                                        months.forEach((m, i) => {
+                                            const opt = document.createElement('option');
+                                            opt.value = i;
+                                            opt.textContent = m;
+                                            monthSelect.appendChild(opt);
+                                        });
+                                        monthSelect.value = currentMonth;
+
+                                        // Render calendar
+                                        function renderCalendar(year, month) {
+                                            calendarDates.innerHTML = '';
+                                            const firstDay = new Date(year, month, 1).getDay();
+                                            const lastDate = new Date(year, month + 1, 0).getDate();
+
+                                            // Empty cells before first day
+                                            for (let i = 0; i < firstDay; i++) {
+                                                const emptyCell = document.createElement('div');
+                                                calendarDates.appendChild(emptyCell);
+                                            }
+
+                                            // Dates
+                                            for (let d = 1; d <= lastDate; d++) {
+                                                const dateCell = document.createElement('div');
+                                                dateCell.textContent = d;
+                                                const cellDate = new Date(year, month, d);
+
+                                                if (cellDate > today) {
+                                                    // Future dates disabled
+                                                    dateCell.classList.add('disabled');
+                                                    dateCell.style.color = '#ccc';
+                                                } else {
+                                                    dateCell.classList.add('active');
+                                                    dateCell.style.cursor = 'pointer';
+
+                                                    if (d === currentDay && year === currentYear && month === currentMonth) {
+                                                        dateCell.classList.add('today');
+                                                        dateCell.style.background = '#3498db';
+                                                        dateCell.style.color = '#fff';
+                                                    }
+
+                                                    // Click event
+                                                    dateCell.addEventListener('click', () => {
+                                                        const year = cellDate.getFullYear();
+                                                        const month = String(cellDate.getMonth() + 1).padStart(2, '0');
+                                                        const day = String(cellDate.getDate()).padStart(2, '0');
+                                                        const selectedDate = `${year}-${month}-${day}`; // ✅ Local date, no shift
+
+                                                        form.action = `/news/archive/${selectedDate}`;
+                                                        form.submit();
+                                                    });
+                                                }
+
+                                                calendarDates.appendChild(dateCell);
+                                            }
+                                        }
+
+                                        renderCalendar(currentYear, currentMonth);
+
+                                        // Year / Month change
+                                        yearSelect.addEventListener('change', () => {
+                                            renderCalendar(parseInt(yearSelect.value), parseInt(monthSelect.value));
+                                        });
+
+                                        monthSelect.addEventListener('change', () => {
+                                            renderCalendar(parseInt(yearSelect.value), parseInt(monthSelect.value));
+                                        });
+                                    });
+                                </script>
+
+
+
                             </div>
                         </div>
                     </div> {{-- /.custom-main-container --}}
@@ -5231,14 +5447,13 @@
                             {{-- Photo Section Header --}}
                             <div class="section-header">
                                 <h2 class="section-title">
-                                    @if (session()->get('lang') == 'bangla')
-                                        ফটো গ্যালারী
-                                    @else
+                                    @if (session()->get('lang') == 'english')
                                         Photo Gallery
+                                    @else
+                                        ফটো গ্যালারী
                                     @endif
                                 </h2>
-                                <a href="{{ isset($pgnbt->newsCategory) ? route('getCate.news', $pgnbt->newsCategory->slug) : '#' }}"
-                                    class="more-link">
+                                <a href="{{ route('photo.gallery') }}" class="more-link">
                                     {{ session()->get('lang') == 'english' ? 'More' : 'আরও' }}
                                 </a>
                             </div>
@@ -5429,26 +5644,24 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
         <style>
-            /* Desktop (keep 2 sections in 1 row, boxed) */
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 15px;
+            }
+
             .news-sections-wrapper {
                 display: flex;
                 gap: 20px;
-                max-width: 1200px;
-                margin: 30px auto 0;
+                flex-wrap: wrap;
+                margin: 30px 0 0 0;
             }
 
-            /* ====== WRAPPER ====== */
-            .news-sections-wrapper {
-                max-width: 1200px;
-                margin: 30px auto 0;
-            }
-
-            /* Each section */
             .news-section {
                 flex: 1;
+                width: 100%;
             }
 
-            /* Section header */
             .section-header {
                 display: flex;
                 justify-content: space-between;
@@ -5470,31 +5683,28 @@
                 font-size: 15px;
             }
 
-            /* Section content desktop layout: 60/40 */
             .section-content {
                 display: flex;
                 gap: 15px;
+                flex-wrap: wrap;
             }
 
-            .section-content .main-news-wrapper {
-                width: 60%;
+            .main-news-wrapper {
+                width: calc(60% - 7.5px);
             }
 
-            .section-content .side-news-wrapper {
-                width: 40%;
+            .side-news-wrapper {
+                width: calc(40% - 7.5px);
                 display: flex;
                 flex-direction: column;
                 gap: 15px;
             }
 
-            /* Main news styles */
             .main-news img {
                 width: 100%;
                 height: auto;
                 object-fit: contain;
-                /* no crop, but may leave blank space */
             }
-
 
             .main-news h3 {
                 font-size: 20px;
@@ -5506,7 +5716,6 @@
                 color: #555;
             }
 
-            /* Side news styles (desktop) */
             .side-news {
                 display: flex;
                 align-items: center;
@@ -5526,12 +5735,12 @@
                 margin: 0;
             }
 
-            /* Slider container hidden by default */
             .swiper-container {
                 display: none;
+                width: 100%;
+                overflow: hidden;
             }
 
-            /* Slider slides */
             .swiper-slide {
                 background: #fff;
                 border: 1px solid #e9e9e9;
@@ -5548,126 +5757,91 @@
             .swiper-slide h4 {
                 font-size: 15px;
                 margin: 5px;
+                text-align: center;
             }
 
-            /* ====== MOBILE & TABLET ====== */
+            .swiper-pagination {
+                display: none !important;
+            }
+
             @media(max-width:992px) {
+                .container {
+                    overflow: hidden;
+                }
 
                 .news-sections-wrapper {
                     flex-direction: column;
-                    /* stack sections */
-                    max-width: 100% !important;
-                    margin: 0 !important;
-                    padding: 0 !important;
+                    margin: 0;
+                    padding: 0;
                 }
-
-                .main-news img {
-                    width: 100vw;
-                    /* full screen width */
-                    height: auto;
-                    display: block;
-                }
-
 
                 .section-content {
                     flex-direction: column;
                 }
 
-                /* Main news takes full width on mobile */
-                .section-content .main-news-wrapper {
+                .main-news-wrapper {
                     width: 100% !important;
                 }
 
-                .section-content .side-news-wrapper {
-                    width: 100%;
-                }
-
-                /* COMPLETELY hide desktop side news */
-                .side-news-wrapper {
-                    display: none !important;
-                }
-
+                .side-news-wrapper,
                 .side-news {
                     display: none !important;
                 }
 
-                /* Show slider instead */
                 .swiper-container {
                     display: block !important;
-                }
-
-                .swiper-pagination {
-                    display: none !important;
+                    margin-left: 0;
+                    margin-right: 0;
                 }
             }
         </style>
 
-        <div class="news-sections-wrapper">
+        <div class="container">
+            <div class="news-sections-wrapper">
+                {{-- POLITICS --}}
+                <section class="news-section">
+                    <div class="section-header">
+                        <h2>{{ session()->get('lang') == 'english' ? $pnbt->newsCategory->category_en ?? 'Politics' : $pnbt->newsCategory->category_bn ?? 'রাজনীতি' }}
+                        </h2>
+                        <a
+                            href="{{ isset($pnbt->newsCategory) ? route('getCate.news', $pnbt->newsCategory->slug) : '#' }}">
+                            {{ session()->get('lang') == 'english' ? 'More' : 'আরও' }}
+                        </a>
+                    </div>
 
-            {{-- =================== POLITICS =================== --}}
-            <section class="news-section">
-                <div class="section-header" style="border-top: none">
-                    <h2>{{ session()->get('lang') == 'english' ? $pnbt->newsCategory->category_en ?? 'Politics' : $pnbt->newsCategory->category_bn ?? 'রাজনীতি' }}
-                    </h2>
-                    <a href="{{ isset($pnbt->newsCategory) ? route('getCate.news', $pnbt->newsCategory->slug) : '#' }}">
-                        {{ session()->get('lang') == 'english' ? 'More' : 'আরও' }}
-                    </a>
-                </div>
-
-                <div class="section-content">
-                    {{-- Main News --}}
-                    <div class="main-news-wrapper">
-                        @if ($pnbt)
-                            @php
-                                $img =
-                                    !empty($pnbt->thumbnail) && !Str::contains($pnbt->thumbnail, 'via.placeholder.com')
-                                        ? $pnbt->thumbnail
-                                        : asset('uploads/default_images/deafult_thumbnail.jpg');
-                            @endphp
-                            <div class="main-news">
-                                <a style="color: black !important"
-                                    href="{{ route('showFull.news', ['category' => $pnbt->newsCategory->slug ?? '', 'subcategory' => $pnbt->newsSubcategory->slug ?? '', 'id' => $pnbt->id]) }}">
-                                    <img src="{{ $img }}" alt="{{ $pnbt->title_en }}">
-                                </a>
-                                <h3>
-                                    <a style="color: black !important"
+                    <div class="section-content">
+                        {{-- Main News --}}
+                        <div class="main-news-wrapper">
+                            @if (!empty($pnbt))
+                                @php
+                                    $img =
+                                        !empty($pnbt->thumbnail) &&
+                                        !Str::contains($pnbt->thumbnail, 'via.placeholder.com')
+                                            ? $pnbt->thumbnail
+                                            : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                @endphp
+                                <div class="main-news">
+                                    <a
                                         href="{{ route('showFull.news', ['category' => $pnbt->newsCategory->slug ?? '', 'subcategory' => $pnbt->newsSubcategory->slug ?? '', 'id' => $pnbt->id]) }}">
-                                        {{ session()->get('lang') == 'english' ? $pnbt->title_en : $pnbt->title_bn }}
+                                        <img src="{{ $img }}" alt="{{ $pnbt->title_en }}">
                                     </a>
-                                </h3>
-                                <p>{{ session()->get('lang') == 'english' ? Str::limit($pnbt->details_en, 150, '...') : Str::limit($pnbt->details_bn, 150, '...') }}
-                                </p>
-                            </div>
-                        @endif
-                    </div>
+                                    <h3>
+                                        <a
+                                            href="{{ route('showFull.news', ['category' => $pnbt->newsCategory->slug ?? '', 'subcategory' => $pnbt->newsSubcategory->slug ?? '', 'id' => $pnbt->id]) }}">
+                                            {{ session()->get('lang') == 'english' ? $pnbt->title_en : $pnbt->title_bn }}
+                                        </a>
+                                    </h3>
+                                    <p>{{ session()->get('lang') == 'english' ? Str::limit($pnbt->details_en, 150, '...') : Str::limit($pnbt->details_bn, 150, '...') }}
+                                    </p>
+                                </div>
+                            @else
+                                <p>No main news available</p>
+                            @endif
+                        </div>
 
-                    {{-- Side news (desktop list) --}}
-                    <div class="side-news-wrapper">
-                        @forelse($pn3 as $row)
-                            @php
-                                $img =
-                                    !empty($row->thumbnail) && !Str::contains($row->thumbnail, 'via.placeholder.com')
-                                        ? $row->thumbnail
-                                        : asset('uploads/default_images/deafult_thumbnail.jpg');
-                            @endphp
-                            <div class="side-news">
-                                <img src="{{ $img }}" alt="{{ $row->title_en }}">
-                                <h4>
-                                    <a style="color: black"
-                                        href="{{ route('showFull.news', ['category' => $row->newsCategory->slug ?? '', 'subcategory' => $row->newsSubcategory->slug ?? '', 'id' => $row->id]) }}">
-                                        {{ session()->get('lang') == 'english' ? $row->title_en : $row->title_bn }}
-                                    </a>
-                                </h4>
-                            </div>
-                        @empty
-                            <p>No news available</p>
-                        @endforelse
-                    </div>
-
-                    {{-- Slider for mobile --}}
-                    <div class="swiper-container swiper-politics">
-                        <div class="swiper-wrapper">
-                            @foreach ($pn3 as $row)
+                        {{-- Side news --}}
+                        <div class="side-news-wrapper">
+                            @forelse ($pn3 as $row)
                                 @php
                                     $img =
                                         !empty($row->thumbnail) &&
@@ -5675,85 +5849,92 @@
                                             ? $row->thumbnail
                                             : asset('uploads/default_images/deafult_thumbnail.jpg');
                                 @endphp
-                                <div class="swiper-slide">
-                                    <a style="color: black"
-                                        href="{{ route('showFull.news', ['category' => $row->newsCategory->slug ?? '', 'subcategory' => $row->newsSubcategory->slug ?? '', 'id' => $row->id]) }}">
-                                        <img src="{{ $img }}" alt="{{ $row->title_en }}">
-                                        <h4>{{ session()->get('lang') == 'english' ? $row->title_en : $row->title_bn }}
-                                        </h4>
-                                    </a>
+                                <div class="side-news">
+                                    <img src="{{ $img }}" alt="{{ $row->title_en }}">
+                                    <h4>
+                                        <a
+                                            href="{{ route('showFull.news', ['category' => $row->newsCategory->slug ?? '', 'subcategory' => $row->newsSubcategory->slug ?? '', 'id' => $row->id]) }}">
+                                            {{ session()->get('lang') == 'english' ? $row->title_en : $row->title_bn }}
+                                        </a>
+                                    </h4>
                                 </div>
-                            @endforeach
+                            @empty
+                                <p>No side news available</p>
+                            @endforelse
                         </div>
-                        <div class="swiper-pagination"></div>
+
+                        {{-- Swiper Slider --}}
+                        @if (!empty($pn3))
+                            <div class="swiper-container swiper-politics">
+                                <div class="swiper-wrapper">
+                                    @foreach ($pn3 as $row)
+                                        @php
+                                            $img =
+                                                !empty($row->thumbnail) &&
+                                                !Str::contains($row->thumbnail, 'via.placeholder.com')
+                                                    ? $row->thumbnail
+                                                    : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                        @endphp
+                                        <div class="swiper-slide">
+                                            <a
+                                                href="{{ route('showFull.news', ['category' => $row->newsCategory->slug ?? '', 'subcategory' => $row->newsSubcategory->slug ?? '', 'id' => $row->id]) }}">
+                                                <img src="{{ $img }}" alt="{{ $row->title_en }}">
+                                                <h4>{{ session()->get('lang') == 'english' ? $row->title_en : $row->title_bn }}
+                                                </h4>
+                                            </a>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <div class="swiper-pagination"></div>
+                            </div>
+                        @endif
                     </div>
-                </div>
-            </section>
+                </section>
 
-            {{-- =================== ECONOMICS =================== --}}
-            <section class="news-section">
-                <div class="section-header" style="border-top: none">
-                    <h2>{{ session()->get('lang') == 'english' ? $fnbt->newsCategory->category_en ?? 'Economics' : $fnbt->newsCategory->category_bn ?? 'অর্থনীতি' }}
-                    </h2>
-                    <a href="{{ isset($fnbt->newsCategory) ? route('getCate.news', $fnbt->newsCategory->slug) : '#' }}">
-                        {{ session()->get('lang') == 'english' ? 'More' : 'আরও' }}
-                    </a>
-                </div>
+                {{-- ECONOMICS --}}
+                <section class="news-section">
+                    <div class="section-header">
+                        <h2>{{ session()->get('lang') == 'english' ? $fnbt->newsCategory->category_en ?? 'Economics' : $fnbt->newsCategory->category_bn ?? 'অর্থনীতি' }}
+                        </h2>
+                        <a
+                            href="{{ isset($fnbt->newsCategory) ? route('getCate.news', $fnbt->newsCategory->slug) : '#' }}">
+                            {{ session()->get('lang') == 'english' ? 'More' : 'আরও' }}
+                        </a>
+                    </div>
 
-                <div class="section-content">
-                    {{-- Main News --}}
-                    <div class="main-news-wrapper">
-                        @if ($fnbt)
-                            @php
-                                $img =
-                                    !empty($fnbt->thumbnail) && !Str::contains($fnbt->thumbnail, 'via.placeholder.com')
-                                        ? $fnbt->thumbnail
-                                        : asset('uploads/default_images/deafult_thumbnail.jpg');
-                            @endphp
-                            <div class="main-news">
-                                <a style="color: black; !important"
-                                    href="{{ route('showFull.news', ['category' => $fnbt->newsCategory->slug ?? '', 'subcategory' => $fnbt->newsSubcategory->slug ?? '', 'id' => $fnbt->id]) }}">
-                                    <img src="{{ $img }}" alt="{{ $fnbt->title_en }}">
-                                </a>
-                                <h3>
-                                    <a style="color: black; !important"
+                    <div class="section-content">
+                        {{-- Main News --}}
+                        <div class="main-news-wrapper">
+                            @if (!empty($fnbt))
+                                @php
+                                    $img =
+                                        !empty($fnbt->thumbnail) &&
+                                        !Str::contains($fnbt->thumbnail, 'via.placeholder.com')
+                                            ? $fnbt->thumbnail
+                                            : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                @endphp
+                                <div class="main-news">
+                                    <a
                                         href="{{ route('showFull.news', ['category' => $fnbt->newsCategory->slug ?? '', 'subcategory' => $fnbt->newsSubcategory->slug ?? '', 'id' => $fnbt->id]) }}">
-                                        {{ session()->get('lang') == 'english' ? $fnbt->title_en : $fnbt->title_bn }}
+                                        <img src="{{ $img }}" alt="{{ $fnbt->title_en }}">
                                     </a>
-                                </h3>
-                                <p>{{ session()->get('lang') == 'english' ? Str::limit($fnbt->details_en, 150, '...') : Str::limit($fnbt->details_bn, 150, '...') }}
-                                </p>
-                            </div>
-                        @endif
-                    </div>
+                                    <h3>
+                                        <a
+                                            href="{{ route('showFull.news', ['category' => $fnbt->newsCategory->slug ?? '', 'subcategory' => $fnbt->newsSubcategory->slug ?? '', 'id' => $fnbt->id]) }}">
+                                            {{ session()->get('lang') == 'english' ? $fnbt->title_en : $fnbt->title_bn }}
+                                        </a>
+                                    </h3>
+                                    <p>{{ session()->get('lang') == 'english' ? Str::limit($fnbt->details_en, 150, '...') : Str::limit($fnbt->details_bn, 150, '...') }}
+                                    </p>
+                                </div>
+                            @else
+                                <p>No main news available</p>
+                            @endif
+                        </div>
 
-                    {{-- Side news (desktop list) --}}
-                    <div class="side-news-wrapper">
-                        @forelse($fn3 as $row)
-                            @php
-                                $img =
-                                    !empty($row->thumbnail) && !Str::contains($row->thumbnail, 'via.placeholder.com')
-                                        ? $row->thumbnail
-                                        : asset('uploads/default_images/deafult_thumbnail.jpg');
-                            @endphp
-                            <div class="side-news">
-                                <img src="{{ $img }}" alt="{{ $row->title_en }}">
-                                <h4>
-                                    <a style="color: black"
-                                        href="{{ route('showFull.news', ['category' => $row->newsCategory->slug ?? '', 'subcategory' => $row->newsSubcategory->slug ?? '', 'id' => $row->id]) }}">
-                                        {{ session()->get('lang') == 'english' ? $row->title_en : $row->title_bn }}
-                                    </a>
-                                </h4>
-                            </div>
-                        @empty
-                            <p>No news available</p>
-                        @endforelse
-                    </div>
-
-                    {{-- Slider for mobile --}}
-                    <div class="swiper-container swiper-economics">
-                        <div class="swiper-wrapper">
-                            @foreach ($fn3 as $row)
+                        {{-- Side news --}}
+                        <div class="side-news-wrapper">
+                            @forelse ($fn3 as $row)
                                 @php
                                     $img =
                                         !empty($row->thumbnail) &&
@@ -5761,61 +5942,92 @@
                                             ? $row->thumbnail
                                             : asset('uploads/default_images/deafult_thumbnail.jpg');
                                 @endphp
-                                <div class="swiper-slide">
-                                    <a style="color: black"
-                                        href="{{ route('showFull.news', ['category' => $row->newsCategory->slug ?? '', 'subcategory' => $row->newsSubcategory->slug ?? '', 'id' => $row->id]) }}">
-                                        <img src="{{ $img }}" alt="{{ $row->title_en }}">
-                                        <h4>{{ session()->get('lang') == 'english' ? $row->title_en : $row->title_bn }}
-                                        </h4>
-                                    </a>
+                                <div class="side-news">
+                                    <img src="{{ $img }}" alt="{{ $row->title_en }}">
+                                    <h4>
+                                        <a
+                                            href="{{ route('showFull.news', ['category' => $row->newsCategory->slug ?? '', 'subcategory' => $row->newsSubcategory->slug ?? '', 'id' => $row->id]) }}">
+                                            {{ session()->get('lang') == 'english' ? $row->title_en : $row->title_bn }}
+                                        </a>
+                                    </h4>
                                 </div>
-                            @endforeach
+                            @empty
+                                <p>No side news available</p>
+                            @endforelse
                         </div>
-                        <div class="swiper-pagination"></div>
-                    </div>
-                </div>
-            </section>
 
+                        {{-- Swiper Slider --}}
+                        @if (!empty($fn3))
+                            <div class="swiper-container swiper-economics">
+                                <div class="swiper-wrapper">
+                                    @foreach ($fn3 as $row)
+                                        @php
+                                            $img =
+                                                !empty($row->thumbnail) &&
+                                                !Str::contains($row->thumbnail, 'via.placeholder.com')
+                                                    ? $row->thumbnail
+                                                    : asset('uploads/default_images/deafult_thumbnail.jpg');
+                                        @endphp
+                                        <div class="swiper-slide">
+                                            <a
+                                                href="{{ route('showFull.news', ['category' => $row->newsCategory->slug ?? '', 'subcategory' => $row->newsSubcategory->slug ?? '', 'id' => $row->id]) }}">
+                                                <img src="{{ $img }}" alt="{{ $row->title_en }}">
+                                                <h4>{{ session()->get('lang') == 'english' ? $row->title_en : $row->title_bn }}
+                                                </h4>
+                                            </a>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <div class="swiper-pagination"></div>
+                            </div>
+                        @endif
+                    </div>
+                </section>
+            </div>
         </div>
 
         <!-- Swiper JS -->
         <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                new Swiper('.swiper-politics', {
-                    slidesPerView: 1.2,
-                    spaceBetween: 12,
-                    grabCursor: true,
-                    pagination: {
-                        el: '.swiper-pagination',
-                        clickable: true
-                    },
-                    breakpoints: {
-                        480: {
-                            slidesPerView: 1.5
+                if (document.querySelector('.swiper-politics')) {
+                    new Swiper('.swiper-politics', {
+                        slidesPerView: 1.2,
+                        spaceBetween: 12,
+                        grabCursor: true,
+                        pagination: {
+                            el: '.swiper-pagination',
+                            clickable: true
                         },
-                        640: {
-                            slidesPerView: 2
+                        breakpoints: {
+                            480: {
+                                slidesPerView: 1.5
+                            },
+                            640: {
+                                slidesPerView: 2
+                            }
                         }
-                    }
-                });
-                new Swiper('.swiper-economics', {
-                    slidesPerView: 1.2,
-                    spaceBetween: 12,
-                    grabCursor: true,
-                    pagination: {
-                        el: '.swiper-pagination',
-                        clickable: true
-                    },
-                    breakpoints: {
-                        480: {
-                            slidesPerView: 1.5
+                    });
+                }
+                if (document.querySelector('.swiper-economics')) {
+                    new Swiper('.swiper-economics', {
+                        slidesPerView: 1.2,
+                        spaceBetween: 12,
+                        grabCursor: true,
+                        pagination: {
+                            el: '.swiper-pagination',
+                            clickable: true
                         },
-                        640: {
-                            slidesPerView: 2
+                        breakpoints: {
+                            480: {
+                                slidesPerView: 1.5
+                            },
+                            640: {
+                                slidesPerView: 2
+                            }
                         }
-                    }
-                });
+                    });
+                }
             });
         </script>
 
@@ -5826,7 +6038,7 @@
         <div class="news-section">
             <div class="news-container">
 
-                {{-- Example Section --}}
+                {{-- Section 1: JNBT --}}
                 @if (isset($jnbt) && $jnbt && isset($jnbt->newsCategory))
                     <div class="news-block">
                         {{-- Section Title --}}
@@ -5880,8 +6092,8 @@
                             </div>
                         @endif
 
-                        {{-- Small News --}}
-                        @if (isset($jn3) && !empty($jn3->title_en))
+                        {{-- Small News - FIXED --}}
+                        @if (isset($jn3) && count($jn3) > 0)
                             <div class="news-list">
                                 @foreach ($jn3 as $row)
                                     <h4>
@@ -5904,7 +6116,7 @@
                     </div>
                 @endif
 
-                {{-- Example Section --}}
+                {{-- Section 2: ONBT - FIXED --}}
                 @if (isset($onbt) && $onbt && isset($onbt->newsCategory))
                     <div class="news-block">
                         {{-- Section Title --}}
@@ -5958,21 +6170,21 @@
                             </div>
                         @endif
 
-                        {{-- Small News --}}
-                        @if (isset($on3) && !empty($on3->title_en))
+                        {{-- Small News - FIXED: Changed condition and route variables --}}
+                        @if (isset($on3) && count($on3) > 0)
                             <div class="news-list">
                                 @foreach ($on3 as $row)
                                     <h4>
                                         <a
                                             href="{{ route('showFull.news', [
-                                                'category' => $on3->newsCategory->slug ?? '',
-                                                'subcategory' => $on3->newsSubcategory->slug ?? '',
-                                                'id' => $on3->id,
+                                                'category' => $row->newsCategory->slug ?? '',
+                                                'subcategory' => $row->newsSubcategory->slug ?? '',
+                                                'id' => $row->id,
                                             ]) }}">
                                             @if (session()->get('lang') == 'english')
-                                                {{ $on3->title_en ?? '' }}
+                                                {{ $row->title_en ?? '' }}
                                             @else
-                                                {{ $on3->title_bn ?? '' }}
+                                                {{ $row->title_bn ?? '' }}
                                             @endif
                                         </a>
                                     </h4>
@@ -5982,7 +6194,7 @@
                     </div>
                 @endif
 
-                {{-- Example Section --}}
+                {{-- Section 3: CRNBT - FIXED --}}
                 @if (isset($crnbt) && $crnbt && isset($crnbt->newsCategory))
                     <div class="news-block">
                         {{-- Section Title --}}
@@ -6036,21 +6248,21 @@
                             </div>
                         @endif
 
-                        {{-- Small News --}}
-                        @if (isset($crn3) && !empty($crn3->title_en))
+                        {{-- Small News - FIXED: Changed condition and route variables --}}
+                        @if (isset($crn3) && count($crn3) > 0)
                             <div class="news-list">
                                 @foreach ($crn3 as $row)
                                     <h4>
                                         <a
                                             href="{{ route('showFull.news', [
-                                                'category' => $crn3->newsCategory->slug ?? '',
-                                                'subcategory' => $crn3->newsSubcategory->slug ?? '',
-                                                'id' => $crn3->id,
+                                                'category' => $row->newsCategory->slug ?? '',
+                                                'subcategory' => $row->newsSubcategory->slug ?? '',
+                                                'id' => $row->id,
                                             ]) }}">
                                             @if (session()->get('lang') == 'english')
-                                                {{ $crn3->title_en ?? '' }}
+                                                {{ $row->title_en ?? '' }}
                                             @else
-                                                {{ $crn3->title_bn ?? '' }}
+                                                {{ $row->title_bn ?? '' }}
                                             @endif
                                         </a>
                                     </h4>
@@ -6060,7 +6272,7 @@
                     </div>
                 @endif
 
-                {{-- Example Section --}}
+                {{-- Section 4: TNBT - FIXED --}}
                 @if (isset($tnbt) && $tnbt && isset($tnbt->newsCategory))
                     <div class="news-block">
                         {{-- Section Title --}}
@@ -6114,8 +6326,8 @@
                             </div>
                         @endif
 
-                        {{-- Small News --}}
-                        @if (isset($tn3) && !empty($tn3->title_en))
+                        {{-- Small News - FIXED: Changed condition and title variable --}}
+                        @if (isset($tn3) && count($tn3) > 0)
                             <div class="news-list">
                                 @foreach ($tn3 as $row)
                                     <h4>
@@ -6128,7 +6340,7 @@
                                             @if (session()->get('lang') == 'english')
                                                 {{ $row->title_en ?? '' }}
                                             @else
-                                                {{ $jnbt->title_bn ?? '' }}
+                                                {{ $row->title_bn ?? '' }}
                                             @endif
                                         </a>
                                     </h4>
@@ -6402,60 +6614,6 @@
             }
         });
     </script>
-
-    {{-- Select Districts while dropdown to Division --}}
-    <script>
-        $('#division_id').on('change', function() {
-            var division_id = $(this).val();
-
-            if (division_id) {
-                $.ajax({
-                    url: '/get/dist/' + division_id,
-                    type: 'GET',
-                    success: function(data) {
-                        $('#dist_id').empty();
-                        $('#dist_id').append(
-                            '<option selected disabled>== Select District ==</option>');
-                        $.each(data, function(key, value) {
-                            $('#dist_id').append('<option value="' + value.id + '">' + value
-                                .district_en + ' | ' + value.district_bn +
-                                '</option>');
-                        });
-                    }
-                });
-            } else {
-                $('#dist_id').empty();
-            }
-        });
-    </script>
-
-    {{-- Select Subdistricts while dropdown to Districts --}}
-
-    <script>
-        $('#dist_id').on('change', function() {
-            var distID = $(this).val();
-
-            if (distID) {
-                $.ajax({
-                    url: '/get/subdist/' + distID,
-                    type: 'GET',
-                    success: function(data) {
-                        $('#sub_dist_id').empty();
-                        $('#sub_dist_id').append(
-                            '<option selected disabled>== Select Sub Category ==</option>');
-                        $.each(data, function(key, value) {
-                            $('#sub_dist_id').append('<option value="' + value.id + '">' + value
-                                .sub_district_en + ' | ' + value.sub_district_bn +
-                                '</option>');
-                        });
-                    }
-                });
-            } else {
-                $('#sub_dist_id').empty();
-            }
-        });
-    </script>
-
 
 
 

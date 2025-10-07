@@ -59,71 +59,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-lite.min.js"></script>
 
 
-    <style>
-        /* Custom styles for better appearance */
-        .tag-suggestion {
-            display: inline-block;
-            transition: all 0.2s ease;
-        }
-
-        .tag-suggestion:hover {
-            background-color: #d1d5db !important;
-            transform: translateY(-1px);
-        }
-
-        .selected-tag {
-            display: inline-block;
-            transition: all 0.2s ease;
-        }
-
-        .selected-tag:hover {
-            background-color: #93c5fd !important;
-            transform: translateY(-1px);
-        }
-
-        /* Dropdown scrollable styles */
-        .tags-scroll-container {
-            max-height: 300px;
-            overflow-y: auto;
-            padding: 8px;
-        }
-
-        /* Custom scrollbar */
-        .tags-scroll-container::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .tags-scroll-container::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
-        }
-
-        .tags-scroll-container::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 4px;
-        }
-
-        .tags-scroll-container::-webkit-scrollbar-thumb:hover {
-            background: #a8a8a8;
-        }
-
-        /* Dropdown menu full width */
-        .dropdown-menu {
-            min-width: 100%;
-            max-width: 100%;
-        }
-
-        /* Custom dropdown item styling */
-        .dropdown-item-custom {
-            border: none !important;
-            margin: 2px;
-            border-radius: 6px;
-        }
-
-        .dropdown-item-custom:hover {
-            background-color: #e5e7eb !important;
-        }
-    </style>
 </head>
 
 <body>
@@ -165,11 +100,6 @@
 
                                 <a class="dropdown-item d-flex gap-2" href="{{ route('profile.index') }}"> <i
                                         data-feather="user" class="feather-sm text-info "></i> My Profile </a>
-                                <a class="dropdown-item d-flex gap-2" href="app-notes.html"> <i
-                                        data-feather="credit-card" class="feather-sm text-info "></i> My Notes </a>
-                                <a class="dropdown-item d-flex gap-2" href="app-email.html"> <i data-feather="mail"
-                                        class="feather-sm text-success "></i> Inbox </a>
-
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item d-flex gap-2" href="{{ route('profile.edit') }}"> <i
                                         data-feather="settings" class="feather-sm text-warning "></i> Account Setting
@@ -507,6 +437,7 @@
                 <!-- End Sidebar scroll-->
             </div>
         </aside>
+
         <!--  Sidebar End -->
         <div class="page-wrapper">
             <!--  Header Start -->
@@ -548,15 +479,6 @@
                                 <a class="nav-link nav-icon-hover sidebartoggler" id="headerCollapse"
                                     href="javascript:void(0)">
                                     <iconify-icon icon="solar:list-bold"></iconify-icon>
-                                </a>
-                            </li>
-                            <!-- ------------------------------- -->
-                            <!-- start notification Dropdown -->
-                            <!-- ------------------------------- -->
-                            <li class="nav-item d-none d-lg-block search-box nav-icon-hover-bg rounded-circle">
-                                <a class="nav-link nav-icon-hover d-none d-md-flex waves-effect waves-dark"
-                                    href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                    <iconify-icon icon="solar:magnifer-linear"></iconify-icon>
                                 </a>
                             </li>
 
@@ -602,174 +524,6 @@
                         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                             <div class="d-flex align-items-center justify-content-center py-2 py-lg-0">
                                 <ul
-                                    class="navbar-nav flex-row  align-items-center justify-content-center d-flex d-lg-none">
-                                    <li class="nav-item hover-dd dropdown nav-icon-hover-bg rounded-circle">
-                                        <a class="nav-link nav-icon-hover waves-effect waves-dark"
-                                            href="javascript:void(0)" id="drop2" aria-expanded="false">
-                                            <iconify-icon icon="solar:bell-bing-line-duotone"></iconify-icon>
-                                            <div class="notify">
-                                                <span class="heartbit"></span>
-                                                <span class="point"></span>
-                                            </div>
-                                        </a>
-                                        <div class="dropdown-menu py-0 content-dd  dropdown-menu-animate-up overflow-hidden"
-                                            aria-labelledby="drop2">
-
-                                            <div class="py-3 px-4 bg-primary">
-                                                <div class="mb-0 fs-6 fw-medium text-white">Notifications</div>
-                                                <div class="mb-0 fs-2 fw-medium text-white">You have 0 otifications
-                                                </div>
-                                            </div>
-                                            <div class="p-3">
-                                                <a class="d-flex btn btn-primary  align-items-center justify-content-center gap-2"
-                                                    href="javascript:void(0);">
-                                                    <span>Check all Notifications</span>
-                                                    <iconify-icon icon="solar:alt-arrow-right-outline"
-                                                        class="iconify-sm"></iconify-icon>
-                                                </a>
-                                            </div>
-
-
-
-
-
-                                        </div>
-                                    </li>
-                                    <li class="nav-item hover-dd dropdown nav-icon-hover-bg rounded-circle">
-                                        <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
-                                            aria-expanded="false">
-                                            <iconify-icon icon="solar:inbox-line-line-duotone"></iconify-icon>
-                                            <div class="notify">
-                                                <span class="heartbit"></span>
-                                                <span class="point"></span>
-                                            </div>
-                                        </a>
-                                        <div class="dropdown-menu py-0 content-dd dropdown-menu-animate-up overflow-hidden"
-                                            aria-labelledby="drop2">
-
-                                            <div class="py-3 px-4 bg-secondary">
-                                                <div class="mb-0 fs-6 fw-medium text-white">Messages</div>
-                                                <div class="mb-0 fs-2 fw-medium text-white">You have 5 new messages
-                                                    asdfsdfsafa</div>
-                                            </div>
-                                            <div class="message-body" data-simplebar="">
-                                                <a href="javascript:void(0)"
-                                                    class="p-3 d-flex align-items-center dropdown-item gap-3 border-bottom">
-                                                    <span class="user-img position-relative d-inline-block">
-                                                        <img src="{{ asset('dashboard_assets') }}/images/profile/user-2.jpg"
-                                                            alt="user" class="rounded-circle w-100 round-40">
-                                                        <span
-                                                            class="profile-status bg-success position-absolute rounded-circle"></span>
-                                                    </span>
-                                                    <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <h6 class="mb-1">Mathew Anderson</h6>
-                                                            <span class="fs-2 d-block text-muted">9:30 AM</span>
-                                                        </div>
-                                                        <span class="fs-2 d-block text-truncate text-muted">Just see
-                                                            the my new admin!</span>
-                                                    </div>
-                                                </a>
-                                                <a href="javascript:void(0)"
-                                                    class="p-3 d-flex align-items-center dropdown-item gap-3 border-bottom">
-                                                    <span class="user-img position-relative d-inline-block">
-                                                        <img src="{{ asset('dashboard_assets') }}/images/profile/user-3.jpg"
-                                                            alt="user" class="rounded-circle w-100 round-40">
-                                                        <span
-                                                            class="profile-status bg-success position-absolute rounded-circle"></span>
-                                                    </span>
-                                                    <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <h6 class="mb-1">Bianca Anderson</h6>
-                                                            <span class="fs-2 d-block text-muted">9:10 AM</span>
-                                                        </div>
-
-                                                        <span class="fs-2 d-block text-truncate text-muted">Just a
-                                                            reminder that you have event</span>
-                                                    </div>
-                                                </a>
-                                                <a href="javascript:void(0)"
-                                                    class="p-3 d-flex align-items-center dropdown-item gap-3 border-bottom">
-                                                    <span class="user-img position-relative d-inline-block">
-                                                        <img src="{{ asset('dashboard_assets') }}/images/profile/user-4.jpg"
-                                                            alt="user" class="rounded-circle w-100 round-40">
-                                                        <span
-                                                            class="profile-status bg-success position-absolute rounded-circle"></span>
-                                                    </span>
-                                                    <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <h6 class="mb-1">Andrew Johnson</h6>
-                                                            <span class="fs-2 d-block text-muted">9:08 AM</span>
-                                                        </div>
-                                                        <span class="fs-2 d-block text-truncate text-muted">You can
-                                                            customize this template as you want</span>
-                                                    </div>
-                                                </a>
-                                                <a href="javascript:void(0)"
-                                                    class="p-3 d-flex align-items-center dropdown-item gap-3 border-bottom">
-                                                    <span class="user-img position-relative d-inline-block">
-                                                        <img src="{{ asset('dashboard_assets') }}/images/profile/user-5.jpg"
-                                                            alt="user" class="rounded-circle w-100 round-40">
-                                                        <span
-                                                            class="profile-status bg-success position-absolute rounded-circle"></span>
-                                                    </span>
-                                                    <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <h6 class="mb-1">Miyra Strokes</h6>
-                                                            <span class="fs-2 d-block text-muted">9:30 AM</span>
-                                                        </div>
-                                                        <span class="fs-2 d-block text-truncate text-muted">Just see
-                                                            the my new admin!</span>
-                                                    </div>
-                                                </a>
-                                                <a href="javascript:void(0)"
-                                                    class="p-3 d-flex align-items-center dropdown-item gap-3 border-bottom">
-                                                    <span class="user-img position-relative d-inline-block">
-                                                        <img src="{{ asset('dashboard_assets') }}/images/profile/user-6.jpg"
-                                                            alt="user" class="rounded-circle w-100 round-40">
-                                                        <span
-                                                            class="profile-status bg-success position-absolute rounded-circle"></span>
-                                                    </span>
-                                                    <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <h6 class="mb-1">Mark, Stoinus & Rishvi..</h6>
-                                                            <span class="fs-2 d-block text-muted">9:10 AM</span>
-                                                        </div>
-                                                        <span class="fs-2 d-block text-truncate text-muted">Just a
-                                                            reminder that you have event</span>
-                                                    </div>
-                                                </a>
-                                                <a href="javascript:void(0)"
-                                                    class="p-3 d-flex align-items-center dropdown-item gap-3 border-bottom">
-                                                    <span class="user-img position-relative d-inline-block">
-                                                        <img src="{{ asset('dashboard_assets') }}/images/profile/user-7.jpg"
-                                                            alt="user" class="rounded-circle w-100 round-40">
-                                                        <span
-                                                            class="profile-status bg-success position-absolute rounded-circle"></span>
-                                                    </span>
-                                                    <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <h6 class="mb-1">Eliga Rush</h6>
-                                                            <span class="fs-2 d-block text-muted">9:08 AM</span>
-                                                        </div>
-                                                        <span class="fs-2 d-block text-truncate text-muted">You can
-                                                            customize this template as you want</span>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                            <div class="p-3">
-                                                <a class="d-flex btn btn-secondary  align-items-center justify-content-center gap-2"
-                                                    href="javascript:void(0);">
-                                                    <span>Check all Messages</span>
-                                                    <iconify-icon icon="solar:alt-arrow-right-outline"
-                                                        class="iconify-sm"></iconify-icon>
-                                                </a>
-                                            </div>
-
-                                        </div>
-                                    </li>
-                                </ul>
-                                <ul
                                     class="navbar-nav gap-2 flex-row ms-auto align-items-center justify-content-center">
 
                                     <li class="nav-item nav-icon-hover-bg rounded-circle">
@@ -782,45 +536,6 @@
                                                 class="sun"></iconify-icon>
                                         </a>
                                     </li>
-
-                                    <li
-                                        class="nav-item hover-dd dropdown nav-icon-hover-bg rounded-circle d-none d-lg-block">
-                                        <a class="nav-link nav-icon-hover waves-effect waves-dark"
-                                            href="javascript:void(0)" id="drop2" aria-expanded="false">
-                                            <iconify-icon icon="solar:bell-bing-line-duotone"></iconify-icon>
-
-                                            @if (Auth::user()->name)
-                                                <div class="notify">
-                                                    <span class="heartbit"></span>
-                                                    <span class="point"></span>
-                                                </div>
-                                            @endif
-
-                                        </a>
-                                        <div class="dropdown-menu py-0 content-dd  dropdown-menu-animate-up overflow-hidden dropdown-menu-end"
-                                            aria-labelledby="drop2">
-
-                                            <div class="py-3 px-4 bg-primary">
-                                                <div class="mb-0 fs-6 fw-medium text-white">Notifications</div>
-                                                <div class="mb-0 fs-2 fw-medium text-white">You have 0 Notifications
-                                                </div>
-                                            </div>
-                                            <div class="p-3">
-                                                <a class="d-flex btn btn-primary  align-items-center justify-content-center gap-2"
-                                                    href="javascript:void(0);">
-                                                    <span>Check all Notifications</span>
-                                                    <iconify-icon icon="solar:alt-arrow-right-outline"
-                                                        class="iconify-sm"></iconify-icon>
-                                                </a>
-                                            </div>
-
-
-
-
-
-                                        </div>
-                                    </li>
-
 
                                     <!-- ------------------------------- -->
                                     <!-- end notification Dropdown -->
@@ -872,18 +587,6 @@
                                                             <a href="{{ url('/profile') }}"
                                                                 class=" d-flex  align-items-center ">
                                                                 My Profile
-                                                            </a>
-                                                        </div>
-                                                        <div class="h6 mb-0 dropdown-item py-8 px-3 rounded-2 link">
-                                                            <a href="javascript:void(0)"
-                                                                class=" d-flex  align-items-center ">
-                                                                My Projects
-                                                            </a>
-                                                        </div>
-                                                        <div class="h6 mb-0 dropdown-item py-8 px-3 rounded-2 link">
-                                                            <a href="app-email.html"
-                                                                class=" d-flex  align-items-center ">
-                                                                Inbox
                                                             </a>
                                                         </div>
                                                     </div>
@@ -1075,276 +778,6 @@
                                     </li>
 
 
-
-                                    <li
-                                        class="nav-item hover-dd dropdown nav-icon-hover-bg rounded-circle  d-none d-lg-block">
-                                        <a class="nav-link nav-icon-hover waves-effect waves-dark"
-                                            href="javascript:void(0)" id="drop2" aria-expanded="false">
-                                            <iconify-icon icon="solar:bell-bing-line-duotone"></iconify-icon>
-                                            <div class="notify">
-                                                <span class="heartbit"></span>
-                                                <span class="point"></span>
-                                            </div>
-                                        </a>
-                                        <div class="dropdown-menu py-0 content-dd  dropdown-menu-animate-up dropdown-menu-end overflow-hidden"
-                                            aria-labelledby="drop2">
-
-                                            <div class="py-3 px-4 bg-primary">
-                                                <div class="mb-0 fs-6 fw-medium text-white">Notifications</div>
-                                                <div class="mb-0 fs-2 fw-medium text-white">You have 0 Notifications
-                                                </div>
-                                            </div>
-                                            <div class="message-body" data-simplebar="">
-                                                <a href="javascript:void(0)"
-                                                    class="p-3 d-flex align-items-center  dropdown-item gap-3   border-bottom">
-                                                    <span
-                                                        class="flex-shrink-0 bg-primary-subtle rounded-circle round-40 d-flex align-items-center justify-content-center fs-6 text-primary">
-                                                        <iconify-icon
-                                                            icon="solar:widget-3-line-duotone"></iconify-icon>
-                                                    </span>
-                                                    <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <h6 class="mb-1">Launch Admin</h6>
-                                                            <span class="fs-2 d-block text-muted ">9:30 AM</span>
-                                                        </div>
-                                                        <span class="fs-2 d-block text-truncate text-muted">Just see
-                                                            the my new admin!</span>
-                                                    </div>
-                                                </a>
-                                                <a href="javascript:void(0)"
-                                                    class="p-3 d-flex align-items-center dropdown-item gap-3  border-bottom">
-                                                    <span
-                                                        class="flex-shrink-0 bg-secondary-subtle rounded-circle round-40 d-flex align-items-center justify-content-center fs-6 text-secondary">
-                                                        <iconify-icon
-                                                            icon="solar:calendar-mark-line-duotone"></iconify-icon>
-                                                    </span>
-                                                    <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <h6 class="mb-1">Event today</h6>
-                                                            <span class="fs-2 d-block text-muted ">9:10 AM</span>
-                                                        </div>
-
-                                                        <span class="fs-2 d-block text-truncate text-muted">Just a
-                                                            reminder that you have event</span>
-                                                    </div>
-                                                </a>
-                                                <a href="javascript:void(0)"
-                                                    class="p-3 d-flex align-items-center dropdown-item gap-3  border-bottom">
-                                                    <span
-                                                        class="flex-shrink-0 bg-danger-subtle rounded-circle round-40 d-flex align-items-center justify-content-center fs-6 text-danger">
-                                                        <iconify-icon
-                                                            icon="solar:settings-minimalistic-line-duotone"></iconify-icon>
-                                                    </span>
-                                                    <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <h6 class="mb-1">Settings</h6>
-                                                            <span class="fs-2 d-block text-muted ">9:08 AM</span>
-                                                        </div>
-                                                        <span class="fs-2 d-block text-truncate text-muted">You can
-                                                            customize this template as you want</span>
-                                                    </div>
-                                                </a>
-                                                <a href="javascript:void(0)"
-                                                    class="p-3 d-flex align-items-center dropdown-item gap-3  border-bottom">
-                                                    <span
-                                                        class="flex-shrink-0 bg-warning-subtle rounded-circle round-40 d-flex align-items-center justify-content-center fs-6 text-warning">
-                                                        <iconify-icon
-                                                            icon="solar:link-circle-line-duotone"></iconify-icon>
-                                                    </span>
-                                                    <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <h6 class="mb-1">Luanch Admin</h6>
-                                                            <span class="fs-2 d-block text-muted ">9:30 AM</span>
-                                                        </div>
-                                                        <span class="fs-2 d-block text-truncate text-muted">Just see
-                                                            the my new admin!</span>
-                                                    </div>
-                                                </a>
-                                                <a href="javascript:void(0)"
-                                                    class="p-3 d-flex align-items-center dropdown-item gap-3  border-bottom">
-                                                    <span
-                                                        class="flex-shrink-0 bg-success-subtle rounded-circle round-40 d-flex align-items-center justify-content-center">
-                                                        <i data-feather="calendar"
-                                                            class="feather-sm fill-white text-success"></i>
-                                                    </span>
-                                                    <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <h6 class="mb-1">Event today</h6>
-                                                            <span class="fs-2 d-block text-muted ">9:10 AM</span>
-                                                        </div>
-                                                        <span class="fs-2 d-block text-truncate text-muted">Just a
-                                                            reminder that you have event</span>
-                                                    </div>
-                                                </a>
-                                                <a href="javascript:void(0)"
-                                                    class="p-3 d-flex align-items-center dropdown-item gap-3  border-bottom">
-                                                    <span
-                                                        class="flex-shrink-0 bg-info-subtle rounded-circle round-40 d-flex align-items-center justify-content-center">
-                                                        <i data-feather="settings"
-                                                            class="feather-sm fill-white text-info"></i>
-                                                    </span>
-                                                    <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <h6 class="mb-1">Settings</h6>
-                                                            <span class="fs-2 d-block text-muted ">9:08 AM</span>
-                                                        </div>
-                                                        <span class="fs-2 d-block text-truncate text-muted">You can
-                                                            customize this template as you want</span>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                            <div class="p-3">
-                                                <a class="d-flex btn btn-primary  align-items-center justify-content-center gap-2"
-                                                    href="javascript:void(0);">
-                                                    <span>Check all Notifications</span>
-                                                    <iconify-icon icon="solar:alt-arrow-right-outline"
-                                                        class="iconify-sm"></iconify-icon>
-                                                </a>
-                                            </div>
-
-
-
-
-
-                                        </div>
-                                    </li>
-
-                                    <li
-                                        class="nav-item hover-dd dropdown nav-icon-hover-bg rounded-circle d-none d-lg-block">
-                                        <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
-                                            aria-expanded="false">
-                                            <iconify-icon icon="solar:inbox-line-line-duotone"></iconify-icon>
-                                            <div class="notify">
-                                                <span class="heartbit"></span>
-                                                <span class="point"></span>
-                                            </div>
-                                        </a>
-                                        <div class="dropdown-menu py-0 content-dd dropdown-menu-animate-up  dropdown-menu-end overflow-hidden"
-                                            aria-labelledby="drop2">
-
-                                            <div class="py-3 px-4 bg-secondary">
-                                                <div class="mb-0 fs-6 fw-medium text-white">Messages</div>
-                                                <div class="mb-0 fs-2 fw-medium text-white">You have 5 new messages
-                                                    sadfasdfasdf</div>
-                                            </div>
-                                            <div class="message-body" data-simplebar="">
-                                                <a href="javascript:void(0)"
-                                                    class="p-3 d-flex align-items-center dropdown-item gap-3 border-bottom">
-                                                    <span class="user-img position-relative d-inline-block">
-                                                        <img src="{{ asset('dashboard_assets') }}/images/profile/user-2.jpg"
-                                                            alt="user" class="rounded-circle w-100 round-40">
-                                                        <span
-                                                            class="profile-status bg-success position-absolute rounded-circle"></span>
-                                                    </span>
-                                                    <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <h6 class="mb-1">Mathew Anderson</h6>
-                                                            <span class="fs-2 d-block text-muted">9:30 AM</span>
-                                                        </div>
-                                                        <span class="fs-2 d-block text-truncate text-muted">Just see
-                                                            the my new admin!</span>
-                                                    </div>
-                                                </a>
-                                                <a href="javascript:void(0)"
-                                                    class="p-3 d-flex align-items-center dropdown-item gap-3 border-bottom">
-                                                    <span class="user-img position-relative d-inline-block">
-                                                        <img src="{{ asset('dashboard_assets') }}/images/profile/user-3.jpg"
-                                                            alt="user" class="rounded-circle w-100 round-40">
-                                                        <span
-                                                            class="profile-status bg-success position-absolute rounded-circle"></span>
-                                                    </span>
-                                                    <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <h6 class="mb-1">Bianca Anderson</h6>
-                                                            <span class="fs-2 d-block text-muted">9:10 AM</span>
-                                                        </div>
-
-                                                        <span class="fs-2 d-block text-truncate text-muted">Just a
-                                                            reminder that you have event</span>
-                                                    </div>
-                                                </a>
-                                                <a href="javascript:void(0)"
-                                                    class="p-3 d-flex align-items-center dropdown-item gap-3 border-bottom">
-                                                    <span class="user-img position-relative d-inline-block">
-                                                        <img src="{{ asset('dashboard_assets') }}/images/profile/user-4.jpg"
-                                                            alt="user" class="rounded-circle w-100 round-40">
-                                                        <span
-                                                            class="profile-status bg-success position-absolute rounded-circle"></span>
-                                                    </span>
-                                                    <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <h6 class="mb-1">Andrew Johnson</h6>
-                                                            <span class="fs-2 d-block text-muted">9:08 AM</span>
-                                                        </div>
-                                                        <span class="fs-2 d-block text-truncate text-muted">You can
-                                                            customize this template as you want</span>
-                                                    </div>
-                                                </a>
-                                                <a href="javascript:void(0)"
-                                                    class="p-3 d-flex align-items-center dropdown-item gap-3 border-bottom">
-                                                    <span class="user-img position-relative d-inline-block">
-                                                        <img src="{{ asset('dashboard_assets') }}/images/profile/user-5.jpg"
-                                                            alt="user" class="rounded-circle w-100 round-40">
-                                                        <span
-                                                            class="profile-status bg-success position-absolute rounded-circle"></span>
-                                                    </span>
-                                                    <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <h6 class="mb-1">Miyra Strokes</h6>
-                                                            <span class="fs-2 d-block text-muted">9:30 AM</span>
-                                                        </div>
-                                                        <span class="fs-2 d-block text-truncate text-muted">Just see
-                                                            the my new admin!</span>
-                                                    </div>
-                                                </a>
-                                                <a href="javascript:void(0)"
-                                                    class="p-3 d-flex align-items-center dropdown-item gap-3 border-bottom">
-                                                    <span class="user-img position-relative d-inline-block">
-                                                        <img src="{{ asset('dashboard_assets') }}/images/profile/user-6.jpg"
-                                                            alt="user" class="rounded-circle w-100 round-40">
-                                                        <span
-                                                            class="profile-status bg-success position-absolute rounded-circle"></span>
-                                                    </span>
-                                                    <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <h6 class="mb-1">Mark, Stoinus & Rishvi..</h6>
-                                                            <span class="fs-2 d-block text-muted">9:10 AM</span>
-                                                        </div>
-                                                        <span class="fs-2 d-block text-truncate text-muted">Just a
-                                                            reminder that you have event</span>
-                                                    </div>
-                                                </a>
-                                                <a href="javascript:void(0)"
-                                                    class="p-3 d-flex align-items-center dropdown-item gap-3 border-bottom">
-                                                    <span class="user-img position-relative d-inline-block">
-                                                        <img src="{{ asset('dashboard_assets') }}/images/profile/user-7.jpg"
-                                                            alt="user" class="rounded-circle w-100 round-40">
-                                                        <span
-                                                            class="profile-status bg-success position-absolute rounded-circle"></span>
-                                                    </span>
-                                                    <div class="w-80">
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <h6 class="mb-1">Eliga Rush</h6>
-                                                            <span class="fs-2 d-block text-muted">9:08 AM</span>
-                                                        </div>
-                                                        <span class="fs-2 d-block text-truncate text-muted">You can
-                                                            customize this template as you want</span>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                            <div class="p-3">
-                                                <a class="d-flex btn btn-secondary  align-items-center justify-content-center gap-2"
-                                                    href="javascript:void(0);">
-                                                    <span>Check all Messages</span>
-                                                    <iconify-icon icon="solar:alt-arrow-right-outline"
-                                                        class="iconify-sm"></iconify-icon>
-                                                </a>
-                                            </div>
-
-                                        </div>
-                                    </li>
-
-
                                     <!-- ------------------------------- -->
                                     <!-- start profile Dropdown -->
                                     <!-- ------------------------------- -->
@@ -1384,18 +817,6 @@
                                                                 My Profile
                                                             </a>
                                                         </div>
-                                                        <div class="h6 mb-0 dropdown-item py-8 px-3 rounded-2 link">
-                                                            <a href="javascript:void(0)"
-                                                                class=" d-flex  align-items-center ">
-                                                                My Projects
-                                                            </a>
-                                                        </div>
-                                                        <div class="h6 mb-0 dropdown-item py-8 px-3 rounded-2 link">
-                                                            <a href="app-email.html"
-                                                                class=" d-flex  align-items-center ">
-                                                                Inbox
-                                                            </a>
-                                                        </div>
                                                     </div>
                                                     <hr>
                                                     <div class="px-3">
@@ -1433,7 +854,6 @@
                                             </div>
                                         </div>
                                     </li>
-
                                     <!-- ------------------------------- -->
                                     <!-- end profile Dropdown -->
                                     <!-- ------------------------------- -->
@@ -1453,12 +873,14 @@
                     $(e).prop("checked", !0);
                 }
             </script>
+
             <button
-                class="btn btn-primary p-3 rounded-circle d-flex align-items-center justify-content-center customizer-btn"
+                class="btn btn-primary p-3 rounded-circle d-flex align-items-center justify-content-center customizer-btn d-none d-lg-flex"
                 type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
                 aria-controls="offcanvasExample">
                 <i class="fa fa-gear fs-7 text-white"></i>
             </button>
+
 
             <div class="offcanvas customizer offcanvas-end" tabindex="-1" id="offcanvasExample"
                 aria-labelledby="offcanvasExampleLabel">
@@ -1536,8 +958,8 @@
                             </div>
                         </label>
 
-                        <input type="radio" class="btn-check" name="color-theme-layout"
-                            id="green-theme-layout" autocomplete="off">
+                        <input type="radio" class="btn-check" name="color-theme-layout" id="green-theme-layout"
+                            autocomplete="off">
                         <label
                             class="btn p-9 btn-outline-primary d-flex align-items-center justify-content-center rounded"
                             onclick="handleColorTheme('Green_Theme')" for="green-theme-layout"
@@ -1552,16 +974,16 @@
                             autocomplete="off">
                         <label
                             class="btn p-9 btn-outline-primary d-flex align-items-center justify-content-center rounded"
-                            onclick="handleColorTheme('Cyan_Theme')" for="cyan-theme-layout"
-                            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="CYAN_THEME">
+                            onclick="handleColorTheme('Cyan_Theme')" for="cyan-theme-layout" data-bs-toggle="tooltip"
+                            data-bs-placement="top" data-bs-title="CYAN_THEME">
                             <div
                                 class="color-box rounded-circle d-flex align-items-center justify-content-center skin-5">
                                 <i class="fa fa-check text-white d-flex icon fs-5"></i>
                             </div>
                         </label>
 
-                        <input type="radio" class="btn-check" name="color-theme-layout"
-                            id="orange-theme-layout" autocomplete="off">
+                        <input type="radio" class="btn-check" name="color-theme-layout" id="orange-theme-layout"
+                            autocomplete="off">
                         <label
                             class="btn p-9 btn-outline-primary d-flex align-items-center justify-content-center rounded"
                             onclick="handleColorTheme('Orange_Theme')" for="orange-theme-layout"
@@ -1583,8 +1005,7 @@
                             Boxed
                         </label>
 
-                        <input type="radio" class="btn-check" name="layout" id="full-layout"
-                            autocomplete="off">
+                        <input type="radio" class="btn-check" name="layout" id="full-layout" autocomplete="off">
                         <label class="btn p-9 btn-outline-primary rounded" for="full-layout">
                             <iconify-icon icon="solar:scanner-linear" class="icon fs-7 me-2"></iconify-icon> Full
                         </label>
@@ -1638,8 +1059,7 @@
             <div class="modal-dialog modal-dialog-scrollable modal-lg">
                 <div class="modal-content rounded-1">
                     <div class="modal-header border-bottom">
-                        <input type="search" class="form-control fs-2" placeholder="Search here"
-                            id="search">
+                        <input type="search" class="form-control fs-2" placeholder="Search here" id="search">
                         <a href="javascript:void(0)" data-bs-dismiss="modal" class="lh-1">
                             <i class="ti ti-x fs-5 ms-3"></i>
                         </a>

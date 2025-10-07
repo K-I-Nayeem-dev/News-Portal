@@ -33,6 +33,10 @@ return Application::configure(basePath: dirname(__DIR__))
             SetLocale::class,
         ]);
     })
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->append(\App\Http\Middleware\SetLanguage::class);
+    })
+
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();

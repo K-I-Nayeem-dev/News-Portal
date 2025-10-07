@@ -16,6 +16,73 @@
             overflow-y: auto;
         }
     </style>
+
+    <style>
+        /* Custom styles for better appearance */
+        .tag-suggestion {
+            display: inline-block;
+            transition: all 0.2s ease;
+        }
+
+        .tag-suggestion:hover {
+            background-color: #d1d5db !important;
+            transform: translateY(-1px);
+        }
+
+        .selected-tag {
+            display: inline-block;
+            transition: all 0.2s ease;
+        }
+
+        .selected-tag:hover {
+            background-color: #93c5fd !important;
+            transform: translateY(-1px);
+        }
+
+        /* Dropdown scrollable styles */
+        .tags-scroll-container {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 8px;
+        }
+
+        /* Custom scrollbar */
+        .tags-scroll-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .tags-scroll-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .tags-scroll-container::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+
+        .tags-scroll-container::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        /* Dropdown menu full width */
+        .dropdown-menu {
+            min-width: 100%;
+            max-width: 100%;
+        }
+
+        /* Custom dropdown item styling */
+        .dropdown-item-custom {
+            border: none !important;
+            margin: 2px;
+            border-radius: 6px;
+        }
+
+        .dropdown-item-custom:hover {
+            background-color: #e5e7eb !important;
+        }
+    </style>
+
     <div class="body-wrapper">
         <div class="container-fluid">
             <!-- -------------------------------------------------------------- -->

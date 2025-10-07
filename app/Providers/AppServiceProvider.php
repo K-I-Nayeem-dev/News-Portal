@@ -96,6 +96,7 @@ class AppServiceProvider extends ServiceProvider
                 }])
                 ->get();
 
+
             $view->with([
                 'meta' => Seo::first(),
                 'social' => Social::first(),
@@ -328,6 +329,19 @@ class AppServiceProvider extends ServiceProvider
                 'totalBandwidthBytes' => $totalBandwidthBytes,
                 'latestChartData' => $latestChartData,   // array (MB)
                 'allChartsData' => $allChartsData,       // associative array id => series
+            ]);
+        });
+
+        view()->composer('*', function ($view) {
+            $lang = session()->get('lang', 'bangla');   // ডিফল্ট বাংলা
+            $limit = $lang === 'bangla' ? 10 : 8;
+
+            $categories = \App\Models\Category::all();
+
+            $view->with([
+                'lang' => $lang,
+                'mainCategories' => $categories->take($limit),
+                'moreCategories' => $categories->slice($limit),
             ]);
         });
 

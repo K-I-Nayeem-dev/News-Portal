@@ -33,8 +33,13 @@ class UserController extends Controller  implements HasMiddleware
      */
     public function index()
     {
-        $users = User::orderBy('name', 'ASC')->latest()->paginate(15);
+        $users = User::withCount('news') // Add this line
+            ->orderBy('name', 'ASC')
+            ->latest()
+            ->paginate(15);
+
         $roles = Role::orderBy('name', 'ASC')->get();
+
         return view('layouts.newsDashboard.users.index', [
             'users' => $users,
             'roles' => $roles
@@ -124,7 +129,12 @@ class UserController extends Controller  implements HasMiddleware
         // Send invitation email
         Mail::to($request->email)->send(new InviteUser($maildata));
 
-        return back()->with('invite_send', 'Invite Request Sent To ' . $request->name);
+        flash()
+            ->addSuccess('Invite Request Sent To ' . $request->name, [
+                'position' => 'bottom-center', // 👈 correct way
+            ]);
+
+        return back();
     }
 
 
@@ -170,13 +180,21 @@ class UserController extends Controller  implements HasMiddleware
             $user->phone_number = null;
             $user->save();
             // return 'reset phone number';
-            return back()->with('success', 'Phone Number Reset Successfully');
+            flash()
+                ->addSuccess('Phone Number Reset Successfully', [
+                    'position' => 'bottom-center', // 👈 correct way
+                ]);
+            return back();
         } elseif ($request->has('add_phone_number')) {
 
             $user->phone_number = $request->phone_number;
             $user->save();
             // return 'Add phone number';
-            return back()->with('success', 'Phone Number Add Successfully');
+            flash()
+                ->addSuccess('Phone Number Add Successfully', [
+                    'position' => 'bottom-center', // 👈 correct way
+                ]);
+            return back();
         } else {
 
             $user->name = $request->name;
@@ -184,7 +202,11 @@ class UserController extends Controller  implements HasMiddleware
             $user->syncRoles($request->role);
             $user->save();
 
-            return back()->with('user_update', 'User Update Successfully');
+            flash()
+                ->addSuccess('User Update Successfully', [
+                    'position' => 'bottom-center', // 👈 correct way
+                ]);
+            return back();
         }
     }
 

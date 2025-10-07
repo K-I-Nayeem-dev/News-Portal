@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\User;
+use App\Models\News;
 use App\Models\Verification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,14 +15,21 @@ use Illuminate\View\View;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Imagick\Driver;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class ProfileController extends Controller
 {
 
     public function index()
     {
+        $publishedNews = News::where('user_id', Auth::id())
+            ->with(['category', 'subcategory'])
+            ->select(['id', 'title_bn', 'thumbnail', 'category_id', 'sub_cate_id', 'created_at', 'user_id']) // Only needed columns
+            ->latest()
+            ->paginate(40);
 
-        return view('layouts.newsDashboard.profile.index');
+        return view('layouts.newsDashboard.profile.index', compact('publishedNews'));
     }
 
     /**
@@ -108,6 +116,7 @@ class ProfileController extends Controller
             'status' => 0,
             'code' => $otp,
             'created_at' => now(),
+            'created_at' => now(),
             'updated_at' => null,
         ];
 
@@ -168,36 +177,66 @@ class ProfileController extends Controller
 
     public function photo_upload(Request $request)
     {
-
         $request->validate([
             'photo' => 'required|file|image|mimes:jpeg,png,jpg,gif|max:800',
         ]);
 
-        if (Auth::user()->profile_picture == null) {
+        $Image = new ImageManager(new Driver());
+        $new_name = Str::random(5) . time() . '.' . $request->photo->getClientOriginalExtension();
 
-            $Image = new ImageManager(new Driver());
-            $new_name = Str::random(5) . time() . '.' . $request->photo->getClientOriginalExtension();
-            $image = $Image->read($request->photo)->resize(120, 120);
-            $image->save('uploads/profile_pictures/' . $new_name, quality: 30);
-        } else {
-
-            $imagePath = DB::table('users')->select('profile_picture')->where('id', Auth::id())->first();
-            $filePath = public_path('uploads/profile_pictures/') . $imagePath->profile_picture;
+        // Delete old profile picture if exists
+        if (Auth::user()->profile_picture != null) {
+            $filePath = public_path('uploads/profile_pictures/') . Auth::user()->profile_picture;
 
             if (file_exists($filePath)) {
-
                 unlink($filePath);
-                $Image = new ImageManager(new Driver());
-                $new_name = Str::random(5) . time() . '.' . $request->photo->getClientOriginalExtension();
-                $image = $Image->read($request->photo)->resize(120, 120);
-                $image->save('uploads/profile_pictures/' . $new_name, quality: 30);
-
-                DB::table('users')->where('id', Auth::id())->update([
-                    'profile_picture' => $new_name,
-                ]);
             }
         }
 
-        return back()->with('photo_upload', 'Profile Picture Change');
+        // Upload new profile picture
+        $image = $Image->read($request->photo)->resize(120, 120);
+        $image->save(public_path('uploads/profile_pictures/' . $new_name), quality: 30);
+
+        // Update database
+        DB::table('users')->where('id', Auth::id())->update([
+            'profile_picture' => $new_name,
+        ]);
+
+        flash()
+            ->addSuccess('Profile Picture Changed Successfully', [
+                'position' => 'bottom-center', // 👈 correct way
+            ]);
+        return back();
+    }
+
+    public function updatePassword(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'current_password' => ['required'],
+            'password' => ['required', 'confirmed', Password::min(8)],
+        ]);
+
+        $user = Auth::user();
+
+        // Check if current password matches
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors([
+                'current_password' => 'The current password is incorrect.'
+            ])->withInput();
+        }
+
+        // Update using DB query
+        DB::table('users')
+            ->where('id', $user->id)
+            ->update([
+                'password' => Hash::make($request->password)
+            ]);
+
+        flash()
+            ->addSuccess('Password updated successfully!', [
+                'position' => 'bottom-center', // 👈 correct way
+            ]);
+        return back();
     }
 }

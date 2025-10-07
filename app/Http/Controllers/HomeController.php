@@ -18,6 +18,9 @@ use Illuminate\Support\Facades\Response;
 use App\Models\Ads;
 use App\Models\Tags;
 use App\Models\Poll;
+use App\Models\District;
+use App\Models\SubDistrict;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -119,7 +122,7 @@ class HomeController extends Controller
         // News for Category law-Order right side 3 news
         $lonrn3 = News::where('category_id', $lawOrderCategory->id)->where('status', 1)->latest()->skip(1)->take(3)->get();
         // News for Category law-Order right side 4 news
-        $lon4 = News::where('category_id', $lawOrderCategory->id)->where('status', 1)->latest()->skip(4)->take(4)->get();
+        $lon6 = News::where('category_id', $lawOrderCategory->id)->where('status', 1)->latest()->skip(4)->take(6)->get();
 
 
         // Get News for Category Politics
@@ -231,7 +234,7 @@ class HomeController extends Controller
             'lsnr' => $lsnr,
             'lonbt' => $lonbt,
             'lonrn3' => $lonrn3,
-            'lon4' => $lon4,
+            'lon6' => $lon6,
             'tagsWithNewsCount' => $tagsWithNewsCount,
             'vgnbt' => $vgnbt,
             'vgn3' => $vgn3,
@@ -463,7 +466,7 @@ class HomeController extends Controller
         ]);
     }
 
-    // Method For Watching Live TV
+    // Method For Video Gallery
     public function videogallery(Request $request)
     {
 
@@ -481,6 +484,18 @@ class HomeController extends Controller
         return view('layouts.newsIndex.video_gallery.index', [
             'videos' => $videos
         ]);
+    }
+
+    // Method For Video Gallery
+    public function photogallery(Request $request)
+    {
+        $photos = PhotoGallery::latest()->paginate(12);
+
+        if ($request->ajax()) {
+            return view('layouts.newsIndex.photo_gallery.data', compact('photos'))->render();
+        }
+
+        return view('layouts.newsIndex.photo_gallery.index', compact('photos'));
     }
 
     public function all_polls()
@@ -509,10 +524,6 @@ class HomeController extends Controller
     public function search(Request $request)
     {
         $query = $request->input('q');
-
-        if (empty($query)) {
-            return redirect()->back()->with('error', 'Please enter a search term');
-        }
 
         $news = News::with(['newsCategory', 'newsSubCategory', 'tags'])
             ->where(function ($q) use ($query) {
@@ -551,28 +562,87 @@ class HomeController extends Controller
 
     // Location Search with division->district->subdistrict
 
-    public function country_search(Request $request)
+    /**
+     * Search news by location (division, district, subdistrict)
+     */
+    public function searchByLocation(Request $request)
     {
-        $divisionId    = $request->query('division_id');
-        $districtId    = $request->query('district_id');
-        $subdistrictId = $request->query('subdistrict_id');
+        $divisionId = $request->input('division_id');
+        $districtId = $request->input('dist_id');
+        $subdistrictId = $request->input('sub_dist_id');
 
-        $query = News::query();
+        // Get all divisions for the filter dropdown
+        $divisions = Division::all();
 
+        // Check if at least one location is selected
+        if (empty($divisionId) && empty($districtId) && empty($subdistrictId)) {
+            return view('layouts.newsIndex.search.location_search', [
+                'news' => News::where('id', 0)->paginate(15),
+                'division' => null,
+                'district' => null,
+                'subdistrict' => null,
+                'divisions' => $divisions,
+                'error' => session()->get('lang') == 'english'
+                    ? 'Please select at least one location'
+                    : 'অনুগ্রহ করে কমপক্ষে একটি এলাকা নির্বাচন করুন'
+            ]);
+        }
+
+        // Build query with all necessary relationships
+        $query = News::with([
+            'newsCategory',
+            'newsSubCategory',
+            'district',
+            'division',
+            'subdistrict',
+            'tags'
+        ]);
+
+        // Apply location filters hierarchically
         if ($divisionId) {
             $query->where('division_id', $divisionId);
         }
 
         if ($districtId) {
-            $query->where('district_id', $districtId);
+            $query->where('dist_id', $districtId);
         }
 
         if ($subdistrictId) {
-            $query->where('subdistrict_id', $subdistrictId);
+            $query->where('sub_dist_id', $subdistrictId);
         }
 
-        $news = $query->latest()->paginate(15);
+        // Only show published news
+        $query->where('status', 1);
 
-        return view('layouts.newsIndex.search.country_search', compact('news'));
+        // Order by most recent first
+        $query->orderBy('created_at', 'desc');
+
+        // Get paginated results (15 items per page)
+        $news = $query->paginate(15);
+
+        // Get location details for breadcrumb display
+        $division = $divisionId ? Division::find($divisionId) : null;
+        $district = $districtId ? District::find($districtId) : null;
+        $subdistrict = $subdistrictId ? SubDistrict::find($subdistrictId) : null;
+
+        // Return view with all necessary data
+        return view('layouts.newsIndex.search.location_search', compact(
+            'news',
+            'division',
+            'district',
+            'subdistrict',
+            'divisions'
+        ));
+    }
+
+    // News By click Calender or Archive
+    public function archive($date)
+    {
+        // $date is already in YYYY-MM-DD from JS, no need to parse UTC
+        $news = News::whereDate('created_at', $date)
+            ->latest()
+            ->paginate(10);
+
+        return view('layouts.newsIndex.search.archive', compact('news', 'date'));
     }
 }

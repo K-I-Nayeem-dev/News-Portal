@@ -110,7 +110,7 @@
                                     </div>
                                 </div>
 
-                                {{-- Category And Subcategory Row --}}
+                                {{-- Division , District, and Subdistrict Row --}}
                                 <div class="row mt-3">
                                     <div class="col-md-4">
                                         <label class="form-label" for="division_id">Division<sup><code
@@ -556,7 +556,6 @@
     </script>
 
     {{-- Select Subdistricts while dropdown to Districts --}}
-
     <script>
         $('#dist_id').on('change', function() {
             var distID = $(this).val();
@@ -581,4 +580,5 @@
             }
         });
     </script>
+
 @endsection

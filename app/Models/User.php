@@ -44,13 +44,22 @@ class User extends Authenticatable
     }
 
     // for news table one to one relation
-    public function newsUser(){
+    public function newsUser()
+    {
         return $this->hasOne(News::class);
     }
 
     // for news table one to one relation
-    public function editUser(){
+    public function editUser()
+    {
         return $this->hasOne(News::class);
     }
 
+    /**
+     * Get all news published by this user
+     */
+    public function news()
+    {
+        return $this->hasMany(News::class, 'user_id');
+    }
 }

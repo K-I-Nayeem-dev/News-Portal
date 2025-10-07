@@ -31,6 +31,12 @@ use App\Models\BandwidthUsage;
 use Illuminate\Support\Facades\Route;
 
 
+//SubCategories and SubDistricts via dropdown with the help of ajax
+Route::get('/get/subcategories/{id}', [CategoryController::class, 'getSubcate']);
+Route::get('/get/dist/{id}', [DivisionController::class, 'getDist']);
+Route::get('/get/subdist/{id}', [DistrictController::class, 'getSubdist']);
+
+
 // News Home page Route for Visitor Or Users
 Route::controller(HomeController::class)->group(function () {
 
@@ -47,10 +53,17 @@ Route::controller(HomeController::class)->group(function () {
     // Route For  Video Gallery
     Route::get('/video-gallery', 'videogallery')->name('video.gallery');
 
+    // Route for Photo Gallery
+    Route::get('/photo-gallery', 'photogallery')->name('photo.gallery');
+
     Route::prefix('news')->group(function () {
 
+        // Archive news
+
+        Route::get('/archive/{date}', 'archive')->name('archive.news');
+
         // Location Search with division->district->subdistrict
-        Route::get('/country/search','country_search')->name('country.search');
+        Route::get('/location/search', 'searchByLocation')->name('location.search');
 
         // 1. Add route in routes/web.php
         Route::get('/search', 'search')->name('news.search');
@@ -108,6 +121,7 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
         Route::post('/verifyNumber', 'verify_number')->name('verify.number');
         Route::post('/updateNumber', 'update_number')->name('update.number');
         Route::post('/photoUpload', 'photo_upload')->name('photo.upload');
+        Route::put('/profile/password/update', 'updatePassword')->name('update.password');
     });
 
     // Route for Bandwidth cards without controller
@@ -160,11 +174,6 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
         Route::get('/{id}/resetphone', 'resetPhone')->name('user.phone.reset');
     });
 
-
-    //SubCategories and SubDistricts via dropdown with the help of ajax
-    Route::get('/get/subcategories/{id}', [CategoryController::class, 'getSubcate']);
-    Route::get('/get/dist/{id}', [DivisionController::class, 'getDist']);
-    Route::get('/get/subdist/{id}', [DistrictController::class, 'getSubdist']);
 
     // Route For Setting Socials and Seos
     Route::prefix('settings')->group(function () {

@@ -237,10 +237,117 @@
                                 @else
                                     <a href="{{ route('news.english') }}" class="lang-btn">English</a>
                                 @endif
-                                <button id="theme-toggle">
-                                    <span id="icon-moon">🌙</span>
-                                    <span id="icon-sun" class="hidden">☀️</span>
-                                </button>
+
+                                <!-- Dark Mode Switch -->
+                                <div class="theme-switch">
+                                    <input type="checkbox" id="theme-toggle">
+                                    <label for="theme-toggle" class="switch-label">
+                                        <span class="switch-icon sun">☀️</span>
+                                        <span class="switch-icon moon">🌙</span>
+                                        <span class="switch-ball"></span>
+                                    </label>
+                                </div>
+
+                                <style>
+                                    body {
+                                        transition: background-color 0.4s ease, color 0.4s ease;
+                                    }
+
+                                    body.dark-mode {
+                                        background-color: #1e1e2f;
+                                        color: #f0f0f0;
+                                    }
+
+                                    .theme-switch {
+                                        display: inline-block;
+                                        position: relative;
+                                    }
+
+                                    .theme-switch input {
+                                        display: none;
+                                    }
+
+                                    /* 🔹 Smaller size */
+                                    .switch-label {
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: space-between;
+                                        width: 60px;
+                                        /* was 80px */
+                                        height: 28px;
+                                        /* was 40px */
+                                        background: #fbc531;
+                                        border-radius: 28px;
+                                        padding: 0 6px;
+                                        /* was 0 8px */
+                                        cursor: pointer;
+                                        position: relative;
+                                        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2),
+                                            0 2px 6px rgba(0, 0, 0, 0.2);
+                                        transition: background 0.4s ease;
+                                    }
+
+                                    .switch-icon {
+                                        font-size: 14px;
+                                        /* was 18px */
+                                        z-index: 2;
+                                        pointer-events: none;
+                                    }
+
+                                    .switch-icon.sun {
+                                        color: #f5cd19;
+                                    }
+
+                                    .switch-icon.moon {
+                                        color: #f5f6fa;
+                                    }
+
+                                    /* Ball smaller and slides accordingly */
+                                    .switch-ball {
+                                        position: absolute;
+                                        top: 3px;
+                                        /* was 4px */
+                                        left: 3px;
+                                        /* was 4px */
+                                        width: 22px;
+                                        /* was 32px */
+                                        height: 22px;
+                                        /* was 32px */
+                                        background: white;
+                                        border-radius: 50%;
+                                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+                                        transition: left 0.3s ease, background 0.3s ease;
+                                        z-index: 1;
+                                    }
+
+                                    .theme-switch input:checked+.switch-label {
+                                        background: #2f3640;
+                                    }
+
+                                    .theme-switch input:checked+.switch-label .switch-ball {
+                                        left: 34px;
+                                        /* adjusted for new width */
+                                        background: #dcdde1;
+                                    }
+                                </style>
+
+                                <script>
+                                    const toggleInput = document.getElementById('theme-toggle');
+                                    const body = document.body;
+
+                                    if (localStorage.getItem('dark-mode') === 'true') {
+                                        toggleInput.checked = true;
+                                        body.classList.add('dark-mode');
+                                    }
+
+                                    toggleInput.addEventListener('change', () => {
+                                        const isDark = toggleInput.checked;
+                                        body.classList.toggle('dark-mode', isDark);
+                                        localStorage.setItem('dark-mode', isDark);
+                                    });
+                                </script>
+
+
                             </div>
                         </div>
                     </div>
@@ -893,27 +1000,6 @@
                     }
                 </style>
 
-                <script>
-                    const toggleBtn = document.getElementById('theme-toggle');
-                    const body = document.body;
-                    const iconMoon = document.getElementById('icon-moon');
-                    const iconSun = document.getElementById('icon-sun');
-
-                    // Load saved theme
-                    if (localStorage.getItem('dark-mode') === 'true') {
-                        body.classList.add('dark-mode');
-                        iconMoon.classList.add('hidden');
-                        iconSun.classList.remove('hidden');
-                    }
-
-                    toggleBtn.addEventListener('click', () => {
-                        body.classList.toggle('dark-mode');
-                        const isDark = body.classList.contains('dark-mode');
-                        localStorage.setItem('dark-mode', isDark);
-                        iconMoon.classList.toggle('hidden');
-                        iconSun.classList.toggle('hidden');
-                    });
-                </script>
             </div>
 
 
@@ -935,19 +1021,6 @@
                     <div id="headerNav" class="navbar-collapse collapse float--left">
                         <ul style="font-size: 14.5px !important;" class="header--menu-links nav navbar-nav"
                             data-trigger="hoverIntent">
-
-                            @php
-                                $lang = session()->get('lang');
-                                $limit = $lang == 'bangla' ? 10 : 8;
-
-                                // force limit before collection
-                                $categories = $categories->take($limit + $categories->count());
-
-                                $mainCategories = $categories->take($limit);
-                                $moreCategories = $categories->slice($limit);
-                                $allCategories = $categories;
-                            @endphp
-
 
                             {{-- Main Categories --}}
                             @foreach ($mainCategories as $category)
@@ -1953,7 +2026,7 @@
 
     <!-- Back To Top Button -->
     <div id="backToTopBtn">
-        <a href="#"><i class="fa fa-angle-double-up"></i></a>
+        <a href="#top"><i class="fa fa-angle-double-up"></i></a>
     </div>
 
     <style>
@@ -2000,6 +2073,11 @@
 
         /* Responsive sizing */
         @media (max-width: 768px) {
+            #backToTopBtn {
+                bottom: 20px;
+                right: 20px;
+            }
+
             #backToTopBtn a {
                 width: 45px;
                 height: 45px;
@@ -2008,6 +2086,11 @@
         }
 
         @media (max-width: 480px) {
+            #backToTopBtn {
+                bottom: 15px;
+                right: 15px;
+            }
+
             #backToTopBtn a {
                 width: 40px;
                 height: 40px;
@@ -2018,22 +2101,76 @@
 
     <script>
         // Show/hide button on scroll
+        const btn = document.getElementById('backToTopBtn');
+
         window.addEventListener('scroll', function() {
-            const btn = document.getElementById('backToTopBtn');
-            if (window.scrollY > 300) {
+            const currentScrollPos = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (currentScrollPos > 300) {
                 btn.style.display = 'block';
             } else {
                 btn.style.display = 'none';
             }
         });
 
-        // Smooth scroll to top
+        // Enhanced smooth scroll function with easing
+        function smoothScrollToTop() {
+            const startPosition = window.pageYOffset;
+            const duration = 800; // 800ms for smooth animation
+            let startTime = null;
+
+            function easeInOutCubic(t) {
+                return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+            }
+
+            function animation(currentTime) {
+                if (startTime === null) startTime = currentTime;
+                const timeElapsed = currentTime - startTime;
+                const progress = Math.min(timeElapsed / duration, 1);
+                const ease = easeInOutCubic(progress);
+
+                window.scrollTo(0, startPosition * (1 - ease));
+
+                if (timeElapsed < duration) {
+                    requestAnimationFrame(animation);
+                } else {
+                    // Final ensure we're at top
+                    window.scrollTo(0, 0);
+                    document.documentElement.scrollTop = 0;
+                    document.body.scrollTop = 0;
+                }
+            }
+
+            requestAnimationFrame(animation);
+        }
+
+        // Single event handler for all devices
         document.querySelector('#backToTopBtn a').addEventListener('click', function(e) {
             e.preventDefault();
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            e.stopPropagation();
+
+            // Disable any ongoing scroll
+            document.body.style.overflow = 'hidden';
+
+            smoothScrollToTop();
+
+            // Re-enable scroll after animation
+            setTimeout(function() {
+                document.body.style.overflow = '';
+                // Triple-check we're at the top
+                window.scrollTo(0, 0);
+                document.documentElement.scrollTop = 0;
+                document.body.scrollTop = 0;
+            }, 850);
+
+            return false;
+        });
+
+        // Prevent any default behavior
+        document.querySelector('#backToTopBtn a').addEventListener('touchstart', function(e) {
+            e.preventDefault();
+        }, {
+            passive: false
         });
     </script>
 
@@ -2048,6 +2185,10 @@
     </script>
     {{-- <script src="{{ asset('frontend_assets') }}/js/jquery-3.2.1.min.js"></script> --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    {{-- Then your scripts --}}
+    @stack('scripts')
+    
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 
@@ -2098,7 +2239,7 @@
     </script>
 
     {{-- For Dark Mode --}}
-    <script></script>
+
 
     <!-- Fancybox JS -->
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script>
