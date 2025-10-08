@@ -21,6 +21,8 @@ use App\Models\Poll;
 use App\Models\District;
 use App\Models\SubDistrict;
 use Carbon\Carbon;
+use App\Models\NewsView;
+use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
@@ -206,6 +208,14 @@ class HomeController extends Controller
         $totalVotes = $poll ? $poll->options->sum('votes_count') : 0;
 
 
+        $mostViewedNews = cache()->remember('most_viewed_news', 3600, function () {
+            return News::withCount('views')
+                ->orderBy('views_count', 'desc')
+                ->take(10)
+                ->get();
+        });
+
+
         return view('layouts.newsIndex.home.home', [
             'breaking_news' => $breaking_news,
             'notice' => $notice,
@@ -256,6 +266,7 @@ class HomeController extends Controller
             'fbp' => $fbp,
             'poll' => $poll,
             'totalVotes' => $totalVotes,
+            'mostViewedNews' => $mostViewedNews,
 
         ]);
     }
@@ -348,6 +359,26 @@ class HomeController extends Controller
         $nm = Ads::where('news_details_middle', 1)->first();
 
 
+        // For Each News views identify
+        $ip = request()->ip();
+        $ua = request()->userAgent() ?? '';
+        $device = $this->detectDeviceType($ua);
+        $sessionId = session()->getId();
+
+        $cacheKey = 'news_viewed:' . $news->id . ':' . sha1($ip . '|' . $ua . '|' . $sessionId);
+
+        if (! Cache::has($cacheKey)) {
+            NewsView::create([
+                'news_id'    => $news->id,
+                'ip_address' => $ip,
+                'user_agent' => $ua,
+                'device_type' => $device,
+                'viewed_at'  => now(),
+            ]);
+
+            Cache::put($cacheKey, true, 3600); // 1 hour
+        }
+
 
 
         return view('layouts.newsIndex.home.show', [
@@ -364,6 +395,18 @@ class HomeController extends Controller
             'nm' => $nm,
         ]);
     }
+
+    // 👇 Put this inside the same controller
+    private function detectDeviceType(?string $ua): string
+    {
+        $ua = strtolower($ua ?? '');
+
+        if (str_contains($ua, 'tablet')) return 'tablet';
+        if (str_contains($ua, 'mobile')) return 'mobile';
+        return 'desktop';
+    }
+
+
 
     // Method For get sub_cates news
     public function sub_cate_news($categorySlug, $subCategorySlug, Request $request)

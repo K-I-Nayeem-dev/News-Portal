@@ -83,4 +83,14 @@ class News extends Model
     {
         return $this->belongsTo(SubDistrict::class);
     }
+
+    public function views()
+    {
+        return $this->hasMany(\App\Models\NewsView::class);
+    }
+
+    public function getViewCountAttribute()
+    {
+        return $this->views()->count();
+    }
 }

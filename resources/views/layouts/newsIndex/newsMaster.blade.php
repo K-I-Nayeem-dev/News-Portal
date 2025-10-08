@@ -2188,7 +2188,7 @@
 
     {{-- Then your scripts --}}
     @stack('scripts')
-    
+
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 
@@ -2205,8 +2205,6 @@
     <script src="{{ asset('frontend_assets') }}/js/jquery.barrating.min.js"></script>
     <script src="{{ asset('frontend_assets') }}/js/jquery.countdown.min.js"></script>
     <script src="{{ asset('frontend_assets') }}/js/retina.min.js"></script>
-    {{-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBK9f7sXWmqQ1E-ufRXV3VpXOn_ifKsDuc"></script> --}}
-    {{-- <script src="{{ asset('frontend_assets') }}/js/color-switcher.min.js"></script> --}}
     <script src="{{ asset('frontend_assets') }}/js/main.js"></script>
 
     <!-- Splide JS -->

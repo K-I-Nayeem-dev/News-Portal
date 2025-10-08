@@ -142,8 +142,19 @@
 
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="{{ route('dashboard') }}">
-                                <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
+                                <iconify-icon icon="solar:widget-linear" class="aside-icon"></iconify-icon>
                                 <span class="hide-menu">Dashboard</span>
+                            </a>
+                        </li>
+
+                        <!-- ---------------------------------- -->
+                        <!-- Dashboard -->
+                        <!-- ---------------------------------- -->
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="{{ route('mvtn.index') }}">
+                                <iconify-icon icon="solar:eye-linear" class="aside-icon"></iconify-icon>
+                                <span class="hide-menu">Most Viewed News</span>
                             </a>
                         </li>
 
@@ -151,26 +162,24 @@
                         <!-- Ads Pages -->
                         <!-- ---------------------------------- -->
 
-
                         @hasanyrole('superadmin|admin|editor|advertiser|moderator')
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="{{ route('ads.index') }}">
-                                    <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
+                                    <iconify-icon icon="solar:dollar-minimalistic-linear"
+                                        class="aside-icon"></iconify-icon>
                                     <span class="hide-menu">Ads</span>
                                 </a>
                             </li>
                         @endhasanyrole
 
-
                         <!-- ---------------------------------- -->
                         <!-- Polls -->
                         <!-- ---------------------------------- -->
 
-
                         @hasanyrole('superadmin|admin|editor|advertiser|moderator')
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="{{ route('polls.index') }}">
-                                    <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
+                                    <iconify-icon icon="solar:chart-square-linear" class="aside-icon"></iconify-icon>
                                     <span class="hide-menu">Polls</span>
                                 </a>
                             </li>
@@ -179,7 +188,7 @@
                         @hasanyrole('superadmin|admin|editor|contributor|moderator|writer')
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="{{ route('breaking_news.index') }}">
-                                    <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
+                                    <iconify-icon icon="solar:smartphone-update-linear" class="aside-icon"></iconify-icon>
                                     <span class="hide-menu">Headline</span>
                                 </a>
                             </li>
@@ -190,7 +199,7 @@
                         @hasanyrole('superadmin|admin|editor|contributor|moderator|writer')
                             <li class="sidebar-item">
                                 <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
-                                    <iconify-icon icon="solar:home-angle-linear" class="aside-icon"></iconify-icon>
+                                    <iconify-icon icon="solar:document-text-linear" class="aside-icon"></iconify-icon>
                                     <span class="hide-menu">News & Tags</span>
                                 </a>
                                 <ul aria-expanded="false" class="collapse first-level">
@@ -228,7 +237,7 @@
                         @hasanyrole('superadmin|admin')
                             <li class="sidebar-item">
                                 <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
-                                    <iconify-icon icon="solar:home-angle-linear" class="aside-icon"></iconify-icon>
+                                    <iconify-icon icon="solar:folder-open-linear" class="aside-icon"></iconify-icon>
                                     <span class="hide-menu">Categories</span>
                                 </a>
                                 <ul aria-expanded="false" class="collapse first-level">
@@ -255,7 +264,7 @@
                         @hasanyrole('superadmin|admin')
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="{{ route('admin.menu.index') }}">
-                                    <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
+                                    <iconify-icon icon="solar:menu-dots-linear" class="aside-icon"></iconify-icon>
                                     <span class="hide-menu">Menu Builder</span>
                                 </a>
                             </li>
@@ -264,7 +273,7 @@
                         @hasanyrole('superadmin|admin')
                             <li class="sidebar-item">
                                 <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
-                                    <iconify-icon icon="solar:home-angle-linear" class="aside-icon"></iconify-icon>
+                                    <iconify-icon icon="solar:map-point-linear" class="aside-icon"></iconify-icon>
                                     <span class="hide-menu">Divisions & Districts</span>
                                 </a>
                                 <ul aria-expanded="false" class="collapse first-level">
@@ -299,7 +308,7 @@
                         @hasanyrole('superadmin|admin|editor|moderator|writer')
                             <li class="sidebar-item">
                                 <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
-                                    <iconify-icon icon="solar:home-angle-linear" class="aside-icon"></iconify-icon>
+                                    <iconify-icon icon="solar:gallery-linear" class="aside-icon"></iconify-icon>
                                     <span class="hide-menu">Gallery</span>
                                 </a>
                                 <ul aria-expanded="false" class="collapse first-level">
@@ -326,7 +335,7 @@
                         @hasanyrole('superadmin|admin')
                             <li class="sidebar-item">
                                 <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
-                                    <iconify-icon icon="solar:home-angle-linear" class="aside-icon"></iconify-icon>
+                                    <iconify-icon icon="solar:settings-linear" class="aside-icon"></iconify-icon>
                                     <span class="hide-menu">Settings</span>
                                 </a>
                                 <ul aria-expanded="false" class="collapse first-level">
@@ -377,7 +386,7 @@
                         @hasanyrole('superadmin|admin')
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="{{ route('watermark.index') }}">
-                                    <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
+                                    <iconify-icon icon="solar:copyright-linear" class="aside-icon"></iconify-icon>
                                     <span class="hide-menu">Watermart</span>
                                 </a>
                             </li>
@@ -386,7 +395,7 @@
                         @hasanyrole('superadmin|admin')
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="{{ route('website_setting.index') }}">
-                                    <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
+                                    <iconify-icon icon="solar:programming-linear" class="aside-icon"></iconify-icon>
                                     <span class="hide-menu">Website Setting</span>
                                 </a>
                             </li>
@@ -395,7 +404,8 @@
                         @hasanyrole('superadmin|admin')
                             <li class="sidebar-item">
                                 <a class="sidebar-link" href="{{ route('user.index') }}">
-                                    <iconify-icon icon="solar:screencast-2-linear" class="aside-icon"></iconify-icon>
+                                    <iconify-icon icon="solar:users-group-rounded-linear"
+                                        class="aside-icon"></iconify-icon>
                                     <span class="hide-menu">Users</span>
                                 </a>
                             </li>
@@ -404,7 +414,7 @@
                         @hasanyrole('superadmin|admin')
                             <li class="sidebar-item">
                                 <a class="sidebar-link has-arrow" href="javascript:void(0)" aria-expanded="false">
-                                    <iconify-icon icon="solar:home-angle-linear" class="aside-icon"></iconify-icon>
+                                    <iconify-icon icon="solar:shield-user-linear" class="aside-icon"></iconify-icon>
                                     <span class="hide-menu">Role & Permission</span>
                                 </a>
                                 <ul aria-expanded="false" class="collapse first-level">
@@ -428,9 +438,7 @@
                             </li>
                         @endhasrole
 
-
                     </ul>
-
 
                 </nav>
 

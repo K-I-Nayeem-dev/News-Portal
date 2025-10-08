@@ -26,6 +26,7 @@ use App\Http\Controllers\WatermarkController;
 use App\Http\Controllers\WebsiteListController;
 use App\Http\Controllers\WebsiteSettingController;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\MostViewsNewsController;
 use App\Http\Controllers\PollController;
 use App\Models\BandwidthUsage;
 use Illuminate\Support\Facades\Route;
@@ -109,7 +110,7 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
 
 
     // Dashboard Controller
-    Route::get('/newsDashboard', [DashboardController::class, 'dashboard'])->name('dashboard')->middleware('track.bandwidth');;
+    Route::get('/newsDashboard', [DashboardController::class, 'dashboard'])->name('dashboard')->middleware('track.bandwidth');
 
     // Profile Routes
     Route::controller(ProfileController::class)->prefix('edit/profile')->middleware('auth')->group(function () {
@@ -220,12 +221,20 @@ Route::middleware(['web', 'auth', 'verified'])->group(function () {
     });
 
     // Menu builder routes
-    Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
+    Route::group(['prefix' => 'admin'], function () {
         Route::get('/menu', [MenuController::class, 'index'])->name('admin.menu.index');
         Route::post('/menu/update-category-order', [MenuController::class, 'updateCategoryOrder'])->name('admin.menu.update-category-order');
         Route::post('/menu/update-subcategory-order', [MenuController::class, 'updateSubCategoryOrder'])->name('admin.menu.update-subcategory-order');
         Route::post('/menu/reorder-all', [MenuController::class, 'reorderAll'])->name('admin.menu.reorder-all');
     });
+
+    // Track Most Views News routes
+    Route::group(['prefix' => 'admin', 'controller' => MostViewsNewsController::class], function () {
+        Route::get('/track/most-views/', 'index')->name('mvtn.index');
+        Route::get('/track/most-views/{news}', 'show')->name('mvtn.show');
+    });
+
+
 });
 
 

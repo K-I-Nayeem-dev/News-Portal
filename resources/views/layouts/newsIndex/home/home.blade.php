@@ -676,6 +676,7 @@
 
                 </div>
             </div>
+
             <div class="main--sidebar col-md-4 col-sm-5 ptop--30 pbottom--30" data-sticky-content="true">
                 <div class="sticky-content-inner">
                     <div class="widget">
@@ -690,11 +691,11 @@
                                 </h2>
                                 <i class="icon fa fa-newspaper-o"></i>
                             </div>
+
                             <div class="list--widget-nav" data-ajax="tab">
                                 <ul class="nav nav-justified">
-                                    <li class="active">
-                                        <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
-                                            data-ajax-action="load_widget_trendy_news">
+                                    <li class="active" id="tab-trendy">
+                                        <a href="#" data-tab="trendy" onclick="switchNewsTab(event, 'trendy')">
                                             @if (session()->get('lang') == 'english')
                                                 Trendy News
                                             @else
@@ -702,9 +703,9 @@
                                             @endif
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
-                                            data-ajax-action="load_widget_most_watched">
+                                    <li id="tab-most-watched">
+                                        <a href="#" data-tab="most-watched"
+                                            onclick="switchNewsTab(event, 'most-watched')">
                                             @if (session()->get('lang') == 'english')
                                                 Most Watched
                                             @else
@@ -714,70 +715,159 @@
                                     </li>
                                 </ul>
                             </div>
+
                             <div class="post--items post--items-3" data-ajax-content="outer">
-                                <div style="max-height: 400px; overflow-y: auto;">
+                                <!-- Trendy News Content -->
+                                <div id="trendy-news-content" class="news-tab-content"
+                                    style="max-height: 400px; overflow-y: auto;">
                                     <ul class="nav" data-ajax-content="inner">
-                                        @foreach ($tn as $index => $row)
-                                            <li style="{{ $index !== 0 ? 'margin-top: 15px;' : '' }}">
-                                                <div class="post--item post--layout-3">
-                                                    <div class="post--img">
-                                                        <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
-                                                            class="thumb">
-
-                                                            @php
-                                                                $isPlaceholder = Str::contains(
-                                                                    $row->thumbnail,
-                                                                    'via.placeholder.com',
-                                                                );
-                                                                $imageToShow =
-                                                                    !$isPlaceholder && !empty($row->thumbnail)
-                                                                        ? $row->thumbnail
-                                                                        : asset(
-                                                                            'uploads/default_images/deafult_thumbnail.jpg',
-                                                                        );
-                                                            @endphp
-
-                                                            <img src="{{ $imageToShow }}" alt="{{ $row->title_en }}"
-                                                                class="img-fluid">
-
-                                                        </a>
-                                                        <div class="post--info">
-                                                            <ul class="nav meta" style="margin-top: 5px;">
-                                                                <li>
-                                                                    <a
-                                                                        href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}">
-                                                                        {{-- {{ $row->newsUser->name }} --}}
-                                                                        {{ $row->newsUser->name ?? 'No User' }}
-                                                                    </a>
-                                                                </li>
-                                                                <li>
-                                                                    <a
-                                                                        href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}">
-                                                                        @if (session()->get('lang') == 'bangla')
-                                                                            {{ formatBanglaDateTime($row->created_at) }}
-                                                                        @else
-                                                                            {{ $row->created_at->format('j F Y') }}
-                                                                        @endif
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
-                                                            <div class="title" style="margin-top: -4px;">
-                                                                <h3 class="h4">
-                                                                    <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
-                                                                        class="btn-link">
-                                                                        @if (session()->get('lang') == 'english')
-                                                                            {{ $row->title_en }}
-                                                                        @else
-                                                                            {{ $row->title_bn }}
-                                                                        @endif
-                                                                    </a>
-                                                                </h3>
+                                        @if (isset($tn) && count($tn) > 0)
+                                            @foreach ($tn as $index => $row)
+                                                <li style="{{ $index !== 0 ? 'margin-top: 15px;' : '' }}">
+                                                    <div class="post--item post--layout-3">
+                                                        <div class="post--img">
+                                                            <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                                class="thumb">
+                                                                @php
+                                                                    $isPlaceholder = Str::contains(
+                                                                        $row->thumbnail,
+                                                                        'via.placeholder.com',
+                                                                    );
+                                                                    $imageToShow =
+                                                                        !$isPlaceholder && !empty($row->thumbnail)
+                                                                            ? $row->thumbnail
+                                                                            : asset(
+                                                                                'uploads/default_images/deafult_thumbnail.jpg',
+                                                                            );
+                                                                @endphp
+                                                                <img src="{{ $imageToShow }}"
+                                                                    alt="{{ $row->title_en ?? 'News' }}"
+                                                                    class="img-fluid">
+                                                            </a>
+                                                            <div class="post--info">
+                                                                <ul class="nav meta" style="margin-top: 5px;">
+                                                                    <li>
+                                                                        <a
+                                                                            href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}">
+                                                                            {{ $row->newsUser->name ?? 'No User' }}
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a
+                                                                            href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}">
+                                                                            @if (session()->get('lang') == 'bangla')
+                                                                                {{ formatBanglaDateTime($row->created_at) }}
+                                                                            @else
+                                                                                {{ $row->created_at->format('j F Y') }}
+                                                                            @endif
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                                <div class="title" style="margin-top: -4px;">
+                                                                    <h3 class="h4">
+                                                                        <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                                            class="btn-link">
+                                                                            @if (session()->get('lang') == 'english')
+                                                                                {{ $row->title_en ?? 'No Title' }}
+                                                                            @else
+                                                                                {{ $row->title_bn ?? 'শিরোনাম নেই' }}
+                                                                            @endif
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </li>
+                                            @endforeach
+                                        @else
+                                            <li style="padding: 20px; text-align: center;">
+                                                <p style="color: #6c757d; font-style: italic;">
+                                                    @if (session()->get('lang') == 'english')
+                                                        No trendy news available at the moment.
+                                                    @else
+                                                        এই মুহূর্তে কোনো ট্রেন্ডিং খবর নেই।
+                                                    @endif
+                                                </p>
                                             </li>
-                                        @endforeach
+                                        @endif
+                                    </ul>
+                                </div>
+
+                                <!-- Most Watched News Content -->
+                                <div id="most-watched-news-content" class="news-tab-content"
+                                    style="max-height: 400px; overflow-y: auto; display: none;">
+                                    <ul class="nav" data-ajax-content="inner">
+                                        @if (isset($mostViewedNews) && count($mostViewedNews) > 0)
+                                            @foreach ($mostViewedNews as $index => $row)
+                                                <li style="{{ $index !== 0 ? 'margin-top: 15px;' : '' }}">
+                                                    <div class="post--item post--layout-3">
+                                                        <div class="post--img">
+                                                            <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                                class="thumb">
+                                                                @php
+                                                                    $isPlaceholder = Str::contains(
+                                                                        $row->thumbnail,
+                                                                        'via.placeholder.com',
+                                                                    );
+                                                                    $imageToShow =
+                                                                        !$isPlaceholder && !empty($row->thumbnail)
+                                                                            ? $row->thumbnail
+                                                                            : asset(
+                                                                                'uploads/default_images/deafult_thumbnail.jpg',
+                                                                            );
+                                                                @endphp
+                                                                <img src="{{ $imageToShow }}"
+                                                                    alt="{{ $row->title_en ?? 'News' }}"
+                                                                    class="img-fluid">
+                                                            </a>
+                                                            <div class="post--info">
+                                                                <ul class="nav meta" style="margin-top: 5px;">
+                                                                    <li>
+                                                                        <a
+                                                                            href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}">
+                                                                            {{ $row->newsUser->name ?? 'No User' }}
+                                                                        </a>
+                                                                    </li>
+                                                                    <li>
+                                                                        <a
+                                                                            href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}">
+                                                                            @if (session()->get('lang') == 'bangla')
+                                                                                {{ formatBanglaDateTime($row->created_at) }}
+                                                                            @else
+                                                                                {{ $row->created_at->format('j F Y') }}
+                                                                            @endif
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                                <div class="title" style="margin-top: -4px;">
+                                                                    <h3 class="h4">
+                                                                        <a href="{{ route('showFull.news', ['category' => $row->newsCategory->slug, 'subcategory' => $row->newsSubcategory->slug, 'id' => $row->id]) }}"
+                                                                            class="btn-link">
+                                                                            @if (session()->get('lang') == 'english')
+                                                                                {{ $row->title_en ?? 'No Title' }}
+                                                                            @else
+                                                                                {{ $row->title_bn ?? 'শিরোনাম নেই' }}
+                                                                            @endif
+                                                                        </a>
+                                                                    </h3>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            @endforeach
+                                        @else
+                                            <li style="padding: 20px; text-align: center;">
+                                                <p style="color: #6c757d; font-style: italic;">
+                                                    @if (session()->get('lang') == 'english')
+                                                        No most watched news available at the moment.
+                                                    @else
+                                                        এই মুহূর্তে কোনো সর্বাধিক দেখা খবর নেই।
+                                                    @endif
+                                                </p>
+                                            </li>
+                                        @endif
                                     </ul>
                                 </div>
                             </div>
@@ -792,7 +882,7 @@
                             <h3 class="prayer-title">
                                 <span>🕌</span>
                                 <span class="prayer-text" data-en="Today's Prayer Times"
-                                    data-bn="আজকের নামাজের সময়সূচি"></span>
+                                    data-bn="আজকের নামাজের সময়সূচি"></span>
                             </h3>
                             <div class="prayer-subtitle prayer-text" data-en="Dhaka, Bangladesh"
                                 data-bn="ঢাকা, বাংলাদেশ"></div>
@@ -803,7 +893,7 @@
                                 <thead>
                                     <tr>
                                         <th class="prayer-text" data-en="Prayer" data-bn="নামাজ"></th>
-                                        <th class="prayer-text" data-en="Time" data-bn="সময়"></th>
+                                        <th class="prayer-text" data-en="Time" data-bn="সময়"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -838,6 +928,20 @@
                     </div>
 
                     <style>
+                        /* === TAB STYLING (KEEP ORIGINAL COLORS) === */
+                        .news-tab-content {
+                            transition: opacity 0.3s ease;
+                            overflow-x: hidden !important;
+                        }
+
+                        .news-tab-content ul.nav {
+                            overflow-x: hidden !important;
+                        }
+
+                        .post--items-3 {
+                            overflow-x: hidden !important;
+                        }
+
                         /* === BEAUTIFUL PRAYER TIMES CARD === */
                         .prayer-times-card {
                             background-color: var(--widget-bg, #ffffff) !important;
@@ -865,7 +969,6 @@
                             color: #ffffff !important;
                             font-weight: 700 !important;
                             font-size: 1.8rem !important;
-                            /* CHANGED: 1.4rem to 1.8rem */
                             margin: 0 !important;
                             display: flex !important;
                             align-items: center !important;
@@ -880,7 +983,6 @@
                         .prayer-times-header .prayer-subtitle {
                             color: rgba(255, 255, 255, 0.9) !important;
                             font-size: 1.1rem !important;
-                            /* CHANGED: 0.9rem to 1.1rem */
                             margin: 5px 0 0 0 !important;
                             font-weight: 500 !important;
                         }
@@ -904,7 +1006,6 @@
                             color: var(--text-primary, #2c3e50) !important;
                             font-weight: 700 !important;
                             font-size: 1.1rem !important;
-                            /* CHANGED: 0.95rem to 1.1rem */
                             padding: 15px 10px !important;
                             border: none !important;
                             text-align: center !important;
@@ -930,7 +1031,6 @@
                             border: none !important;
                             text-align: center !important;
                             font-size: 1.05rem !important;
-                            /* CHANGED: 0.9rem to 1.05rem */
                         }
 
                         .prayer-times-table td:first-child {
@@ -944,7 +1044,6 @@
                             font-weight: 700 !important;
                             color: var(--primary-color, #007bff) !important;
                             font-size: 1.2rem !important;
-                            /* CHANGED: 1rem to 1.2rem */
                         }
 
                         .prayer-times-table .current-prayer {
@@ -972,12 +1071,10 @@
                         .prayer-times-footer .update-time {
                             color: var(--text-muted, #6c757d) !important;
                             font-size: 1rem !important;
-                            /* CHANGED: 0.8rem to 1rem */
                             font-style: italic !important;
                             margin: 0 !important;
                         }
 
-                        /* Loading animation */
                         .prayer-time.loading {
                             color: var(--text-muted, #6c757d) !important;
                             font-style: italic !important;
@@ -988,7 +1085,6 @@
                             font-style: italic !important;
                         }
 
-                        /* === CSS VARIABLES FOR PRAYER TIMES === */
                         :root {
                             --prayer-header-bg: #28a745;
                             --prayer-header-dark: #1e7e34;
@@ -1009,7 +1105,6 @@
                             --footer-bg: #2d2d2d;
                         }
 
-                        /* === RESPONSIVE DESIGN === */
                         @media (max-width: 768px) {
                             .prayer-times-card {
                                 margin: 15px 0 !important;
@@ -1021,7 +1116,6 @@
 
                             .prayer-times-header .prayer-title {
                                 font-size: 1.5rem !important;
-                                /* CHANGED: 1.2rem to 1.5rem */
                                 flex-direction: column !important;
                                 gap: 5px !important;
                             }
@@ -1030,30 +1124,46 @@
                             .prayer-times-table td {
                                 padding: 10px 8px !important;
                                 font-size: 1rem !important;
-                                /* CHANGED: 0.85rem to 1rem */
                             }
 
                             .prayer-times-table .prayer-time {
                                 font-size: 1.1rem !important;
-                                /* CHANGED: 0.9rem to 1.1rem */
                             }
 
                             .prayer-times-footer .update-time {
                                 font-size: 0.9rem !important;
-                                /* CHANGED: added for mobile */
                             }
                         }
                     </style>
 
                     <script>
-                        // Prayer Times API Integration - Works with your session language
+                        // Tab switching function
+                        function switchNewsTab(event, tabName) {
+                            event.preventDefault();
+
+                            // Remove active class from all tabs
+                            document.getElementById('tab-trendy').classList.remove('active');
+                            document.getElementById('tab-most-watched').classList.remove('active');
+
+                            // Hide all content
+                            document.getElementById('trendy-news-content').style.display = 'none';
+                            document.getElementById('most-watched-news-content').style.display = 'none';
+
+                            // Show selected content and activate tab
+                            if (tabName === 'trendy') {
+                                document.getElementById('tab-trendy').classList.add('active');
+                                document.getElementById('trendy-news-content').style.display = 'block';
+                            } else if (tabName === 'most-watched') {
+                                document.getElementById('tab-most-watched').classList.add('active');
+                                document.getElementById('most-watched-news-content').style.display = 'block';
+                            }
+                        }
+
+                        // Prayer Times API Integration
                         document.addEventListener("DOMContentLoaded", function() {
                             const prayerIds = ["fajr", "dhuhr", "asr", "maghrib", "isha"];
+                            const currentLang = '<?php echo session()->get('lang', 'bangla'); ?>';
 
-                            // Get current language from your session (adjust based on your implementation)
-                            const currentLang = '<?php echo session()->get('lang', 'bangla'); ?>'; // Adjust this line
-
-                            // Add loading class initially with correct language
                             prayerIds.forEach(id => {
                                 const element = document.getElementById(id);
                                 if (element) {
@@ -1072,14 +1182,12 @@
                                     if (data.code === 200) {
                                         const t = data.data.timings;
 
-                                        // Update prayer times
                                         document.getElementById("fajr").textContent = t.Fajr;
                                         document.getElementById("dhuhr").textContent = t.Dhuhr;
                                         document.getElementById("asr").textContent = t.Asr;
                                         document.getElementById("maghrib").textContent = t.Maghrib;
                                         document.getElementById("isha").textContent = t.Isha;
 
-                                        // Remove loading class
                                         prayerIds.forEach(id => {
                                             const element = document.getElementById(id);
                                             if (element) {
@@ -1088,9 +1196,7 @@
                                             }
                                         });
 
-                                        // Highlight current prayer
                                         highlightCurrentPrayer();
-
                                     } else {
                                         throw new Error('API returned error');
                                     }
@@ -1109,7 +1215,6 @@
                                 });
                         });
 
-                        // Highlight current prayer time
                         function highlightCurrentPrayer() {
                             const prayers = [{
                                     name: 'fajr',
@@ -1133,18 +1238,15 @@
                                 }
                             ];
 
-                            // Remove current prayer class from all
                             prayers.forEach(prayer => {
                                 if (prayer.element && prayer.element.parentElement) {
                                     prayer.element.parentElement.classList.remove('current-prayer');
                                 }
                             });
 
-                            // Simple logic to determine current prayer
                             const now = new Date();
                             const currentTime = now.getHours() * 60 + now.getMinutes();
 
-                            // Get prayer times and convert to minutes
                             const prayerTimes = {};
                             prayers.forEach(prayer => {
                                 if (prayer.element) {
@@ -1156,14 +1258,13 @@
                                 }
                             });
 
-                            // Determine current prayer
                             if (prayerTimes.fajr && currentTime >= prayerTimes.fajr && currentTime < (prayerTimes.dhuhr || Infinity)) {
                                 document.getElementById('fajr').parentElement.classList.add('current-prayer');
                             } else if (prayerTimes.dhuhr && currentTime >= prayerTimes.dhuhr && currentTime < (prayerTimes.asr ||
-                                    Infinity)) {
+                                Infinity)) {
                                 document.getElementById('dhuhr').parentElement.classList.add('current-prayer');
                             } else if (prayerTimes.asr && currentTime >= prayerTimes.asr && currentTime < (prayerTimes.maghrib ||
-                                    Infinity)) {
+                                Infinity)) {
                                 document.getElementById('asr').parentElement.classList.add('current-prayer');
                             } else if (prayerTimes.maghrib && currentTime >= prayerTimes.maghrib && currentTime < (prayerTimes.isha ||
                                     Infinity)) {
@@ -1173,7 +1274,6 @@
                             }
                         }
 
-                        // Function to update prayer text when language changes (call this when your session changes)
                         function updatePrayerLanguage(lang) {
                             const elements = document.querySelectorAll('.prayer-text');
                             elements.forEach(element => {
@@ -1183,7 +1283,6 @@
                                 }
                             });
 
-                            // Also update loading/error texts if needed
                             const prayerIds = ["fajr", "dhuhr", "asr", "maghrib", "isha"];
                             prayerIds.forEach(id => {
                                 const element = document.getElementById(id);
@@ -1197,16 +1296,15 @@
                             });
                         }
 
-                        // Initialize with current session language on page load
                         document.addEventListener("DOMContentLoaded", function() {
-                            const currentLang = '<?php echo session()->get('lang', 'bangla'); ?>'; // Adjust this line
+                            const currentLang = '<?php echo session()->get('lang', 'bangla'); ?>';
                             updatePrayerLanguage(currentLang);
                         });
                     </script>
-                    {{-- Salah Time --}}
 
                 </div>
             </div>
+
         </div>
         {{-- fisrt Section 9 News with widget  End --}}
 
