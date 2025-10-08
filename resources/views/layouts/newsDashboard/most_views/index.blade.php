@@ -27,37 +27,72 @@
                         <div class="card-header bg-primary text-white">
                             <h4 class="mb-0 text-white">News Views Tracker</h4>
                         </div>
+
                         <div class="card-body p-0">
                             <div class="table-responsive" style="overflow: hidden">
                                 <table class="table align-middle table-hover table-bordered mb-0 table-striped">
-                                    <thead>
+                                    <thead class="table-dark text-white">
                                         <tr>
                                             <th>#</th>
                                             <th>News Title</th>
                                             <th>IP Address</th>
-                                            <th>User Agent</th>
+                                            <th>Browser</th>
                                             <th>Device</th>
+                                            <th>Total Views</th> {{-- New Column --}}
                                             <th>Viewed At</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($newsViews as $view)
+                                        @forelse ($newsViews as $key => $view)
                                             <tr>
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>
-                                                    <strong>{{ $view->news->title_en ?? 'No Title' }}</strong>
-                                                    <br>
-                                                    <small
-                                                        class="text-muted">{{ Str::limit($view->news->title_en ?? '', 50) }}</small>
+                                                <td>{{ $loop->iteration + ($newsViews->currentPage() - 1) * $newsViews->perPage() }}
                                                 </td>
+
                                                 <td>
-                                                    <span class="badge bg-info text-dark">{{ $view->ip_address }}</span>
+                                                    <div class="d-flex align-items-center" style="gap: 10px;">
+                                                        {{-- Left side: thumbnail with default fallback --}}
+                                                        @php
+                                                            $thumbnail = $view->news->thumbnail ?? null;
+
+                                                            $isPlaceholder = $thumbnail
+                                                                ? Str::contains($thumbnail, 'via.placeholder.com')
+                                                                : true;
+
+                                                            $imageToShow =
+                                                                !$isPlaceholder &&
+                                                                !empty($thumbnail) &&
+                                                                file_exists(public_path($thumbnail))
+                                                                    ? asset($thumbnail)
+                                                                    : asset(
+                                                                        'uploads/default_images/deafult_thumbnail.jpg',
+                                                                    );
+                                                        @endphp
+
+                                                        <img src="{{ $imageToShow }}"
+                                                            alt="{{ $view->news->title_bn ?? 'News' }}" class="rounded"
+                                                            style="width: 60px; height: 60px; object-fit: cover;">
+
+                                                        {{-- Right side: title --}}
+                                                        <div>
+                                                            <strong
+                                                                class="d-block">{{ $view->news->title_bn ?? 'No Title' }}</strong>
+                                                            <small class="text-muted d-block">
+                                                                {{ Str::limit($view->news->title_bn ?? '', 50) }}
+                                                            </small>
+                                                        </div>
+                                                    </div>
+                                                </td>
+
+
+                                                <td>
+                                                    <span
+                                                        class="badge bg-info text-dark">{{ $view->ip_address ?? 'N/A' }}</span>
                                                 </td>
                                                 <td>
                                                     <span class="text-truncate d-block" style="max-width: 200px;"
-                                                        title="{{ $view->user_agent }}">
-                                                        {{ $view->browser }}
+                                                        title="{{ $view->browser }}">
+                                                        {{ $view->browser ?? 'Unknown' }}
                                                     </span>
                                                 </td>
                                                 <td>
@@ -68,7 +103,13 @@
                                                         <span class="badge bg-secondary">Unknown</span>
                                                     @endif
                                                 </td>
-                                                <td>{{ $view->viewed_at ?? $view->created_at->format('d M Y H:i') }}</td>
+                                                {{-- Total Views --}}
+                                                <td class="text-center">
+                                                    <span class="badge bg-primary">{{ $view->total_views ?? 0 }}</span>
+                                                </td>
+                                                <td>{{ $view->viewed_at ? $view->viewed_at->format('d M Y H:i') : 'N/A' }}
+                                                </td>
+
                                                 <td>
                                                     <button class="btn btn-sm btn-primary view-news-btn"
                                                         data-id="{{ $view->news_id }}">
@@ -76,14 +117,30 @@
                                                     </button>
                                                 </td>
                                             </tr>
-                                        @endforeach
+                                        @empty
+                                            <tr>
+                                                <td colspan="8" class="text-center">No news views found.</td>
+                                            </tr>
+                                        @endforelse
                                     </tbody>
                                 </table>
                             </div>
+
                         </div>
+
+
+                        <!-- Pagination links -->
+                        <div class="d-flex justify-content-end mt-3 me-2">
+                            {{ $newsViews->links('pagination::bootstrap-4') }}
+                        </div>
+
 
                         <!-- Optional: Add custom CSS -->
                         <style>
+                            thead.table-dark th {
+                                color: #fff !important;
+                            }
+
                             .table-hover tbody tr:hover {
                                 background-color: #f1f5f9 !important;
                                 transform: scale(1.01);
