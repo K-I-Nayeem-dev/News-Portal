@@ -102,7 +102,7 @@ class WebsiteSettingController extends Controller implements HasMiddleware
 
             // Resize and save
             $fullImage = $imageManager->read($request->logo)->resize(230, 50);
-            $fullImage->save(public_path('uploads/logo/' . $news_name), quality: 70);
+            $fullImage->save(public_path('uploads/logo/' . $news_name), quality: 100);
 
             // Set path for DB
             $data['logo'] = 'uploads/logo/' . $news_name;

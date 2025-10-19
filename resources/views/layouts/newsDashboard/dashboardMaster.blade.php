@@ -40,7 +40,7 @@
 
 
     {{-- Title for NewsPortal --}}
-    <title>NewsPortal</title>
+    <title>Arthoniti Partidin Dashboard</title>
 
 
     <!-- ✅ Summernote CSS CDN -->

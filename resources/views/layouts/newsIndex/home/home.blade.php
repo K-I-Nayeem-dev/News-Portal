@@ -5929,7 +5929,7 @@
                                             {{ session()->get('lang') == 'english' ? $pnbt->title_en : $pnbt->title_bn }}
                                         </a>
                                     </h3>
-                                    <p>{{ session()->get('lang') == 'english' ? Str::limit($pnbt->details_en, 150, '...') : Str::limit($pnbt->details_bn, 150, '...') }}
+                                    <p>{!! session()->get('lang') == 'english' ? Str::limit($pnbt->details_en, 150, '...') : Str::limit($pnbt->details_bn, 150, '...') !!}
                                     </p>
                                 </div>
                             @else

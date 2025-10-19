@@ -107,48 +107,58 @@
                                 @endphp
 
                                 <img src="{{ $imageToShow }}" alt="{{ $news->title_en }}" class="img-fluid">
-                                <div style="margin-top: 10px">
+                                <div style="margin-top: 10px; display: flex; align-items: center;">
+                                    {{-- Location Display with Null Handling --}}
                                     @php
                                         $isEnglish = session()->get('lang') === 'english';
+                                        $division = $news->newsDivision
+                                            ? ($isEnglish
+                                                ? $news->newsDivision->division_en
+                                                : $news->newsDivision->division_bn)
+                                            : null;
+                                        $district = $news->newsDistrict
+                                            ? ($isEnglish
+                                                ? $news->newsDistrict->district_en
+                                                : $news->newsDistrict->district_bn)
+                                            : null;
+                                        $subDistrict = $news->newsSubDist
+                                            ? ($isEnglish
+                                                ? $news->newsSubDist->sub_district_en
+                                                : $news->newsSubDist->sub_district_bn)
+                                            : null;
 
-                                        $division = $isEnglish
-                                            ? $news->newsDivision->division_en
-                                            : $news->newsDivision->division_bn;
-                                        $district = $isEnglish
-                                            ? $news->newsDistrict->district_en
-                                            : $news->newsDistrict->district_bn;
-                                        $subDistrict = $isEnglish
-                                            ? $news->newsSubDist->sub_district_en
-                                            : $news->newsSubDist->sub_district_bn;
+                                        // Build location array, filter out nulls
+                                        $locations = array_filter([$division, $district, $subDistrict]);
                                     @endphp
 
-                                    <i class="fa fa-map-marker" aria-hidden="true"></i>
-                                    <span class="breadcrumb-text">
-                                        {{ $division }} /
-                                        {{ $district }} /
-                                        {{ $subDistrict }}
-                                    </span>
+                                    @if (count($locations) > 0)
+                                        <div>
+                                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                        </div>
+                                        <span class="breadcrumb-text" style="margin: 3px 0 0 5px">
+                                            {{ implode(' / ', $locations) }}
+                                        </span>
+                                    @endif
+                                    <div style="margin-left: 20px">
+                                        <span>{{ session()->get('lang') == 'english' ? $news->created_at->format('j F Y') : formatBanglaDate($news->created_at) }}</span>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="post--info">
+                            {{-- <div class="post--info">
                                 <ul class="nav meta">
                                     <li><a href="#">{{ $news->newsUser->name }}</a></li>
                                     <li>
-                                        <span>{{ session()->get('lang') == 'english' ? $news->created_at->format('j F Y') : formatBanglaDate($news->created_at) }}</span>
-                                    </li>
-                                    {{-- This section is for views And Comment count --}}
-                                    {{-- <li>
                                         <span><i class="fa fm fa-eye"></i>45k</span>
                                     </li>
                                     <li>
                                         <a href="#"><i class="fa fm fa-comments-o"></i>02</a>
-                                    </li> --}}
+                                    </li>
                                 </ul>
-                                <div class="title">
-                                    <h2 class="h4">
-                                        {{ session()->get('lang') == 'english' ? $news->title_en : $news->title_bn }}
-                                    </h2>
-                                </div>
+                            </div> --}}
+                            <div class="title" style="color: #000">
+                                <h3>
+                                    {{ session()->get('lang') == 'english' ? $news->title_en : $news->title_bn }}
+                                </h3>
                             </div>
                             <div class="post--content">
 
@@ -232,8 +242,7 @@
                                     <img src="{{ $nlb && file_exists(public_path($nlb->image))
                                         ? asset($nlb->image)
                                         : asset('frontend_assets/img/ads-img/ad-300x250-1.jpg') }}"
-                                        alt="{{ $nlb->title_en ?? 'Advertisement' }}" data-rjs="2"
-                                        class="img-fluid" />
+                                        alt="{{ $nlb->title_en ?? 'Advertisement' }}" data-rjs="2" class="img-fluid" />
                                 </a>
                             </div>
                         </div>

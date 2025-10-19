@@ -338,7 +338,7 @@
                                     </div>
                                 </div>
 
-                                <!-- Tags Dropdown Section -->
+                                <!-- Tags Dropdown Section with Search -->
                                 <div class="row mt-3">
                                     <div class="col-lg-12">
                                         <label class="form-label">Select Tags<sup><code
@@ -348,12 +348,19 @@
                                                 id="tagsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                                 Select Tags
                                             </button>
-                                            <div class="dropdown-menu w-100" aria-labelledby="tagsDropdown"
+                                            <div class="dropdown-menu w-100 p-3" aria-labelledby="tagsDropdown"
                                                 id="tags-dropdown-menu">
+                                                <!-- Search Input -->
+                                                <div class="mb-3">
+                                                    <input type="text" id="tag-search-input" class="form-control"
+                                                        placeholder="Search tags..." autocomplete="off">
+                                                </div>
+
+                                                <!-- Tags Container -->
                                                 <div id="tags-en-suggestions" class="tags-scroll-container">
                                                     @foreach ($all_tags as $tag)
                                                         <span
-                                                            class="tag-suggestion cursor-pointer bg-gray-200 px-2 py-1 m-1 rounded dropdown-item-custom {{ in_array($tag->id, $selected_tag_ids) ? 'selected-tag-item' : '' }}"
+                                                            class="tag-suggestion cursor-pointer bg-gray-200 px-2 py-1 m-1 rounded dropdown-item-custom {{ in_array($tag->id, $selected_tag_ids) ? 'tag-hidden' : '' }}"
                                                             data-id="{{ $tag->id }}" data-en="{{ $tag->tag_en }}"
                                                             data-bn="{{ $tag->tag_bn }}">
                                                             {{ $tag->tag_en }}
@@ -365,23 +372,97 @@
                                     </div>
                                 </div>
 
-                                <!-- Selected tags container -->
+                                <!-- Selected Tags Display with New Design -->
                                 <div class="mt-3">
                                     <label class="form-label">Selected Tags:</label>
-                                    <div id="selected-tags" class="mt-2 p-2 border rounded min-height-50">
+                                    <div id="selected-tags"
+                                        class="mt-2 p-2 border rounded min-height-50 d-flex flex-wrap">
                                         <!-- Pre-populate selected tags -->
                                         @foreach ($selected_tags as $tag)
-                                            <span
-                                                class="selected-tag bg-primary text-white px-2 py-1 m-1 rounded d-inline-flex align-items-center"
-                                                data-id="{{ $tag->id }}" data-en="{{ $tag->tag_en }}"
-                                                data-bn="{{ $tag->tag_bn }}">
+                                            <span class="selected-tag" data-id="{{ $tag->id }}"
+                                                data-en="{{ $tag->tag_en }}" data-bn="{{ $tag->tag_bn }}">
                                                 {{ $tag->tag_en }}
-                                                <button type="button" class="btn-close btn-close-white ms-2 remove-tag"
-                                                    style="font-size: 10px;"></button>
+                                                <span class="remove-icon">×</span>
                                             </span>
                                         @endforeach
                                     </div>
                                 </div>
+
+                                <style>
+                                    .tags-scroll-container {
+                                        max-height: 300px;
+                                        overflow-y: auto;
+                                        display: flex;
+                                        flex-wrap: wrap;
+                                        gap: 8px;
+                                    }
+
+                                    .tag-suggestion {
+                                        display: inline-block;
+                                        transition: all 0.2s ease;
+                                        border: 1px solid #ddd;
+                                    }
+
+                                    .tag-suggestion:hover {
+                                        background-color: #007bff !important;
+                                        color: white;
+                                        transform: translateY(-2px);
+                                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+                                    }
+
+                                    .selected-tag {
+                                        display: inline-flex;
+                                        align-items: center;
+                                        gap: 8px;
+                                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                        color: white;
+                                        padding: 8px 12px;
+                                        margin: 4px;
+                                        border-radius: 20px;
+                                        font-size: 14px;
+                                        font-weight: 500;
+                                        transition: all 0.3s ease;
+                                        cursor: pointer;
+                                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                                    }
+
+                                    .selected-tag:hover {
+                                        transform: translateY(-2px);
+                                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                                        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+                                    }
+
+                                    .selected-tag .remove-icon {
+                                        display: inline-flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        width: 18px;
+                                        height: 18px;
+                                        background: rgba(255, 255, 255, 0.3);
+                                        border-radius: 50%;
+                                        font-size: 14px;
+                                        font-weight: bold;
+                                        transition: all 0.2s ease;
+                                    }
+
+                                    .selected-tag:hover .remove-icon {
+                                        background: rgba(255, 255, 255, 0.5);
+                                        transform: rotate(90deg);
+                                    }
+
+                                    .tag-hidden {
+                                        display: none !important;
+                                    }
+
+                                    #tag-search-input:focus {
+                                        border-color: #667eea;
+                                        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+                                    }
+
+                                    .min-height-50 {
+                                        min-height: 50px;
+                                    }
+                                </style>
 
 
                                 {{-- News Details In Bangla --}}
@@ -526,93 +607,151 @@
     {{-- For Tags --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Pre-selected tag IDs from server
-            const preSelectedTagIds = @json($selected_tag_ids);
+            const tagEnInput = document.getElementById('tag_en');
+            const tagBnInput = document.getElementById('tag_bn');
+            const suggestions = document.getElementById('tags-en-suggestions');
+            const selectedContainer = document.getElementById('selected-tags');
+            const dropdownMenu = document.getElementById('tags-dropdown-menu');
+            const searchInput = document.getElementById('tag-search-input');
 
-            // Initialize the interface with existing selections
-            initializeTagInterface();
+            // Initialize with pre-selected tags from server
+            initializeExistingTags();
 
-            function initializeTagInterface() {
-                // Mark pre-selected tags as selected
-                preSelectedTagIds.forEach(function(tagId) {
-                    const tagElement = document.querySelector(`[data-id="${tagId}"]`);
-                    if (tagElement && tagElement.classList.contains('tag-suggestion')) {
-                        tagElement.classList.add('selected-tag-item');
-                    }
+            function initializeExistingTags() {
+                // Add click handlers to pre-populated tags
+                const existingTags = selectedContainer.querySelectorAll('.selected-tag');
+                existingTags.forEach(tag => {
+                    tag.addEventListener('click', function() {
+                        removeTag(tag.dataset.id);
+                    });
                 });
-
-                // Update textareas with existing tags
-                updateTagTextareas();
             }
 
-            // Your existing tag selection logic
-            document.addEventListener('click', function(e) {
-                if (e.target.classList.contains('tag-suggestion')) {
-                    const tag = e.target;
-                    const tagId = tag.dataset.id;
-                    const tagEn = tag.dataset.en;
-                    const tagBn = tag.dataset.bn;
+            // Search functionality
+            searchInput.addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase().trim();
+                const allTags = suggestions.querySelectorAll('.tag-suggestion');
 
-                    if (!tag.classList.contains('selected-tag-item')) {
-                        // Add tag
-                        tag.classList.add('selected-tag-item');
-                        addSelectedTag(tagId, tagEn, tagBn);
-                    }
-                }
-
-                // Remove tag functionality
-                if (e.target.classList.contains('remove-tag')) {
-                    const tagContainer = e.target.closest('.selected-tag');
-                    const tagId = tagContainer.dataset.id;
-
-                    // Remove from selected tags container
-                    tagContainer.remove();
-
-                    // Remove selected state from dropdown
-                    const dropdownTag = document.querySelector(`.tag-suggestion[data-id="${tagId}"]`);
-                    if (dropdownTag) {
-                        dropdownTag.classList.remove('selected-tag-item');
+                allTags.forEach(tag => {
+                    // Skip already selected tags
+                    if (tag.classList.contains('tag-hidden') && tag.dataset.selected === 'true') {
+                        return;
                     }
 
-                    updateTagTextareas();
+                    const tagText = tag.textContent.toLowerCase();
+                    const tagBn = tag.dataset.bn.toLowerCase();
+
+                    if (tagText.includes(searchTerm) || tagBn.includes(searchTerm)) {
+                        tag.classList.remove('tag-hidden');
+                    } else {
+                        tag.classList.add('tag-hidden');
+                    }
+                });
+            });
+
+            // Click on suggestion to add tag
+            suggestions.addEventListener('click', function(e) {
+                if (e.target.classList.contains('tag-suggestion') && !e.target.classList.contains(
+                        'tag-hidden')) {
+                    const id = e.target.dataset.id;
+                    const en = e.target.dataset.en;
+                    const bn = e.target.dataset.bn;
+
+                    // Check if already selected
+                    if (selectedContainer.querySelector(`[data-id="${id}"]`)) {
+                        return;
+                    }
+
+                    addSelectedTag(id, en, bn);
+
+                    // Hide from suggestions
+                    e.target.classList.add('tag-hidden');
+                    e.target.dataset.selected = 'true';
+
+                    // Clear search
+                    searchInput.value = '';
+                    resetSearchFilter();
+
+                    e.stopPropagation();
                 }
             });
 
+            // Prevent dropdown from closing
+            dropdownMenu.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+
+            // Auto-focus search when dropdown opens
+            document.getElementById('tagsDropdown').addEventListener('click', function() {
+                setTimeout(() => {
+                    searchInput.focus();
+                }, 100);
+            });
+
             function addSelectedTag(id, en, bn) {
-                const selectedTagsContainer = document.getElementById('selected-tags');
+                const span = document.createElement('span');
+                span.classList.add('selected-tag');
+                span.innerHTML = `
+                ${en}
+                <span class="remove-icon">×</span>
+            `;
+                span.dataset.id = id;
+                span.dataset.en = en;
+                span.dataset.bn = bn;
 
-                // Check if tag already exists
-                if (selectedTagsContainer.querySelector(`[data-id="${id}"]`)) {
-                    return;
-                }
+                // Click to remove
+                span.addEventListener('click', function() {
+                    removeTag(id);
+                });
 
-                const tagElement = document.createElement('span');
-                tagElement.className =
-                    'selected-tag bg-primary text-white px-2 py-1 m-1 rounded d-inline-flex align-items-center';
-                tagElement.setAttribute('data-id', id);
-                tagElement.setAttribute('data-en', en);
-                tagElement.setAttribute('data-bn', bn);
-                tagElement.innerHTML = `
-            ${en}
-            <button type="button" class="btn-close btn-close-white ms-2 remove-tag" style="font-size: 10px;"></button>
-        `;
-
-                selectedTagsContainer.appendChild(tagElement);
-                updateTagTextareas();
+                selectedContainer.appendChild(span);
+                updateTextareas();
             }
 
-            function updateTagTextareas() {
-                const selectedTags = document.querySelectorAll('#selected-tags .selected-tag');
+            function removeTag(id) {
+                // Remove from selected container
+                const tagElement = selectedContainer.querySelector(`[data-id="${id}"]`);
+                if (tagElement) {
+                    tagElement.style.opacity = '0';
+                    tagElement.style.transform = 'scale(0.8)';
+
+                    setTimeout(() => {
+                        tagElement.remove();
+                        updateTextareas();
+
+                        // Show back in suggestions
+                        const suggestionTag = suggestions.querySelector(`[data-id="${id}"]`);
+                        if (suggestionTag) {
+                            suggestionTag.classList.remove('tag-hidden');
+                            suggestionTag.dataset.selected = 'false';
+                        }
+                    }, 200);
+                }
+            }
+
+            function updateTextareas() {
+                const selectedTags = selectedContainer.querySelectorAll('.selected-tag');
                 const enTags = [];
                 const bnTags = [];
 
                 selectedTags.forEach(tag => {
-                    enTags.push(tag.dataset.en);
-                    bnTags.push(tag.dataset.bn);
+                    if (tag.dataset.en && tag.dataset.bn) {
+                        enTags.push(tag.dataset.en);
+                        bnTags.push(tag.dataset.bn);
+                    }
                 });
 
-                document.getElementById('tag_en').value = enTags.join(', ');
-                document.getElementById('tag_bn').value = bnTags.join(', ');
+                tagEnInput.value = enTags.join(', ');
+                tagBnInput.value = bnTags.join(', ');
+            }
+
+            function resetSearchFilter() {
+                const allTags = suggestions.querySelectorAll('.tag-suggestion');
+                allTags.forEach(tag => {
+                    if (tag.dataset.selected !== 'true') {
+                        tag.classList.remove('tag-hidden');
+                    }
+                });
             }
         });
     </script>

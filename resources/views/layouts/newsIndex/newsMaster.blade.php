@@ -20,13 +20,14 @@
     {{-- For Seo with dynamic name End  --}}
 
 
-    <title>USNews - Multipurpose News, Magazine and Blog HTML5 Template</title>
+    <title>@yield('title', 'USNews - Multipurpose News, Magazine and Blog')</title>
 
     <meta name="author" content="ThemeLooks" />
     <meta name="description" content="USNews - Multipurpose News and Magazine Template" />
     <meta name="keywords"
         content="news, newspaper, magazine, blog, post, article, editorial, publishing, modern, responsive, html5, template" />
-    <link rel="icon" href="favicon.png" type="image/png" />
+    <link rel="icon" href="{{ asset('frontend_assets/img/website-icon/68f3f40c0f734_1760818188.jpg') }}" type="image/png">
+
     {{-- <link rel="stylesheet" href="{{ asset('frontend_assets') }}/css?family=Source+Sans+Pro:400,600,700" /> --}}
     <link rel="stylesheet" href="{{ asset('frontend_assets') }}/css/font-awesome.min.css" />
     <link rel="stylesheet" href="{{ asset('frontend_assets') }}/css/bootstrap.min.css" />

@@ -85,8 +85,8 @@ class NewsController extends Controller implements HasMiddleware
             'tags_en' => 'nullable|string',
             'tags_bn' => 'nullable|string',
             'category_id' => 'required',
+            'sub_cate_id' => 'required',
             'division_id' => 'required',
-            'dist_id' => 'required',
             'thumbnail' => 'required|image|mimes:jpg,jpeg,png,gif|max:1024',
             'image_title' => 'required',
             'status' => 'required'
@@ -343,9 +343,8 @@ class NewsController extends Controller implements HasMiddleware
             'tag_en' => 'nullable|string',
             'tag_bn' => 'nullable|string',
             'category_id' => 'required',
+            'sub_cate_id' => 'required',
             'division_id' => 'required',
-            'dist_id' => 'required',
-            'sub_dist_id' => 'required',
             'image_title' => 'required',
             'status' => 'required'
         ]);
