@@ -26,7 +26,8 @@
     <meta name="description" content="USNews - Multipurpose News and Magazine Template" />
     <meta name="keywords"
         content="news, newspaper, magazine, blog, post, article, editorial, publishing, modern, responsive, html5, template" />
-    <link rel="icon" href="{{ asset('frontend_assets/img/website-icon/68f3f40c0f734_1760818188.jpg') }}" type="image/png">
+    <link rel="icon" href="{{ asset('frontend_assets/img/website-icon/68f3f40c0f734_1760818188.jpg') }}"
+        type="image/png">
 
     {{-- <link rel="stylesheet" href="{{ asset('frontend_assets') }}/css?family=Source+Sans+Pro:400,600,700" /> --}}
     <link rel="stylesheet" href="{{ asset('frontend_assets') }}/css/font-awesome.min.css" />
@@ -723,34 +724,1502 @@
                         box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4) !important;
                     }
 
-                    /* Dark mode support */
-                    body.dark-mode .poll--widget {
-                        background-color: #2d2d2d !important;
-                        border-color: #444 !important;
-                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
+
+
+
+                    /* ============================================
+                                BASE & ROOT VARIABLES
+                    ============================================ */
+                    :root {
+                        /* Light mode colors */
+                        --bg-primary: #ffffff;
+                        --bg-secondary: #f8f9fa;
+                        --bg-tertiary: #e9ecef;
+                        --text-primary: #000000;
+                        --text-secondary: #333333;
+                        --text-muted: #6c757d;
+                        --border-color: #dee2e6;
+                        --card-bg: #ffffff;
+                        --input-bg: #ffffff;
+                        --hover-bg: #f8f9fa;
                     }
 
-                    body.dark-mode .poll--widget .title h3.h4,
-                    body.dark-mode .poll--widget .options .radio label,
-                    body.dark-mode .poll--widget .options .radio span,
-                    body.dark-mode .poll--widget .options .radio p .percent-text {
+                    body.dark-mode {
+                        /* Dark mode colors */
+                        --bg-primary: #1a1a1a;
+                        --bg-secondary: #2d2d2d;
+                        --bg-tertiary: #3a3a3a;
+                        --text-primary: #ffffff;
+                        --text-secondary: #e0e0e0;
+                        --text-muted: #b0b0b0;
+                        --border-color: #444444;
+                        --card-bg: #2d2d2d;
+                        --input-bg: #3a3a3a;
+                        --hover-bg: #404040;
+                    }
+
+                    /* Base body transition */
+                    body {
+                        transition: background-color 0.4s ease, color 0.4s ease;
+                    }
+
+                    /* ============================================
+                                BODY & MAIN CONTAINERS
+                    ============================================ */
+                    body.dark-mode {
+                        background-color: #1a1a1a !important;
                         color: #ffffff !important;
                     }
 
+                    body.dark-mode .wrapper {
+                        background-color: #1a1a1a !important;
+                    }
+
+                    body.dark-mode .container {
+                        background-color: transparent !important;
+                    }
+
+                    body.dark-mode .main-content--section {
+                        background-color: #1a1a1a !important;
+                    }
+
+                    /* ============================================
+   HEADER SECTIONS
+   ============================================ */
+                    body.dark-mode .header--section {
+                        background-color: #2d2d2d !important;
+                    }
+
+                    body.dark-mode .header--topbar {
+                        background-color: #1a1a1a !important;
+                        border-bottom: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .header--topbar * {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .header-container {
+                        background-color: #2d2d2d !important;
+                    }
+
+                    /* ============================================
+   NAVIGATION MENU - KEEP RED, MEGA MENU WHITE
+   ============================================ */
+
+                    /* Main navbar stays RED */
+                    body.dark-mode .header--navbar {
+                        background-color: #DA0000 !important;
+                        /* Red */
+                        border-top: 1px solid #b30000 !important;
+                        border-bottom: 1px solid #b30000 !important;
+                    }
+
+                    /* Menu links - white text on red background */
+                    body.dark-mode .header--menu-links>li>a {
+                        color: #ffffff !important;
+                        background-color: transparent !important;
+                    }
+
+                    body.dark-mode .header--menu-links>li>a:hover {
+                        color: #ffffff !important;
+                        background-color: rgba(0, 0, 0, 0.2) !important;
+                    }
+
+                    body.dark-mode .header--menu-links>li.active>a {
+                        background-color: rgba(0, 0, 0, 0.3) !important;
+                    }
+
+                    /* 🌙 Dropdown menus - DARK MODE STYLE */
+                    body.dark-mode .dropdown-menu {
+                        background-color: #1A1A1A !important;
+                        border: 1px solid #DA0000 !important;
+                    }
+
+                    body.dark-mode .dropdown-menu li a {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .dropdown-menu li a:hover {
+                        background-color: #2A2A2A !important;
+                        color: #DA0000 !important;
+                    }
+
+                    /* 🌙 Mega menu - DARK MODE STYLE */
+                    body.dark-mode .mega-menu {
+                        background-color: #1A1A1A !important;
+                        border: 1px solid #DA0000 !important;
+                        box-shadow: 0 8px 25px rgba(218, 0, 0, 0.25) !important;
+                    }
+
+                    body.dark-mode .mega-menu-category {
+                        background-color: #1A1A1A !important;
+                        color: #ffffff !important;
+                        border-bottom: 1px solid #DA0000 !important;
+                    }
+
+                    body.dark-mode .mega-menu-category:hover {
+                        background-color: #2A2A2A !important;
+                    }
+
+                    body.dark-mode .mega-menu-title a {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .mega-menu-title a:hover {
+                        color: #DA0000 !important;
+                    }
+
+                    body.dark-mode .mega-submenu-link {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .mega-submenu-link:hover {
+                        background-color: #2A2A2A !important;
+                        color: #DA0000 !important;
+                        border-left: 3px solid #DA0000 !important;
+                    }
+
+
+                    /* ============================================
+   CATEGORY BAR
+   ============================================ */
+                    body.dark-mode #categoryBar {
+                        background-color: #2d2d2d !important;
+                        border-top: 1px solid #444 !important;
+                        border-bottom: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode #categoryBar .category-item a {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode #categoryBar .category-item a:hover {
+                        color: #007bff !important;
+                    }
+
+                    /* ============================================
+   ALL HEADINGS & TEXT
+   ============================================ */
+                    body.dark-mode h1,
+                    body.dark-mode h2,
+                    body.dark-mode h3,
+                    body.dark-mode h4,
+                    body.dark-mode h5,
+                    body.dark-mode h6 {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode p,
+                    body.dark-mode span:not(.social-icon):not([style*="background"]),
+                    body.dark-mode div,
+                    body.dark-mode li {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode a {
+                        color: #64b5f6 !important;
+                    }
+
+                    body.dark-mode a:hover {
+                        color: #007bff !important;
+                    }
+
+                    /* ============================================
+   CARDS & POSTS
+   ============================================ */
+                    body.dark-mode .post--item {
+                        background-color: #2d2d2d !important;
+                        border-color: #444 !important;
+                    }
+
+                    body.dark-mode .post--item:hover {
+                        background-color: #3a3a3a !important;
+                    }
+
+                    body.dark-mode .post--info {
+                        background-color: transparent !important;
+                    }
+
+                    body.dark-mode .post--info .title a {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .post--info .title a:hover {
+                        color: #007bff !important;
+                    }
+
+                    body.dark-mode .post--img {
+                        background-color: #2d2d2d !important;
+                    }
+
+                    body.dark-mode .post--img .cat {
+                        background-color: #007bff !important;
+                        color: #ffffff !important;
+                    }
+
+                    /* ============================================
+   NEWS SECTIONS (HOME PAGE)
+   ============================================ */
+                    body.dark-mode .news-section,
+                    body.dark-mode .news-container,
+                    body.dark-mode .news-block,
+                    body.dark-mode .news-grid {
+                        background-color: #2d2d2d !important;
+                    }
+
+                    body.dark-mode .section-header {
+                        border-bottom: 2px solid #444 !important;
+                    }
+
+                    body.dark-mode .section-title,
+                    body.dark-mode .news-header h2 {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .news-main,
+                    body.dark-mode .news-item,
+                    body.dark-mode .news-list {
+                        background-color: #2d2d2d !important;
+                    }
+
+                    body.dark-mode .main-news h3 a,
+                    body.dark-mode .small-title h2 a,
+                    body.dark-mode .news-list h4 a {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .main-news p {
+                        color: #e0e0e0 !important;
+                    }
+
+                    /* ============================================
+   SPORTS SECTION
+   ============================================ */
+                    body.dark-mode .sports-section {
+                        background-color: #1a1a1a !important;
+                    }
+
+                    body.dark-mode .sports-title h2,
+                    body.dark-mode .sports-title h2 a {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .sports-grid,
+                    body.dark-mode .sports-main,
+                    body.dark-mode .sports-middle,
+                    body.dark-mode .sports-left .sports-item,
+                    body.dark-mode .sports-right .sports-item-row {
+                        background-color: #2d2d2d !important;
+                    }
+
+                    body.dark-mode .sports-main h2 a,
+                    body.dark-mode .sports-main h3 a,
+                    body.dark-mode .sports-item h3 a,
+                    body.dark-mode .sports-item-row .sports-text a {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .sports-middle p,
+                    body.dark-mode .sports-middle a {
+                        color: #e0e0e0 !important;
+                    }
+
+                    /* ============================================
+   INTERNATIONAL SECTION
+   ============================================ */
+                    body.dark-mode .intl-container {
+                        background-color: #1a1a1a !important;
+                    }
+
+                    body.dark-mode .intl-heading {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .intl-post-info h2 a,
+                    body.dark-mode .intl-post-info h3 a,
+                    body.dark-mode .intl-flex-text h4 a {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .intl-grid {
+                        background-color: #2d2d2d !important;
+                    }
+
+                    /* ============================================
+   LIFESTYLE SECTION
+   ============================================ */
+                    body.dark-mode .lifestyle-section {
+                        background-color: #1a1a1a !important;
+                    }
+
+                    body.dark-mode .lifestyle-section-title {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .lifestyle-featured-article,
+                    body.dark-mode .lifestyle-small-news-item,
+                    body.dark-mode .lifestyle-news-item-horizontal {
+                        background-color: #2d2d2d !important;
+                        border: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .lifestyle-featured-title a,
+                    body.dark-mode .lifestyle-small-news-title a,
+                    body.dark-mode .lifestyle-news-item-title a {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .lifestyle-featured-excerpt {
+                        color: #e0e0e0 !important;
+                    }
+
+                    /* ============================================
+   ENTERTAINMENT SECTION
+   ============================================ */
+                    body.dark-mode .entertainment-section {
+                        background-color: #1a1a1a !important;
+                    }
+
+                    body.dark-mode .entertainment-section .section-header h2 {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .middle-news .text-block h3 a,
+                    body.dark-mode .right-news .text-left h4 a {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .middle-news .text-block p,
+                    body.dark-mode .right-news .text-left p {
+                        color: #e0e0e0 !important;
+                    }
+
+                    body.dark-mode .main-news .text-block p {
+                        color: #e0e0e0 !important;
+                    }
+
+                    /* ============================================
+   BREAKING NEWS & NOTICE
+   ============================================ */
+                    body.dark-mode .news--ticker {
+                        background-color: #2d2d2d !important;
+                        border: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .news--ticker .title h2 {
+                        color: #ffffff !important;
+                        background-color: #3a3a3a !important;
+                    }
+
+                    body.dark-mode .news--ticker .h3 a {
+                        color: #ffffff !important;
+                    }
+
+                    /* ============================================
+   WIDGETS (SIDEBAR)
+   ============================================ */
+                    body.dark-mode .widget {
+                        background-color: #2d2d2d !important;
+                        border: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .widget--title {
+                        background-color: #3a3a3a !important;
+                        border-bottom: 2px solid #007bff !important;
+                    }
+
+                    body.dark-mode .widget--title h2 {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .list--widget {
+                        background-color: #2d2d2d !important;
+                        border: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .list--widget .post--item {
+                        border-bottom: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .list--widget .post--item:hover {
+                        background-color: #3a3a3a !important;
+                    }
+
+                    body.dark-mode .list--widget .post--info .title h3.h4 a {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .list--widget .post--info .meta li a {
+                        color: #b0b0b0 !important;
+                    }
+
+                    /* ============================================
+   PRAYER TIMES WIDGET
+   ============================================ */
+                    body.dark-mode .prayer-times-card {
+                        background-color: #2d2d2d !important;
+                        border: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .prayer-times-header {
+                        background: linear-gradient(135deg, #1e7e34, #28a745) !important;
+                    }
+
+                    body.dark-mode .prayer-times-table {
+                        background-color: #2d2d2d !important;
+                    }
+
+                    body.dark-mode .prayer-times-table thead {
+                        background-color: #3a3a3a !important;
+                    }
+
+                    body.dark-mode .prayer-times-table th,
+                    body.dark-mode .prayer-times-table td {
+                        color: #ffffff !important;
+                        border-color: #444 !important;
+                    }
+
+                    body.dark-mode .prayer-times-footer {
+                        background-color: #3a3a3a !important;
+                        border-top: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .prayer-times-footer .update-time {
+                        color: #b0b0b0 !important;
+                    }
+
+                    /* ============================================
+   CALENDAR WIDGET
+   ============================================ */
+                    body.dark-mode .calendar-box {
+                        background-color: #2d2d2d !important;
+                        border: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .calendar-box>div:first-child {
+                        background: linear-gradient(135deg, #007bff, #0056b3) !important;
+                    }
+
+                    body.dark-mode .calendar-header {
+                        background-color: #3a3a3a !important;
+                    }
+
+                    body.dark-mode .calendar-header select {
+                        background-color: #2d2d2d !important;
+                        color: #ffffff !important;
+                        border: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .calendar-days {
+                        background-color: #3a3a3a !important;
+                        border-bottom: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .calendar-days div {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .calendar-dates {
+                        background-color: #2d2d2d !important;
+                    }
+
+                    body.dark-mode .calendar-dates div {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .calendar-dates div:hover {
+                        background-color: #007bff !important;
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .calendar-dates div.selected {
+                        background-color: #007bff !important;
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .calendar-dates div.disabled {
+                        color: #666 !important;
+                    }
+
+                    /* ============================================
+   TAGS WIDGET
+   ============================================ */
+                    body.dark-mode .tags--widget {
+                        background-color: #2d2d2d !important;
+                        border: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .tags--widget .nav li a {
+                        background-color: #3a3a3a !important;
+                        color: #ffffff !important;
+                        border: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .tags--widget .nav li a:hover {
+                        background: linear-gradient(135deg, #007bff, #0056b3) !important;
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .tags--widget .nav li a span {
+                        background-color: #007bff !important;
+                        color: #ffffff !important;
+                    }
+
+                    /* ============================================
+   POLL WIDGET
+   ============================================ */
+                    body.dark-mode .poll--widget,
+                    body.dark-mode .lifestyle-poll-widget {
+                        background-color: #2d2d2d !important;
+                        border: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .lifestyle-poll-title,
+                    body.dark-mode .poll--widget .title h3.h4 {
+                        color: #ffffff !important;
+                        border-bottom: 2px solid #007bff !important;
+                    }
+
+                    body.dark-mode .lifestyle-poll-question {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .lifestyle-poll-option,
                     body.dark-mode .poll--widget .options .radio {
                         background-color: #3a3a3a !important;
-                        border-color: transparent !important;
+                        border: 2px solid #444 !important;
                     }
 
+                    body.dark-mode .lifestyle-poll-option:hover,
                     body.dark-mode .poll--widget .options .radio:hover {
+                        background-color: #404040 !important;
+                        border-color: #007bff !important;
+                    }
+
+                    body.dark-mode .lifestyle-poll-option label,
+                    body.dark-mode .poll--widget .options .radio label {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .lifestyle-poll-percentage {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .lifestyle-progress-bar {
                         background-color: #444 !important;
-                        border-color: var(--primary-color, #007bff) !important;
                     }
 
-                    body.dark-mode .poll--widget .options .radio p span.progress-bar {
-                        background: linear-gradient(90deg, #007bff, #0056b3) !important;
+                    body.dark-mode .lifestyle-vote-btn,
+                    body.dark-mode .poll--widget .btn-primary {
+                        background: linear-gradient(135deg, #007bff, #0056b3) !important;
+                        color: #ffffff !important;
                     }
 
+                    /* ============================================
+   NEWS SHOW PAGE (newsShow.blade.php)
+   ============================================ */
+
+                    /* Breadcrumb */
+                    body.dark-mode .main--breadcrumb {
+                        background-color: #2d2d2d !important;
+                        border-bottom: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .breadcrumb {
+                        background-color: transparent !important;
+                    }
+
+                    body.dark-mode .breadcrumb li,
+                    body.dark-mode .breadcrumb li a,
+                    body.dark-mode .breadcrumb li span,
+                    body.dark-mode .breadcrumb-text {
+                        color: #ffffff !important;
+                    }
+
+                    /* Main content */
+                    body.dark-mode .main--content {
+                        background-color: #2d2d2d !important;
+                    }
+
+                    body.dark-mode .post--single {
+                        background-color: #2d2d2d !important;
+                    }
+
+                    /* News title */
+                    body.dark-mode .post--single .title h3 {
+                        color: #ffffff !important;
+                    }
+
+                    /* News content */
+                    body.dark-mode .post--content,
+                    body.dark-mode .post--content p,
+                    body.dark-mode .post--content div,
+                    body.dark-mode .post--content span {
+                        color: #ffffff !important;
+                    }
+
+                    /* Category badges */
+                    body.dark-mode .post--tags ul li span[style*="background"] {
+                        /* Keep original badge colors */
+                    }
+
+                    /* Tags in news show page */
+                    body.dark-mode .post--tags ul li a {
+                        background-color: #3a3a3a !important;
+                        color: #ffffff !important;
+                        border: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .post--tags ul li a:hover {
+                        background-color: #e74c3c !important;
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .post--tags i.fa-tags {
+                        color: #ffffff !important;
+                    }
+
+                    /* Related news (People's Choice) */
+                    body.dark-mode .news-peoples-choice-section {
+                        background-color: #2d2d2d !important;
+                    }
+
+                    body.dark-mode .news-peoples-choice-section h3 {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .news-item-wrapper {
+                        border-bottom: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .news-item-title {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .news-item-excerpt {
+                        color: #e0e0e0 !important;
+                    }
+
+                    body.dark-mode .news-content-link:hover .news-item-title {
+                        color: #DA0000 !important;
+                    }
+
+                    /* Location & date info */
+                    body.dark-mode .fa-map-marker {
+                        color: #ffffff !important;
+                    }
+
+                    /* Video container */
+                    body.dark-mode .video-container {
+                        background-color: #000000 !important;
+                    }
+
+                    /* Comment section */
+                    body.dark-mode .comment--form {
+                        background-color: #2d2d2d !important;
+                    }
+
+                    /* ============================================
+   SEARCH RESULTS PAGE (searchNews.blade.php)
+   ============================================ */
+
+                    body.dark-mode .search-results {
+                        background-color: #1a1a1a !important;
+                    }
+
+                    body.dark-mode .search-header {
+                        border-bottom: 2px solid #444 !important;
+                    }
+
+                    body.dark-mode .search-header h2 {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .search-header p {
+                        color: #e0e0e0 !important;
+                    }
+
+                    body.dark-mode .news-list {
+                        background-color: transparent !important;
+                    }
+
+                    body.dark-mode .news-item {
+                        background-color: #2d2d2d !important;
+                        border-bottom: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .news-item:hover {
+                        background-color: #3a3a3a !important;
+                    }
+
+                    body.dark-mode .news-content .news-title {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .news-content-link:hover .news-title {
+                        color: #e74c3c !important;
+                    }
+
+                    body.dark-mode .news-content h4 {
+                        color: #e0e0e0 !important;
+                    }
+
+                    body.dark-mode .news-meta span {
+                        /* Keep badge colors */
+                    }
+
+                    body.dark-mode .news-description {
+                        color: #e0e0e0 !important;
+                    }
+
+                    body.dark-mode .news-content-link:hover .news-description {
+                        color: #b0b0b0 !important;
+                    }
+
+                    body.dark-mode .news-tag {
+                        background-color: #3a3a3a !important;
+                        color: #ffffff !important;
+                        border: 1px solid #444 !important;
+                    }
+
+                    /* No results message */
+                    body.dark-mode [style*="background: #e3f2fd"],
+                    body.dark-mode [style*="background: #fff3cd"] {
+                        background-color: #3a3a3a !important;
+                        border-left: 4px solid #007bff !important;
+                    }
+
+                    body.dark-mode [style*="color: #1976d2"],
+                    body.dark-mode [style*="color: #856404"] {
+                        color: #ffffff !important;
+                    }
+
+                    /* ============================================
+   LOCATION SEARCH PAGE (locationNews.blade.php)
+   ============================================ */
+
+                    body.dark-mode [style*="background: #f8f9fa"] {
+                        background-color: #3a3a3a !important;
+                    }
+
+                    /* Location filter */
+                    body.dark-mode .country-filter-container {
+                        background-color: #2d2d2d !important;
+                        border: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .country-filter-col select {
+                        background-color: #3a3a3a !important;
+                        color: #ffffff !important;
+                        border: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .country-filter-button {
+                        background-color: #007bff !important;
+                    }
+
+                    /* ============================================
+   FORMS & INPUTS
+   ============================================ */
+                    body.dark-mode input[type="text"],
+                    body.dark-mode input[type="email"],
+                    body.dark-mode input[type="search"],
+                    body.dark-mode input[type="password"],
+                    body.dark-mode textarea,
+                    body.dark-mode select {
+                        background-color: #3a3a3a !important;
+                        color: #ffffff !important;
+                        border: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode input::placeholder,
+                    body.dark-mode textarea::placeholder {
+                        color: #b0b0b0 !important;
+                    }
+
+                    body.dark-mode input:focus,
+                    body.dark-mode textarea:focus,
+                    body.dark-mode select:focus {
+                        background-color: #404040 !important;
+                        border-color: #007bff !important;
+                        outline: none !important;
+                    }
+
+                    /* ============================================
+   BUTTONS
+   ============================================ */
+                    body.dark-mode .btn-primary,
+                    body.dark-mode button[type="submit"] {
+                        background: linear-gradient(135deg, #007bff, #0056b3) !important;
+                        color: #ffffff !important;
+                        border: none !important;
+                    }
+
+                    body.dark-mode .btn-secondary {
+                        background-color: #3a3a3a !important;
+                        color: #ffffff !important;
+                        border: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .btn:hover {
+                        opacity: 0.9;
+                    }
+
+                    /* ============================================
+   SEARCH MEGA MENU
+   ============================================ */
+                    body.dark-mode .search-megamenu {
+                        background-color: #2d2d2d !important;
+                        border-top: 2px solid #007bff !important;
+                    }
+
+                    body.dark-mode .search-box {
+                        background-color: #3a3a3a !important;
+                        border: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .search-box input {
+                        background-color: transparent !important;
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .search-box input::placeholder {
+                        color: #b0b0b0 !important;
+                    }
+
+                    /* ============================================
+   GALLERY SECTIONS
+   ============================================ */
+                    body.dark-mode .gallery-container,
+                    body.dark-mode .gallery-column {
+                        background-color: #2d2d2d !important;
+                    }
+
+                    body.dark-mode .main-title h4,
+                    body.dark-mode .small-title h2 {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .main-title h4 a,
+                    body.dark-mode .small-title h2 a {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .no-data {
+                        color: #b0b0b0 !important;
+                        background-color: #3a3a3a !important;
+                    }
+
+                    /* ============================================
+   COUNTRY SECTION
+   ============================================ */
+                    body.dark-mode .custom-news-wrapper {
+                        background-color: #1a1a1a !important;
+                    }
+
+                    /* ============================================
+   FOOTER
+   ============================================ */
+                    body.dark-mode .modern-footer {
+                        background-color: #1a1a1a !important;
+                    }
+
+                    body.dark-mode .footer-top {
+                        border-bottom: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .footer-about,
+                    body.dark-mode .contact-info,
+                    body.dark-mode .contact-info li,
+                    body.dark-mode .contact-info a,
+                    body.dark-mode .footer-links a {
+                        color: #e0e0e0 !important;
+                    }
+
+                    body.dark-mode .editor-title {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .footer-bottom {
+                        background-color: #0d0d0d !important;
+                    }
+
+                    body.dark-mode .copyright {
+                        color: #b0b0b0 !important;
+                    }
+
+                    body.dark-mode .copyright a {
+                        color: #007bff !important;
+                    }
+
+                    /* ============================================
+   BACK TO TOP BUTTON
+   ============================================ */
+                    body.dark-mode #backToTopBtn a {
+                        background: linear-gradient(135deg, #007bff, #00b4d8) !important;
+                    }
+
+                    /* ============================================
+   BORDERS & DIVIDERS
+   ============================================ */
+                    body.dark-mode hr,
+                    body.dark-mode .divider {
+                        border-color: #444 !important;
+                        background-color: #444 !important;
+                    }
+
+                    /* ============================================
+   TABLES
+   ============================================ */
+                    body.dark-mode table {
+                        background-color: #2d2d2d !important;
+                        border: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode table th {
+                        background-color: #3a3a3a !important;
+                        color: #ffffff !important;
+                        border: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode table td {
+                        background-color: #2d2d2d !important;
+                        color: #ffffff !important;
+                        border: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode table tr:hover {
+                        background-color: #3a3a3a !important;
+                    }
+
+                    /* ============================================
+   PAGINATION
+   ============================================ */
+                    body.dark-mode .pagination {
+                        background-color: transparent !important;
+                    }
+
+                    body.dark-mode .pagination li a,
+                    body.dark-mode .pagination li span {
+                        background-color: #2d2d2d !important;
+                        color: #ffffff !important;
+                        border: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .pagination li.active span {
+                        background-color: #007bff !important;
+                        border-color: #007bff !important;
+                    }
+
+                    body.dark-mode .pagination li a:hover {
+                        background-color: #3a3a3a !important;
+                    }
+
+                    /* ============================================
+   SPECIAL CASES - KEEP COLORS
+   ============================================ */
+
+                    /* Keep images visible */
+                    body.dark-mode img {
+                        opacity: 1 !important;
+                        filter: none !important;
+                    }
+
+                    /* Keep icons visible */
+                    body.dark-mode i.fa,
+                    body.dark-mode i.fab,
+                    body.dark-mode i.fas {
+                        color: inherit !important;
+                    }
+
+                    /* Keep social icons colored */
+                    body.dark-mode .social-icon.facebook {
+                        background: #1877f2 !important;
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .social-icon.twitter {
+                        background: #000 !important;
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .social-icon.youtube {
+                        background: #ff0000 !important color: #ffffff !important;
+                    }
+
+                    body.dark-mode .social-icon.linkedin {
+                        background: #0077b5 !important;
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .social-icon.instagram {
+                        background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%) !important;
+                        color: #ffffff !important;
+                    }
+
+                    /* Keep category badge colors */
+                    body.dark-mode [style*="background: #3498db"],
+                    body.dark-mode [style*="background:#3498db"] {
+                        background-color: #3498db !important;
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode [style*="background: #e74c3c"],
+                    body.dark-mode [style*="background:#e74c3c"] {
+                        background-color: #e74c3c !important;
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode [style*="background: #95a5a6"],
+                    body.dark-mode [style*="background:#95a5a6"] {
+                        background-color: #95a5a6 !important;
+                        color: #ffffff !important;
+                    }
+
+                    /* Keep "Live TV" pulse button red */
+                    body.dark-mode .pulse {
+                        background-color: transparent !important;
+                        color: #ffffff !important;
+                        border: 1px solid #ffffff !important;
+                    }
+
+                    body.dark-mode .pulse::before {
+                        background-color: red !important;
+                    }
+
+                    /* ============================================
+   OVERRIDE INLINE STYLES
+   ============================================ */
+                    body.dark-mode [style*="background: white"],
+                    body.dark-mode [style*="background: #fff"],
+                    body.dark-mode [style*="background-color: white"],
+                    body.dark-mode [style*="background-color: #fff"],
+                    body.dark-mode [style*="background-color:#fff"],
+                    body.dark-mode [style*="background:#fff"] {
+                        background-color: #2d2d2d !important;
+                    }
+
+                    body.dark-mode [style*="color: black"],
+                    body.dark-mode [style*="color: #000"],
+                    body.dark-mode [style*="color:#000"],
+                    body.dark-mode [style*="color: #222"],
+                    body.dark-mode [style*="color:#222"],
+                    body.dark-mode [style*="color: #333"],
+                    body.dark-mode [style*="color:#333"] {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode [style*="color: #666"],
+                    body.dark-mode [style*="color:#666"],
+                    body.dark-mode [style*="color: #555"],
+                    body.dark-mode [style*="color:#555"] {
+                        color: #e0e0e0 !important;
+                    }
+
+                    body.dark-mode [style*="border: 1px solid #e5e5e5"],
+                    body.dark-mode [style*="border: 1px solid #e0e0e0"],
+                    body.dark-mode [style*="border-bottom: 1px solid #e0e0e0"],
+                    body.dark-mode [style*="border-bottom: 1px solid #e5e5e5"] {
+                        border-color: #444 !important;
+                    }
+
+                    /* ============================================
+   AD SPACES (Keep visible)
+   ============================================ */
+                    body.dark-mode .ad--space,
+                    body.dark-mode .ad--widget {
+                        background-color: transparent !important;
+                    }
+
+                    body.dark-mode .ad--space img,
+                    body.dark-mode .ad--widget img {
+                        opacity: 1 !important;
+                        filter: none !important;
+                    }
+
+                    /* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+                    @media (max-width: 768px) {
+                        body.dark-mode .header--topbar {
+                            background-color: #2d2d2d !important;
+                        }
+
+                        body.dark-mode .navbar-collapse {
+                            background-color: #DA0000 !important;
+                            /* Keep red on mobile */
+                        }
+
+                        body.dark-mode .header--navbar {
+                            background-color: #DA0000 !important;
+                        }
+                    }
+
+                    @media (max-width: 576px) {
+                        body.dark-mode .search-box {
+                            background-color: #3a3a3a !important;
+                        }
+
+                        body.dark-mode .news-item {
+                            flex-direction: column !important;
+                        }
+
+                        body.dark-mode .news-image {
+                            width: 100% !important;
+                            margin-right: 0 !important;
+                            margin-bottom: 15px !important;
+                        }
+                    }
+
+                    /* ============================================
+   SMOOTH TRANSITIONS
+   ============================================ */
+                    body.dark-mode *:not(img):not(video):not(iframe) {
+                        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
+                    }
+
+                    /* ============================================
+   FIX SPECIFIC ELEMENTS
+   ============================================ */
+
+                    /* News content wrapper */
+                    body.dark-mode .news-content-wrapper,
+                    body.dark-mode .post--content-wrapper {
+                        background-color: #2d2d2d !important;
+                    }
+
+                    /* Meta info */
+                    body.dark-mode .post--info .meta li {
+                        color: #b0b0b0 !important;
+                    }
+
+                    body.dark-mode .post--info .meta li a {
+                        color: #b0b0b0 !important;
+                    }
+
+                    body.dark-mode .post--info .meta li a:hover {
+                        color: #007bff !important;
+                    }
+
+                    /* Sticky sidebar */
+                    body.dark-mode .sticky-content-inner {
+                        background-color: transparent !important;
+                    }
+
+                    body.dark-mode .main--sidebar {
+                        background-color: transparent !important;
+                    }
+
+                    /* News category links */
+                    body.dark-mode .category-link {
+                        color: #ffffff !important;
+                    }
+
+                    /* Subcategory links */
+                    body.dark-mode .fast-menu li a {
+                        color: #333333 !important;
+                        /* Keep dark on white dropdown */
+                    }
+
+                    /* Hover effects for cards */
+                    body.dark-mode .card:hover,
+                    body.dark-mode .post--item:hover,
+                    body.dark-mode .widget:hover {
+                        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3) !important;
+                    }
+
+                    /* ============================================
+   TEXT SELECTION
+   ============================================ */
+                    body.dark-mode ::selection {
+                        background-color: #007bff !important;
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode ::-moz-selection {
+                        background-color: #007bff !important;
+                        color: #ffffff !important;
+                    }
+
+                    /* ============================================
+   SCROLLBAR STYLING (WebKit)
+   ============================================ */
+                    body.dark-mode ::-webkit-scrollbar {
+                        width: 10px;
+                        height: 10px;
+                    }
+
+                    body.dark-mode ::-webkit-scrollbar-track {
+                        background: #2d2d2d;
+                    }
+
+                    body.dark-mode ::-webkit-scrollbar-thumb {
+                        background: #555;
+                        border-radius: 5px;
+                    }
+
+                    body.dark-mode ::-webkit-scrollbar-thumb:hover {
+                        background: #777;
+                    }
+
+                    /* ============================================
+   PLACEHOLDER TEXT
+   ============================================ */
+                    body.dark-mode ::-webkit-input-placeholder {
+                        color: #b0b0b0 !important;
+                    }
+
+                    body.dark-mode :-moz-placeholder {
+                        color: #b0b0b0 !important;
+                    }
+
+                    body.dark-mode ::-moz-placeholder {
+                        color: #b0b0b0 !important;
+                    }
+
+                    body.dark-mode :-ms-input-placeholder {
+                        color: #b0b0b0 !important;
+                    }
+
+                    /* ============================================
+   LOADING STATES
+   ============================================ */
+                    body.dark-mode .preloader {
+                        background-color: #1a1a1a !important;
+                    }
+
+                    body.dark-mode .spinner {
+                        border-color: #444 !important;
+                        border-top-color: #007bff !important;
+                    }
+
+                    /* ============================================
+   TOOLTIPS
+   ============================================ */
+                    body.dark-mode .tooltip {
+                        background-color: #2d2d2d !important;
+                        color: #ffffff !important;
+                        border: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .tooltip-arrow {
+                        border-top-color: #2d2d2d !important;
+                    }
+
+                    /* ============================================
+   MODALS
+   ============================================ */
+                    body.dark-mode .modal-content {
+                        background-color: #2d2d2d !important;
+                        border: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .modal-header {
+                        background-color: #3a3a3a !important;
+                        border-bottom: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .modal-title {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .modal-body {
+                        background-color: #2d2d2d !important;
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .modal-footer {
+                        background-color: #3a3a3a !important;
+                        border-top: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .close {
+                        color: #ffffff !important;
+                        opacity: 1 !important;
+                    }
+
+                    /* ============================================
+   ALERTS & NOTIFICATIONS
+   ============================================ */
+                    body.dark-mode .alert {
+                        background-color: #3a3a3a !important;
+                        border: 1px solid #444 !important;
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .alert-success {
+                        background-color: #28a745 !important;
+                        border-color: #28a745 !important;
+                    }
+
+                    body.dark-mode .alert-danger {
+                        background-color: #dc3545 !important;
+                        border-color: #dc3545 !important;
+                    }
+
+                    body.dark-mode .alert-warning {
+                        background-color: #ffc107 !important;
+                        border-color: #ffc107 !important;
+                        color: #000 !important;
+                    }
+
+                    body.dark-mode .alert-info {
+                        background-color: #17a2b8 !important;
+                        border-color: #17a2b8 !important;
+                    }
+
+                    /* ============================================
+   BADGES & LABELS
+   ============================================ */
+                    body.dark-mode .badge {
+                        background-color: #3a3a3a !important;
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .badge-primary {
+                        background-color: #007bff !important;
+                    }
+
+                    body.dark-mode .badge-success {
+                        background-color: #28a745 !important;
+                    }
+
+                    body.dark-mode .badge-danger {
+                        background-color: #dc3545 !important;
+                    }
+
+                    body.dark-mode .badge-warning {
+                        background-color: #ffc107 !important;
+                        color: #000 !important;
+                    }
+
+                    body.dark-mode .badge-info {
+                        background-color: #17a2b8 !important;
+                    }
+
+                    /* ============================================
+   BREADCRUMB SPECIFIC FIXES
+   ============================================ */
+                    body.dark-mode .breadcrumb>li+li:before {
+                        color: #b0b0b0 !important;
+                    }
+
+                    /* ============================================
+   VIDEO GALLERY SPECIFIC
+   ============================================ */
+                    body.dark-mode .video-wrapper,
+                    body.dark-mode .video-container {
+                        background-color: #000 !important;
+                    }
+
+                    body.dark-mode .play-overlay {
+                        background: rgba(231, 76, 60, 0.8) !important;
+                    }
+
+                    /* ============================================
+   PHOTO GALLERY SPECIFIC
+   ============================================ */
+                    body.dark-mode .gallery-item {
+                        background-color: #2d2d2d !important;
+                        border: 1px solid #444 !important;
+                    }
+
+                    /* ============================================
+   ARCHIVE PAGE
+   ============================================ */
+                    body.dark-mode .archive-container {
+                        background-color: #2d2d2d !important;
+                    }
+
+                    body.dark-mode .archive-item {
+                        border-bottom: 1px solid #444 !important;
+                    }
+
+                    /* ============================================
+   TAG PAGE
+   ============================================ */
+                    body.dark-mode .tag-cloud {
+                        background-color: #2d2d2d !important;
+                    }
+
+                    body.dark-mode .tag-item {
+                        background-color: #3a3a3a !important;
+                        border: 1px solid #444 !important;
+                    }
+
+                    body.dark-mode .tag-item:hover {
+                        background-color: #007bff !important;
+                        color: #ffffff !important;
+                    }
+
+                    /* ============================================
+   CATEGORY PAGE
+   ============================================ */
+                    body.dark-mode .category-header {
+                        background-color: #2d2d2d !important;
+                        border-bottom: 2px solid #444 !important;
+                    }
+
+                    body.dark-mode .category-description {
+                        color: #e0e0e0 !important;
+                    }
+
+                    /* ============================================
+   FINAL OVERRIDES
+   ============================================ */
+
+                    /* Ensure all text is readable */
+                    body.dark-mode * {
+                        -webkit-font-smoothing: antialiased;
+                        -moz-osx-font-smoothing: grayscale;
+                    }
+
+                    /* Ensure links are visible */
+                    body.dark-mode a:not([style*="color"]) {
+                        color: #64b5f6 !important;
+                    }
+
+                    body.dark-mode a:not([style*="color"]):hover {
+                        color: #007bff !important;
+                    }
+
+                    /* Ensure all backgrounds are dark */
+                    body.dark-mode .bg-light {
+                        background-color: #2d2d2d !important;
+                    }
+
+                    body.dark-mode .bg-white {
+                        background-color: #2d2d2d !important;
+                    }
+
+                    /* Ensure all text is white */
+                    body.dark-mode .text-dark {
+                        color: #ffffff !important;
+                    }
+
+                    body.dark-mode .text-muted {
+                        color: #b0b0b0 !important;
+                    }
+
+                    /* ============================================
+   PRINT STYLES (Keep light for printing)
+   ============================================ */
+                    @media print {
+                        body.dark-mode {
+                            background-color: white !important;
+                            color: black !important;
+                        }
+
+                        body.dark-mode * {
+                            background-color: white !important;
+                            color: black !important;
+                        }
+                    }
+
+                    /* ============================================
+   END OF DARK MODE STYLES
+   ============================================ */
 
 
                     /* === TAGS WIDGET - COMPACT & FLEXIBLE === */

@@ -232,31 +232,33 @@
     </style>
     {{-- Custom CSS Code section End --}}
 
+    {{-- ============================================
+     BLADE TEMPLATE WITH CUSTOM CLASSES
+     ============================================ --}}
 
     {{-- Breaking News Section Start --}}
-    <div>
+    <div class="custom-ticker-wrapper">
         @if ($breaking_news->count() > 0)
-            <div class="news--ticker">
-                <div class="container">
-                    <div class="title">
+            <div class="custom-ticker">
+                <div class="custom-ticker-inner">
+                    <div class="custom-ticker-label">
                         @if (session()->get('lang') == 'english')
                             <h2>Headline</h2>
                         @else
                             <h2>শিরোনাম</h2>
                         @endif
-                        {{-- <span>(Update {{ \Carbon\Carbon::parse($time->created_at)->diffForHumans() }})</span> --}}
                     </div>
-                    <div class="news-updates--list" data-marquee="true">
-                        <ul class="nav">
+                    <div class="custom-ticker-content" data-marquee="true">
+                        <ul class="custom-ticker-list">
                             @foreach ($breaking_news as $news)
-                                <li>
+                                <li class="custom-ticker-item">
                                     @if (session()->get('lang') == 'english')
-                                        <h3 class="h3">
+                                        <h3>
                                             <a target="_blank" {{ $news->url ? 'href=' . $news->url . ' ' : '' }}> **
                                                 {{ $news->news_en }} ** </a>
                                         </h3>
                                     @else
-                                        <h3 class="h3">
+                                        <h3>
                                             <a target="_blank" {{ $news->url ? 'href=' . $news->url . ' ' : '' }}> **
                                                 {{ $news->news_bn }} ** </a>
                                         </h3>
@@ -272,34 +274,32 @@
     {{-- Breaking News Section End --}}
 
     {{-- Notice Section Start --}}
-    <div>
+    <div class="custom-ticker-wrapper">
         @if ($notice)
-            <div class="news--ticker">
-                <div class="container">
-                    <div class="title">
+            <div class="custom-ticker">
+                <div class="custom-ticker-inner">
+                    <div class="custom-ticker-label">
                         @if (session()->get('lang') == 'english')
                             <h2>Notice</h2>
                         @else
                             <h2>নোটিশ</h2>
                         @endif
-                        {{-- <span>(Update {{ \Carbon\Carbon::parse($time->created_at)->diffForHumans() }})</span> --}}
                     </div>
-                    <div class="news-updates--list" data-marquee="true">
-                        <ul class="nav">
+                    <div class="custom-ticker-content" data-marquee="true">
+                        <ul class="custom-ticker-list">
                             @if (session()->get('lang') == 'english')
-                                <li>
-                                    <h3 class="h3">
+                                <li class="custom-ticker-item">
+                                    <h3>
                                         <a> !!! {{ $notice->notice_en }} !!! </a>
                                     </h3>
                                 </li>
                             @else
-                                <li>
-                                    <h3 class="h3">
+                                <li class="custom-ticker-item">
+                                    <h3>
                                         <a> !!! {{ $notice->notice_bn }} !!! </a>
                                     </h3>
                                 </li>
                             @endif
-
                         </ul>
                     </div>
                 </div>
@@ -307,6 +307,177 @@
         @endif
     </div>
     {{-- Notice News Section End --}}
+
+    <style>
+        /* ============================================
+                   CUSTOM TICKER - BASE STYLES (LIGHT MODE)
+                   ============================================ */
+
+        .custom-ticker-wrapper {
+            width: 100%;
+            background-color: transparent;
+            margin-top: 15px;
+            margin-bottom: 2px;
+        }
+
+        .custom-ticker {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .custom-ticker-inner {
+            display: flex;
+            align-items: stretch;
+            justify-content: flex-start;
+            flex-wrap: nowrap;
+            width: 100%;
+            border: 1px solid #ddd;
+        }
+
+        .custom-ticker-label {
+            flex: 0 0 auto;
+            white-space: nowrap;
+            background-color: #000000;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            border-right: 1px solid #ddd;
+        }
+
+        .custom-ticker-label h2 {
+            margin: 0;
+            white-space: nowrap;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .custom-ticker-content {
+            flex: 1 1 auto;
+            overflow: hidden;
+            white-space: nowrap;
+            background-color: #f5f5f5;
+            padding: 12px 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .custom-ticker-list {
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+            margin: 0;
+            padding: 0 0 0 20px;
+            list-style: none;
+        }
+
+        .custom-ticker-item {
+            display: inline-block;
+        }
+
+        .custom-ticker-item h3 {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .custom-ticker-item a {
+            color: #333333;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .custom-ticker-item a:hover {
+            color: #DC3545;
+        }
+
+        /* ============================================
+                    DARK MODE STYLES
+        ============================================ */
+
+        body.dark-mode .custom-ticker-wrapper {
+            background-color: transparent;
+        }
+
+        body.dark-mode .custom-ticker-inner {
+            background-color: transparent;
+            border-color: #444444;
+        }
+
+        body.dark-mode .custom-ticker-label {
+            background-color: #000000;
+            border-right-color: #444444;
+        }
+
+        body.dark-mode .custom-ticker-label h2 {
+            color: #ffffff;
+        }
+
+        body.dark-mode .custom-ticker-content {
+            background-color: #1A1A1A;
+        }
+
+        body.dark-mode .custom-ticker-item h3 {
+            color: #ffffff;
+        }
+
+        body.dark-mode .custom-ticker-item a {
+            color: #ffffff;
+        }
+
+        body.dark-mode .custom-ticker-item a:hover {
+            color: #DC3545;
+        }
+
+        /* ============================================
+                    RESPONSIVE STYLES
+        ============================================ */
+
+        @media (max-width: 768px) {
+            .custom-ticker-inner {
+                flex-wrap: nowrap;
+            }
+
+            .custom-ticker-label {
+                margin-right: 0;
+                padding: 10px 15px;
+            }
+
+            .custom-ticker-label h2 {
+                font-size: 14px;
+            }
+
+            .custom-ticker-list {
+                gap: 15px;
+                padding-left: 15px;
+            }
+
+            .custom-ticker-item h3 {
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .custom-ticker-label {
+                padding: 8px 12px;
+            }
+
+            .custom-ticker-label h2 {
+                font-size: 12px;
+            }
+
+            .custom-ticker-list {
+                gap: 10px;
+                padding-left: 10px;
+            }
+
+            .custom-ticker-item h3 {
+                font-size: 12px;
+            }
+        }
+    </style>
 
     <div class="container">
 
@@ -1261,10 +1432,10 @@
                             if (prayerTimes.fajr && currentTime >= prayerTimes.fajr && currentTime < (prayerTimes.dhuhr || Infinity)) {
                                 document.getElementById('fajr').parentElement.classList.add('current-prayer');
                             } else if (prayerTimes.dhuhr && currentTime >= prayerTimes.dhuhr && currentTime < (prayerTimes.asr ||
-                                Infinity)) {
+                                    Infinity)) {
                                 document.getElementById('dhuhr').parentElement.classList.add('current-prayer');
                             } else if (prayerTimes.asr && currentTime >= prayerTimes.asr && currentTime < (prayerTimes.maghrib ||
-                                Infinity)) {
+                                    Infinity)) {
                                 document.getElementById('asr').parentElement.classList.add('current-prayer');
                             } else if (prayerTimes.maghrib && currentTime >= prayerTimes.maghrib && currentTime < (prayerTimes.isha ||
                                     Infinity)) {
@@ -5929,7 +6100,9 @@
                                             {{ session()->get('lang') == 'english' ? $pnbt->title_en : $pnbt->title_bn }}
                                         </a>
                                     </h3>
-                                    <p>{!! session()->get('lang') == 'english' ? Str::limit($pnbt->details_en, 150, '...') : Str::limit($pnbt->details_bn, 150, '...') !!}
+                                    <p>{!! session()->get('lang') == 'english'
+                                        ? Str::limit($pnbt->details_en, 150, '...')
+                                        : Str::limit($pnbt->details_bn, 150, '...') !!}
                                     </p>
                                 </div>
                             @else
